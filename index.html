@@ -441,6 +441,22 @@ body[data-sleeve=glass] .card{border-color:#7df0ff;box-shadow:inset 0 0 0 2px #0
 .bbox.s2 .bf{background:linear-gradient(160deg,#06141f,#0f5a6e 45%,#06141f);border-color:#7df0ff;color:#bff7ff}
 .nodes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.nodes button{min-width:150px}
 .npc{font:12px ui-monospace,monospace;white-space:pre;color:#fbbf24}
+
+body[data-ui=default]{--bg:#0c0a08;--fg:#e3d5b8;--mut:#9a8a6a;--btn:#1d1812;--bd:#4a3b25}
+h1{text-shadow:0 0 10px #c4491f}
+.card.signed::after{content:"~ T. Cartographer ~";position:absolute;bottom:2.1em;left:0;right:0;text-align:center;color:#ffd700;font:italic 11px serif;transform:rotate(-4deg);text-shadow:0 0 6px #000;pointer-events:none}
+.card.shiny pre{filter:hue-rotate(var(--tint,0deg))}
+.fx{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.fx i{position:absolute;font:normal 14px ui-monospace,monospace;animation:fxr var(--d) linear infinite;opacity:.7}
+@keyframes fxr{from{transform:translateY(0)}to{transform:translateY(var(--dy))}}
+#title,#gate{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 20%,#2a1608,#0a0705 70%);color:#e3d5b8;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:auto;padding:20px;font-family:ui-monospace,monospace}
+#title pre{color:#d9a441;text-shadow:0 0 10px #c4491f;animation:torch 1.4s infinite alternate;font-size:min(13px,2.6vw);line-height:1.1}
+@keyframes torch{to{text-shadow:0 0 22px #ff7a1a;color:#f0b85a}}
+#title input,#title select{background:#16110b;color:#e3d5b8;border:1px solid #6b4500;padding:6px;margin:3px;border-radius:4px}
+#title .tb{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+#title .msg{min-height:1.4em;color:#f472b6}
+.plq{width:100%;box-sizing:border-box;font:11px ui-monospace,monospace}
+.spot{box-shadow:0 0 18px 3px #ffe08a}
 </style>
 </head>
 <body>
@@ -782,18 +798,32 @@ function sanitizeState(parsed) {
   if (!Array.isArray(merged.q)) merged.q = [{ id: 'open', prog: 0, goal: 2, done: false }];
   if (!Array.isArray(merged.market)) merged.market = [];
   if (!Array.isArray(merged.team) || merged.team.length !== 5) merged.team = [null, null, null, null, null];
-  return merged;
+  return migrateState(merged);
 }
 
+const SAVE_VER = 17;
+const MIGRATIONS = [
+  [15, m => { m.team = m.team.map(s => (s && typeof s === "object" && s.id !== undefined) ? s : null); }],
+  [17, m => {
+    m.stash = m.stash || {}; const thr = 205 + (Array.isArray(m.dyn) ? m.dyn.length : 0) + 9;
+    Object.keys(m.inv || {}).forEach(k => { if (+k.split("|")[0] >= thr) { m.stash[k] = m.inv[k]; delete m.inv[k]; } });
+    m.team = m.team.map(s => (s && s.id >= thr) ? null : s);
+    if (m.museum && Array.isArray(m.museum.items)) m.museum.items = m.museum.items.filter(it => +it.k.split("|")[0] < thr);
+  }]
+];
+function migrateState(m) { const from = m.v || 0; MIGRATIONS.forEach(([v, f]) => { if (from < v) { try { f(m); } catch (e) {} } }); m.v = SAVE_VER; return m; }
+const APR_USER = (() => { try { return sessionStorage.getItem("apr_user") || ""; } catch (e) { return ""; } })();
+const SAVE_KEY = APR_USER ? "apr_acct_" + APR_USER : "";
 let sv = defaultState();
 try {
-  const raw = localStorage.getItem("asciiPacks_v10") || localStorage.getItem("asciiPacks_v9") || localStorage.getItem("asciiPacks_v8") || localStorage.getItem("asciiPacks_v7") || localStorage.getItem("asciiPacks_v5") || localStorage.getItem("asciiPacks_v4");
+  const raw = SAVE_KEY ? localStorage.getItem(SAVE_KEY) : null;
+  const _legacy = localStorage.getItem("asciiPacks_v10") || localStorage.getItem("asciiPacks_v9") || localStorage.getItem("asciiPacks_v8") || localStorage.getItem("asciiPacks_v7") || localStorage.getItem("asciiPacks_v5") || localStorage.getItem("asciiPacks_v4");
   if (raw) sv = sanitizeState(JSON.parse(raw));
 } catch (e) {
   sv = defaultState();
 }
 
-const save = () => { try { localStorage.setItem("asciiPacks_v10", JSON.stringify(sv)); } catch (e) {} };
+const save = () => { if (!SAVE_KEY) return; try { sv.v = SAVE_VER; sv.ts = Date.now(); localStorage.setItem(SAVE_KEY, JSON.stringify(sv)); cloudQueue(); } catch (e) {} };
 const hasRelic = id => Array.isArray(sv.relics) && sv.relics.includes(id);
 
 let toastTimer = null;
@@ -919,7 +949,7 @@ function cardHTML(c, v = "base", sn, sm) {
   const mw = Math.max(...c.art.map(l => l.length)), pad = (10 - c.art.length) >> 1;
   const lines = [...Array(pad).fill(""), ...c.art];
   while (lines.length < 10) lines.push("");
-  const vTag = v !== "base" ? " +" + v.split("+").map(x => ({ shiny: "S", bw: "B", trimmed: "T", serialized: "#", miscut: "MC", crimped: "CR", glitch: "GL", negative: "NG", white: "WH" })[x]).join("+") : "";
+  const vTag = v !== "base" ? " +" + v.split("+").map(x => ({ shiny: "S", bw: "B", trimmed: "T", serialized: "#", miscut: "MC", crimped: "CR", glitch: "GL", negative: "NG", white: "WH", signed: "SG" })[x]).join("+") : "";
   const tag = `${TIERS[c.tier].toUpperCase()} [${CAT_SHORT[c.category]}/${EL_SHORT[c.element]}]${vTag}`;
   const pwr = cardPower(c.id, v);
   const star = getStar(c.id);
@@ -1142,7 +1172,7 @@ function sell(d) {
     if (!v.includes("serialized") && sv.inv[k] > 1 && CARDS[i]) {
       const count = sv.inv[k] - 1;
       if (d) hAdd(+i, "sold", count);
-      g += Math.floor(count * VAL[CARDS[i].tier] * v.split("+").reduce((a, x) => a * (MUL[x] || 1), 1) * coinMult * surgeMult(CARDS[i]));
+      g += Math.floor(count * VAL[CARDS[i].tier] * v.split("+").reduce((a, x) => a * (MUL[x] || 1), 1) * coinMult * surgeMult(CARDS[i]) * condMul(k));
       dst += Math.round(count * DUST_VAL[CARDS[i].tier] * dustMult);
       if (d) sv.inv[k] = 1;
     }
@@ -2434,7 +2464,7 @@ function showTower() {
 
     if (bHP <= 0 && pHP > 0) {
       const coinMult = hasRelic("goblin_crown") ? 1.15 : 1;
-      const coinReward = Math.round(floor * 95 * coinMult * (1 + 0.15 * (ts.greed || 0))) * (hasARel("eye") ? 1.25 : 1) + midasC;
+      const coinReward = Math.round(floor * 95 * coinMult * (1 + 0.15 * (ts.greed || 0))) * (hasARel("eye") ? 1.25 : 1) * (1 + 0.1 * horizon()) + midasC;
       const dustReward = floor * 5;
       sv.c += coinReward;
       if (isMilestone && floor % 10 === 0) { sv.shards = (sv.shards || 0) + 1; }
@@ -2696,7 +2726,7 @@ function showBinder() {
     $("#presBtn").onclick = () => {
       if (confirm("Prestige your 200/200 collection? This resets your card inventory in exchange for a permanent +25% Coin bonus and +20% Team Power per Prestige tier! (Your Relics and Star Ranks are kept!)")) {
         sv.prestige = (sv.prestige || 0) + 1; sv.shards = (sv.shards || 0) + 3;
-        { const kp = astral("soul") ? Object.keys(sv.inv).sort((a, b) => cardPower(+b.split("|")[0], b.split("|")[1]) - cardPower(+a.split("|")[0], a.split("|")[1]))[0] : null; sv.inv = {}; if (kp) sv.inv[kp] = 1; }
+        legacyOnPrestige(); { const kept = keepBest(); sv.inv = {}; kept.forEach(k => sv.inv[k] = 1); sv.packs += 3 * lg("start"); }
         sv.team = [null, null, null, null, null];
         save();
         playFanfare(4);
@@ -3486,9 +3516,9 @@ LAND_DEF.forEach(([name, el, tier]) => {
   const a = LSYM[el], id = CARDS.length; LAND_IDS.push(id);
   CARDS.push({ id, tier, category: "Land", element: el, basePower: 0, name, art: ["", `  ${a}   ${a}   ${a}  `, ` ${a}${a} ${a}${a}${a} ${a}${a} `, "=============", "~~~~~~~~~~~~~", "=============", ""], acc: ".", hue: LHUE[el], lore: `A ${tier > 2 ? "legendary " : ""}land steeped in ${el} energy. Every land you own empowers your team.`, forb: true, land: true });
 });
-const landBonus = () => 0.02 * CARDS.filter(c => c.land && own(c.id).length > 0).length;
+const landBonus = () => (0.02 + 0.01 * lg("land")) * CARDS.filter(c => c.land && own(c.id).length > 0).length;
 Object.assign(MUL, { white: 8 }); Object.assign(PWR_MUL, { white: 1.4 });
-const isSpecial = v => /white|miscut|crimped|glitch|negative|serialized/.test(v);
+const isSpecial = v => /white|miscut|crimped|glitch|negative|serialized|signed/.test(v);
 function rollV(t) {
   let v = rollV0(t);
   if (Math.random() < 0.0015 * mispBoost) v = v === "base" ? "white" : v + "+white";
@@ -3505,10 +3535,10 @@ function genPack(kind, set = openSet) {
   const W = { c: C ? [65, 28, 6.5, 0.5, 0] : [100, 0, 0, 0, 0], u: C ? [0, 65, 32, 3, 0] : [0, 100, 0, 0, 0], w: C ? [25, 35, 34, 5.5, 0.5] : [62, 30, 7.6, 0.35, 0.05], r: C ? [0, 0, 82, 16.5, 1.5] : [0, 0, 98.8, 1.1, 0.1] };
   const LW = C ? [55, 22, 17, 5, 1] : [82, 12, 5, 0.8, 0.2];
   const order = [...Array(6).fill("c"), ...Array(3).fill("u"), "L", "w", "w", "r"];
-  foilBoost = C ? 3 : 1; mispBoost = C ? 10 : 1;
+  foilBoost = C ? 3 : 1; mispBoost = (C ? 10 : 1) * (1 + 0.5 * lg("misp"));
   const out = order.map(s => {
     let t = pick(s === "L" ? LW : W[s]);
-    if (s === "r") { if (sv.pm >= 249) t = 4; else if (sv.pl >= 59 && t < 3) t = 3; }
+    if (s === "r") { if (sv.pm >= 249 - 5 * lg("pity")) t = 4; else if (sv.pl >= 59 - 5 * lg("pity") && t < 3) t = 3; }
     const pool = s === "L" ? CARDS.filter(c => c.land && c.tier === t && setOf(c) === set) : poolOf(t, set), c = pool[Math.floor(Math.random() * pool.length)] || CARDS[LAND_IDS[0]];
     let v = rollV(c.tier), sn;
     if (v.includes("serialized")) {
@@ -3519,7 +3549,7 @@ function genPack(kind, set = openSet) {
     sv.inv[key] = (sv.inv[key] || 0) + 1;
     return { c, v, sn, isNew };
   });
-  foilBoost = 1; mispBoost = 1; out.forEach(o => hAdd(o.c.id, "pulled", 1));
+  foilBoost = 1; mispBoost = 1; out.forEach(o => { hAdd(o.c.id, "pulled", 1); censusAdd(o); const ck = o.c.id + "|" + o.v; if (sv.cond[ck] === undefined) sv.cond[ck] = rollCond(); });
   sv.p++; sv.stats.packsOpened = (sv.stats.packsOpened || 0) + 1; sv.stats.cardsPulled = (sv.stats.cardsPulled || 0) + out.length;
   sv.pl = out.some(o => o.c.tier > 2) ? 0 : sv.pl + 1; sv.pm = out.some(o => o.c.tier > 3) ? 0 : sv.pm + 1;
   checkQuests("open"); checkAchievements(); checkMiles(); save();
@@ -3598,11 +3628,11 @@ async function openFlow() {
   const stage = main.querySelector("#stage"), info = main.querySelector("#info"), ctl = main.querySelector("#ctl"), spd = sv.fastRip ? 0.35 : 1;
   const S = { stage, info, ctl, spd, skip: false }; ctl.innerHTML = "";
   if (kind === "pack") {
-    const cards = genPack("standard"), pk = stage.querySelector("#pk"); pk.onclick = null;
+    const cards = genPack("standard"), pk = stage.querySelector("#pk"); pk.onclick = null; if (sv.skipAll) return summary(S, cards, "Pack opened");
     sfx(0); await sleep(60 * spd); pk.classList.add("shk"); cutLine(stage, pk); await sleep(550 * spd);
     pk.querySelector(".lid").classList.add("off"); burst(stage, pk, Math.max(...cards.map(x => x.c.tier))); sfx(1); haptic(30); await sleep(380 * spd);
     pk.classList.add("dive"); await sleep(450 * spd); pk.remove();
-    stage.insertAdjacentHTML("beforeend", `<div class="light" id="lt"></div><div class="stk"><div class="stkback bk-${sv.cos.back}" id="sb"></div><div class="cur" id="cur"></div></div>`);
+    stage.insertAdjacentHTML("beforeend", `<div class="light" id="lt"></div><div class="stk"><div class="stkback bk-${sv.cos.back}" id="sb">${customBackInner()}</div><div class="cur" id="cur"></div></div>`);
     S.lt = stage.querySelector("#lt"); S.cur = stage.querySelector("#cur"); const sb = stage.querySelector("#sb"), n = cards.length;
     for (let i = 0; i < n; i++) {
       const it = cards[i], t = it.c.tier;
@@ -3673,35 +3703,7 @@ function hAdd(id, k, n) { const x = sv.hist[id] || (sv.hist[id] = {}); x[k] = (x
 const ascM = k => sv.asc && sv.asc.on ? Math.pow(k, sv.asc.n) : 1;
 const hasARel = k => !!(sv.asc && sv.asc.relics.includes(k));
 
-// ---- Set 2: Void Rift (52 cards + 4 lands) ----
-const S2_START = CARDS.length;
-function cardNo(c) { return c.set === 2 ? "S2-" + String(c.id - S2_START + 1).padStart(2, "0") : "#" + String(c.id + 1).padStart(3, "0"); }
-const S2N = [
-  ["Void Wisp", "Rift Crawler", "Null Imp", "Shade Moth", "Gloom Hound", "Static Husk", "Echo Rat", "Dusk Sprite", "Hollow Pup", "Wraith Cub", "Fray Spider", "Murk Toad", "Lost Lantern", "Rift Dagger", "Voidglass Shield", "Umbral Cloak", "Shard Buckler", "Rift Compass", "Pale Raven", "Dust Familiar"],
-  ["Rift Warden", "Null Knight", "Gravity Blade", "Eclipse Aegis", "Star-Eater Moth", "Horizon Hound", "Phase Stalker", "Singing Shard", "Tidal Void Orb", "Obsidian Idol", "Fractured Oracle", "Mirror Wraith", "Dread Lantern", "Void Sprinter"],
-  ["Riftlord's Hand", "Black Sun Lance", "Voidforged Aegis", "Abyss Weaver", "Cosmic Pup", "Eventide Sage", "Chrono Fracture", "Tear of the Rift", "Paradox Familiar", "Entropy Blade"],
-  ["Aurelon the Hollow", "Nyxara Starshroud", "The Last Horizon", "Singularity Drake", "Oracle of Ends"],
-  ["Devourer of Worlds", "The Rift Itself", "Primordial Nullstar"]
-];
-const S2A = [
-  s => ["  .-~~~-.  ", " /  ___  \\ ", "|  (@ @)  |", " \\  \\_/  / ", "  '-----'  ", `  ${s} ${s} ${s}  `],
-  s => [" /\\_/\\_/\\ ", "|  O   O  |", "|  \\VVV/  |", " \\__WWW__/ ", `  ${s}${s}${s}${s}${s}  `],
-  s => ["     /|    ", "    / |    ", "   /  |    ", "  /___|__  ", `  ${s}  ||    `, "     ||    "],
-  s => ["  .-----.  ", " /|     |\\ ", "| |  " + s + "  | |", " \\|     |/ ", "  '-----'  "],
-  s => ["   .-*-.   ", "  / " + s + " " + s + " \\  ", " | " + s + "(O)" + s + " | ", "  \\ " + s + " " + s + " /  ", "   '-*-'   "],
-  s => [" /\\     /\\ ", "/  \\_^_/  \\", "\\   (o)   /", " \\  / \\  / ", `  \\/${s}${s}${s}\\/  `],
-  s => ["   (o o)   ", "  /|~~~|\\  ", " ~ |~~~| ~ ", "~  /~~~\\  ~", `  ~ ${s} ${s} ~  `],
-  s => ["    /\\     ", "   /${s}\\    ".replace("${s}", s), "  / /\\ \\   ", " / /  \\ \\  ", "/_/____\\_\\ "]
-];
-const S2L = ["wandered out of the Void Rift and never learned to leave", "was cut from the seam between two dying stars", "answers only to those who stare into the dark long enough", "remembers a world that was erased before it could be named"];
-S2N.forEach((names, t) => names.forEach((name, j) => {
-  let hs = 0; for (const ch of name) hs = (hs * 31 + ch.charCodeAt(0)) >>> 0;
-  const cat = /Dagger|Blade|Lance|Hand/.test(name) ? "Weapon" : /Shield|Cloak|Buckler|Aegis/.test(name) ? "Armor" : /Lantern|Compass|Orb|Shard|Tear|Idol|Fracture|Weaver/.test(name) ? "Utility" : /Hound|Pup|Moth|Rat|Spider|Toad|Raven|Familiar|Crawler|Husk|Imp|Sprite|Wisp|Drake|Stalker|Sprinter|Cub/.test(name) ? "Pet" : "Character";
-  const el = ["Shadow", "Shadow", "Frost", "Holy", "Fire", "Nature"][hs % 6];
-  CARDS.push({ id: CARDS.length, set: 2, tier: t, category: cat, element: el, basePower: [14, 36, 95, 270, 800][t] + (hs % 7), name, art: S2A[hs % 8](LSYM[el]), acc: ACC[t], hue: 255 + (hs % 50), lore: `${name} ${S2L[hs % 4]}.` });
-}));
-[["Void Shore", "Shadow", 0], ["Fractured Plain", "Frost", 0], ["Rift Canyon", "Fire", 2], ["The Null Expanse", "Shadow", 4]].forEach(([name, el, tier]) => { const a = LSYM[el]; CARDS.push({ id: CARDS.length, set: 2, tier, category: "Land", element: el, basePower: 0, name, art: ["", `  ${a}  ${a}  ${a}  `, ` ${a}${a}${a} ${a}${a}${a} `, "=============", "~ ~ ~ ~ ~ ~ ~", "=============", ""], acc: ".", hue: 270, lore: `${name} floats at the edge of the Rift. Every land you own empowers your team.`, forb: true, land: true }); });
-
+function cardNo(c) { return "#" + String(c.id + 1).padStart(3, "0"); }
 // ---- pack/box accessors per set ----
 const getPk = (s, k) => s === 1 ? (k === "pack" ? sv.packs : sv.boxes[k]) : sv.s2[k];
 function addPk(s, k, n) { if (s === 1) { if (k === "pack") sv.packs += n; else sv.boxes[k] += n; } else sv.s2[k] += n; }
@@ -3824,11 +3826,11 @@ var exp = null;
 const XR = [["Sharpened Edge", "+20% power"], ["Iron Skin", "-25% damage taken"], ["Vitality", "+40 max HP, heal 40"], ["Lucky Coin", "+50% coin reward"], ["Berserk Mask", "+35% power, +10% damage taken"]];
 function xPow() { return Math.round(exp.deck.map(c => c.basePower).sort((a, b) => b - a).slice(0, 5).reduce((a, b) => a + b, 0) * exp.mult * (exp.rel.includes(0) ? 1.2 : 1) * (exp.rel.includes(4) ? 1.35 : 1)); }
 function xNodes() { const T = ["combat", "combat", "elite", "camp"]; return [0, 1].map(() => T[Math.floor(Math.random() * 4)]); }
-function xCards(n) { const w = exp.floor < 3 ? [60, 35, 5, 0] : exp.floor < 6 ? [35, 40, 22, 3] : [15, 35, 40, 10]; return [0, 1, 2].map(() => { const t = pick([...w, 0]), p = CARDS.filter(c => !c.forb && c.tier === t); return p[Math.floor(Math.random() * p.length)]; }); }
+function xCards(n) { const w = exp.floor < 3 ? [60, 35, 5, 0] : exp.floor < 6 ? [35, 40, 22, 3] : [15, 35, 40, 10]; return [...Array(3 + xLv("opt"))].map(() => { const t = pick([...w, 0]), p = CARDS.filter(c => !c.forb && c.tier === t); return p[Math.floor(Math.random() * p.length)]; }); }
 function showExpedition() {
   if (!exp) {
-    main.innerHTML = `<div class="bar"><b>Procedural Expedition</b> | Best clears: ${sv.expClears}</div><div class="panel-box" style="text-align:center"><p style="margin-top:0">A standalone roguelike. Start with 10 random low-tier cards, fight through 10 rooms, and draft new cards and temporary relics after each victory. Your collection is not used. Free to enter.</p><button id="xs">Begin Expedition</button></div>`;
-    main.querySelector("#xs").onclick = () => { const p = CARDS.filter(c => !c.forb && c.tier <= 1 && setOf(c) === 1); exp = { floor: 0, hp: 100, mx: 100, deck: [...Array(10)].map(() => p[Math.floor(Math.random() * p.length)]), rel: [], mult: 1, phase: "map", nodes: xNodes(), log: ["You enter the dungeon."], coins: 0 }; showExpedition(); }; return;
+    main.innerHTML = `<div class="bar"><b>Procedural Expedition</b> | Best clears: ${sv.expClears}</div><div class="panel-box" style="text-align:center"><p style="margin-top:0">A standalone roguelike. Start with 10 random low-tier cards, fight through 10 rooms, and draft new cards and temporary relics after each victory. Your collection is not used. Free to enter.</p><button id="xs">Begin Expedition</button> <button id="xs2">Endless Depths</button> <button id="xu">Perma-Upgrades (${sv.tok} tokens)</button></div>`;
+    main.querySelector("#xs").onclick = () => { xEndless = false; xGo(); }; main.querySelector("#xs2").onclick = () => { xEndless = true; xGo(); }; main.querySelector("#xu").onclick = showXUp; const xGo = () => { const p = CARDS.filter(c => !c.forb && c.tier <= 1 && setOf(c) === 1); exp = { floor: 0, hp: 100 + 10 * xLv("hp"), mx: 100 + 10 * xLv("hp"), t0: Date.now(), endless: xEndless, deck: [...Array(10 + xLv("deck"))].map(() => p[Math.floor(Math.random() * p.length)]), rel: [], mult: 1 + 0.05 * xLv("pow"), phase: "map", nodes: xNodes(), log: ["You enter the dungeon."], coins: 0 }; showExpedition(); }; return;
   }
   const x = exp, L = m => x.log.unshift(m), tk = () => (x.rel.includes(1) ? 0.75 : 1) * (x.rel.includes(4) ? 1.1 : 1);
   let body = "";
@@ -3837,14 +3839,14 @@ function showExpedition() {
   else if (x.phase === "relic") body = `<p>Choose a relic:</p><div class="nodes">${x.ropts.map(i => `<button data-r="${i}">${XR[i][0]}<br><small>${XR[i][1]}</small></button>`).join("")}</div>`;
   else if (x.phase === "camp") body = `<div class="nodes"><button data-c="heal">Rest (+40% HP)</button><button data-c="pow">Sharpen (+15% power)</button></div>`;
   else body = `<b>${x.phase === "won" ? "EXPEDITION CLEARED!" : "Your expedition ended."}</b><br><button id="xe">Leave</button>`;
-  main.innerHTML = `<div class="bar"><b>Expedition</b> | Room ${Math.min(10, x.floor + 1)}/10 | HP ${Math.max(0, x.hp)}/${x.mx} | Power ${xPow()} | Relics: ${x.rel.map(i => XR[i][0]).join(", ") || "none"}</div><div class="panel-box">${body}<div style="font:12px/1.6 ui-monospace,monospace;margin-top:8px;text-align:left;color:var(--mut)">Deck (${x.deck.length}): ${x.deck.map(c => c.name).join(", ")}<br>${x.log.slice(0, 5).map(esc).join("<br>")}</div></div>`;
-  const nxt = () => { x.floor++; if (x.floor >= 10) { x.phase = "won"; sv.expClears++; sv.c += 800; sv.dust += 150; sv.shards++; x.log.unshift("Cleared! +800c, +150✦, +1 ✧"); } else { x.phase = "map"; x.nodes = xNodes(); } save(); showExpedition(); };
+  main.innerHTML = `<div class="bar"><b>Expedition</b> | Room ${x.endless ? (x.floor + 1) + " (Endless)" : Math.min(10, x.floor + 1) + "/10"} | HP ${Math.max(0, x.hp)}/${x.mx} | Power ${xPow()} | Relics: ${x.rel.map(i => XR[i][0]).join(", ") || "none"}</div><div class="panel-box">${body}<div style="font:12px/1.6 ui-monospace,monospace;margin-top:8px;text-align:left;color:var(--mut)">Deck (${x.deck.length}): ${x.deck.map(c => c.name).join(", ")}<br>${x.log.slice(0, 5).map(esc).join("<br>")}</div></div>`;
+  const nxt = () => { x.floor++; if (x.endless && x.floor % 10 === 0) { sv.tok += Math.round(3 * (1 + 0.1 * xLv("tok"))); } if (!x.endless && x.floor >= 10) { x.phase = "won"; xWin(x); sv.expClears++; sv.c += 800; sv.dust += 150; sv.shards++; x.log.unshift("Cleared! +800c, +150✦, +1 ✧"); } else { x.phase = "map"; x.nodes = xNodes(); } save(); showExpedition(); };
   main.querySelectorAll("[data-n]").forEach(b => b.onclick = () => {
     const t = x.nodes[+b.dataset.n]; if (t === "camp") { x.phase = "camp"; return showExpedition(); }
     const E = 45 * Math.pow(1.32, x.floor) * (t === "elite" ? 1.5 : 1), P = xPow(); let e = E * 7, r = 0;
     while (e > 0 && x.hp > 0 && r < 40) { r++; e -= P * (0.9 + Math.random() * 0.2); if (e <= 0) break; x.hp -= Math.round((4 + E * 0.05) * tk() * (0.9 + Math.random() * 0.2)); }
     if (x.hp > 0) { const c = Math.round(40 * (x.floor + 1) * (x.rel.includes(3) ? 1.5 : 1)); sv.c += c; L(`Won the ${t} fight (${r} rounds), +${c}c`); x.opts = xCards(); x.phase = "draft"; x.elite = t === "elite"; }
-    else { x.phase = "lost"; sv.c += 40 * x.floor; L("You fell. Consolation: +" + 40 * x.floor + "c"); }
+    else { x.phase = "lost"; xLose(x); sv.c += 40 * x.floor; L("You fell. Consolation: +" + 40 * x.floor + "c"); }
     save(); showExpedition();
   });
   main.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { x.deck.push(x.opts[+b.dataset.d]); if (x.elite) { x.ropts = [0, 1, 2, 3, 4].sort(() => Math.random() - 0.5).slice(0, 2); x.phase = "relic"; showExpedition(); } else nxt(); });
@@ -3919,9 +3921,348 @@ HUBS["Customize"] = [["Craft & ★ Foils", 5], ["Fusion", 6], ["Grading", showGr
 HUBS["Market"] = [["Daily Market", showMarketPlus], ["Quest Board", showBoard]];
 HUBS["More"] = [["Stats & Saves", 9], ["Awards", 10], ["? Guide", showGuide]];
 curHub = "Packs"; curSub = 0;
+
+// ===================== v17: THE GREAT ASCII DUNGEON =====================
+// ---- developer configuration (edit before deploying) ----
+// NOTE: everything in this file runs in the player's browser, so it cannot be a secure authority.
+// For real protection, point cloudUrl at a Firebase Realtime Database (or compatible REST store)
+// and enforce read/write rules server-side. admins/testers here only control which UI is shown.
+const DEV_CONFIG = { cloudUrl: "", cloudKey: "", admins: ["admin"], betaOnly: false, testers: [] };
+const PATCH_NOTES = [{ v: 17, t: "v17: The Great ASCII Dungeon", n: ["Player accounts with per-account saves, optional cloud sync, admin gifting and closed-beta whitelist", "Versioned save migration (old saves upgrade automatically)", "New Skip All Pauses setting and Open x10 for mass opening", "Booster boxes and the Void Rift set are shelved (your boxes stay safe in your save)", "Foil & Misprint Lab, foil tint, card conditions, autographs, Index and Census", "Boss Bestiary, combat replays, Auction House, Endless Depths and permanent upgrades", "Museum overhaul, card back designer, stage effects, Legacy Tree and Memorial Wall"] }];
+const _e5 = ext;
+ext = function (m) {
+  _e5(m);
+  m.cond = m.cond || {}; m.census = m.census || {}; m.replays = m.replays || []; m.best = m.best || {}; m.auction = m.auction || { l: [], log: [] }; m.tok = m.tok || 0; m.xup = m.xup || {}; m.xbest = m.xbest || []; m.xdeep = m.xdeep || 0;
+  m.legacy = m.legacy || { pts: 0, lv: {} }; m.memorial = m.memorial || []; m.tint = m.tint || 0; m.skipAll = !!m.skipAll; m.seenV = m.seenV || 0; m.stash = m.stash || {};
+  m.museum = m.museum || { cases: 4, items: [], t: Date.now() }; m.museum.theme = m.museum.theme || "hall"; m.museum.themes = m.museum.themes || ["hall"]; m.museum.book = m.museum.book || []; if (m.museum.spot === undefined) m.museum.spot = -1;
+  m.cos = m.cos || {}; m.cos.stage = m.cos.stage || "none"; return m;
+};
+ext(sv);
+const lg = k => (sv.legacy && sv.legacy.lv[k]) || 0;
+const xLv = k => (sv.xup && sv.xup[k]) || 0;
+const horizon = () => Math.max(0, (sv.prestige || 0) - 4);
+var xEndless = false;
+const rnd = a => a[Math.floor(Math.random() * a.length)];
+const enc = s => new TextEncoder().encode(s);
+
+// ---- accounts, cloud and admin ----
+const accts = () => { try { return JSON.parse(localStorage.getItem("apr_accounts") || "{}"); } catch (e) { return {}; } };
+const saveAccts = a => localStorage.setItem("apr_accounts", JSON.stringify(a));
+const cloudUrl = () => (localStorage.getItem("apr_cloud_url") || DEV_CONFIG.cloudUrl || "").replace(/\/$/, "");
+const cloudKey = () => localStorage.getItem("apr_cloud_key") || DEV_CONFIG.cloudKey || "";
+const cloudOn = () => !!cloudUrl();
+async function cloudReq(path, method = "GET", body) {
+  if (!cloudOn()) return null;
+  try { const r = await fetch(`${cloudUrl()}/${path}.json${cloudKey() ? "?auth=" + encodeURIComponent(cloudKey()) : ""}`, { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }); return r.ok ? await r.json() : null; } catch (e) { return null; }
+}
+async function hashPw(pw, salt) {
+  try { if (window.crypto && crypto.subtle) { const k = await crypto.subtle.importKey("raw", enc(pw), "PBKDF2", false, ["deriveBits"]); const b = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: enc(salt), iterations: 100000, hash: "SHA-256" }, k, 256); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); } } catch (e) {}
+  let a = 2166136261, b = 5381; const s = salt + "|" + pw; for (let i = 0; i < s.length; i++) { a = Math.imul(a ^ s.charCodeAt(i), 16777619) >>> 0; b = (Math.imul(b, 33) ^ s.charCodeAt(i)) >>> 0; } return "f" + a.toString(16) + b.toString(16);
+}
+var cloudTimer = null, censusQ = {};
+function cloudQueue() { if (!cloudOn() || !APR_USER || APR_USER === "guest") return; clearTimeout(cloudTimer); cloudTimer = setTimeout(cloudPush, 4000); }
+async function cloudPush() {
+  if (!cloudOn() || !APR_USER || APR_USER === "guest") return;
+  await cloudReq("users/" + APR_USER, "PUT", { ts: Date.now(), d: JSON.stringify(sv) });
+  const q = censusQ; censusQ = {}; const keys = Object.keys(q); if (keys.length) { const o = {}; keys.forEach(k => o[k] = { ".sv": { increment: q[k] } }); await cloudReq("census", "PATCH", o); }
+}
+const ckey = o => o.c.id + "_" + o.v.replace(/\+/g, "-");
+function censusAdd(o) { const k = ckey(o); sv.census[k] = (sv.census[k] || 0) + 1; censusQ[k] = (censusQ[k] || 0) + 1; }
+const rollCond = () => { const r = Math.random() * 100; return r < 5 ? 0 : r < 25 ? 1 : r < 80 ? 2 : 3; };
+const COND = ["Damaged", "Played", "Near Mint", "Gem Mint"], COND_MUL = [0.5, 0.8, 1, 1.5];
+const condMul = k => COND_MUL[sv.cond[k] === undefined ? 2 : sv.cond[k]];
+var cloudCfg = {};
+const cfg = () => { let l = {}; try { l = JSON.parse(localStorage.getItem("apr_config") || "{}"); } catch (e) {} return Object.assign({}, DEV_CONFIG, l, cloudCfg); };
+const isAdmin = () => !!APR_USER && ((cfg().admins || []).includes(APR_USER));
+function giftsLocal(u) { try { return JSON.parse(localStorage.getItem("apr_gifts_" + u) || "[]"); } catch (e) { return []; } }
+function applyGift(g) { const n = +g.n || 0; if (g.k === "coins") sv.c += n; else if (g.k === "dust") sv.dust += n; else if (g.k === "packs") sv.packs += n; else if (g.k === "shards") sv.shards = (sv.shards || 0) + n; else if (g.k === "marks") sv.marks += n; else if (g.k === "card" && CARDS[+g.id]) { const key = +g.id + "|" + (g.v || "base"); sv.inv[key] = (sv.inv[key] || 0) + Math.max(1, n); } }
+async function pullGifts() {
+  if (!APR_USER) return; let list = giftsLocal(APR_USER); localStorage.removeItem("apr_gifts_" + APR_USER);
+  if (cloudOn()) { const c = await cloudReq("gifts/" + APR_USER); if (c) { list = list.concat(Object.values(c)); await cloudReq("gifts/" + APR_USER, "PUT", null); } }
+  if (list.length) { list.forEach(applyGift); save(); notify(`A gift arrived: ${list.length} item(s)${list[0].msg ? " - " + list[0].msg : ""}`); updateHeader(); }
+}
+async function sendGift(user, g) { user = user.trim().toLowerCase(); if (!user) return false; if (cloudOn()) { const r = await cloudReq("gifts/" + user, "POST", g); if (r) return true; } const l = giftsLocal(user); l.push(g); localStorage.setItem("apr_gifts_" + user, JSON.stringify(l)); return true; }
+function logout() { try { sessionStorage.removeItem("apr_user"); } catch (e) {} location.reload(); }
+function showTitle(msg) {
+  const el = document.createElement("div"); el.id = "title"; const A = accts(), names = Object.keys(A), legacy = localStorage.getItem("asciiPacks_v10");
+  el.innerHTML = `<pre>   ___  _   _ ___   ___ ___ ___ ___ _____   _   ___  ___ ___ ___ ___  _  _\n  / _ \\| | | | __| / __| _ \\ __| _ \\_   _| /_\\ / __|/ __|_ _|_ _|| \\| |\n | (_) | |_| | _| | (_ |   / _||   / | |  / _ \\\\__ \\ (__ | | | | | .  |\n  \\___/ \\___/|___| \\___|_|_\\___|_|_\\ |_| /_/ \\_\\___/\\___|___|___||_|\\_|\n        T H E   G R E A T   A S C I I   D U N G E O N\n              ╔══╗      ┌──┐      ╔══╗\n              ║☼☼║ ←── │ ☠│ ──→  ║☼☼║\n              ╚══╝      └──┘      ╚══╝</pre>
+  <div class="msg" id="tm">${msg || ""}</div>
+  <div class="tb"><input id="tu" placeholder="username" list="tl" autocomplete="username"><datalist id="tl">${names.map(n => `<option value="${n}">`).join("")}</datalist><input id="tp" type="password" placeholder="password" autocomplete="current-password"></div>
+  <div class="tb"><button id="tli">⚔ Login</button><button id="tcr">✚ Create account</button><button id="tgu">Play as guest (this device)</button></div>
+  ${legacy ? `<label style="font-size:12px"><input type="checkbox" id="tad" checked> Import my existing local save into a new account</label>` : ""}
+  <details style="margin-top:10px;font-size:12px;max-width:520px"><summary>Cloud sync (optional)</summary><div>Database URL (Firebase Realtime Database compatible):<br><input id="tcu" style="width:100%" value="${esc(cloudUrl())}" placeholder="https://your-project.firebaseio.com"><br><input id="tck" style="width:100%" value="${esc(cloudKey())}" placeholder="auth key / secret (optional)"><br><button id="tcs">Save cloud settings</button></div></details>
+  <p style="font-size:11px;color:#9a8a6a;max-width:520px;text-align:center">Accounts and saves are stored in this browser. With a cloud database configured, saves and logins sync across devices. Passwords are hashed, but a static page cannot be fully secure on its own.</p>
+  <div class="tb"><button id="tpn">📜 Patch notes</button></div>`;
+  document.body.appendChild(el);
+  const $ = s => el.querySelector(s), say = m => $("#tm").textContent = m, norm = () => $("#tu").value.trim().toLowerCase();
+  $("#tpn").onclick = () => showPatchNotes();
+  $("#tcs").onclick = () => { localStorage.setItem("apr_cloud_url", $("#tcu").value.trim()); localStorage.setItem("apr_cloud_key", $("#tck").value.trim()); say("Cloud settings saved."); };
+  const enter = u => { sessionStorage.setItem("apr_user", u); location.reload(); };
+  $("#tgu").onclick = () => enter("guest");
+  $("#tli").onclick = async () => {
+    const u = norm(), pw = $("#tp").value; if (!u) return say("Enter a username.");
+    let a = accts()[u]; if (!a && cloudOn()) { a = await cloudReq("auth/" + u); if (a) { const all = accts(); all[u] = a; saveAccts(all); } }
+    if (!a) return say("Unknown user."); if (await hashPw(pw, a.salt) !== a.hash) return say("Wrong password.");
+    if (cloudOn()) { const r = await cloudReq("users/" + u), lk = localStorage.getItem("apr_acct_" + u); let lts = 0; try { lts = lk ? JSON.parse(lk).ts || 0 : 0; } catch (e) {} if (r && r.d && r.ts > lts) localStorage.setItem("apr_acct_" + u, r.d); }
+    enter(u);
+  };
+  $("#tcr").onclick = async () => {
+    const u = norm(), pw = $("#tp").value; if (!/^[a-z0-9_]{3,16}$/.test(u)) return say("Username: 3-16 letters, numbers or _."); if (pw.length < 4) return say("Password needs 4+ characters.");
+    if (accts()[u] || u === "guest" || (cloudOn() && await cloudReq("auth/" + u))) return say("That name is taken.");
+    const salt = Math.random().toString(36).slice(2) + Date.now().toString(36), a = { salt, hash: await hashPw(pw, salt), created: Date.now() }, all = accts(); all[u] = a; saveAccts(all);
+    if (cloudOn()) await cloudReq("auth/" + u, "PUT", a);
+    const ad = $("#tad"); if (ad && ad.checked && legacy) localStorage.setItem("apr_acct_" + u, legacy);
+    enter(u);
+  };
+}
+function showGate(why) { const g = document.createElement("div"); g.id = "gate"; g.innerHTML = `<pre>╔══════════════════════╗\n║   CLOSED BETA        ║\n╚══════════════════════╝</pre><p>${why}</p><button id="gl">Log out</button>`; document.body.appendChild(g); g.querySelector("#gl").onclick = logout; }
+function showPatchNotes() {
+  const o = document.createElement("div"); o.className = "ov"; o.style.zIndex = 10000;
+  o.innerHTML = `<div style="background:var(--btn,#1d1812);border:2px solid #d9a441;border-radius:10px;padding:18px;max-width:520px;max-height:80vh;overflow:auto;font:13px/1.6 ui-monospace,monospace;color:var(--fg,#e3d5b8)">${PATCH_NOTES.map(p => `<h3 style="margin:0 0 6px;color:#d9a441">${p.t}</h3><ul style="margin:0 0 10px;padding-left:18px">${p.n.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`).join("")}<button id="pnx">Continue into the dungeon</button></div>`;
+  document.body.appendChild(o); o.querySelector("#pnx").onclick = () => o.remove();
+}
+function showAccount() {
+  main.innerHTML = `<div class="bar"><b>Account</b></div><div class="panel-box">Signed in as <b>${esc(APR_USER)}</b>${isAdmin() ? " (admin)" : ""}. Save version ${sv.v}. Cloud: ${cloudOn() ? "configured" : "not configured"}.<div class="bar" style="justify-content:flex-start"><button id="ac1" ${cloudOn() ? "" : "disabled"}>☁ Sync to cloud now</button><button id="ac2">💾 Download backup</button><button id="ac3">Log out / switch account</button></div><div id="am" style="color:#fbbf24"></div></div>`;
+  const $ = s => main.querySelector(s);
+  $("#ac1").onclick = async () => { await cloudPush(); $("#am").textContent = "Synced."; };
+  $("#ac2").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(sv)], { type: "application/json" })); a.download = `ascii-dungeon-${APR_USER}.json`; a.click(); };
+  $("#ac3").onclick = logout;
+}
+function showAdmin() {
+  if (!isAdmin()) return main.innerHTML = '<div class="panel-box">Admins only.</div>';
+  const c = cfg();
+  main.innerHTML = `<div class="bar"><b>Developer Tools</b></div><div class="panel-box"><p style="margin-top:0;color:var(--mut)">Client-side tools. For real enforcement, add database rules on your cloud backend.</p><b>Gift a player</b><br><input id="gu" list="gl2" placeholder="username"><datalist id="gl2">${Object.keys(accts()).map(n => `<option value="${n}">`).join("")}</datalist><select id="gk"><option>coins</option><option>dust</option><option>packs</option><option>shards</option><option>marks</option><option>card</option></select><input id="gn" type="number" value="100" style="width:90px"><input id="gi" placeholder="card id (for card)" style="width:120px"><input id="gm" placeholder="message"><button id="gs">Send gift</button><hr><b>Closed beta</b><br><label><input type="checkbox" id="bb" ${c.betaOnly ? "checked" : ""}> Restrict access to testers</label><br><textarea id="bt" rows="3" style="width:100%" placeholder="tester usernames, one per line">${esc((c.testers || []).join("\n"))}</textarea><button id="bs">Save beta settings</button> <button id="bc" ${cloudOn() ? "" : "disabled"}>Publish to cloud</button><div id="adm" style="color:#fbbf24"></div></div>`;
+  const $ = s => main.querySelector(s), say = m => $("#adm").textContent = m, read = () => ({ betaOnly: $("#bb").checked, testers: $("#bt").value.split("\n").map(x => x.trim().toLowerCase()).filter(Boolean), admins: c.admins });
+  $("#gs").onclick = async () => { const g = { k: $("#gk").value, n: +$("#gn").value, id: $("#gi").value, msg: $("#gm").value }; say((await sendGift($("#gu").value, g)) ? "Gift queued." : "Enter a username."); };
+  $("#bs").onclick = () => { localStorage.setItem("apr_config", JSON.stringify(read())); say("Saved locally."); };
+  $("#bc").onclick = async () => { await cloudReq("config", "PUT", read()); say("Published."); };
+}
+
+// ---- store and opening (single booster pack) ----
+const dskin = html => html.replace(/ASCII PACK RIP/g, "ASCII DUNGEON");
+function showStore() {
+  main.innerHTML = `<div class="bar"><b>Pack Store</b> | Coins: ${sv.c}</div><div class="prod"><div class="store-card"><div class="pv" style="position:relative">${dskin(packHTML(false).replace('id="pk"', ""))}</div><h3>Dungeon Booster Pack</h3><p style="font-size:13px;color:var(--mut)">13 cards: 6 Commons, 3 Uncommons, 1 Land, 2 Wild, 1 guaranteed Rare+.<br>Rare slot: Legendary 1.1%, Mythic 0.1%. Booster boxes return later as event rewards.</p><p><b>${PRICE.pack}c</b> | Owned: ${sv.packs}</p><button data-n="1" ${sv.c >= PRICE.pack ? "" : "disabled"}>Buy 1</button> <button data-n="5" ${sv.c >= PRICE.pack * 5 ? "" : "disabled"}>Buy 5</button> <button data-n="10" ${sv.c >= PRICE.pack * 10 ? "" : "disabled"}>Buy 10</button></div></div>`;
+  main.querySelectorAll("[data-n]").forEach(b => b.onclick = () => { const n = +b.dataset.n; sv.c -= PRICE.pack * n; sv.packs += n; save(); notify("Purchased!"); showStore(); });
+}
+function stageFX(stage) {
+  const k = sv.cos.stage; if (!k || k === "none") return;
+  const G = { embers: ["·", -420, "#ff7a1a"], snow: ["*", 420, "#dff"], runes: ["ᚠ", -380, "#a78bfa"], fireflies: ["•", -300, "#d9f26b"] }[k]; if (!G) return;
+  stage.insertAdjacentHTML("afterbegin", `<div class="fx">${[...Array(22)].map(() => `<i style="left:${Math.random() * 100}%;top:${k === "snow" ? -20 : 100}%;--d:${5 + Math.random() * 7}s;--dy:${G[1]}px;color:${G[2]};animation-delay:-${Math.random() * 8}s">${G[0]}</i>`).join("")}</div>`);
+}
+function showPacks() {
+  updateHeader(); tick(); busy = false; openSel = "pack"; openSet = 1;
+  main.innerHTML = `<div class="bar"><b>The Great ASCII Dungeon</b> | Booster Packs: ${sv.packs}</div><div id="stage" style="min-height:400px"></div><div id="info"></div><div class="bar" id="ctl"></div>`;
+  const stage = main.querySelector("#stage"), info = main.querySelector("#info"), ctl = main.querySelector("#ctl"), have = sv.packs;
+  stage.innerHTML = dskin(packHTML(false)); stageFX(stage);
+  info.innerHTML = `${flash}Coins: <b>${sv.c}</b> | Stardust: <b>${sv.dust || 0} ✦</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - 5 * lg("pity") - sv.pl} packs, Mythic within ${250 - 5 * lg("pity") - sv.pm}`;
+  const mk = (t, f, on) => { const b = document.createElement("button"); b.textContent = t; b.onclick = f; if (on) b.classList.add("on"); ctl.appendChild(b); return b; };
+  mk("Tear Open Pack", () => openFlow(), 1).disabled = have < 1;
+  if (sv.skipAll) mk("Open x10", () => openMany(10)).disabled = have < 1;
+  mk(sv.fastRip ? "⚡ Fast: ON" : "⚡ Fast: OFF", () => { sv.fastRip = !sv.fastRip; save(); showPacks(); }, sv.fastRip);
+  mk(sv.skipAll ? "⏭ Skip All Pauses: ON" : "⏭ Skip All Pauses: OFF", () => { sv.skipAll = !sv.skipAll; save(); showPacks(); }, sv.skipAll);
+  mk(`Buy pack (${PRICE.pack}c)`, () => { sv.c -= PRICE.pack; sv.packs++; save(); showPacks(); }).disabled = sv.c < PRICE.pack;
+  mk(sv.mute ? "Sound: off" : "Sound: on", () => { sv.mute = !sv.mute; save(); showPacks(); });
+  mk(sv.music ? "Chiptune: on" : "Chiptune: off", () => { toggleMusic(); showPacks(); });
+  const t = stage.querySelector("#pk"); if (t && have > 0) t.onclick = () => openFlow();
+}
+function openMany(n) {
+  if (busy) return; n = Math.min(n, sv.packs); if (n < 1) return; const all = [];
+  for (let i = 0; i < n; i++) { sv.packs--; all.push(...genPack("standard")); }
+  save(); const S = { stage: main.querySelector("#stage"), info: main.querySelector("#info"), ctl: main.querySelector("#ctl"), spd: 0.1, skip: true }; summary(S, all, `${n} packs opened`);
+}
+
+// ---- Foil & Misprint Lab, tint ----
+const LAB_F = ["shiny", "bw", "trimmed", "white"], LAB_M = ["miscut", "crimped", "glitch", "negative"];
+function memorial(k, why) { const c = CARDS[+k.split("|")[0]]; if (!c) return; sv.memorial.unshift({ n: c.name, v: k.split("|")[1], t: c.tier, why, ts: Date.now() }); sv.memorial.length = Math.min(sv.memorial.length, 200); }
+function showLab() {
+  const spare = Object.keys(sv.inv).filter(k => sv.inv[k] > 1 && CARDS[+k.split("|")[0]]), A = spare.filter(k => LAB_M.some(m => k.split("|")[1].includes(m))), B = spare.filter(k => LAB_F.some(f => k.split("|")[1].includes(f)));
+  const op = l => l.map(k => `<option value="${k}">${esc(CARDS[+k.split("|")[0]].name)} (${k.split("|")[1]})</option>`).join("");
+  main.innerHTML = `<div class="bar"><b>Foil & Misprint Lab</b> | Stardust: ${sv.dust || 0} ✦</div><div class="panel-box"><p style="margin-top:0">Burn one spare misprint card and one spare foil card (plus 300 ✦). The misprint card returns with the foil fused on, making a hybrid like Shiny Glitched or Gold-Trimmed Negative.</p>${A.length && B.length ? `<select id="la">${op(A)}</select> + <select id="lb">${op(B)}</select> <button id="lg" ${(sv.dust || 0) >= 300 ? "" : "disabled"}>Fuse (300 ✦)</button>` : "<span style='color:var(--mut)'>You need a spare (duplicate) misprint card and a spare foil card.</span>"}</div>
+  <div class="panel-box"><b>Foil Tint</b> - shift the colors of Shiny foils (100 ✦ per change)<br><input type="range" id="ti" min="0" max="330" step="30" value="${sv.tint}"> <span id="tv">${sv.tint}°</span> <button id="tb" ${(sv.dust || 0) >= 100 ? "" : "disabled"}>Apply</button></div>`;
+  const $ = s => main.querySelector(s);
+  if ($("#lg")) $("#lg").onclick = () => {
+    const a = $("#la").value, b = $("#lb").value, f = LAB_F.find(x => b.split("|")[1].includes(x)), [i, av] = a.split("|");
+    sv.dust -= 300; memorial(a, "Burned in the Lab"); memorial(b, "Burned in the Lab"); [a, b].forEach(k => { sv.inv[k]--; if (sv.inv[k] <= 0) delete sv.inv[k]; });
+    const nv = av.includes(f) ? av : normalizeVariant(av + "+" + f), key = i + "|" + nv; sv.inv[key] = (sv.inv[key] || 0) + 1; if (sv.cond[key] === undefined) sv.cond[key] = 3;
+    validateTeam(); save(); playFanfare(3); notify(`Fused: ${CARDS[+i].name} (${nv})!`); showLab();
+  };
+  $("#ti").oninput = () => $("#tv").textContent = $("#ti").value + "°";
+  $("#tb").onclick = () => { sv.dust -= 100; sv.tint = +$("#ti").value; document.body.style.setProperty("--tint", sv.tint + "deg"); save(); showLab(); };
+}
+document.body.style.setProperty("--tint", sv.tint + "deg");
+function rollV(t) {
+  let v = rollV0(t);
+  if (Math.random() < 0.0015 * mispBoost) v = v === "base" ? "white" : v + "+white";
+  if (Math.random() < 0.0012 * mispBoost) { const e = ERRS[Math.floor(Math.random() * 4)]; v = v === "base" ? e : normalizeVariant(v + "+" + e); }
+  if (Math.random() < 0.0002 * mispBoost) v = v === "base" ? "signed" : normalizeVariant(v + "+signed");
+  return v;
+}
+Object.assign(MUL, { signed: 25 }); Object.assign(PWR_MUL, { signed: 1.6 });
+
+// ---- Index, census ----
+var censusCache = null;
+function showIndex(f) {
+  f = f || { q: "", tier: "", cat: "", el: "", st: "", var: "" };
+  const own2 = id => Object.keys(sv.inv).filter(k => +k.split("|")[0] === id && sv.inv[k] > 0);
+  const rows = CARDS.filter(c => !c.forb || c.land).filter(c => (!f.q || c.name.toLowerCase().includes(f.q.toLowerCase())) && (f.tier === "" || c.tier === +f.tier) && (!f.cat || c.category === f.cat) && (!f.el || c.element === f.el)).map(c => ({ c, o: own2(c.id) })).filter(r => (!f.st || (f.st === "owned" ? r.o.length : !r.o.length)) && (!f.var || r.o.some(k => k.split("|")[1].includes(f.var)))).slice(0, 140);
+  const sel = (id, arr, cur) => `<select id="${id}"><option value="">any</option>${arr.map(x => `<option value="${x[0]}" ${String(cur) === String(x[0]) ? "selected" : ""}>${x[1]}</option>`).join("")}</select>`;
+  main.innerHTML = `<div class="bar"><b>Index & Print Census</b> | ${rows.length} shown</div><div class="panel-box"><input id="fq" placeholder="search name" value="${esc(f.q)}"> Rarity ${sel("ft", TIERS.map((t, i) => [i, t]), f.tier)} Class ${sel("fc", [...CATEGORIES, "Land"].map(x => [x, x]), f.cat)} Element ${sel("fe", ELEMENTS.map(x => [x, x]), f.el)} Status ${sel("fs", [["owned", "owned"], ["missing", "missing"]], f.st)} Variant ${sel("fv", [...LAB_F, ...LAB_M, "serialized", "signed"].map(x => [x, x]), f.var)} <button id="fg">Filter</button> <button id="fr" ${cloudOn() ? "" : "disabled"}>Refresh global census</button></div>
+  <div class="panel-box" style="overflow-x:auto"><table style="width:100%;font:12px ui-monospace,monospace;border-collapse:collapse"><tr style="color:var(--mut)"><td>Card</td><td>Rarity</td><td>Owned</td><td>Lv</td><td>Cond</td><td>Pulled/Sold/Wins</td><td>Mine</td><td>Global</td></tr>${rows.map(({ c, o }) => { const h = sv.hist[c.id] || {}, mine = Object.keys(sv.census).filter(k => k.startsWith(c.id + "_")).reduce((a, k) => a + sv.census[k], 0), gl = censusCache ? Object.keys(censusCache).filter(k => k.startsWith(c.id + "_")).reduce((a, k) => a + (censusCache[k] || 0), 0) : "-", cd = o.length ? Math.max(...o.map(k => sv.cond[k] === undefined ? 2 : sv.cond[k])) : -1; return `<tr data-id="${c.id}" style="cursor:pointer;color:${TC[c.tier]}"><td>${esc(c.name)}</td><td>${TIERS[c.tier]}</td><td>${o.reduce((a, k) => a + sv.inv[k], 0)}</td><td>${o.length ? cardLvl(c.id) : "-"}</td><td>${cd >= 0 ? COND[cd] : "-"}</td><td>${h.pulled || 0}/${h.sold || 0}/${h.kills || 0}</td><td>${mine}</td><td>${gl}</td></tr>`; }).join("")}</table></div>`;
+  const $ = s => main.querySelector(s);
+  $("#fg").onclick = () => showIndex({ q: $("#fq").value, tier: $("#ft").value, cat: $("#fc").value, el: $("#fe").value, st: $("#fs").value, var: $("#fv").value });
+  $("#fr").onclick = async () => { censusCache = (await cloudReq("census")) || {}; showIndex(f); };
+  main.querySelectorAll("[data-id]").forEach(r => r.onclick = () => { const o = own2(+r.dataset.id); if (o.length) zoom({ c: CARDS[+r.dataset.id], v: o[0].split("|")[1] }); });
+}
+
+// ---- Bestiary & replays ----
+const GRIM = [["Goblin Warlord", "Rules the upper halls with a rusty cleaver and a stolen crown."], ["Bonegrinder the Lich", "Grinds heroes into the dust that fuels his phylactery."], ["Crypt Rat King", "A throne of a thousand squeaking bodies."], ["Iron Knight Vael", "An empty suit of armor that remembers every duel."], ["Wyrm of Cinders", "Sleeps on a bed of coins and cooling embers."], ["Frost Hag Skadi", "Her lullabies freeze the breath of anyone who listens."], ["Verdant Horror", "The dungeon's roots, grown hungry."], ["Shadow Cardinal", "Preaches to the dark and the dark answers."], ["Radiant Seraph", "A guardian too bright to look upon."], ["The Dungeon Itself", "The walls are watching. The walls are hungry."]];
+function captureLog(floor, win) { const el = document.getElementById("battleLog"); if (!el) return; sv.replays.unshift({ floor, win, t: Date.now(), txt: (el.innerText || [...el.children].map(c => c.textContent).join("\n") || el.textContent || "").slice(-2500) }); sv.replays.length = Math.min(sv.replays.length, 8); }
+function towerHooks(floor, isMilestone) {
+  sv.team.forEach(s => { if (s) { hAdd(s.id, "kills", 1); const k = s.id + "|" + s.v; if (Math.random() < 0.04 && (sv.cond[k] === undefined ? 2 : sv.cond[k]) > 0) sv.cond[k] = (sv.cond[k] === undefined ? 2 : sv.cond[k]) - 1; } });
+  captureLog(floor, true);
+  if (isMilestone) {
+    const q = Math.floor(floor / 5), g = GRIM[(q - 1 + 10) % 10], b = sv.best[g[0]] || (sv.best[g[0]] = { kills: 0, first: floor, best: 0 }); b.kills++; b.best = Math.max(b.best, floor);
+    setSurge("el:" + ELEMENTS[q % 5]); setSurge("cat:" + CATEGORIES[(q + 2) % 5]); notify(`Market surge! ${ELEMENTS[q % 5]} and ${CATEGORIES[(q + 2) % 5]} cards sell for +50% for 24h.`);
+  }
+}
+function ironWipe(floor) { captureLog(floor, false); if (sv.hc.iron && floor >= 30) { sv.tower.floor = 1; sv.tower.maxFloor = 1; save(); notify("IRONMAN: your run is wiped back to Floor 1!"); } }
+function showBestiary() {
+  main.innerHTML = `<div class="bar"><b>Boss Grimoire</b> | ${Object.keys(sv.best).length}/10 discovered</div><div class="store-grid">${GRIM.map((g, i) => { const b = sv.best[g[0]]; return `<div class="store-card">${b ? `<pre class="boss" style="color:${TC[i % 5]};font-size:6px;line-height:1">${bossArt(i % 5, 1).join("\n").replace(/[◉◎]/g, "o")}</pre><b>${g[0]}</b><div style="font-size:12px">${g[1]}</div><div style="font-size:12px;color:var(--mut)">Defeated ${b.kills}x · first on floor ${b.first} · best floor ${b.best}<br>Drops: coins, Stardust, a Relic chance, Runes/Artifacts; surges the ${ELEMENTS[i % 5]} market.</div>` : `<b>??? (undiscovered)</b><div style="font-size:12px;color:var(--mut)">Defeat the guardian of floor ${5 * (i + 1)} (and every 50 floors after).</div>`}</div>`; }).join("")}</div>`;
+}
+function showReplays() {
+  main.innerHTML = `<div class="bar"><b>Combat Replays</b></div><div class="panel-box">${sv.replays.length ? sv.replays.map((r, i) => `<button data-i="${i}">Floor ${r.floor} ${r.win ? "✔ victory" : "✘ defeat"} (${new Date(r.t).toLocaleTimeString()})</button>`).join(" ") : "<span style='color:var(--mut)'>Fight on the Tower to record replays.</span>"}<div class="bar" style="justify-content:flex-start"><button data-f="">All</button><button data-f="crit">Crits</button><button data-f="steal|lifesteal|🩸">Lifesteal</button><button data-f="curse|purge|BURST|🧹|☠">Curses</button></div><pre id="rp" style="font:12px/1.5 ui-monospace,monospace;white-space:pre-wrap;max-height:50vh;overflow:auto"></pre></div>`;
+  let cur = null, timer = null, fl = "";
+  const draw = () => { clearInterval(timer); if (!cur) return; const lines = cur.txt.split("\n").filter(l => !fl || new RegExp(fl, "i").test(l)), p = main.querySelector("#rp"); p.textContent = ""; let i = 0; timer = setInterval(() => { if (i >= lines.length) return clearInterval(timer); p.textContent += lines[i++] + "\n"; p.scrollTop = 1e9; }, 120); };
+  main.querySelectorAll("[data-i]").forEach(b => b.onclick = () => { cur = sv.replays[+b.dataset.i]; draw(); });
+  main.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { fl = b.dataset.f; draw(); });
+}
+
+// ---- Auction House ----
+function genLot() {
+  const t = rnd([2, 2, 3, 3, 4]), pool = CARDS.filter(c => !c.forb && c.tier === t), c = rnd(pool), v = rnd(["serialized", "white", "miscut", "crimped", "glitch", "negative", "shiny", "signed"]), val = Math.floor(VAL[t] * vMul(v) * 1.2);
+  return { id: c.id, v, val, bid: Math.floor(val * 0.3), leader: "rival", yours: 0, rmax: Math.floor(val * (0.7 + Math.random() * 0.9)), ends: Date.now() + (2 + Math.floor(Math.random() * 13)) * 60000, last: Date.now(), done: 0 };
+}
+function auctionTick() {
+  const A = sv.auction, now = Date.now(); if (!A.l.length || A.l.every(l => l.done)) { A.l = [...Array(5)].map(genLot); }
+  A.l.forEach(l => {
+    if (l.done) return;
+    while (l.last + 30000 <= Math.min(now, l.ends)) { l.last += 30000; if (l.bid < l.rmax && Math.random() < 0.55) { if (l.leader === "you") { sv.c += l.yours; l.yours = 0; } l.bid = Math.min(l.rmax, Math.ceil(l.bid * 1.12)); l.leader = "rival"; } }
+    if (now >= l.ends) {
+      l.done = 1;
+      if (l.leader === "you") { let sn; if (l.v.includes("serialized")) { const u = sv.ser[l.id] || (sv.ser[l.id] = []), fr = [...Array(100)].map((_, i) => i + 1).filter(n => !u.includes(n)); if (fr.length) { sn = rnd(fr); u.push(sn); } }
+        const key = l.id + "|" + l.v; sv.inv[key] = (sv.inv[key] || 0) + 1; if (sv.cond[key] === undefined) sv.cond[key] = rollCond(); hAdd(l.id, "traded", 1); A.log.unshift(`Won ${CARDS[l.id].name} (${l.v}) for ${l.bid}c`); notify(`Auction won: ${CARDS[l.id].name} (${l.v})!`); }
+      else A.log.unshift(`Lost ${CARDS[l.id].name} (${l.v}) at ${l.bid}c`);
+      A.log.length = Math.min(A.log.length, 8);
+    }
+  }); save();
+}
+setInterval(() => { if (APR_USER) { auctionTick(); if (main.querySelector("#aucRoot")) showAuction(); } }, 15000);
+function showAuction() {
+  auctionTick(); const A = sv.auction, now = Date.now();
+  main.innerHTML = `<div class="bar" id="aucRoot"><b>Auction House</b> | Coins: ${sv.c} | Rival collectors bid every 30s. Bids are held in escrow and refunded if you are outbid.</div><div class="store-grid">${A.l.map((l, i) => `<div class="store-card">${cardHTML(CARDS[l.id], l.v, 0, 1)}<div style="font:12px ui-monospace,monospace">Bid <b>${l.bid}c</b> (${l.leader === "you" ? "<span style='color:#4ade80'>you lead</span>" : "rival"}) · est. value ${l.val}c<br>${l.done ? "<b>Closed</b>" : `Ends in ${Math.max(0, Math.ceil((l.ends - now) / 60000))} min`}</div>${l.done ? "" : `<button data-b="${i}" ${sv.c + (l.leader === "you" ? l.yours : 0) >= Math.ceil(l.bid * 1.1) ? "" : "disabled"}>Bid ${Math.ceil(l.bid * 1.1)}c</button>`}</div>`).join("")}</div><div class="panel-box" style="font:12px ui-monospace,monospace">${A.log.join("<br>") || "No results yet."}</div>`;
+  main.querySelectorAll("[data-b]").forEach(b => b.onclick = () => { const l = A.l[+b.dataset.b], nb = Math.ceil(l.bid * 1.1), pay = nb - (l.leader === "you" ? l.yours : 0); if (sv.c < pay) return; sv.c -= pay; l.yours = nb; l.bid = nb; l.leader = "you"; save(); showAuction(); });
+}
+
+// ---- Expedition tokens, perma-upgrades, speedruns ----
+const XUP = [["hp", "Hardy", "+10 starting HP per level", 10], ["pow", "Might", "+5% power per level", 10], ["deck", "Pack Mule", "+1 starting card per level", 5], ["opt", "Scout", "+1 draft choice per level", 3], ["tok", "Prospector", "+10% tokens per level", 5]];
+function xWin(x) { const ms = Date.now() - x.t0; sv.tok += Math.round(8 * (1 + 0.1 * xLv("tok"))); sv.xbest.push({ u: APR_USER, ms, ts: Date.now() }); sv.xbest.sort((a, b) => a.ms - b.ms); sv.xbest.length = Math.min(sv.xbest.length, 10); if (cloudOn()) cloudReq("lb/" + APR_USER, "PUT", { ms: sv.xbest[0].ms, ts: Date.now() }); }
+function xLose(x) { const fl = x.floor; if (x.endless && fl > sv.xdeep) sv.xdeep = fl; sv.tok += Math.floor(fl * (x.endless ? 1.5 : 0.5) * (1 + 0.1 * xLv("tok"))); }
+async function showXUp() {
+  const lb = cloudOn() ? (await cloudReq("lb")) || {} : {}, glb = Object.entries(lb).map(([u, v]) => [u, v.ms]).sort((a, b) => a[1] - b[1]).slice(0, 10);
+  main.innerHTML = `<div class="bar"><b>Expedition Perma-Upgrades</b> | Tokens: ${sv.tok} | Deepest endless room: ${sv.xdeep}</div><div class="panel-box">${XUP.map(u => { const l = xLv(u[0]), cost = l + 1; return `<div style="margin:6px 0"><button data-u="${u[0]}" ${l >= u[3] || sv.tok < cost ? "disabled" : ""}>${l >= u[3] ? "MAX" : "Upgrade (" + cost + ")"}</button> <b>${u[1]}</b> Lv.${l}/${u[3]} - ${u[2]}</div>`; }).join("")}</div><div class="panel-box"><b>⏱ Speedrun leaderboard (10-room clear)</b><br>${sv.xbest.map((r, i) => `${i + 1}. ${esc(r.u || "you")} - ${(r.ms / 1000).toFixed(1)}s`).join("<br>") || "No clears yet."}${glb.length ? "<br><b>Global</b><br>" + glb.map((r, i) => `${i + 1}. ${esc(r[0])} - ${(r[1] / 1000).toFixed(1)}s`).join("<br>") : ""}</div><button id="xb">Back</button>`;
+  main.querySelectorAll("[data-u]").forEach(b => b.onclick = () => { const k = b.dataset.u; sv.tok -= xLv(k) + 1; sv.xup[k] = xLv(k) + 1; save(); showXUp(); });
+  main.querySelector("#xb").onclick = showExpedition;
+}
+
+// ---- Museum overhaul ----
+const MTH = { hall: ["Grand Hall", 0, "╔═══════ GRAND HALL ═══════╗"], crypt: ["Crypt Gallery", 1500, "▒▒▒▒▒ CRYPT GALLERY ▒▒▒▒▒"], library: ["Arcane Library", 3000, "[==== ARCANE LIBRARY ====]"], vault: ["Dragon Vault", 6000, "$$$$$ DRAGON VAULT $$$$$"] };
+const VNAMES = ["Sir Dibble", "Old Marrow", "Madame Quill", "A hooded stranger", "Captain Brindle", "Two goblins in a coat"], VCOM = ["Magnificent!", "I would trade my sword for that slab.", "Is that one real?", "The lighting is divine.", "Where do I sign up for pack opening?", "Worth every copper."];
+function museumValue(it) { const [i, v] = it.k.split("|"), c = CARDS[+i]; return Math.floor(VAL[c.tier] * vMul(v) * (it.slab ? 1 + (it.slab.g - 1) : 1)); }
+function showMuseum() {
+  const M = sv.museum, th = MTH[M.theme], mult = (1 + 0.1 * lg("mus")) * (M.theme === "vault" ? 1.1 : 1);
+  const x = M.items.reduce((a, it, i) => a + mInc(it) * (M.spot === i ? 1.5 : 1), 0) * mult, hrs = Math.min(24, (Date.now() - M.t) / 36e5), dust = Math.floor(x * 2 * hrs), coins = Math.floor(x * 12 * hrs), vis = Math.floor(hrs * (2 + M.items.length * 3));
+  const opts = Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]).sort((a, b) => ((sv.slabs[b] ? 9 : 0) + (b.includes("serialized") ? 5 : 0) + CARDS[+b.split("|")[0]].tier) - ((sv.slabs[a] ? 9 : 0) + (a.includes("serialized") ? 5 : 0) + CARDS[+a.split("|")[0]].tier)).slice(0, 80);
+  const total = M.items.reduce((a, it) => a + museumValue(it), 0);
+  main.innerHTML = `<div class="bar"><b>Card Museum & Vault</b> | ${(x * 2).toFixed(1)} ✦ + ${Math.round(x * 12)}c per hour · ~${2 + M.items.length * 3} visitors/hr</div><div class="panel-box" style="text-align:center"><pre style="margin:0;color:#d9a441">${th[2]}</pre><p style="margin:4px 0;color:var(--mut)">Displayed cards survive Prestige. Valuation of the collection: <b>${total}c</b>.</p><button id="mc" ${dust + coins + vis > 0 ? "" : "disabled"}>Collect ${dust} ✦ + ${coins}c + tips from ~${vis} visitors</button> <button id="mt" ${M.items.length ? "" : "disabled"}>🚶 Virtual tour</button> <button id="mb" ${M.cases < 12 && sv.c >= 300 * M.cases ? "" : "disabled"}>Buy case (${300 * M.cases}c) ${M.cases}/12</button><div class="bar">${Object.keys(MTH).map(k => M.themes.includes(k) ? `<button data-th="${k}" class="${M.theme === k ? "on" : ""}">${MTH[k][0]}</button>` : `<button data-bt="${k}" ${sv.c >= MTH[k][1] ? "" : "disabled"}>Unlock ${MTH[k][0]} (${MTH[k][1]}c)</button>`).join("")}</div><select id="mp">${opts.map(k => `<option value="${k}">${esc(CARDS[+k.split("|")[0]].name)} (${k.split("|")[1]})${sv.slabs[k] ? " " + slabLabel(sv.slabs[k]) : ""}</option>`).join("")}</select> <button id="mpb" ${M.items.length < M.cases && opts.length ? "" : "disabled"}>Place in case</button></div><div class="store-grid">${M.items.map((it, i) => `<div class="case ${M.spot === i ? "spot" : ""}">${it.slab ? `<div class="slab">${slabLabel(it.slab)}</div>` : ""}${cardHTML(CARDS[+it.k.split("|")[0]], it.k.split("|")[1], 0, 1)}${it.k.includes("serialized") ? `<pre style="margin:0;font-size:11px;color:#d9a441">▄▄▄▄▄▄▄▄▄▄▄▄\n█ PEDESTAL █</pre>` : ""}<input class="plq" data-p="${i}" maxlength="40" placeholder="plaque text" value="${esc(it.plaque || "")}"><div style="font-size:12px">${mInc(it).toFixed(1)} units/hr · ${museumValue(it)}c</div><button data-s="${i}">${M.spot === i ? "Remove spotlight" : "💡 Spotlight"}</button> <button data-r="${i}">Remove</button></div>`).join("")}</div><div class="panel-box" style="font:12px ui-monospace,monospace"><b>📖 Guest book</b><br>${M.book.map(esc).join("<br>") || "No visitors have signed yet."}</div>`;
+  const $ = s => main.querySelector(s);
+  $("#mc").onclick = () => { const tips = [...Array(vis)].reduce(a => a + 1 + Math.floor(Math.random() * 4), 0); sv.dust += dust; sv.c += coins + tips; sv.stats.coinsEarned = (sv.stats.coinsEarned || 0) + coins + tips; M.t = Date.now(); for (let i = 0; i < Math.min(2, vis); i++) M.book.unshift(`${rnd(VNAMES)}: "${rnd(VCOM)}"`); M.book.length = Math.min(M.book.length, 12); save(); notify(`Museum paid ${dust} ✦, ${coins}c and ${tips}c in tips`); showMuseum(); };
+  $("#mb").onclick = () => { sv.c -= 300 * M.cases; M.cases++; save(); showMuseum(); };
+  $("#mpb").onclick = () => { const k = $("#mp").value; M.items.length || (M.t = Date.now()); M.items.push({ k, slab: sv.slabs[k] || null, plaque: "" }); delete sv.slabs[k]; sv.inv[k]--; if (sv.inv[k] <= 0) delete sv.inv[k]; validateTeam(); save(); showMuseum(); };
+  main.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { const i = +b.dataset.r, it = M.items.splice(i, 1)[0]; if (M.spot === i) M.spot = -1; else if (M.spot > i) M.spot--; sv.inv[it.k] = (sv.inv[it.k] || 0) + 1; if (it.slab) sv.slabs[it.k] = it.slab; save(); showMuseum(); });
+  main.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { const i = +b.dataset.s; M.spot = M.spot === i ? -1 : i; save(); showMuseum(); });
+  main.querySelectorAll("[data-p]").forEach(inp => inp.onchange = () => { M.items[+inp.dataset.p].plaque = inp.value; save(); });
+  main.querySelectorAll("[data-th]").forEach(b => b.onclick = () => { M.theme = b.dataset.th; save(); showMuseum(); });
+  main.querySelectorAll("[data-bt]").forEach(b => b.onclick = () => { const k = b.dataset.bt; sv.c -= MTH[k][1]; M.themes.push(k); M.theme = k; save(); showMuseum(); });
+  $("#mt").onclick = () => {
+    let i = 0; const o = document.createElement("div"); o.className = "ov"; o.style.zIndex = 10000; document.body.appendChild(o);
+    const step = () => { const it = M.items[i], c = CARDS[+it.k.split("|")[0]]; o.innerHTML = `<div style="text-align:center;color:#fff;max-width:420px;font:13px/1.6 ui-monospace,monospace"><pre style="color:#d9a441;margin:0">${th[2]}</pre>${cardHTML(c, it.k.split("|")[1], 0, 0)}<p><i>${esc(it.plaque || c.name)}</i><br>${esc(loreBack(c))}<br>Valued at ${museumValue(it)}c</p><button id="tn">${i + 1 < M.items.length ? "Next ▶" : "Leave"}</button></div>`; o.querySelector("#tn").onclick = () => { i++; if (i >= M.items.length) o.remove(); else step(); }; };
+    step();
+  };
+}
+
+// ---- Cosmetics additions: custom back designer ----
+BACKS.custom = ["Custom Design", "Design your own"];
+const customBackInner = () => sv.cos.back === "custom" && sv.cos.custom ? `<pre style="margin:0;padding:8px;color:${esc(sv.cos.custom.color)};font:12px/1.2 ui-monospace,monospace;text-align:center;overflow:hidden">${sv.cos.custom.lines.map(esc).join("\n")}</pre>` : "";
+const _sc = showCosmetics;
+showCosmetics = function () {
+  _sc();
+  main.insertAdjacentHTML("beforeend", `<div class="panel-box"><b>Pack Stage Effects</b><div class="bar">${["none", "embers", "snow", "runes", "fireflies"].map(k => `<button data-fx="${k}" class="${sv.cos.stage === k ? "on" : ""}">${k}</button>`).join("")}</div><button id="cbd">🎨 Card Back Designer</button></div>`);
+  main.querySelectorAll("[data-fx]").forEach(b => b.onclick = () => { sv.cos.stage = b.dataset.fx; save(); showCosmetics(); });
+  main.querySelector("#cbd").onclick = showBackDesigner;
+};
+function showBackDesigner() {
+  const c = sv.cos.custom || { lines: ["+--------+", "| ASCII  |", "| DUNGEON|", "|  \\o/   |", "+--------+"], color: "#d9a441" };
+  main.innerHTML = `<div class="bar"><b>Card Back Designer</b></div><div class="panel-box"><textarea id="bl" rows="8" cols="22" style="font-family:ui-monospace,monospace">${esc(c.lines.join("\n"))}</textarea> <input type="color" id="bc" value="${c.color}"><div class="bar"><button id="bs">Save & equip</button><button id="be">Export string</button><button id="bi">Import string</button></div><textarea id="bx" rows="2" style="width:100%" placeholder="export / import string"></textarea></div>`;
+  const $ = s => main.querySelector(s), rd = () => ({ lines: $("#bl").value.split("\n").slice(0, 10).map(l => l.slice(0, 14)), color: $("#bc").value });
+  $("#bs").onclick = () => { sv.cos.custom = rd(); grant("backs", "custom"); sv.cos.back = "custom"; save(); notify("Custom card back equipped!"); };
+  $("#be").onclick = () => { $("#bx").value = btoa(unescape(encodeURIComponent(JSON.stringify(rd())))); };
+  $("#bi").onclick = () => { try { const d = JSON.parse(decodeURIComponent(escape(atob($("#bx").value.trim())))); if (Array.isArray(d.lines)) { $("#bl").value = d.lines.slice(0, 10).map(l => String(l).slice(0, 14)).join("\n"); if (/^#[0-9a-f]{6}$/i.test(d.color)) $("#bc").value = d.color; } } catch (e) { notify("Invalid string."); } };
+}
+
+// ---- Legacy tree, memorial, horizon ----
+const LEGT = [["pity", "Fate's Mercy", "Pity thresholds -5 packs per level", 4], ["misp", "Chaos Touch", "+50% misprint, white foil and autograph odds per level", 4], ["land", "Landlord", "Each Land gives +1% more Power per level", 3], ["mus", "Curator", "+10% museum income per level", 5], ["start", "Inheritance", "Start each Prestige with +3 packs per level", 5], ["keep", "Heirloom", "Keep +1 best card on Prestige per level", 3]];
+function keepBest() { const K = (astral("soul") ? 1 : 0) + lg("keep"); return Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]).sort((a, b) => cardPower(+b.split("|")[0], b.split("|")[1]) - cardPower(+a.split("|")[0], a.split("|")[1])).slice(0, K); }
+function legacyOnPrestige() {
+  const pts = 1 + Math.floor((sv.prestige || 0) / 3) + horizon(); sv.legacy.pts += pts;
+  Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]).sort((a, b) => CARDS[+b.split("|")[0]].tier - CARDS[+a.split("|")[0]].tier).slice(0, 12).forEach(k => memorial(k, "Lost to Prestige " + sv.prestige));
+  notify(`+${pts} Legacy Points`);
+}
+function showLegacy() {
+  const L = sv.legacy;
+  main.innerHTML = `<div class="bar"><b>Legacy Tree</b> | Legacy Points: ${L.pts} | Prestige ${sv.prestige || 0} | Endless Horizon ${horizon()}</div><div class="panel-box"><p style="margin-top:0;color:var(--mut)">Earn points every Prestige (more at higher Prestige). The Endless Horizon begins at Prestige 5: each level adds +10% Tower coins and +1 point per Prestige, forever.</p><pre style="font:13px/2 ui-monospace,monospace;margin:0;overflow-x:auto">${LEGT.map(n => { const l = lg(n[0]); return `✧─[${n[1]} ${"●".repeat(l)}${"○".repeat(n[3] - l)}] ${n[2]} ${l < n[3] ? `<button data-n="${n[0]}" ${L.pts < l + 1 ? "disabled" : ""}>Upgrade (${l + 1})</button>` : "MAX"}`; }).join("\n")}</pre></div>`;
+  main.querySelectorAll("[data-n]").forEach(b => b.onclick = () => { const k = b.dataset.n; L.pts -= lg(k) + 1; L.lv[k] = lg(k) + 1; save(); showLegacy(); });
+}
+function showMemorial() {
+  main.innerHTML = `<div class="bar"><b>Memorial Wall</b> | ${sv.memorial.length} fallen cards</div><div class="panel-box" style="font:13px/1.7 ui-monospace,monospace"><pre style="margin:0 0 8px;color:var(--mut)">   _____\n  /     \\\n | R.I.P |\n |_______|</pre>${sv.memorial.map(m => `<div style="color:${TC[m.t]}">† ${esc(m.n)} (${m.v}) - ${esc(m.why)} <span style="color:var(--mut)">${new Date(m.ts).toLocaleDateString()}</span></div>`).join("") || "<span style='color:var(--mut)'>No cards have fallen yet.</span>"}</div>`;
+}
+
+// ---- guide, hubs, status ----
+function showGuide() {
+  const S = [["The Great ASCII Dungeon", "Open Dungeon Booster Packs (13 cards each, including a Land), build a 5-card team and climb the Endless Tower. Booster boxes and the second set return later."], ["Accounts", "Create an account on the title screen. Saves are per account. With a cloud database configured (Firebase-compatible URL), saves and logins sync across devices. Old saves migrate automatically."], ["Opening", "Fast Rip speeds up the animation. Skip All Pauses removes every Rare+ pause and gives Open x10 for mass opening."], ["Variants & Conditions", "White foils, misprints (Miscut, Crimped, Glitch, Negative) and Autographs are ultra rare. The Foil & Misprint Lab fuses a spare misprint and a spare foil into a hybrid. Cards have conditions (Damaged to Gem Mint) that wear in the Tower and change sell value."], ["Tower", "Clear Floor 40 to Ascend (unlimited loops). Boss floors fill the Bestiary, surge the market and are recorded for Replays. Challenges hold Hardcore feats and the Weekly Gauntlet."], ["Expeditions", "A standalone roguelike. Endless Depths never stops; spend tokens on permanent upgrades; clear the 10-room run fast for the leaderboard."], ["Economy", "Daily Market, Quest Board, and the Auction House against rival collectors. The Museum pays hourly and survives Prestige. Prestige earns Legacy Points; the Memorial Wall remembers fallen cards."]];
+  main.innerHTML = `<div class="bar"><b>? Guide</b></div>` + S.map((s, i) => `<details class="g" ${i === 0 ? "open" : ""}><summary>${s[0]}</summary><p>${s[1]}</p></details>`).join("");
+}
+function drawStatus() { const ts = getTeamStats(); document.getElementById("statusbar").innerHTML = `${APR_USER ? `<b>${esc(APR_USER)}</b> ` : ""}${sv.cos.title ? `<i>[${esc(sv.cos.title)}]</i> ` : ""}Coins <b>${sv.c}</b> | Stardust <b>${sv.dust || 0} ✦</b> | Marks <b>${sv.marks}</b> | Packs <b>${sv.packs}</b> | Team PWR <b>${ts.totalPower}</b>${sv.asc.on ? ` | Asc <b>${sv.asc.n}</b>` : ""}`; }
+Object.keys(HUBS).forEach(k => delete HUBS[k]);
+HUBS["Packs"] = [["Open Packs", 0], ["Pack Store", 1]];
+HUBS["Collection"] = [["Binder", 3], ["Index & Census", showIndex], ["Overview", showCollection], ["Museum", showMuseum]];
+HUBS["Tower"] = [["Team", 4], ["Endless Tower", 8], ["Challenges", showChallenges], ["Bestiary", showBestiary], ["Replays", showReplays], ["Expedition", showExpedition]];
+HUBS["Customize"] = [["Craft & ★ Foils", 5], ["Fusion", 6], ["Foil Lab", showLab], ["Grading", showGrading], ["Cosmetics", showCosmetics]];
+HUBS["Market"] = [["Daily Market", showMarketPlus], ["Quest Board", showBoard], ["Auction House", showAuction]];
+HUBS["More"] = [["Legacy Tree", showLegacy], ["Memorial Wall", showMemorial], ["Stats & Saves", 9], ["Awards", 10], ["Account", showAccount], ["Patch Notes", () => { showPatchNotes(); }], ["? Guide", showGuide]];
+if (isAdmin()) HUBS["More"].push(["Admin", showAdmin]);
+curHub = "Packs"; curSub = 0;
+{ const h1 = document.querySelector("h1"); if (h1) h1.textContent = "[ THE GREAT ASCII DUNGEON ]"; document.title = "The Great ASCII Dungeon"; }
+document.body.dataset.ui = sv.cos.theme;
 drawNav();
 drawStatus();
-hubGo("Packs", 0);
+if (!APR_USER) { showTitle(); }
+else {
+  hubGo("Packs", 0);
+  pullGifts(); auctionTick();
+  (async () => { const c = await cloudReq("config"); if (c) cloudCfg = c; const g = cfg(); if (g.betaOnly && !(g.testers || []).includes(APR_USER) && !(g.admins || []).includes(APR_USER)) showGate("This build is limited to approved testers. Ask the developer to add your username."); })();
+  { const g = cfg(); if (g.betaOnly && !(g.testers || []).includes(APR_USER) && !(g.admins || []).includes(APR_USER)) showGate("This build is limited to approved testers. Ask the developer to add your username."); }
+  if ((sv.seenV || 0) < SAVE_VER) { showPatchNotes(); sv.seenV = SAVE_VER; save(); }
+}
 </script>
 </body>
 </html>
