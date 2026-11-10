@@ -639,6 +639,86 @@ body.anomaly #statusbar{background:linear-gradient(90deg,#4c1d95,#be185d);color:
 .rsgf.t3{background:radial-gradient(circle at 50% 45%,rgba(255,236,150,.98) 0,rgba(255,180,30,.72) 32%,rgba(255,130,0,.35) 60%,transparent 82%)}
 .rsgf.t4{background:radial-gradient(circle at 50% 45%,rgba(236,200,255,.98) 0,rgba(168,85,247,.78) 30%,rgba(220,38,38,.45) 58%,transparent 82%)}
 @keyframes rsgf{0%{opacity:0}12%{opacity:1}30%{opacity:.35}46%{opacity:.95}100%{opacity:0}}
+
+/* ===== v24: Layered Valley town hub ===== */
+#hubbar .tb-home{font-weight:bold;border-color:#d9a441;color:#fbbf24}
+#hubbar .tb-home.on{background:#d9a441;color:#1a1204}
+#hubbar .tb-num{opacity:.55;font-size:.85em;margin-right:3px}
+.town{--sky1:#05061a;--sky2:#1a1030;--tint:transparent;position:relative;overflow:hidden;border-radius:12px;border:1px solid #3a2f4a;min-height:700px;display:flex;flex-direction:column;text-align:center;color:#e8d9b0;font-family:ui-monospace,Menlo,Consolas,monospace;background:linear-gradient(var(--sky1) 0%,var(--sky2) 34%,#251722 55%,#17100c 80%,#0d0806 100%)}
+.town.day{--sky1:#2c3d73;--sky2:#6b5578}
+.town.dusk{--sky1:#2a1a4a;--sky2:#8a4a5a}
+.town.blood{--sky1:#2a0510;--sky2:#5a1020}
+.town.solar{--sky1:#5a3010;--sky2:#c0702a}
+.town::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--tint);z-index:6}
+.town.fog{--tint:linear-gradient(rgba(150,160,175,.22),rgba(120,130,150,.35))}
+.tsky{position:absolute;left:0;right:0;top:0;height:34%;pointer-events:none;overflow:hidden;z-index:1}
+.tstar{position:absolute;color:#fff;font-size:10px;opacity:.8;animation:ttw var(--d,3s) ease-in-out infinite alternate}
+@keyframes ttw{from{opacity:.15}to{opacity:1}}
+.tcelest{position:absolute;right:12%;top:12%;margin:0;font:12px/1.05 ui-monospace,monospace;color:#f4f1d0;text-shadow:0 0 16px #fff6b0,0 0 34px rgba(255,246,176,.6)}
+.town.blood .tcelest{color:#ff3b5c;text-shadow:0 0 18px #f00,0 0 44px rgba(255,0,40,.7)}
+.town.day .tcelest,.town.solar .tcelest{color:#ffe38a;text-shadow:0 0 22px #ffc233,0 0 60px rgba(255,170,0,.8)}
+.town.solar .tcelest{animation:tsolar 2s ease-in-out infinite alternate}
+@keyframes tsolar{to{text-shadow:0 0 34px #ff9c00,0 0 90px rgba(255,120,0,.95)}}
+.tcloud{position:absolute;margin:0;font:11px/1 ui-monospace,monospace;color:rgba(255,255,255,.28);animation:tdrift var(--d,60s) linear infinite;white-space:pre}
+@keyframes tdrift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+.train{position:absolute;inset:0}
+.train i{position:absolute;top:-10%;width:1px;height:14px;background:linear-gradient(transparent,rgba(170,190,255,.55));animation:trn var(--d,.9s) linear infinite}
+@keyframes trn{to{transform:translate(-12px,260px)}}
+.tglitch{position:absolute;font:bold 12px ui-monospace,monospace;color:#f0f;animation:tgl .5s steps(2) infinite;opacity:.85;text-shadow:2px 0 #0ff,-2px 0 #f0f}
+@keyframes tgl{50%{transform:translate(3px,-2px);opacity:.3}}
+.tchips{position:absolute;left:12px;right:12px;top:10px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;z-index:7;font-size:11px;pointer-events:none}
+.tchip{background:rgba(0,0,0,.45);border:1px solid rgba(217,164,65,.45);border-radius:10px;padding:3px 9px;color:#e8d9b0}
+.tchip.an{border-color:#f0f;color:#fbd5ff;animation:ttw 1.2s ease-in-out infinite alternate}
+.tridge{margin:0;font:10px/1 ui-monospace,monospace;color:#2b2140;white-space:pre;overflow:hidden;user-select:none;pointer-events:none}
+.tcliff,.tstreet{position:relative;z-index:3;display:flex;justify-content:space-around;align-items:flex-end;flex-wrap:wrap;gap:14px 10px;padding:0 10px}
+.tcliff{margin-top:86px}
+.tstreet{margin-top:22px}
+.tb-b{position:relative;background:transparent;border:1px solid transparent;border-radius:10px;padding:8px 10px 6px;cursor:pointer;color:#bfae8a;font:inherit;transition:transform .15s,color .15s,border-color .15s,background .15s}
+.tb-b pre{margin:0 auto;font:clamp(7px,1.15vw,12px)/1.1 ui-monospace,Menlo,Consolas,monospace;color:inherit;text-align:left;display:block;width:max-content;transition:text-shadow .15s}
+.tcliff .tb-b{color:#8f82b8}.tcliff .tb-b pre{opacity:.92}
+.tb-b:hover,.tb-b:focus-visible{transform:translateY(-4px);color:#ffe9a8;border-color:rgba(251,191,36,.6);background:rgba(251,191,36,.07);outline:none}
+.tb-b:hover pre,.tb-b:focus-visible pre{text-shadow:0 0 10px #fbbf24,0 0 22px rgba(251,191,36,.6)}
+.tb-n{display:block;margin-top:5px;font-weight:bold;letter-spacing:1px;font-size:11px;color:#d9a441}
+.tb-k{opacity:.6;font-weight:normal}
+.tb-pip{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:9px;font-size:11px;background:rgba(0,0,0,.5);border:1px solid rgba(217,164,65,.35);color:#c9b98f;transition:all .15s}
+.tb-pip.hot{color:#1a1204;background:#fbbf24;border-color:#fff3b0;font-weight:bold;animation:tpip 1.4s ease-in-out infinite alternate}
+@keyframes tpip{to{box-shadow:0 0 12px rgba(251,191,36,.8)}}
+.tb-b:hover .tb-pip{border-color:#fbbf24;color:#fff3b0}
+.tb-b:hover .tb-pip.hot{color:#1a1204}
+.tground{margin:0;font:11px/1 ui-monospace,monospace;color:#3b2a1c;white-space:pre;overflow:hidden;user-select:none;pointer-events:none}
+.tcamp{position:relative;z-index:3;margin:auto auto 0;width:100%;padding:16px 10px 20px;background:radial-gradient(ellipse at 50% 100%,rgba(255,130,30,.28),transparent 62%);cursor:pointer;border:0;color:#e8d9b0;font:inherit}
+.tcamp .tcrow{display:flex;justify-content:center;align-items:flex-end;gap:clamp(8px,4vw,46px)}
+.tcamp pre{margin:0;font:clamp(8px,1.3vw,13px)/1.1 ui-monospace,Menlo,Consolas,monospace;text-align:left}
+.tcamp .hero{color:#d8c8a0}.tcamp .pet{color:#c9b98f}
+.tcamp .fire{color:#ff9a3c;text-shadow:0 0 14px #ff7a1a,0 0 34px rgba(255,100,0,.7);animation:tfl .45s ease-in-out infinite alternate}
+@keyframes tfl{from{transform:scale(1) translateY(0);filter:brightness(1)}to{transform:scale(1.07) translateY(-2px);filter:brightness(1.3)}}
+.tcamp:hover .hero,.tcamp:hover .pet{color:#ffe9a8;text-shadow:0 0 10px #fbbf24}
+.tcamp:hover .tb-n{color:#fff3b0}
+.tember{position:absolute;bottom:60px;left:50%;color:#ffb04a;font-size:11px;opacity:0;animation:tem var(--d,3s) ease-out infinite;animation-delay:var(--dl,0s);pointer-events:none}
+@keyframes tem{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx,0px),-150px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tstar,.tcloud,.train i,.tglitch,.tember,.tcamp .fire,.tb-pip.hot{animation:none}}
+@media (max-width:700px){.town{min-height:640px}.tcliff{margin-top:70px}.tb-b{padding:6px 4px}}
+
+/* ===== v26: affixes ===== */
+.afxs{font:10px/1.3 ui-monospace,Menlo,Consolas,monospace;text-align:left;margin-top:3px;color:#cbd5e1}
+.afxs .afx i{color:#7b8494;font-style:normal}
+.afxs .afx b{color:#a7f3d0}
+.afx.sup{color:#fde68a;text-shadow:0 0 6px #fbbf24;animation:afxg 1.1s ease-in-out infinite alternate}
+.afx.sup b{color:#fbbf24}.afx.sup em{font-style:normal;font-weight:bold;color:#fff3b0}
+@keyframes afxg{from{text-shadow:0 0 3px #fbbf24}to{text-shadow:0 0 12px #ffd24a,0 0 22px rgba(255,200,40,.7)}}
+.afxsum{font-size:12px;columns:2;column-gap:20px}
+.eslot .afxs{font-size:9px;margin-top:2px}
+.rsb.su{background:linear-gradient(90deg,#fbbf24,#fff3b0);color:#2a1a00;animation:afxg 1s ease-in-out infinite alternate;box-shadow:0 0 12px #fbbf24}
+.rsir .afxs{font-size:11px}
+@media (max-width:700px){.afxsum{columns:1}}
+@media (prefers-reduced-motion:reduce){.afx.sup,.rsb.su{animation:none}}
+.rsc.sup .rsface{box-shadow:0 0 0 2px #fbbf24,0 0 18px rgba(251,191,36,.8);animation:afxg 1s ease-in-out infinite alternate}
+.afxi{font-size:10px;color:#a7f3d0}.afxi.sup{color:#fbbf24;text-shadow:0 0 6px #fbbf24}
+#pick button{max-width:260px;vertical-align:top}
+.slot .afxs{margin:2px 4px}
+.tstreet .tb-b pre{font-size:clamp(4px,.7vw,9px);line-height:1.08}
+.tcliff .tb-b pre{font-size:clamp(4px,.72vw,9px);line-height:1.08}
+@media (max-width:900px){.tstreet .tb-b pre,.tcliff .tb-b pre{font-size:clamp(4px,1.5vw,9px)}}
 </style>
 </head>
 <body>
@@ -1012,7 +1092,7 @@ function sanitizeState(parsed) {
   return migrateState(merged);
 }
 
-const SAVE_VER = 23;
+const SAVE_VER = 27;
 const MIGRATIONS = [
   [15, m => { m.team = m.team.map(s => (s && typeof s === "object" && s.id !== undefined) ? s : null); }],
   [17, m => {
@@ -1039,7 +1119,7 @@ try {
   sv = defaultState();
 }
 
-const save = () => { if (!SAVE_KEY) return; try { sv.v = SAVE_VER; sv.ts = Date.now(); localStorage.setItem(SAVE_KEY, JSON.stringify(sv)); cloudQueue(); } catch (e) {} };
+const save = () => { if (!SAVE_KEY) return; try { altsSync(); sv.v = SAVE_VER; sv.ts = Date.now(); localStorage.setItem(SAVE_KEY, JSON.stringify(sv)); cloudQueue(); } catch (e) {} };
 const hasRelic = id => Array.isArray(sv.relics) && sv.relics.includes(id);
 
 let toastTimer = null;
@@ -1216,7 +1296,7 @@ var foilBoost = 1, mispBoost = 1;
 const FL = [["shiny", 1.6], ["bw", 1], ["trimmed", 0.5], ["serialized", 0.08]];
 function rollV0(t) {
   if (t < 2) return "base";
-  return FL.filter(f => Math.random() * 100 < f[1] * (1 + 0.2 * astral("foil")) * foilBoost).map(f => f[0]).join("+") || "base";
+  return FL.filter(f => Math.random() * 100 < f[1] * (1 + 0.2 * astral("foil")) * (1 + afx().luck / 100) * foilBoost).map(f => f[0]).join("+") || "base";
 }
 
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -1377,20 +1457,20 @@ function genPack(packKey = "standard") {
   return out.sort((a, b) => a.c.tier - b.c.tier);
 }
 
-function sell(d) {
+function sell(d, keep) {
   let g = 0, dst = 0;
   const ts = getTeamStats();
-  const coinMult = (1 + (sv.prestige || 0) * 0.02 + ((sv.pbonus && sv.pbonus.coin) || 0)) * (hasRelic("goblin_crown") ? 1.15 : 1) * (1 + 0.1 * astral("coin")) * (1 + trophyBuff().coin) * weatherCoin();
-  const dustMult = (ts.activeElement === "Venom" ? 1.15 : 1) * (hasRelic("star_hammer") ? 1.25 : 1) * (1 + 0.1 * astral("dust")) * (1 + ((sv.pbonus && sv.pbonus.dust) || 0)) * (1 + crFx("dust"));
+  const coinMult = (1 + afx().gold / 100) * (1 + (sv.prestige || 0) * 0.02 + ((sv.pbonus && sv.pbonus.coin) || 0)) * (hasRelic("goblin_crown") ? 1.15 : 1) * (1 + 0.1 * astral("coin")) * (1 + trophyBuff().coin) * weatherCoin();
+  const dustMult = (ts.activeElement === "Venom" ? 1.15 : 1) * (hasRelic("star_hammer") ? 1.25 : 1) * (1 + 0.1 * astral("dust")) * (1 + ((sv.pbonus && sv.pbonus.dust) || 0)) * (1 + crFx("dust")) * (1 + afx().dust / 100);
 
   for (const k in sv.inv) {
     const [i, v] = k.split("|");
     if (!v.includes("serialized") && sv.inv[k] > 1 && CARDS[i]) {
-      const count = sv.inv[k] - 1;
+      const count = sv.inv[k] - keepvCount(k, keep);
       if (d) hAdd(+i, "sold", count);
       g += Math.floor(count * VAL[CARDS[i].tier] * v.split("+").reduce((a, x) => a * (MUL[x] || 1), 1) * coinMult * surgeMult(CARDS[i]) * condMul(k));
       dst += Math.round(count * DUST_VAL[CARDS[i].tier] * dustMult);
-      if (d) sv.inv[k] = 1;
+      if (d) sv.inv[k] -= count;
     }
   }
   if (d && g > 0) {
@@ -1428,7 +1508,7 @@ function tick() {
     generateMarketDeals();
   }
   if (sv.packs < 5) {
-    const RG = 24e4 / (1 + trophyBuff().pack + 0.1 * astral("regen")), k = Math.floor((n - sv.t) / RG);
+    const RG = 24e4 / (1 + trophyBuff().pack + 0.1 * astral("regen") + afx().pregen / 100), k = Math.floor((n - sv.t) / RG);
     if (k > 0) { sv.packs = Math.min(5, sv.packs + k); sv.t += k * RG; }
     if (sv.packs >= 5) sv.t = n;
   } else { sv.t = n; }
@@ -1532,6 +1612,7 @@ function zoom(it, onUpdate) {
         Class: <b>${it.c.category}</b> | Element: <b>${EL_ICON[it.c.element]} ${it.c.element}</b> | Lv <b>${cardLvl(it.c.id)}</b> | Star: <b>★${star}/5</b> | Power: <b>${pwr}</b>
       </p>
       <div style="margin-top:8px;">
+        ${afxBlock(it.c.id, it.v, it.u)}
         ${cost ? `<button id="modalAscendBtn" style="border-color:#fbbf24; font-weight:bold; font-size:12px;" ${spare < cost.dupes || (sv.dust || 0) < cost.dust ? "disabled" : ""}>
           ⭐ Ascend to ★${cost.nextStar} (${spare}/${cost.dupes} Spare Dupes + ${cost.dust} ✦)
         </button>` : `<span style="color:#4ade80; font-size:12px; font-family:ui-monospace,monospace;">🌟 Maximum Star Rank (★5)</span>`}
@@ -1604,7 +1685,7 @@ function updateHeader() {
   if (!badge) return;
   const ts = getTeamStats();
   const parts = [];
-  if (sv.prestige > 0) parts.push(`✦ Prestige ${sv.prestige} (+${sv.prestige * 25}% Coins)`);
+  if (sv.prestige > 0) { const pb = sv.pbonus || {}, f = x => +(x).toFixed(1), q = [["Pwr", sv.prestige * 2 + (pb.pow || 0) * 100], ["Coins", sv.prestige * 2 + (pb.coin || 0) * 100], ["Dust", (pb.dust || 0) * 100], ["HP", (pb.hp || 0) * 100], ["Luck", (pb.luck || 0) * 100]].filter(x => x[1] > 0).map(x => "+" + f(x[1]) + "% " + x[0]); parts.push("✦ Prestige " + sv.prestige + (q.length ? " (" + q.join(" · ") + ")" : "")); }
   if (ts.count > 0) {
     let synText = ts.fullSynergy ? "5/5 Class" : `${ts.count}/5`;
     if (ts.activeElement) synText += ` + ${EL_ICON[ts.activeElement]} ${ts.activeElement}`;
@@ -2608,7 +2689,7 @@ function showTower() {
     let pHP = ts.maxHP;
     let bHP = bossMaxHP;
     let turn = 1; const mut = mutOf(floor), cursedN = sv.team.filter(s => s && sv.corrupt[s.id]).length; let curse = 0, midasC = 0; const FM = monsterOf(floor), RX = reactions(); const raid = floor % 10 === 0; let armHP = raid ? Math.round(bossMaxHP * 0.3) : 0, shHP = raid ? Math.round(bossMaxHP * 0.35) : 0;
-    const lifestealPct = (ts.activeElement === "Venom" ? 0.12 : 0) + (hasRelic("necrotic_rib") ? 0.10 : 0) + 0.08 * (ts.vamp || 0) + (hasArt("fang") ? 0.15 : 0) + (sv.buff.vamp > 0 ? 0.25 : 0);
+    const lifestealPct = (ts.activeElement === "Venom" ? 0.12 : 0) + (hasRelic("necrotic_rib") ? 0.10 : 0) + 0.08 * (ts.vamp || 0) + (ts.loh || 0) / 100 + (hasArt("fang") ? 0.15 : 0) + (sv.buff.vamp > 0 ? 0.25 : 0);
     const bossAtk = Math.round(bossBaseAtk * (ts.activeElement === "Glacial" ? 0.80 : 1));
     const healEvery = hasRelic("seraph_halo") ? 1 : 2;
 
@@ -2642,7 +2723,7 @@ function showTower() {
       }
 
       if (ts.activeElement === "Pyre" && bHP > 0) {
-        const burn = Math.round(ts.strikeDmg * 0.25);
+        const burn = Math.round(ts.strikeDmg * 0.25 * (1 + (ts.dot || 0) / 100));
         bHP -= burn;
         appendLog(`  🔥 Pyre Synergy scorches Boss for <b style="color:#fbbf24">${burn} Burn DMG</b>!`);
       }
@@ -2671,8 +2752,11 @@ function showTower() {
       if (!main.querySelector("#battleLog")) { towerBusy = false; return; }
 
       const rawEnemyHit = Math.round(bossAtk * (raid && armHP > 0 ? 1.4 : 1) * fxAtk(FM, turn) * (0.9 + Math.random() * 0.2));
-      const netEnemyHit = Math.max(4, rawEnemyHit - ts.armorBlock);
+      const netEnemyHit = Math.random() * 100 < (ts.dodge || 0) ? 0 : Math.max(4, Math.round((rawEnemyHit - ts.armorBlock) * (1 - (ts.res || 0) / 100)));
       { const bx = fxBossTurn(FM, RX, netEnemyHit, turn, ts, bossMaxHP); bx.logs.forEach(l => appendLog(l)); pHP -= bx.hit; bHP -= bx.back; bHP = Math.min(bossMaxHP, bHP + bx.bheal); pHP = Math.min(ts.maxHP, pHP + bx.pheal); } if (hasArt("midas")) midasC += ts.blockRaw || 0; if (mut === "vampiric") { const hl = Math.round(netEnemyHit * 0.5); bHP = Math.min(bossMaxHP, bHP + hl); appendLog("  🩸 Vampiric boss heals " + hl + "."); } bHP -= Math.round(netEnemyHit * 0.3 * (ts.thorns || 0)); pHP -= Math.round(ts.maxHP * 0.04 * sv.team.filter(s => s && sv.corrupt[s.id] === "blood").length);
+      if (ts.thorns > 0 && bHP > 0) { const th = Math.round(rawEnemyHit * ts.thorns / 100); if (th > 0) { bHP -= th; appendLog(`  🌵 Thorns reflect <b style="color:#f87171">${th}</b> damage!`); } }
+      if (pHP > 0 && ts.regen > 0) { const rg = Math.max(1, Math.round(ts.maxHP * ts.regen / 100)); pHP = Math.min(ts.maxHP, pHP + rg); appendLog(`  💚 Regeneration <b style="color:#4ade80">+${rg} HP</b>`); }
+      if (pHP > 0 && ts.pheal > 0 && turn % 2 === 0) { const ph = Math.max(1, Math.round(ts.maxHP * ts.pheal / 100)); pHP = Math.min(ts.maxHP, pHP + ph); appendLog(`  🐾 Periodic heal <b style="color:#4ade80">+${ph} HP</b>`); }
       sfx(0);
       appendLog(`  👹 Boss attacks for <b>${rawEnemyHit}</b> (<span style="color:#60a5fa">-${ts.armorBlock} Armor Block</span> → <b style="color:#f472b6">${netEnemyHit} DMG taken</b>).`);
       updateBars();
@@ -2680,7 +2764,7 @@ function showTower() {
     }
 
     if (bHP <= 0 && pHP > 0) {
-      const coinMult = (hasRelic("goblin_crown") ? 1.15 : 1) * weatherCoin();
+      const coinMult = (hasRelic("goblin_crown") ? 1.15 : 1) * weatherCoin() * (1 + afx().gold / 100);
       const coinReward = Math.round(floor * 95 * coinMult * (1 + 0.15 * (ts.greed || 0))) * (hasARel("eye") ? 1.25 : 1) * (1 + 0.1 * horizon()) + midasC;
       const dustReward = floor * 5;
       sv.c += coinReward;
@@ -2871,12 +2955,13 @@ function showBinder() {
   main.innerHTML = `<div class="bar">
     <button id="bk">&lsaquo; Packs</button>
     <input id="q" placeholder="Search name..." size="10">
-    <select id="so"><option value="num">Sort: # ID</option><option value="rar">Sort: Rarity</option><option value="pwr">Sort: Power</option><option value="star">Sort: ★ Stars</option><option value="own">Sort: Owned</option></select>
+    <select id="so"><option value="num">Sort: # ID</option><option value="rar">Sort: Rarity</option><option value="pwr">Sort: Power</option><option value="star">Sort: Level (★)</option><option value="elm">Sort: Element</option><option value="var">Sort: Variant</option><option value="own">Sort: Owned</option></select>
     <select id="ft"><option value="-1">All Tiers</option>${TIERS.map((t, i) => `<option value="${i}">${t}</option>`).join("")}</select>
     <select id="fc"><option value="all">All Classes</option>${CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join("")}</select>
     <select id="fe"><option value="all">All Elements</option>${ELEMENTS.map(el => `<option value="${el}">${EL_ICON[el]} ${el}</option>`).join("")}</select>
+    <select id="fv">${VGROUPS.map(([v, n]) => `<option value="${v}">${n}</option>`).join("")}</select>
     <select id="sh"><option value="all">All</option><option value="own">Collected</option><option value="miss">Missing</option></select>
-    <button id="sd">Sell dupes</button>
+    <button id="sd">Sell dupes</button><button id="sd3" title="Sell every copy except the best 3 versions of each card">Keep best 3</button>
     ${canPrestige ? `<button id="presBtn" style="background:#fbbf24; color:#000; font-weight:bold;">Prestige Collection (✦ Tier Up)</button>` : ''}
   </div>
   <div id="sum" style="font:12px ui-monospace,monospace; color:var(--mut); margin:6px;"></div>
@@ -2893,8 +2978,11 @@ function showBinder() {
       (fc === "all" || c.category === fc) &&
       (fe === "all" || c.element === fe) &&
       setOf(c) === binderSet && (!c.forb || c.land || own(c.id).length > 0) && c.name.toLowerCase().includes(q) &&
-      (sh === "all" || (sh === "own") === (own(c.id).length > 0))
+      (sh === "all" || (sh === "own") === (own(c.id).length > 0)) &&
+      ($("#fv").value === "all" || own(c.id).some(v => vGroup(v) === $("#fv").value))
     );
+    if (so === "elm") l.sort((a, b) => String(a.element).localeCompare(String(b.element)) || b.tier - a.tier || a.id - b.id);
+    if (so === "var") l.sort((a, b) => Math.max(-1, ...own(b.id).map(v => VRANK[vGroup(v)])) - Math.max(-1, ...own(a.id).map(v => VRANK[vGroup(v)])) || b.tier - a.tier || a.id - b.id);
     if (so === "rar") l.sort((a, b) => b.tier - a.tier || a.id - b.id);
     if (so === "pwr") l.sort((a, b) => cardPower(b.id) - cardPower(a.id) || a.id - b.id);
     if (so === "star") l.sort((a, b) => getStar(b.id) - getStar(a.id) || b.tier - a.tier);
@@ -2916,18 +3004,20 @@ function showBinder() {
     binderPage.innerHTML = l.slice(binderPageNum * 9, binderPageNum * 9 + 9).map(c => {
       const o = own(c.id);
       if (!o.length) return `<div class="slot"><div class="empty card sm"><pre>#${String(c.id + 1).padStart(3, "0")}\n ???\n[${CAT_SHORT[c.category]}/${EL_SHORT[c.element]}]\n${TIERS[c.tier]}</pre></div></div>`;
-      const v = o[(cyc[c.id] ?? o.length - 1) % o.length];
+      const VL = binderVers(c.id), cu = VL[(cyc[c.id] ?? VL.length - 1) % VL.length], v = cu.v;
       const n = o.reduce((a, x) => a + sv.inv[c.id + "|" + x], 0);
       return `<div class="slot" data-id="${c.id}" data-v="${v}">
-        <div data-cardclick="${c.id}" style="cursor:pointer;" title="Click to cycle variant">${cardHTML(c, v, v.includes("serialized") ? sv.ser[c.id]?.[0] : 0, 1)}</div>
+        <div data-cardclick="${c.id}" style="cursor:pointer;" title="Click to cycle versions">${cardHTML(c, v, v.includes("serialized") ? sv.ser[c.id]?.[0] : 0, 1)}</div>
         <div class="bd">
           <span>${EL_ICON[c.element]} x${n} (★${getStar(c.id)})</span>
-          ${o.length > 1 ? `<button class="mini-btn" data-cycle="${c.id}">↻ Var (${o.length})</button>` : ""}
-          <button class="mini-btn" data-inspect="${c.id}" data-v="${v}" style="border-color:#fbbf24;">🔍 Inspect</button>
+          ${VL.length > 1 ? `<button class="mini-btn" data-cycle="${c.id}">↻ Ver ${(VL.indexOf(cu) + 1)}/${VL.length}</button>` : ""}
+          <button class="mini-btn" data-inspect="${c.id}" data-v="${v}" data-u="${cu.r.u}" style="border-color:#fbbf24;">🔍 Inspect</button>
+          ${afxLines(cu.r, 0)}
         </div>
       </div>`;
     }).join("");
 
+    if (!$("#sd") || !$("#pg") || !$("#sum")) return;
     $("#sd").textContent = "Sell dupes (+" + sell(0) + " coins)";
     $("#pg").textContent = `Page ${binderPageNum + 1} / ${pages}`;
 
@@ -2938,9 +3028,9 @@ function showBinder() {
     if (dir) binderPage.classList.remove("turn-left", "turn-right");
   };
 
-  ["#so", "#ft", "#fc", "#fe", "#sh", "#q"].forEach(s => $(s).oninput = () => { binderPageNum = 0; draw(); });
+  ["#so", "#ft", "#fc", "#fe", "#fv", "#sh", "#q"].forEach(s => $(s).oninput = () => { binderPageNum = 0; draw(); });
   $("#bk").onclick = () => { setActive(navBtns[0]); showPacks(); };
-  $("#sd").onclick = () => { sell(1); draw(); };
+  $("#sd").onclick = () => { sell(1); draw(); }; $("#sd3").onclick = () => { sell(1, 3); draw(); };
 
   if (canPrestige) $("#presBtn").onclick = () => hubGo("ASTROLABE", 1);
 
@@ -2954,13 +3044,13 @@ function showBinder() {
     const inspBtn = e.target.closest("[data-inspect]");
     if (inspBtn) {
       const id = +inspBtn.dataset.inspect, v = inspBtn.dataset.v || "base";
-      zoom({ c: CARDS[id], v, sn: v.includes("serialized") ? sv.ser[id]?.[0] : 0 }, () => draw());
+      zoom({ c: CARDS[id], v, u: inspBtn.dataset.u, sn: v.includes("serialized") ? sv.ser[id]?.[0] : 0 }, () => draw());
       return;
     }
     const cycEl = e.target.closest("[data-cycle],[data-cardclick]");
     if (cycEl) {
       const id = +(cycEl.dataset.cycle ?? cycEl.dataset.cardclick);
-      const o = own(id);
+      const o = binderVers(id);
       if (o.length > 1) {
         cyc[id] = ((cyc[id] ?? o.length - 1) + 1) % o.length;
         draw();
@@ -3359,7 +3449,7 @@ function riftFight(boss) {
     e -= (mut === "ethereal" && t % 2 === 0 ? 0 : Math.round(ts.strikeDmg * rift.mult * (0.92 + Math.random() * 0.16) * (cr ? ts.critMult : 1))) + Math.round(ts.petDmg * rift.mult);
     if (e <= 0) break;
     if (t % 2 === 0) rift.hp = Math.min(rift.mx, rift.hp + ts.utilHeal);
-    { const hit = Math.max(4, Math.round(eAtk * (0.9 + Math.random() * 0.2)) - ts.armorBlock); rift.hp -= hit; if (mut === "vampiric") e += Math.round(hit * 0.5); }
+    { const hit = Math.max(4, Math.round((Math.round(eAtk * (0.9 + Math.random() * 0.2)) - ts.armorBlock) * (1 - (ts.res || 0) / 100))); rift.hp -= hit; if (mut === "vampiric") e += Math.round(hit * 0.5); }
   }
   if (e <= 0 && mut === "volatile") rift.hp -= Math.round(rift.mx * 0.1); return e <= 0 && rift.hp > 0;
 }
@@ -4195,7 +4285,7 @@ async function sendGift(user, g) { user = user.trim().toLowerCase(); if (!user) 
 function logout() { try { sessionStorage.removeItem("apr_user"); } catch (e) {} location.reload(); }
 function showTitle(msg) {
   const el = document.createElement("div"); el.id = "title"; const A = accts(), names = Object.keys(A), legacy = localStorage.getItem("asciiPacks_v10");
-  el.innerHTML = `<pre>   ___  _   _ ___   ___ ___ ___ ___ _____   _   ___  ___ ___ ___ ___  _  _\n  / _ \\| | | | __| / __| _ \\ __| _ \\_   _| /_\\ / __|/ __|_ _|_ _|| \\| |\n | (_) | |_| | _| | (_ |   / _||   / | |  / _ \\\\__ \\ (__ | | | | | .  |\n  \\___/ \\___/|___| \\___|_|_\\___|_|_\\ |_| /_/ \\_\\___/\\___|___|___||_|\\_|\n        T H E   G R E A T   A S C I I   D U N G E O N\n              ╔══╗      ┌──┐      ╔══╗\n              ║☼☼║ ←── │ ☠│ ──→  ║☼☼║\n              ╚══╝      └──┘      ╚══╝</pre>
+  el.innerHTML = `<pre>    _     ____    ____  ___  ___     ____   ___  ____      ___  _____\n   / \\   / ___|  / ___||_ _||_ _|   |  _ \\ |_ _||  _ \\    |_ _||_   _|\n  / _ \\  \\___ \\ | |     | |  | |    | |_) | | | | |_) |    | |   | |\n / ___ \\  ___) || |___  | |  | |    |  _ <  | | |  __/     | |   | |\n/_/   \\_\\\\|____/  \\____||___||___|   |_| \\_\\\\|___||_|       |___|  |_|\n    O P E N   ·   E Q U I P   ·   C L I M B\n              ╔══╗      ┌──┐      ╔══╗\n              ║☼☼║ ←── │ ☠│ ──→  ║☼☼║\n              ╚══╝      └──┘      ╚══╝</pre>
   <div class="msg" id="tm">${msg || ""}</div>
   <div class="tb"><input id="tu" placeholder="username" list="tl" autocomplete="username"><datalist id="tl">${names.map(n => `<option value="${n}">`).join("")}</datalist><input id="tp" type="password" placeholder="password" autocomplete="current-password"></div>
   <div class="tb"><button id="tli">⚔ Login</button><button id="tcr">✚ Create account</button><button id="tgu">Play as guest (this device)</button></div>
@@ -4430,7 +4520,7 @@ function showBackDesigner() {
 }
 
 // ---- Legacy tree, memorial, horizon ----
-const LEGT = [["pity", "Fate's Mercy", "Pity thresholds -5 packs per level", 4], ["misp", "Chaos Touch", "+50% misprint, white foil and autograph odds per level", 4], ["land", "Landlord", "Each Land gives +1% more Power per level", 3], ["mus", "Curator", "+10% museum income per level", 5], ["start", "Inheritance", "Start each Prestige with +3 packs per level", 5], ["keep", "Heirloom", "Keep +1 best card on Prestige per level", 3]];
+const LEGT = [["pity", "Fate's Mercy", "Pity thresholds -5 packs per level", 4], ["misp", "Chaos Touch", "+50% misprint, white foil and autograph odds per level", 4], ["land", "Landlord", "Each Land gives +1% more Power per level", 3], ["mus", "Curator", "-5% Eternal Binder page cost per level", 5], ["start", "Inheritance", "Start each Prestige with +3 packs per level", 5], ["keep", "Heirloom", "Keep +1 best card on Prestige per level", 3]];
 function keepBest() { const K = (astral("soul") ? 1 : 0) + lg("keep"); return Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]).sort((a, b) => cardPower(+b.split("|")[0], b.split("|")[1]) - cardPower(+a.split("|")[0], a.split("|")[1])).slice(0, K); }
 function legacyOnPrestige() {
   const pts = 1 + Math.floor((sv.prestige || 0) / 3) + horizon(); sv.legacy.pts += pts;
@@ -4483,7 +4573,7 @@ ext = function (m) {
 };
 ext(sv);
 sv.forge.forEach(f => CARDS.push({ ...f, id: CARDS.length, forb: true }));
-const LUCK = () => 1 + 0.03 * astral("luck") + ((sv.pbonus && sv.pbonus.luck) || 0) + (sv.buff && sv.buff.luck > 0 ? 0.15 : 0) + (weather().k === "fog" ? 0.15 : 0) + (todNight() ? 0.05 : 0) + crFx("luck");
+const LUCK = () => 1 + afx().luck / 100 + 0.03 * astral("luck") + ((sv.pbonus && sv.pbonus.luck) || 0) + (sv.buff && sv.buff.luck > 0 ? 0.15 : 0) + (weather().k === "fog" ? 0.15 : 0) + (todNight() ? 0.05 : 0) + crFx("luck");
 const labCost = () => Math.max(100, 300 - 60 * astral("lab")), tintCost = () => astral("tint") ? 0 : 100, bulkN = () => 10 + Math.floor(10 * astral("bulk"));
 
 // ---- Equipment (paperdoll, v20: ten symmetrical slots) ----
@@ -4520,7 +4610,7 @@ function equipExtra() {
 }
 function rollAvg() {
   const o = { a: 0, h: 0, x: 0 };
-  ESLOTS.forEach(([s]) => { const it = sv.equip[s]; if (it && CARDS[it.id]) { const r = rollOf(it.id, it.v); o.a += r.a - 1; o.h += r.h - 1; o.x += r.x - 1; } });
+  ESLOTS.forEach(([s]) => { const it = sv.equip[s]; if (it && CARDS[it.id]) { const r = rollOf(it.id, it.v, it.u); o.a += r.a - 1; o.h += r.h - 1; o.x += r.x - 1; } });
   return { a: o.a / 5, h: o.h / 5, x: o.x / 5 };
 }
 const _gts4 = getTeamStats;
@@ -4559,30 +4649,29 @@ function petArt() {
   return c.art.map(l => l.replace(/\s+$/, "")).filter((l, i, a) => l.trim() || i > 0).slice(0, 7);
 }
 var pickSlot = null;
-const rollStr = r => { const p = n => { const d = Math.round((n - 1) * 100); return (d >= 0 ? "+" : "") + d; }; return `M${p(r.a)} V${p(r.h)} E${p(r.x)}`; };
 function showTeamBuilder() {
   validateEquip(); syncTeam(); const E = sv.equip, ts = getTeamStats();
   const box = s => {
     const l = ESLOTS.find(x => x[0] === s)[1], it = E[s], c = it && CARDS[it.id], dis = s === "off" && E.main && CARDS[E.main.id] && is2H(CARDS[E.main.id]);
-    const r = c ? rollOf(it.id, it.v) : null;
-    return `<button class="eslot ${pickSlot === s ? "on" : ""}" data-s="${s}" ${dis ? "disabled" : ""}><small>${l}</small><br>${c ? `<span style="color:${TC[c.tier]}">${esc(c.name)}</span>${it.v !== "base" ? ` <small>(${esc(it.v)})</small>` : ""}<br><small>PWR ${cardPower(it.id, it.v)} ${baseIcons(c, it.v)}<br>${rollStr(r)}</small>` : (dis ? "<small>(two-handed weapon)</small>" : "<small>- empty -</small>")}</button>`;
+    const r = c ? rollOf(it.id, it.v, it.u) : null;
+    return `<button class="eslot ${pickSlot === s ? "on" : ""}" data-s="${s}" ${dis ? "disabled" : ""}><small>${l}</small><br>${c ? `<span style="color:${TC[c.tier]}">${esc(c.name)}</span>${it.v !== "base" ? ` <small>(${esc(it.v)})</small>` : ""}<br><small>PWR ${cardPower(it.id, it.v)} ${baseIcons(c, it.v)}</small>${afxLines(r, 0)}` : (dis ? "<small>(two-handed weapon)</small>" : "<small>- empty -</small>")}</button>`;
   };
   main.innerHTML = `<div class="bar"><b>Equipment</b> | PWR ${ts.totalPower} | HP ${ts.maxHP} | Strike ${ts.strikeDmg} | Block ${ts.armorBlock} | Heal ${ts.utilHeal || 0} | Crit ${ts.critChance}%${ts.activeElement ? " | Set: " + ts.activeElement : ""}</div>
   <div class="pdoll"><div>${LEFT_SLOTS.map(box).join("")}</div><div class="ctr"><pre class="hero">${heroArt().map(esc).join("\n")}</pre><pre class="hero pet">${petArt().map(esc).join("\n")}</pre></div><div>${RIGHT_SLOTS.map(box).join("")}</div></div>
-  <div class="bar"><button id="autoTeamBtn">⚙ Auto-equip best</button><button id="ec">Clear all</button></div><div id="pick"></div>${attunePanel()}
-  <div class="panel-box" style="font-size:12px;color:var(--mut)">Every card rolls three stats when pulled: <b>M</b>ight (strike), <b>V</b>igor (HP) and <b>E</b>dge (crit and block), from -25% to +25%, plus a pure base element. Your best copy of each print is the one that counts, so duplicates are chances at a better roll. Helmet, Main Hand, Armor, Amulet and Pet are your core slots; Gloves, Boots, Rings and the Off Hand add up to +50% to offense, defense and crit. Two-handed weapons lock the Off Hand.</div>`;
+  <div class="bar"><button id="autoTeamBtn">⚙ Auto-equip best</button><button id="ec">Clear all</button></div><div id="pick"></div>${afxSummary()}${attunePanel()}
+  <div class="panel-box" style="font-size:12px;color:var(--mut)">Every card rolls random <b>properties</b> when pulled: weapons roll offense, Helmet/Armor/Gloves/Boots roll defense, Amulets and Rings roll anything plus Luck and Pack Generation, Pets roll support, and Off Hands roll offense or defense. Rarity sets how many (Common 1 up to Mythic 4) and how high each can roll. Any property can <b>Super-Roll</b> for 1.5x its maximum (very rare on Commons, about 6% on Mythics). Your best copy of each print is the one that counts, so duplicates are chances at a better roll, plus a pure base element. Helmet, Main Hand, Armor, Amulet and Pet are your core slots; Gloves, Boots, Rings and the Off Hand add up to +50% to offense, defense and crit. Two-handed weapons lock the Off Hand.</div>`;
   const $ = s => main.querySelector(s), fin = () => { validateEquip(); syncTeam(); save(); showTeamBuilder(); };
-  const keysFor = s => Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]] && slotOk(s, CARDS[+k.split("|")[0]])).sort((a, b) => cardPower(+b.split("|")[0], b.split("|")[1]) - cardPower(+a.split("|")[0], a.split("|")[1]));
-  const used = k => ESLOTS.filter(([s]) => E[s] && E[s].id + "|" + E[s].v === k).length;
+  const usedU = (id, v, u) => ESLOTS.filter(([s]) => E[s] && E[s].id === id && E[s].v === v && E[s].u === u).length;
   main.querySelectorAll("[data-s]").forEach(b => b.onclick = () => {
-    const s = b.dataset.s; pickSlot = s; const ks = keysFor(s).filter(k => used(k) < sv.inv[k] || (E[s] && E[s].id + "|" + E[s].v === k));
-    $("#pick").innerHTML = `<div class="panel-box"><b>${ESLOTS.find(x => x[0] === s)[1]}</b> <button data-k="">Unequip</button><br>${ks.slice(0, 60).map(k => { const id = +k.split("|")[0], v = k.split("|")[1], r = rollOf(id, v); return `<button data-k="${k}" style="color:${TC[CARDS[id].tier]}">${esc(CARDS[id].name)} (${v}) PWR ${cardPower(id, v)} ${baseIcons(CARDS[id], v)} ${rollStr(r)}</button>`; }).join(" ") || "<span style='color:var(--mut)'>No matching cards owned.</span>"}</div>`;
-    $("#pick").querySelectorAll("[data-k]").forEach(p => p.onclick = () => { const k = p.dataset.k; E[s] = k ? { id: +k.split("|")[0], v: k.split("|")[1] } : null; pickSlot = null; fin(); });
+    const s = b.dataset.s; pickSlot = s;
+    const es = sortEntries(filterEntries(slotEntries(s), pk.el, pk.vg), pk.so).filter(x => !usedU(x.id, x.v, x.u) || (E[s] && E[s].id === x.id && E[s].v === x.v && E[s].u === x.u));
+    $("#pick").innerHTML = `<div class="panel-box"><b>${ESLOTS.find(x => x[0] === s)[1]}</b> <button data-k="">Unequip</button> ${pkBar()}<br>${es.slice(0, 80).map(x => `<button data-k="${entKey(x)}" style="color:${TC[CARDS[x.id].tier]};text-align:left">${esc(CARDS[x.id].name)} (${x.v}) PWR ${cardPower(x.id, x.v)} ${baseIcons(CARDS[x.id], x.v)}<br><small>${afxInline(x.r, 3)}</small></button>`).join(" ") || "<span style='color:var(--mut)'>No matching cards owned.</span>"}${es.length > 80 ? `<div style="color:var(--mut);font-size:11px">Showing the best 80 of ${es.length}. Use the filters to narrow it down.</div>` : ""}</div>`;
+    $("#pick").querySelectorAll("[data-pk]").forEach(x => x.onchange = () => { pk[x.dataset.pk] = x.value; b.onclick(); }); $("#pick").querySelectorAll("[data-k]").forEach(p => p.onclick = () => { const k = p.dataset.k, q = k.split("|"); E[s] = k ? { id: +q[0], v: q[1], u: q[2] } : null; pickSlot = null; fin(); });
   });
   $("#ec").onclick = () => { ESLOTS.forEach(([s]) => E[s] = null); fin(); };
   $("#autoTeamBtn").onclick = () => {
     ESLOTS.forEach(([s]) => E[s] = null);
-    ["main", "armor", "helm", "amulet", "pet", "gloves", "boots", "ring1", "ring2", "off"].forEach(s => { const k = keysFor(s).find(k => used(k) < sv.inv[k]); if (k && slotOk(s, CARDS[+k.split("|")[0]])) E[s] = { id: +k.split("|")[0], v: k.split("|")[1] }; });
+    ["main", "armor", "helm", "amulet", "pet", "gloves", "boots", "ring1", "ring2", "off"].forEach(s => { const x = sortEntries(slotEntries(s), "pwr").find(x => !usedU(x.id, x.v, x.u)); if (x && slotOk(s, CARDS[x.id])) E[s] = { id: x.id, v: x.v, u: x.u }; });
     fin();
   };
 }
@@ -4598,7 +4687,7 @@ const ASTRO = [
   ["coin", "Coin Tithe", "+10% sell coins", 5, "A", null], ["dust", "Stardust Lode", "+10% Stardust from dupes", 5, "A", "coin"], ["luck", "Fortune's Eye", "+3% Rare+ luck in packs", 5, "A", "coin"], ["idle", "Idle Mastery", "+15% Arena bounty", 5, "A", "dust"],
   ["might", "Titan's Might", "+5% team power", 5, "B", null], ["vit", "Iron Heart", "+8% max HP", 5, "B", "might"], ["armor", "Stoneskin", "+10% armor block", 5, "B", "might"], ["crit", "Killer's Eye", "+2% crit chance", 5, "B", "vit"], ["pet", "Beastmaster", "+10% pet damage", 5, "B", "armor"], ["vamp", "Bloodthirst", "+4% lifesteal", 3, "B", "crit"], ["reson", "Resonance", "2 matching elements trigger the set bonus", 1, "B", "pet"],
   ["foil", "Lucky Foil", "+20% foil chance", 3, "C", null], ["misp", "Chaos Touch", "+20% misprint/white/signed odds", 3, "C", "foil"], ["lab", "Efficient Lab", "-60 Stardust Lab cost", 3, "C", "foil"], ["tint", "Free Tint", "Foil tinting costs nothing", 1, "C", "lab"], ["soul", "Soulbound", "Keep your best card on Prestige", 1, "C", "misp"],
-  ["regen", "Time Flow", "+10% free pack regen", 5, "D", null], ["pity", "Fate Thread", "Pity 2 packs sooner", 3, "D", "regen"], ["bulk", "Bulk Opener", "+10 to Open xN", 3, "D", "regen"], ["auto", "Auto-Claim", "Arena bounty claims itself", 1, "D", "bulk"], ["offl", "Night Curator", "+12h museum accrual", 3, "D", "auto"]
+  ["regen", "Time Flow", "+10% free pack regen", 5, "D", null], ["pity", "Fate Thread", "Pity 2 packs sooner", 3, "D", "regen"], ["bulk", "Bulk Opener", "+10 to Open xN", 3, "D", "regen"], ["auto", "Auto-Claim", "Arena bounty claims itself", 1, "D", "bulk"], ["offl", "Night Curator", "-4% Eternal Binder page cost per rank", 3, "D", "auto"]
 ];
 function showAstrolabe() {
   const depth = k => { let d = 0, n = ASTRO.find(x => x[0] === k); while (n && n[5]) { d++; n = ASTRO.find(x => x[0] === n[5]); } return d; };
@@ -4816,7 +4905,7 @@ function showRelicForge() {
   const owned = RELICS.filter(r => sv.relics.includes(r.id));
   main.innerHTML = `<div class="bar"><b>Relic Forge</b> | Relic Shards: ${sv.rshards}</div><div class="panel-box"><b>Shatter relics</b> (the relic's effect is lost; late-game relics yield more)<br>${owned.map(r => `<button data-sh="${r.id}">${r.icon} ${r.name} (+${r.floor >= 30 ? 5 : 3})</button>`).join(" ") || "<span style='color:var(--mut)'>No relics owned.</span>"}</div>
   <div class="panel-box"><b>Reforge a custom relic</b> (pick 2 effects for 6 shards, or 3 for 10)<br><input id="rn" maxlength="24" placeholder="Relic name"><div class="bar">${Object.keys(REFX).map(k => `<label><input type="checkbox" data-fx="${k}"> ${REFX[k][0]}</label>`).join(" ")}</div><button id="rf">Reforge</button></div>
-  <div class="panel-box"><b>Your relics</b> (equip up to 3, or socket into museum stands: +6% museum income per effect)<br>${sv.crelics.map((r, i) => `<div style="margin:4px 0">🔮 <b>${esc(r.name)}</b> - ${r.fx.map(k => REFX[k][0]).join(", ")} <button data-eq="${i}" class="${sv.crOn.includes(i) ? "on" : ""}">${sv.crOn.includes(i) ? "Equipped" : "Equip"}</button> <button data-st="${i}" class="${sv.museum.stands.includes(i) ? "on" : ""}">${sv.museum.stands.includes(i) ? "In stand" : "Stand"}</button></div>`).join("") || "<span style='color:var(--mut)'>None forged yet.</span>"}</div>`;
+  <div class="panel-box"><b>Your relics</b> (equip up to 3, or socket into stands: -6% Eternal Binder page cost per effect)<br>${sv.crelics.map((r, i) => `<div style="margin:4px 0">🔮 <b>${esc(r.name)}</b> - ${r.fx.map(k => REFX[k][0]).join(", ")} <button data-eq="${i}" class="${sv.crOn.includes(i) ? "on" : ""}">${sv.crOn.includes(i) ? "Equipped" : "Equip"}</button> <button data-st="${i}" class="${sv.museum.stands.includes(i) ? "on" : ""}">${sv.museum.stands.includes(i) ? "In stand" : "Stand"}</button></div>`).join("") || "<span style='color:var(--mut)'>None forged yet.</span>"}</div>`;
   main.querySelectorAll("[data-sh]").forEach(b => b.onclick = () => { const r = RELICS.find(x => x.id === b.dataset.sh); sv.relics = sv.relics.filter(x => x !== r.id); sv.rshards += r.floor >= 30 ? 5 : 3; save(); showRelicForge(); });
   main.querySelector("#rf").onclick = () => {
     const fx = [...main.querySelectorAll("[data-fx]")].filter(c => c.checked).map(c => c.dataset.fx), cost = fx.length === 2 ? 6 : fx.length === 3 ? 10 : 0;
@@ -5070,28 +5159,36 @@ function oldBase(c) {
   return e;
 }
 const rkey = (id, v) => id + "|" + (v || "base");
-const rq = r => (r.a + r.h + r.x) / 3;
-function rollOf(id, v) { const r = sv.roll && sv.roll[rkey(id, v)]; return r || { a: 1, h: 1, x: 1, e: oldBase(CARDS[id]) }; }
+const rq = r => r.p ? 1 : (r.a + r.h + r.x) / 3;
+function rollOf(id, v, u) {
+  const k = rkey(id, v), c = CARDS[id], r = sv.roll && sv.roll[k];
+  if (!c) return { a: 1, h: 1, x: 1, e: [], p: [], i: id };
+  if (u && sv.alts && sv.alts[k]) { const a = sv.alts[k].find(x => x.u === u); if (a && !(r && r.u === u)) return afxFix(a, c); }
+  if (r) return r.g === AFX_GEN ? r : afxFix(r, c);
+  if (sv.roll && sv.inv && sv.inv[k] > 0) { const n = newRoll(c); sv.roll[k] = n; return n; }
+  return { a: 1, h: 1, x: 1, e: oldBase(c), p: [], i: id };
+}
 function rollMult(id, v) { return (CARDS[id] && sv.roll) ? rq(rollOf(id, v)) : 1; }
 function baseOf(c, v) { const r = (v !== undefined && c && sv.roll) ? sv.roll[rkey(c.id, v)] : null; return r && r.e ? r.e : oldBase(c); }
 const baseIcons = (c, v) => baseOf(c, v).map(x => BI[x]).join("");
 const LEG_DUAL = 0.25;
 function newRoll(c) {
-  const g = () => +(0.75 + 0.5 * (Math.random() + Math.random()) / 2).toFixed(2);
   const e = oldBase(c).slice(0, 1);
   if (c.el2 && BASE.includes(c.el2) && !e.includes(c.el2)) e.push(c.el2);
   if (e.length < 2 && (c.tier === 4 || (c.tier === 3 && Math.random() < LEG_DUAL))) { let b; do { b = BASE[Math.floor(Math.random() * 4)]; } while (b === e[0]); e.push(b); }
-  return { a: g(), h: g(), x: g(), e };
+  return { a: 1, h: 1, x: 1, e, i: c.id, p: afxRoll(c), g: AFX_GEN };
 }
 function rollGain(c, v, key, isNew) {
-  if (!sv.roll) sv.roll = {};
+  if (!sv.roll) sv.roll = {}; if (!sv.alts) sv.alts = {};
   const r = newRoll(c), old = sv.roll[key];
-  if (isNew && !old) { sv.roll[key] = r; return { roll: r, up: false }; }
-  const cur = old || { a: 1, h: 1, x: 1, e: oldBase(c) };
-  const better = rq(r) > rq(cur) + 0.001, moreEl = r.e.length > cur.e.length;
-  if (!better && !moreEl) return { roll: cur, up: false };
-  const out = { a: better ? r.a : cur.a, h: better ? r.h : cur.h, x: better ? r.x : cur.x, e: moreEl ? r.e : cur.e };
-  sv.roll[key] = out; return { roll: out, up: true };
+  r.u = newU();
+  if (!old) { sv.roll[key] = r; return { roll: r, up: false }; }
+  const cur = afxFix(old, c); if (!cur.u) cur.u = newU();
+  const moreEl = r.e.length > cur.e.length; if (moreEl) cur.e = r.e; r.e = cur.e.slice();
+  const better = rscore(r) > rscore(cur) + 0.001, list = sv.alts[key] || (sv.alts[key] = []);
+  if (better) { sv.roll[key] = r; list.unshift(cur); } else list.push(r);
+  if (list.length > KEEPV_MAX - 1) { list.sort((x, y) => rscore(y) - rscore(x)); list.length = KEEPV_MAX - 1; }
+  return { roll: r, up: better || moreEl };
 }
 const rollGrade = q => q >= 1.2 ? "GOD ROLL" : q >= 1.12 ? "great roll" : q >= 1.04 ? "good roll" : q >= 0.96 ? "average roll" : "weak roll";
 
@@ -5223,7 +5320,7 @@ showChallenges = function () {
 // ---- Element chemistry, potions and relics ----
 function showChem() {
   validateEquip(); syncTeam(); const E = sv.equip, a = attune(), rx = reactions(), ts = getTeamStats();
-  const rows = ESLOTS.map(([s, l]) => { const it = E[s], c = it && CARDS[it.id]; return `<tr><td style="padding:2px 10px 2px 0">${l}</td><td style="padding:2px 10px">${c ? `<span style="color:${TC[c.tier]}">${esc(c.name)}</span>` : "-"}</td><td style="padding:2px 10px">${c ? baseOf(c, it.v).map(e => BI[e] + " " + e).join(" + ") : ""}</td><td style="padding:2px 10px">${c ? rollStr(rollOf(it.id, it.v)) + " (" + rollGrade(rq(rollOf(it.id, it.v))) + ")" : ""}</td></tr>`; }).join("");
+  const rows = ESLOTS.map(([s, l]) => { const it = E[s], c = it && CARDS[it.id]; return `<tr><td style="padding:2px 10px 2px 0">${l}</td><td style="padding:2px 10px">${c ? `<span style="color:${TC[c.tier]}">${esc(c.name)}</span>` : "-"}</td><td style="padding:2px 10px">${c ? baseOf(c, it.v).map(e => BI[e] + " " + e).join(" + ") : ""}</td><td style="padding:2px 10px">${c ? rollStr(rollOf(it.id, it.v, it.u)) + " (" + rgText(rollOf(it.id, it.v, it.u)) + ")" : ""}</td></tr>`; }).join("");
   main.innerHTML = `<div class="bar"><b>Element Chemistry</b> | ${Object.keys(rx).length} of 6 reactions active</div>
   <div class="panel-box"><b>Attunement</b> ${BASE.map(e => `<span class="rxchip">${BI[e]} ${e} x${a[e] || 0}</span>`).join("")}
   <div style="overflow-x:auto;margin-top:8px"><table style="font:12px ui-monospace,monospace;border-collapse:collapse"><tr style="color:var(--mut)"><td>Slot</td><td>Card</td><td>Base element</td><td>Stat roll</td></tr>${rows}</table></div></div>
@@ -5280,7 +5377,7 @@ function showGuide() {
     ["The Loop", "Open packs to chase gear with great stat rolls, equip it on the ten-slot paperdoll, and climb the Infinite Tower. Everything else (forge, lab, astrolabe, collection) exists to make that loop stronger."],
     ["Packs", "A Booster Pack has 14 cards: 6 Commons, 3 Uncommons, 3 Wild, 1 Wildcard (better foil and misprint odds) and 1 guaranteed Rare or better. The stack flips face-up and zips by. A Legendary or Mythic halts it behind a golden or void aura: drag the card out to inspect its border, then reveal it. Pity: a Legendary within 60 packs, a Mythic within 250."],
     ["Equipment", "Ten slots: Helmet, Armor, Gloves, Boots and Main Hand on the left; Amulet, Ring 1, Ring 2, Off Hand and Pet on the right. Rings fit either ring slot. There are no Character or Land cards: all 200 cards are one of nine gear types."],
-    ["Stat rolls", "Every pulled card rolls Might, Vigor and Edge between -25% and +25%, Every card has one pure element (Pyre, Glacial, Voltaic or Venom). Legendaries have a 25% chance of a second element and Mythics always have two. You keep the best roll of each print you own, so duplicates are chances at better stats, or a second element."],
+    ["Gear properties", "Every pulled card rolls random properties like a Diablo item. Weapons roll offense (All Damage, Attack Speed, Crit Chance, Crit Damage, Pyre/Glacial/Voltaic/Venom Damage, Damage Over Time). Helmet, Armor, Gloves and Boots roll defense (Maximum Life, Armor, Damage Reduction, Dodge, Life on Hit, Life Regeneration, Thorns). Amulets and Rings roll any of those plus Luck and Pack Generation. Pets roll Gold Find, Stardust Find, Healing Pulse, Companion Damage and Pack Regeneration. Off Hands roll offense or defense. Common and Uncommon cards get 1 property, Rare 2, Legendary 3 and Mythic 4. Each value rolls inside a range that grows with rarity and star level, and each can Super-Roll for 1.5x the maximum (0.2% on Commons up to 6% on Mythics). Every card also has one pure element (Legendaries 25% chance of a second, Mythics always two). You keep the best roll of each print you own, so duplicates are chances at better rolls."],
     ["Element Chemistry", "Any two different base elements on your sheet trigger a reaction in Tower fights: Thermal Fracture, Ionized Flame, Wildfire, Fulgurite, Blightfrost or Shockvine. The Element Chemistry tab shows which ones you have and what you are missing."],
     ["The Infinite Tower", "Eight monster families of five floors each. After Floor 40 the families cycle again, now mutated with affixes, and every fifth floor is an Amalgam boss fusing two families. The Tower never ends. Auto-Advance on Win starts the next floor by itself until you lose or switch it off."],
     ["Prestige", "Collect all 200 cards and you may Prestige (Astrolabe hub > Prestige & Ascension). It resets your card collection (Soulbound best cards, forged cards and Relics stay) and gives +2% team power and coins per level, three small random permanent buffs, Legacy points and a Prestige Echo. Every 100th Prestige unlocks one card in the Century Forge."],
@@ -5312,7 +5409,7 @@ const AEFF = {
   might: v => `+${(v * 5).toFixed(1)}% team power`, dmg: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}% strike damage`, crit: v => `+${(v * 2).toFixed(1)}% crit chance`, critd: v => `+${v.toFixed(1)}% crit damage`,
   vit: v => `+${(v * 8).toFixed(1)}% max HP`, hpp: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}% max HP`, armor: v => `+${(v * 10).toFixed(1)}% armor block`, blk: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}% armor block`, vamp: v => `+${(v * 4).toFixed(1)}% lifesteal`,
   luck: v => `+${(v * 3).toFixed(1)}% Rare+ pack luck`, foil: v => `+${(v * 20).toFixed(0)}% foil chance`, misp: v => `+${(v * 20).toFixed(0)}% misprint odds`, pity: v => `pity ${(v * 2).toFixed(1)} packs sooner`, lab: v => `-${(v * 60).toFixed(0)} Stardust Lab cost`, bulk: v => `+${(v * 10).toFixed(0)} to Open xN`, tint: () => "foil tinting is free",
-  coin: v => `+${(v * 10).toFixed(1)}% sell coins`, dust: v => `+${(v * 10).toFixed(1)}% Stardust from dupes`, tcoin: v => `+${v.toFixed(1)}% Tower coins`, idle: v => `+${(v * 15).toFixed(1)}% Arena bounty`, regen: v => `+${(v * 10).toFixed(1)}% free pack regen`, offl: v => `+${(v * 12).toFixed(0)}h museum accrual`, auto: () => "Arena bounty claims itself", shardf: v => `+${Math.floor(v)} shard per Ascension`,
+  coin: v => `+${(v * 10).toFixed(1)}% sell coins`, dust: v => `+${(v * 10).toFixed(1)}% Stardust from dupes`, tcoin: v => `+${v.toFixed(1)}% Tower coins`, idle: v => `+${(v * 15).toFixed(1)}% Arena bounty`, regen: v => `+${(v * 10).toFixed(1)}% free pack regen`, offl: v => `-${(v * 4).toFixed(0)}% Eternal Binder page cost`, auto: () => "Arena bounty claims itself", shardf: v => `+${Math.floor(v)} shard per Ascension`,
   pet: v => `+${(v * 10).toFixed(1)}% pet damage`, petp: v => `+${v.toFixed(1)}% pet damage`, alch: v => `+${v.toFixed(1)}% bonus material chance`, heal: v => `+${v.toFixed(1)}% heals`, reson: () => "2 matching elements trigger the set bonus", soul: () => "Keep your best card when a prestige would reset"
 };
 const ANAME = { might: "Might", dmg: "Ferocity", crit: "Precision", critd: "Brutality", vit: "Vitality", hpp: "Fortitude", armor: "Plating", blk: "Bulwark", vamp: "Thirst", luck: "Fortune", foil: "Sheen", misp: "Chaos", pity: "Fate", lab: "Craft", bulk: "Haste", coin: "Tithe", dust: "Lode", tcoin: "Plunder", idle: "Vigil", regen: "Flow", offl: "Curation", pet: "Bond", petp: "Fang", alch: "Transmute", heal: "Mercy" };
@@ -5462,6 +5559,12 @@ function showAstrolabe() {
   show(); draw();
 }
 
+const ART_SPIRE = ["              .. - ----.", "                  I'__. ..- '';", "                  |           .", "                  J.", "                   L:..._.- -' .", "                   |.", "                   J:.", "                    L:.. ..- -' .", "                    |.", "                    J:.", "                     LP:._..- -' .", "                     |:.", "    ________________ J8:,          ______________a:f____", "          a88888baaa. LP:....- -' .", "            `\"88888888|8:.        .", "                `\"8888:8::...    _J", "                     \" `\"\"PPPPP\"\"'"];
+const ART_SHOP = ["                                   .-.,-.                        ", "                                  _|_||_|_                       ", "                                ,'|--'  __|                      ", "                                |,'.---'-.'                      ", "  ___                            |:|] .--|                       ", " (__ ```----........_________...-|-|__'--|-........_________.....", "  \\._,```----........__________..::|--' _|--........_________....", "  :._,._,._,._,._,._,._,._,._,._,\\\\|___'-|._,._,._,._,._,._,._,._", "  |._,._,._,._,._,._,._,._,._,._,.`'-----'._,._,._,._,._,._,._,._", "  |._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._", "  |._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._", "  ;._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._", " /,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._,._", " )________)________)________)________)________)________)_______)_", "  |::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.-", "  |_|_  .----._     ___.-_-__-_-.--.-'          __.-.-_-__-_-. '-", "  |---' '--.-'-'.  '-.-||_|__|_||--'           '--'-||_|__|_||_  ", "  |        '----'    '-|| |  | ||             ____.-|| |  | ||-' ", "  |                   [||-|--|-||_           '--.-'-||-|--|-||   ", "  |-.____              ||_|__|_||-'-.           '---||_|__|_||_ _", "  |-'-.--'       ___.--||_|__|_||---' ___.--.       ||_|__|_||_'-", "  |---'         '---'--'--------'    '---'--'       '--------'   ", "  ;--.______________________________________________,--._________", "  :(o))---------------------------------------------:(o))--------", "  |`-: \\//|[_  /,.\\|| |,\\|[_  ((_ |[]|/,.\\|o)|o)|[_ |`-: ((_ |||\\", "  |__| // |[_  \\`'/|'-|`/|[_   _))|[]|\\`'/|| || |[_ |__|  _))|||`", "  |--|____________________________________________  |--|  _______", "  |  |       |`-||__|--|__|--|__|--|__|--|__|--|__| |__| ||__|--|", "  |  |_____  |._|.-------..-------..-------..----.| |  | |.------", "  |  |.-.-.| |  ||::'    ||::'    ||::'    ||:'  || |  | ||:'    ", "  |  || | || |  ||'      ||'      ||'      ||    || |  | ||____.:", "  |  || | || |  ||      .||      .||      .||    || |  | |.------", "  |  || | || |  ||      .||      .||      .||    || |  | ||:'    ", "  |__|'-'-'|/:._||___..::||___..::||___..::||__.:|| |__| ||____.:", "  |  |     || `-|---------------------------------.'|  |'.-------", " _|__|-----''-..| ________________________________|_|__|_|_______"];
+const ART_FORGE = ["_@@@@@.       ......                                                         ", "#@@#(````````|||||||'``````````````````'```````````````````````|````````````:", " )___________|||||||___________________________________________|____________:", " .`          |||||||:                                                       :", " .`          |||||||:                                                       :", " .`          |||||||:          ''\\''''|\\''''|'''  :'''''''~/''''''':        :", " .`          |||||||,            |    ||    |     :       .: .:~:  |        :", " .`        .(       ',           |    |'.   |     :       .: ), ,' |        :", " .`       ,'         `\\          |   .` :   |     :________,___``__|        :", " .`      /`            ),      .,|,, :  |   |     :``,||||||,:|||:_|        :", " .`    ,'               ',     |@@@@ '  ) |@@@|   |('::::::|:::::::|        :", " .`   ,`                  \\               ''''`   |::::::::|:::::::|        :", " .`   )```````````````````|`                      ':::::::)(:::::::(        :", " .`  ,,,,,,,,,,,,,,,,,,,,,|,,                                               :", " .` :,                      |                                               :", " .`  '``|`:@@@@@@@@@@@/`'``|_,,/|\\,,  _:                  _,\\\\\\\\\\\\\\,,       :", " .`  :  | |@@@@()( @@@| :` |||||||||*`                    |**))))**(|       :", " .`  :'`|`)@@() _, `'@@`)'`|)|||||)`      _,,,            |.........|       :", " .`  :  | )@|__||_|__@| :` |             :`  `:           |         |       :", " .`  :  |               :__|,\\//@@@|||||||||||||||||||||  |_________|       :", " .*'''/'*''/'''''''''''*****))|@@@@@@@@@@@@@@@@@@@@@@@@@''|         |'''\\''':", " .`  /   .(                      ```)(@@@@@@@@@@)(````    `'''''''''`\\  `\\  :", " .`,'   ,'                          ,,@@@@@@@@@@,,                    \\  `, :", " .|`   ,`                           |  .:    :   |   \\`\\               \\  ',:", " .`   /`                            |  .:    :   |    ',),              \\  ':", " .` .(                    _,:~'|:   |  .:    :   |     `\\',              \\  :", " .`,'               _,:~'|,~''`     |  .:    :   |       ),\\              \\ :", " ./`               .,~'``           |__,,____,,__|        ','              \\:"];
+const ART_OBS = ["                  *        .           *                ", "      .                                        .        ", "                     _..-\"\"\"\"\"-.._                      ", "    *             .-'    .   *    '-.        .          ", "                .'   *        .      '.                 ", "      .       .'  .      _.-\"-._   *   '.               ", "             /      .  .'  _|_  '.   .    \\             ", "            |   *     /  .-'|'-.  \\     *  |            ", "            |     .  |  /   |   \\  |  .    |            ", "            |        | |  --O--  | |       |            ", "            |   .    |  \\   |   /  |    *  |            ", "             \\     *  \\  '-.|.-'  /   .   /             ", "              '.   .   '.   |   .'  .   .'              ", "    ___________'-.._____'-.._|_..-'_____.-'___________  ", "   |  _   _   _   _   _   _   _   _   _   _   _   _  |  ", "   | | | | | | | | | | | | | | | | | | | | | | | | | | |", "   | |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| | |", "   |  ___________________  ___________________  ____  | ", "   | |  *  .  *  .  *  | ||  .  *  .  *  .  | ||    | | ", "   | |  .  *  .  *  .  | ||  *  .  *  .  *  | || () | | ", "   | |_____CELESTIAL____| ||______ASTROLABE__| ||____| |", "   |_____________________||____________________|______| ", "   |:::::::::::::::::::::::::::::::::::::::::::::::::::|", "   |  []  []  []   _________________   []  []  []     | ", "   |  []  []  []  |  .-.  .-.  .-.  |  []  []  []     | ", "   |  []  []  []  |  '-'  '-'  '-'  |  []  []  []     | ", "   |______________|_______|_|_______|________________|  ", "  /_______________________________________________/|    ", " /_______________________________________________/ |    ", "|===============================================|  |    ", "|_______________________________________________| /     "];
+const ART_VAULT = ["    _______________________________________________       ", "   /  ___   ___   ___   ___   ___   ___   ___   ___ \\     ", "  /  |   | |   | |   | |   | |   | |   | |   | |   | \\    ", " /___|___|_|___|_|___|_|___|_|___|_|___|_|___|_|___|__\\   ", "|=====================================================|   ", "|  ETERNAL  BINDER  VAULT       .-----.  .-----.      |   ", "|_____________________________  |  [] |  | []  |  ____|   ", "|   ____   ____   ____   ____ | |_____|  |_____|  |   |   ", "|  |    | |    | |    | |    || ||||||||||||||||||  |   | ", "|  | [] | | [] | | [] | | [] || ||  ||  ||  ||  ||  |   | ", "|  |____| |____| |____| |____|| ||__||__||__||__||  |___| ", "|   ||||   ||||   ||||   ||||  |  ____________________   |", "|  |====| |====| |====| |====| | |  ___   ___   ___  |  | ", "|__|    |_|    |_|    |_|    |_| | |   | |   | |   | |__| ", "|  |  ..  |  ..  |  ..  |  ..  | | |___| |___| |___| |  | ", "|  | .''. | .''. | .''. | .''. | |  ___   ___   ___  |  | ", "|  | '..' | '..' | '..' | '..' | | |   | |   | |   | |  | ", "|  |______|______|______|______| | |___| |___| |___| |  | ", "|                              |_|___________________|  | ", "|     _______________________________________________   | ", "|    /    ___________________________________      \\   |  ", "|   /    /   _____________________________  \\      \\  |   ", "|  |    |   |   .-----------------------.  |  |      | |  ", "|  |    |   |  /   _______________      \\ |  |      | |   ", "|  |    |   | |   /   .-\"\"\"-.     \\      || |  |      | | ", "|  |    |   | |  |   ( ((O)) )     |     || |  |      | | ", "|  |    |   | |   \\   '-...-'     /      || |  |      | | ", "|  |    |   |  \\   '-------------'      / |  |      | |   ", "|__|____|___|___'-.._______________..-'___|__|______|_|   "];
+
 // ===================== v22: ARENA-STYLE PACK OPENING =====================
 var rsTok = 0, rs = null, rsInspI = -1, rsPin = false, rsInspT = 0;
 const CAT_SLOTS = { "Helmet": ["helm"], "Armor": ["armor"], "Gloves": ["gloves"], "Boots": ["boots"], "Main Hand": ["main"], "Off Hand": ["off"], "Amulet": ["amulet"], "Ring": ["ring1", "ring2"], "Pet": ["pet"] };
@@ -5481,13 +5584,13 @@ function targetSlot(c) {
 function rsCompare(it) {
   const c = it.c, slot = targetSlot(c), cur = slot ? sv.equip[slot] : null, curC = cur && CARDS[cur.id] ? CARDS[cur.id] : null;
   const pw = cardPower(c.id, it.v), cp = curC ? cardPower(cur.id, cur.v) : 0;
-  const worn = ESLOTS.some(([s]) => sv.equip[s] && sv.equip[s].id === c.id && sv.equip[s].v === it.v);
-  return { slot, cur, curC, pw, cp, delta: pw - cp, worn, fill: !!slot && !curC, upgrade: !!slot && !worn && (!curC || pw > cp) };
+  const pu = it.roll && it.roll.u, worn = ESLOTS.some(([s]) => sv.equip[s] && sv.equip[s].id === c.id && sv.equip[s].v === it.v && (!pu || !sv.equip[s].u || sv.equip[s].u === pu));
+  return { slot, cur, curC, pw, cp, delta: pw - cp, worn, fill: !!slot && !curC, upgrade: !!slot && !worn && (!curC || gscore(c.id, it.v, pu) > gscore(cur.id, cur.v, cur.u) + 0.01) };
 }
 function rsEquip(i) {
   const it = rs && rs.cards[i]; if (!it) return; const k = rsCompare(it); if (!k.slot || k.worn) return;
   const offBefore = sv.equip.off;
-  sv.equip[k.slot] = { id: it.c.id, v: it.v }; validateEquip(); syncTeam(); save(); try { drawStatus(); } catch (e) {}
+  sv.equip[k.slot] = { id: it.c.id, v: it.v, u: it.roll && it.roll.u }; validateEquip(); syncTeam(); save(); try { drawStatus(); } catch (e) {}
   notify(`Equipped ${it.c.name} as ${SLOT_NAME(k.slot)}` + (offBefore && !sv.equip.off ? " (two-handed: Off Hand unequipped)" : "")); sfx(4); haptic(40);
   rsRefreshAll(); rsInspRefresh(); rsDockUpdate();
 }
@@ -5500,7 +5603,7 @@ function rsTile(it, i, down) {
 function rsRefreshTile(i) {
   const el = rs.tiles[i], it = rs.cards[i]; if (!el) return;
   const down = rs.down.has(i), k = rsCompare(it), sp = it.v !== "base";
-  el.classList.toggle("up", !down && k.upgrade && !k.fill); el.classList.toggle("sp", !down && sp);
+  el.classList.toggle("up", !down && k.upgrade && !k.fill); el.classList.toggle("sp", !down && sp); el.classList.toggle("sup", !down && afxSupers(it.roll || rollOf(it.c.id, it.v)) > 0);
   const B = [];
   if (!down) {
     if (it.isNew) B.push(["nw", "NEW"]);
@@ -5510,7 +5613,7 @@ function rsRefreshTile(i) {
     if (it.up) B.push(["ru", "ROLL ▲"]);
   }
   el.querySelector(".rsbadges").innerHTML = B.map(b => `<b class="rsb ${b[0]}">${esc(b[1])}</b>`).join("");
-  const r = rollOf(it.c.id, it.v), q = rq(r), g = q >= 1.12 ? 3 : q >= 1.04 ? 2 : q >= 0.96 ? 1 : 0, ic = baseOf(it.c, it.v);
+  const r = it.roll || rollOf(it.c.id, it.v), g = rgq(r), ic = baseOf(it.c, it.v);
   el.querySelector(".rscap").innerHTML = down ? "" : `<span class="q${g}">${rollStr(r)}</span> ${ic.map(e => BI[e]).join("")}${ic.length > 1 ? "<br>" + ic.join(" + ") : ""}`;
   const b = el.querySelector(".rseq"); b.hidden = down || !k.slot || k.worn;
 }
@@ -5526,11 +5629,11 @@ window.addEventListener("resize", () => { if (rs) rsFit(); });
 function rsHideInsp() { clearTimeout(rsInspT); rsPin = false; rsInspI = -1; const p = document.getElementById("rsinsp"); if (p) p.remove(); }
 function rsInspSchedule() { clearTimeout(rsInspT); rsInspT = setTimeout(() => { if (!rsPin) rsHideInsp(); }, 180); }
 function rsInspHTML(i) {
-  const it = rs.cards[i], c = it.c, k = rsCompare(it), r = rollOf(c.id, it.v);
-  const sec = (lab, cc, v, sn, pw, rl) => `<div><div class="rsil">${lab}</div>${cardHTML(cc, v, sn)}<div class="rsir">PWR <b>${pw}</b> ${baseIcons(cc, v)}<br>${rollStr(rl)}</div></div>`;
+  const it = rs.cards[i], c = it.c, k = rsCompare(it), r = it.roll || rollOf(c.id, it.v);
+  const sec = (lab, cc, v, sn, pw, rl) => `<div><div class="rsil">${lab}</div>${cardHTML(cc, v, sn)}<div class="rsir">PWR <b>${pw}</b> ${baseIcons(cc, v)}<br></div>${afxLines(rl, 1)}</div>`;
   const dl = k.worn ? `<span class="rsd">Already equipped</span>` : k.curC ? `<span class="rsd ${k.delta > 0 ? "up" : k.delta < 0 ? "dn" : ""}">${k.delta > 0 ? "▲ +" + k.delta : k.delta < 0 ? "▼ " + k.delta : "= same"} PWR vs equipped</span>` : k.slot ? `<span class="rsd up">Empty ${SLOT_NAME(k.slot)} slot ▲</span>` : `<span class="rsd dn">${c.category === "Off Hand" ? "Two-handed weapon equipped" : "Cannot be equipped"}</span>`;
   const btn = k.worn ? `<button disabled>EQUIPPED ✔</button>` : k.slot ? `<button class="cta" data-eq>[EQUIP NOW]</button>` : "";
-  return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec("PULLED", c, it.v, it.sn, k.pw, r)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot), k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v)) : ""}</div><div class="rsfoot">${dl}<span style="color:var(--mut)">${rollGrade(rq(r))}</span>${btn}</div>`;
+  return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec("PULLED", c, it.v, it.sn, k.pw, r)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot), k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v, k.cur.u)) : ""}</div><div class="rsfoot">${dl}<span style="color:var(--mut)">${rgText(r)}</span>${btn}</div>`;
 }
 function rsInsp(i, anchor) {
   if (!rs || !rs.cards[i] || rs.down.has(i)) return; clearTimeout(rsInspT);
@@ -5548,7 +5651,7 @@ function rsInsp(i, anchor) {
 }
 function rsInspRefresh() { if (rsInspI >= 0 && document.getElementById("rsinsp") && rs) rsInsp(rsInspI); }
 document.addEventListener("click", e => { if (!rsPin) return; const t = e.target; if (t && t.closest && (t.closest("#rsinsp") || t.closest(".rsc"))) return; rsHideInsp(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") rsHideInsp(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.getElementById("rsinsp")) { rsHideInsp(); e.preventDefault(); } });
 setInterval(() => { if (!document.getElementById("rsroot") && document.getElementById("rsinsp")) rsHideInsp(); }, 400);
 
 // ---- the pack page: staging area ----
@@ -5749,6 +5852,328 @@ PATCH_NOTES.unshift({ v: 23, t: "v23: Four elements", n: [
   "Each card now has a single element of its own. Commons, Uncommons and Rares have exactly 1; Legendaries have a 25% chance of a second element; Mythics always have 2",
   "Cards no longer show two element icons. Existing cards were converted, and your Mythics keep two elements"] });
 
+// ===================== v24: LAYERED VALLEY TOWN HUB =====================
+const TOWN = [
+  { k: "PACKS", n: "PEDDLER'S SHOPPE" }, { k: "EQUIPMENT", n: "ADVENTURER'S CAMP" }, { k: "TOWER & REALMS", n: "THE ENDLESS SPIRE" },
+  { k: "COLLECTION", n: "ETERNAL BINDER VAULT" }, { k: "FORGE & LAB", n: "BLACKSMITH & ALCHEMIST'S FORGE" }, { k: "ASTROLABE", n: "CELESTIAL OBSERVATORY" }
+];
+var lastHub = { h: "PACKS", s: 0 };
+const TART = {
+  "ASTROLABE": [
+    "     .-\"\"\"\"-.     ", "   .' *  .  '.   ", "  / .  *   *  \\  ", " |_____________| ", " |  _   _   _  | ", " | |_| |_| |_| | ", " |_____[_]_____| "],
+  "TOWER & REALMS": [
+    "       /\\       ", "      /  \\      ", "     /_/\\_\\     ", "     | /\\ |     ", "     |/__\\|     ", "     | [] |     ", "    _|    |_    ", "   /_|_||_|_\\   "],
+  "PACKS": [
+    "  .-------------.  ", " /_/_/_/_/_/_/_/_\\ ", " | ▮ ▮ ▮    ___  | ", " |  PACKS | o |  | ", " |________|___|__| "],
+  "COLLECTION": [
+    "   ___________   ", "  / __  _  __ \\  ", " |_|__||_||__|_| ", " | [] CURIO [] | ", " |  _________  | ", " | |  VAULT  | | ", " |_|____o____|_| "],
+  "FORGE & LAB": [
+    "    ____   ) (   ", "   /    \\ ( ) )  ", "  |FORGE | ) (   ", "  |~~~~~~|(  )   ", "  |[====]| ||    ", " _|______|_||_   "]
+};
+const FIRE_ART = ["   . : .  ", "  ( 🔥 )  ", "  /\\_/\\_  ", " /_/   \\_\\"];
+
+function townTime() { const h = new Date().getHours(); return h >= 20 || h < 6 ? ["Night", "night"] : h < 8 ? ["Dawn", "dusk"] : h < 18 ? ["Day", "day"] : ["Dusk", "dusk"]; }
+function townPips() {
+  const ts = getTeamStats(), F = sv.tower.maxFloor || 1, empty = ESLOTS.filter(([s]) => !sv.equip[s]).length, sh = sv.shards || 0, pc = prestigeCount();
+  const mats = Object.values(sv.mats || {}).reduce((a, b) => a + (+b || 0), 0), own = CARDS.filter(c => !c.forb && setOf(c) === 1 && own0(c.id)).length;
+  const pk = sv.packs, free = Math.max(1, Math.ceil((sv.t + 24e4 - Date.now()) / 6e4));
+  return {
+    "PACKS": pk > 0 ? { t: `📦 ${pk} Pack${pk === 1 ? "" : "s"} Rdy${anomaly("sale") ? " · HALF PRICE" : ""}`, hot: true } : { t: `📦 No packs · free in ${free}m`, hot: false },
+    "EQUIPMENT": { t: `PWR ${ts.totalPower}${ts.activeElement ? " " + EL_ICON[ts.activeElement] : ""}${empty ? ` · ${empty} empty` : ""}`, hot: empty > 0 && Object.keys(sv.inv).length > 0 },
+    "TOWER & REALMS": F >= ascMin() ? { t: `Floor ${F} · 🌀 Ascend ready`, hot: true } : { t: `Floor ${F}`, hot: false },
+    "COLLECTION": pc >= 200 ? { t: `${own}/200 · ★ Prestige ready`, hot: true } : { t: `${own}/200 cards`, hot: false },
+    "FORGE & LAB": sv.forges > 0 ? { t: "✦ Century Forge ready", hot: true } : { t: `⚗ ${mats} materials`, hot: false },
+    "ASTROLABE": sh > 0 ? { t: `✧ ${sh} Shards Aval.`, hot: true } : { t: "✧ Skill tree", hot: false }
+  };
+}
+const own0 = id => Object.keys(sv.inv).some(k => +k.split("|")[0] === id && sv.inv[k] > 0);
+
+function townSky(w, tm, an) {
+  const night = tm[1] === "night", R = (a, b) => a + Math.random() * (b - a);
+  let s = "";
+  if (night || w.k === "blood") s += [...Array(38)].map(() => `<i class="tstar" style="left:${R(1, 99).toFixed(1)}%;top:${R(4, 92).toFixed(1)}%;--d:${R(1.5, 4).toFixed(1)}s">${["*", "·", "+", "."][Math.floor(Math.random() * 4)]}</i>`).join("");
+  if (night || w.k === "blood") s += `<pre class="tcelest">  _..._\n .'   '.\n:   o   :\n '.   .'\n   '-'</pre>`;
+  else s += `<pre class="tcelest">   \\ | /\n  -- O --\n   / | \\</pre>` + [...Array(3)].map((_, i) => `<pre class="tcloud" style="top:${14 + i * 24}%;--d:${60 + i * 25}s;animation-delay:-${i * 21}s">   .--.\n .(    ).\n(___.__)_)</pre>`).join("");
+  if (w.k === "fog") s += `<div class="train">${[...Array(26)].map(() => `<i style="left:${R(0, 100).toFixed(1)}%;--d:${R(.6, 1.2).toFixed(2)}s;animation-delay:-${R(0, 1).toFixed(2)}s"></i>`).join("")}</div>`;
+  if (an === "foil") s += [...Array(7)].map(() => `<span class="tglitch" style="left:${R(5, 90).toFixed(0)}%;top:${R(10, 80).toFixed(0)}%;animation-delay:-${R(0, .5).toFixed(2)}s">${["▒", "░", "▓", "✦"][Math.floor(Math.random() * 4)]}</span>`).join("");
+  return s;
+}
+function townHTML() {
+  const w = weather(), tm = townTime(), an = anomaly(), pips = townPips(), cls = w.k === "blood" ? "blood" : w.k === "solar" ? "solar" : tm[1], idx = k => TOWN.findIndex(x => x.k === k) + 1;
+  const bld = k => { const t = TOWN.find(x => x.k === k), p = pips[k]; return `<button class="tb-b" data-h="${ea(k)}" title="${t.n} (${idx(k)})"><pre>${TART[k].map(esc).join("\n")}</pre><span class="tb-n">${t.n} <span class="tb-k">[${idx(k)}]</span></span><span class="tb-pip ${p.hot ? "hot" : ""}" data-k="${ea(k)}">${esc(p.t)}</span></button>`; };
+  const ridge = n => `<pre class="tridge">${"/\\_/\\__/\\/\\_/\\___/\\_/\\/\\__".repeat(Math.ceil(n / 26)).slice(0, n)}</pre>`;
+  const hero = heroArt().map(esc).join("\n"), pet = petArt().map(esc).join("\n"), cp = pips["EQUIPMENT"];
+  return `<div class="town ${cls} ${w.k === "fog" ? "fog" : ""}" id="town">
+    <div class="tsky">${townSky(w, tm, an)}</div>
+    <div class="tchips"><span class="tchip">${w.i} ${esc(w.n)} · ${tm[0]}</span>${an ? `<span class="tchip an">✦ ${an === "sale" ? "Cosmic Anomaly: packs half price!" : "Cosmic Anomaly: foil storm!"}</span>` : ""}<span class="tchip">${esc(APR_USER || "guest")}</span></div>
+    <div class="tcliff">${bld("ASTROLABE")}${bld("TOWER & REALMS")}</div>
+    ${ridge(220)}
+    <div class="tstreet">${bld("PACKS")}${bld("COLLECTION")}${bld("FORGE & LAB")}</div>
+    <pre class="tground">${"=".repeat(240)}</pre>
+    <button class="tcamp" id="tcamp" data-h="EQUIPMENT" title="Adventurer's Camp (2)"><div class="tcrow"><pre class="hero">${hero}</pre><pre class="fire">${FIRE_ART.map(esc).join("\n")}</pre><pre class="pet">${pet}</pre></div>
+      ${[...Array(9)].map((_, i) => `<i class="tember" style="--dx:${Math.round(Math.random() * 120 - 60)}px;--d:${2.5 + Math.random() * 2}s;--dl:-${(Math.random() * 3).toFixed(1)}s;margin-left:${Math.round(Math.random() * 40 - 20)}px">${["·", "*", "'"][i % 3]}</i>`).join("")}
+      <span class="tb-n">${TOWN[1].n} <span class="tb-k">[2]</span></span><span class="tb-pip ${cp.hot ? "hot" : ""}" data-k="EQUIPMENT">${esc(cp.t)}</span></button>
+  </div>`;
+}
+function showTown() {
+  main.innerHTML = townHTML();
+  main.querySelectorAll("[data-h]").forEach(b => b.onclick = () => hubGo(b.dataset.h, 0));
+}
+function townGo() {
+  if (!__ready) return; autoFarming = false; autoPush = false; curHub = "TOWN"; curSub = -1;
+  navBtns.forEach(b => b.className = ""); drawNav(); updateHeader(); showTown();
+}
+function townToggle() { if (curHub === "TOWN") hubGo(lastHub.h, lastHub.s); else townGo(); }
+setInterval(() => {
+  if (!document.getElementById("town")) return; let p; try { p = townPips(); } catch (e) { return; }
+  document.querySelectorAll(".tb-pip[data-k]").forEach(el => { const x = p[el.dataset.k]; if (x) { el.textContent = x.t; el.classList.toggle("hot", !!x.hot); } });
+}, 4000);
+
+// ---- Esc returns to town (and back); 1-6 jump between buildings ----
+document.addEventListener("keydown", e => {
+  if (!APR_USER || !__ready || e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+  const t = e.target; if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+  if (document.querySelector(".ov") || document.getElementById("gate") || document.getElementById("title") || document.getElementById("rsinsp") || busy) return;
+  if (e.key === "Escape") { e.preventDefault(); townToggle(); return; }
+  if (/^[1-6]$/.test(e.key)) { e.preventDefault(); hubGo(TOWN[+e.key - 1].k, 0); }
+});
+
+PATCH_NOTES.unshift({ v: 24, t: "v24: The Valley town", n: [
+  "A new Town screen: a layered ASCII valley with the Celestial Observatory (Astrolabe) and Endless Spire (Tower) on the cliffs, the Peddler's Shoppe (Packs), Grand Curio & Vault (Collection) and Forge on the street, and your Adventurer's Camp at the campfire, showing your equipped hero and pet. Click the camp to open the paperdoll",
+  "The sky shows the live weather, time of day and Cosmic Anomalies. Each building shows live badges such as packs ready, your best floor, shards to spend, or Prestige ready",
+  "You still start on the Pack Opening screen. Press Esc or [ ⌂ Town ] to open the town, Esc again to go back where you were, and keys 1-6 to jump straight to a building (1 Packs, 2 Equipment, 3 Tower, 4 Collection, 5 Forge, 6 Astrolabe)",
+  "The login screen now says ASCII RIP IT"] });
+
+// ===================== v25: Eternal Binder, custom town art, sort/filter =====================
+TART["TOWER & REALMS"] = ART_SPIRE;
+TART["PACKS"] = ART_SHOP;
+TART["COLLECTION"] = [
+  "   ___________   ", "  / __  _  __ \\  ", " |_|__||_||__|_| ", " | [] BINDER [] | ", " |  _________  | ", " | | ETERNAL | | ", " |_|____o____|_| "];
+
+// ---- shared sort/filter helpers (variants, elements) ----
+const VGROUPS = [["all", "All variants"], ["base", "Standard"], ["foil", "Foils"], ["misprint", "Misprints"], ["serial", "Serialized"]];
+function vGroup(v) { v = String(v || "base"); return v.includes("serialized") ? "serial" : /miscut|crimped|glitch|negative/.test(v) ? "misprint" : /foil|white|shiny|bw/.test(v) ? "foil" : "base"; }
+const VRANK = { serial: 3, misprint: 2, foil: 1, base: 0 };
+function keyEls(k) { const id = +k.split("|")[0], c = CARDS[id]; return c ? baseOf(c, k.split("|")[1]) : []; }
+function sortKeys(ks, mode) {
+  const id = k => +k.split("|")[0], v = k => k.split("|")[1], P = k => cardPower(id(k), v(k));
+  const f = { pwr: (a, b) => P(b) - P(a), rar: (a, b) => CARDS[id(b)].tier - CARDS[id(a)].tier || P(b) - P(a), el: (a, b) => String(keyEls(a)[0]).localeCompare(String(keyEls(b)[0])) || P(b) - P(a), vr: (a, b) => VRANK[vGroup(v(b))] - VRANK[vGroup(v(a))] || CARDS[id(b)].tier - CARDS[id(a)].tier || P(b) - P(a), rol: (a, b) => rscore(rollOf(id(b), v(b))) - rscore(rollOf(id(a), v(a))) || P(b) - P(a), lvl: (a, b) => getStar(id(b)) - getStar(id(a)) || P(b) - P(a) }[mode || "pwr"];
+  return ks.slice().sort(f);
+}
+function filterKeys(ks, el, vg) {
+  return ks.filter(k => (!el || el === "all" || keyEls(k).includes(el)) && (!vg || vg === "all" || vGroup(k.split("|")[1]) === vg));
+}
+const SORT_OPTS = [["pwr", "Stat Power"], ["rar", "Rarity"], ["el", "Element"], ["vr", "Variant"], ["lvl", "Level (★)"], ["rol", "Roll quality"]];
+const selHTML = (id, cur, opts, pre) => `<select data-pk="${id}">${opts.map(([v, n]) => `<option value="${v}" ${cur === v ? "selected" : ""}>${pre || ""}${n}</option>`).join("")}</select>`;
+const elOpts = [["all", "All elements"], ...ELEMENTS.map(e => [e, EL_ICON[e] + " " + e])];
+
+// equipment picker + binder vault share one set of choices
+var pk = { so: "pwr", el: "all", vg: "all" };
+function pkBar() { return selHTML("so", pk.so, SORT_OPTS, "Sort: ") + selHTML("el", pk.el, elOpts) + selHTML("vg", pk.vg, VGROUPS); }
+function pkApply(ks) { return sortKeys(filterKeys(ks, pk.el, pk.vg), pk.so); }
+
+// ---- Eternal Binder (replaces the Museum) ----
+const EB_PER = 6, EB_BASE = 500;
+var ebPage = 0;
+function ebPages() { return Math.max(2, (sv.eb && sv.eb.pages) || 2); }
+function ebMult() { return Math.max(0.2, (1 - 0.05 * lg("mus")) * (1 - 0.04 * astral("offl")) / (1 + standBonus())); }
+function ebCost() { const c = Math.ceil(EB_BASE * Math.pow(1.5, ebPages() - 2) * ebMult()); return { c, d: Math.ceil(c / 4), s: Math.max(1, Math.ceil(c / 500)) }; }
+function showEternalBinder() {
+  sv.eb = sv.eb || { pages: 2 }; const M = sv.museum, B = ebPages(), cap = B * EB_PER, cost = ebCost();
+  ebPage = Math.max(0, Math.min(ebPage, B - 1));
+  const slots = [...Array(cap)].map((_, i) => M.items[i] || null);
+  const opts = Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]); const allEntries = () => opts.flatMap(k => vers(+k.split("|")[0], k.split("|")[1]).map(r => ({ id: +k.split("|")[0], v: k.split("|")[1], u: r.u, r })));
+  const total = M.items.reduce((a, it) => a + museumValue(it), 0);
+  main.innerHTML = `<div class="bar"><b>📖 Eternal Binder Vault</b> | ${M.items.length}/${cap} slots | ${B} pages | Vault value ${total}c</div>
+  <div class="panel-box" style="text-align:center"><p style="margin:0 0 6px;color:var(--mut)">Cards in the Eternal Binder are locked in the Vault and survive Prestige. Buy more pages to hold more. Each page costs 1.5× the last.</p>
+  <button id="bc" ${sv.c >= cost.c ? "" : "disabled"}>Buy page: ${cost.c.toLocaleString()}c</button> <button id="bd" ${(sv.dust || 0) >= cost.d ? "" : "disabled"}>${cost.d.toLocaleString()} ✦</button> <button id="bs" ${(sv.shards || 0) >= cost.s ? "" : "disabled"}>${cost.s} ✧</button>
+  <div style="margin-top:8px">${pkBar()}</div>
+  <div style="margin-top:6px"><select id="mp">${sortEntries(filterEntries(allEntries(), pk.el, pk.vg), pk.so).slice(0, 250).map(x => `<option value="${entKey(x)}">${esc(CARDS[x.id].name)} (${x.v}) PWR ${cardPower(x.id, x.v)} · ${rgText(x.r)}${sv.slabs[x.id + "|" + x.v] ? " " + slabLabel(sv.slabs[x.id + "|" + x.v]) : ""}</option>`).join("")}</select> <button id="mpb" ${M.items.length < cap && opts.length ? "" : "disabled"}>Place in binder</button></div></div>
+  <div class="bar"><button id="bpv" ${ebPage > 0 ? "" : "disabled"}>&lsaquo; Prev</button><span style="font:13px ui-monospace,monospace">Page ${ebPage + 1} / ${B}</span><button id="bnx" ${ebPage < B - 1 ? "" : "disabled"}>Next &rsaquo;</button></div>
+  <div class="store-grid">${slots.slice(ebPage * EB_PER, ebPage * EB_PER + EB_PER).map((it, j) => { const i = ebPage * EB_PER + j; return it ? `<div class="case">${it.slab ? `<div class="slab">${slabLabel(it.slab)}</div>` : ""}${cardHTML(CARDS[+it.k.split("|")[0]], it.k.split("|")[1], 0, 1)}${it.rl ? afxLines(it.rl, 0) : ""}<div style="font-size:12px">${museumValue(it)}c</div><button data-r="${i}">Remove</button></div>` : `<div class="case" style="opacity:.45;display:flex;align-items:center;justify-content:center;min-height:120px;border:1px dashed var(--bd)"><pre style="margin:0;color:var(--mut)">[ empty ]\nslot ${i + 1}</pre></div>`; }).join("")}</div>`;
+  const $ = s => main.querySelector(s), buy = (cur) => { const c = ebCost(); if (cur === "c" && sv.c >= c.c) sv.c -= c.c; else if (cur === "d" && (sv.dust || 0) >= c.d) sv.dust -= c.d; else if (cur === "s" && (sv.shards || 0) >= c.s) sv.shards -= c.s; else return; sv.eb.pages = ebPages() + 1; ebPage = ebPages() - 1; save(); notify("New binder page unlocked!"); updateHeader(); showEternalBinder(); };
+  $("#bc").onclick = () => buy("c"); $("#bd").onclick = () => buy("d"); $("#bs").onclick = () => buy("s");
+  $("#bpv").onclick = () => { ebPage--; showEternalBinder(); }; $("#bnx").onclick = () => { ebPage++; showEternalBinder(); };
+  main.querySelectorAll("[data-pk]").forEach(x => x.onchange = () => { pk[x.dataset.pk] = x.value; showEternalBinder(); });
+  $("#mpb").onclick = () => {
+    const q = ($("#mp").value || "").split("|"); if (!q[0] || M.items.length >= cap) return; const id = +q[0], v = q[1], u = q[2], k = id + "|" + v;
+    const r = verBy(id, v, u); let rl = null;
+    if (sv.roll[k] && sv.roll[k].u === r.u) { rl = sv.roll[k]; const al = (sv.alts && sv.alts[k]) || []; if (al.length) { al.sort((x, y) => rscore(y) - rscore(x)); sv.roll[k] = al.shift(); if (!al.length) delete sv.alts[k]; } else delete sv.roll[k]; }
+    else { const al = (sv.alts && sv.alts[k]) || []; const ix = al.findIndex(x => x.u === r.u); if (ix >= 0) { rl = al.splice(ix, 1)[0]; if (!al.length) delete sv.alts[k]; } }
+    M.items.push({ k, slab: sv.slabs[k] || null, rl }); delete sv.slabs[k]; sv.inv[k]--; if (sv.inv[k] <= 0) delete sv.inv[k];
+    ESLOTS.forEach(([s]) => { const e = sv.equip[s]; if (e && e.id === id && e.v === v && e.u === u) sv.equip[s] = null; });
+    validateEquip(); syncTeam(); save(); showEternalBinder();
+  };
+  main.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { const it = M.items.splice(+b.dataset.r, 1)[0]; sv.inv[it.k] = (sv.inv[it.k] || 0) + 1; if (it.slab) sv.slabs[it.k] = it.slab; if (it.rl) { it.rl.u = it.rl.u || newU(); if (!sv.roll[it.k]) sv.roll[it.k] = it.rl; else (sv.alts = sv.alts || {})[it.k] = ((sv.alts || {})[it.k] || []).concat([it.rl]); } save(); showEternalBinder(); });
+}
+function showMuseum() { showEternalBinder(); }
+
+const _e25 = ext;
+ext = function (m) {
+  _e25(m);
+  if (!m.eb) { const old = m.museum || {}; m.eb = { pages: Math.max(2, Math.ceil(Math.max(old.cases || 0, (old.items || []).length) / EB_PER)) }; }
+  return m;
+};
+
+PATCH_NOTES.unshift({ v: 25, t: "v25: Eternal Binder, custom town art", n: [
+  "The Museum is gone. Its replacement, the Eternal Binder Vault, keeps your vaulted cards safe through Prestige. There is no more passive income or visitors. Instead you buy extra binder pages (6 slots each) with Coins, Stardust or Shards, and every page costs 1.5x the last. Your old museum cards moved into the Binder automatically",
+  "The town now uses the custom Endless Spire and Peddler's Shoppe artwork",
+  "Sort by Stat Power, Rarity, Element, Variant or Level and filter by element and variant type in the Binder, the Equipment picker and the Eternal Binder",
+  "The header's Prestige readout now shows your real bonuses (Power, Coins, Stardust, HP, Luck) instead of a flat +50% Coins"] });
+TART["FORGE & LAB"] = ART_FORGE; TART["ASTROLABE"] = ART_OBS; TART["COLLECTION"] = ART_VAULT;
+
+// ===================== v26: Diablo-style affixes =====================
+// Every card print carries random properties drawn from a slot pool. Each stores a normalized roll t (0..1) or a
+// Super-Roll flag (value = 1.5x the tier maximum). Values are computed live from card rarity and star level.
+const AFX = {
+  dmg: { n: "All Damage", r: [3, 6], u: "%" }, aspd: { n: "Attack Speed", r: [2, 4], u: "%" }, crit: { n: "Critical Strike Chance", r: [1, 2], u: "%" }, critd: { n: "Critical Strike Damage", r: [5, 10], u: "%" },
+  pyre: { n: "Pyre Damage", r: [4, 8], u: "%" }, glacial: { n: "Glacial Damage", r: [4, 8], u: "%" }, voltaic: { n: "Voltaic Damage", r: [4, 8], u: "%" }, venom: { n: "Venom Damage", r: [4, 8], u: "%" },
+  dot: { n: "Damage Over Time", r: [5, 10], u: "%" }, edmg: { n: "Elemental Damage", r: [4, 8], u: "%" },
+  hp: { n: "Maximum Life", r: [4, 8], u: "%" }, blk: { n: "Armor", r: [4, 8], u: "%" }, res: { n: "Damage Reduction", r: [1, 2], u: "%" }, dodge: { n: "Dodge Chance", r: [1, 2], u: "%" },
+  loh: { n: "Life on Hit", r: [1, 2], u: "%" }, regen: { n: "Life Regeneration", r: [0.4, 0.8], u: "%", d: 2 }, thorns: { n: "Thorns", r: [5, 10], u: "%" },
+  luck: { n: "Lucky Hit Chance (Luck)", r: [2, 4], u: "%" }, pregen: { n: "Pack Regeneration", r: [3, 6], u: "%" },
+  gold: { n: "Gold Find", r: [5, 10], u: "%" }, dust: { n: "Stardust Find", r: [5, 10], u: "%" },
+  pheal: { n: "Healing Pulse", r: [1, 2], u: "%", d: 1 }, petdmg: { n: "Companion Damage", r: [5, 10], u: "%" }
+};
+const AFX_DESC = {
+  dmg: "Increases all strike damage", aspd: "Extra strikes per round (more damage per turn)", crit: "Chance for a critical strike", critd: "Increases critical strike multiplier",
+  pyre: "More damage while a Pyre set bonus is active (quarter value otherwise)", glacial: "More damage while a Glacial set bonus is active (quarter value otherwise)",
+  voltaic: "More damage while a Voltaic set bonus is active (quarter value otherwise)", venom: "More damage while a Venom set bonus is active (quarter value otherwise)",
+  dot: "Increases burn and damage-over-time effects", edmg: "Bonus damage with an element set bonus (older cards)",
+  hp: "Increases maximum life", blk: "Increases flat armor block against each hit", res: "Reduces all damage taken (capped at 60%)", dodge: "Chance to avoid an enemy hit entirely (capped at 40%)",
+  loh: "Heals you for this % of the damage you deal (capped at 25%)", regen: "% of max life restored every turn", thorns: "Reflects this % of each enemy hit back at the enemy",
+  luck: "Better Rare+ pack odds and foil chance", pregen: "Free packs regenerate faster", gold: "More coins from selling and the Tower", dust: "More Stardust from duplicates and fights",
+  pheal: "% of max life healed every second turn", petdmg: "Increases your pet's damage"
+};
+const AFX_OFF = ["dmg", "aspd", "crit", "critd", "pyre", "glacial", "voltaic", "venom", "dot"], AFX_DEF = ["hp", "blk", "res", "dodge", "loh", "regen", "thorns"], AFX_JEW = [...AFX_OFF, ...AFX_DEF, "luck", "pregen"];
+const AFX_POOL = { "Main Hand": AFX_OFF, "Helmet": AFX_DEF, "Armor": AFX_DEF, "Gloves": AFX_DEF, "Boots": AFX_DEF, "Off Hand": [...AFX_OFF, ...AFX_DEF], "Amulet": AFX_JEW, "Ring": AFX_JEW, "Pet": ["gold", "dust", "pheal", "petdmg", "pregen"] };
+const AFX_N = [1, 1, 2, 3, 4], AFX_TM = [1, 1.6, 2.4, 3.4, 4.6], AFX_SUPER = [0.002, 0.004, 0.012, 0.03, 0.06], AFX_SMULT = 1.5, AFX_GEN = 28;
+const afxLM = id => 1 + 0.08 * ((typeof getStar === "function" ? getStar(id) : 1) - 1);
+function afxRange(id, k) { const a = AFX[k], c = CARDS[id], m = (AFX_TM[c ? c.tier : 0] || 1) * afxLM(id); return [a.r[0] * m, a.r[1] * m]; }
+function afxVal(id, p) { if (!AFX[p.k] || !CARDS[id]) return 0; const [lo, hi] = afxRange(id, p.k); return p.s ? hi * AFX_SMULT : lo + (hi - lo) * (p.t || 0); }
+function afxRoll(c, q) {
+  const pool = (AFX_POOL[c.category] || AFX_DEF).slice(), n = Math.min(AFX_N[c.tier] || 1, pool.length), p = [];
+  for (let i = 0; i < n; i++) { const k = pool.splice(Math.floor(Math.random() * pool.length), 1)[0]; const t = q === undefined ? Math.random() : Math.max(0, Math.min(1, q + (Math.random() - 0.5) * 0.5)); p.push({ k, t: +t.toFixed(3), s: Math.random() < (AFX_SUPER[c.tier] || 0.002) ? 1 : 0 }); }
+  return p;
+}
+const lq = r => (r.a + r.h + r.x) / 3;
+function afxFix(r, c) {
+  if (r.g === AFX_GEN) return r;
+  if (!r.p) { r.p = afxRoll(c, Math.max(0, Math.min(1, (lq(r) - 0.75) / 0.5))); r.a = r.h = r.x = 1; }
+  const pool = (AFX_POOL[c.category] || AFX_DEF), seen = new Set(), keep = r.p.slice().sort((a, b) => (b.s ? 2 : b.t) - (a.s ? 2 : a.t)).slice(0, AFX_N[c.tier] || 1), out = [];
+  keep.forEach(x => { let k = x.k; if (!pool.includes(k) || seen.has(k)) { const f = pool.filter(q => !seen.has(q) && !keep.some(y => y.k === q)); k = f.length ? f[Math.floor(Math.random() * f.length)] : k; } seen.add(k); out.push({ k, t: x.t, s: x.s }); });
+  r.p = out; r.g = AFX_GEN; if (r.i === undefined) r.i = c.id; return r;
+}
+function rscore(r) { return r.p && r.p.length ? r.p.reduce((a, p) => a + (p.s ? AFX_SMULT : p.t), 0) / r.p.length : Math.max(0, Math.min(1, (lq(r) - 0.75) / 0.5)); }
+const afxSupers = r => (r.p || []).filter(p => p.s).length;
+function rgq(r) { return afxSupers(r) ? 3 : rscore(r) >= 0.7 ? 3 : rscore(r) >= 0.5 ? 2 : rscore(r) >= 0.3 ? 1 : 0; }
+function rgText(r) { const s = afxSupers(r), q = rscore(r); return s ? `★ SUPER-ROLL ×${s}` : q >= 0.8 ? "GOD ROLL" : q >= 0.65 ? "great roll" : q >= 0.45 ? "good roll" : q >= 0.25 ? "average roll" : "weak roll"; }
+function afxFmt(k, v) { const a = AFX[k]; return v.toFixed(a.d === undefined ? 1 : a.d); }
+function rollStr(r) { const n = (r.p || []).length, s = afxSupers(r); return n ? `${n} prop${n > 1 ? "s" : ""}${s ? " " + "★".repeat(s) : ""}` : "no props"; }
+function afxLines(r, full) {
+  const id = r.i; if (!r.p || !r.p.length || !CARDS[id]) return `<div class="afxs"><span style="color:var(--mut)">no properties</span></div>`;
+  return `<div class="afxs">${r.p.map(p => { const a = AFX[p.k], v = afxVal(id, p), [lo, hi] = afxRange(id, p.k); return `<div class="afx${p.s ? " sup" : ""}"${full ? ` title="${esc(AFX_DESC[p.k])}"` : ""}><b>+${afxFmt(p.k, v)}${a.u}</b> ${a.n}${full ? ` <i>(${afxFmt(p.k, lo)}-${afxFmt(p.k, hi)})</i>` : ""}${p.s ? ` <em>★ SUPER ×${AFX_SMULT}</em>` : ""}</div>`; }).join("")}</div>`;
+}
+function afxBlock(id, v, u) { const k = rkey(id, v); if (!(sv.inv[k] > 0)) return ""; const r = rollOf(id, v, u); return `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed #33364a"><div style="font-size:11px;color:#9aa4b2;font-family:ui-monospace,monospace">PROPERTIES · <span class="q${rgq(r)}">${rgText(r)}</span> · values scale with rarity and ★ level</div>${afxLines(r, 1)}</div>`; }
+
+function afxTotals() {
+  const T = {}; Object.keys(AFX).forEach(k => T[k] = 0);
+  if (!sv || !sv.equip) return T;
+  ESLOTS.forEach(([s]) => { const it = sv.equip[s]; if (it && CARDS[it.id]) { const r = rollOf(it.id, it.v, it.u); (r.p || []).forEach(p => { T[p.k] += afxVal(it.id, p); }); } });
+  return T;
+}
+const afx = afxTotals;
+function afxSummary() {
+  const T = afxTotals(), rows = Object.keys(AFX).filter(k => T[k] > 0).map(k => `<div class="afx"><b>+${afxFmt(k, T[k])}${AFX[k].u}</b> ${AFX[k].n} <i>${esc(AFX_DESC[k])}</i></div>`).join("");
+  return `<div class="panel-box"><b>Gear properties (all equipped items)</b><div class="afxs afxsum">${rows || "<span style='color:var(--mut)'>Equip cards to gain properties.</span>"}</div></div>`;
+}
+// gear score: card power adjusted by how well the item rolled (used for auto-equip and upgrade checks)
+function gscore(id, v, u) { const r = rollOf(id, v, u); return cardPower(id, v) * (0.85 + 0.3 * rscore(r) + 0.05 * afxSupers(r)); }
+
+const _gts26 = getTeamStats;
+getTeamStats = function () {
+  const t = _gts26(), A = afxTotals(), el = t.activeElement ? 1 : 0.5;
+  t.maxHP = Math.round(t.maxHP * (1 + A.hp / 100));
+  t.armorBlock = Math.round(t.armorBlock * (1 + A.blk / 100));
+  const ed = ELEMENTS.reduce((a, e2) => a + (A[e2.toLowerCase()] || 0) * (t.activeElement === e2 ? 1 : 0.25), 0) + A.edmg * el;
+  t.strikeDmg = Math.round(t.strikeDmg * (1 + A.dmg / 100) * (1 + A.aspd / 100) * (1 + ed / 100));
+  t.petDmg = Math.round((t.petDmg || 0) * (1 + A.petdmg / 100));
+  t.critChance = +Math.min(75, Math.max(0, t.critChance + A.crit)).toFixed(1);
+  t.critMult = +(t.critMult + A.critd / 100).toFixed(3);
+  t.dodge = Math.min(40, A.dodge); t.loh = Math.min(25, A.loh); t.dot = A.dot; t.thorns = Math.min(100, A.thorns); t.regen = Math.min(5, A.regen); t.res = Math.min(60, A.res); t.pheal = Math.min(8, A.pheal); t.afx = A;
+  t.totalPower = Math.round(t.totalPower * (1 + (A.dmg + A.aspd + A.edmg * el + ed + A.hp + A.blk + 2 * A.res + A.critd / 2) / 300));
+  return t;
+};
+
+PATCH_NOTES.unshift({ v: 26, t: "v26: Diablo-style gear properties", n: [
+  "Every card print now rolls random properties. Weapons roll offensive ones (Damage, Crit Chance, Crit Damage, Attack Speed, Elemental Damage). Helmets, Armor, Gloves and Boots roll defensive ones (Max Health, Armor/Block, Thorns, Regeneration, Damage Resistance). Amulets and Rings can roll any of those plus Luck and Pack Generation. Pets roll Gold Find, Stardust Find, Periodic Heal, Pet Damage and Pack Generation. Off Hands roll offensive or defensive properties",
+  "Rarity decides how many properties a card gets: Common 1, Uncommon 2, Rare 3, Legendary 4, Mythic 5. Each value is a random roll inside a range that grows with rarity and your star level",
+  "Every property has a 3% chance to Super-Roll: 1.5x the normal maximum, shown with a glowing gold star on the tile, tooltips and the paperdoll",
+  "The Equipment sheet lists every property on every slot and a total of all bonuses. Old cards got properties rolled automatically, weighted by how well they had rolled before. The old Might / Vigor / Edge rolls are retired"] });
+
+// ===================== v27: every copy is kept as its own version =====================
+// sv.roll[key] is the main version of a print (id|variant). sv.alts[key] holds the other kept versions.
+// Every version has a unique id u. Equipment items and vaulted cards remember their u.
+const KEEPV_MAX = 8;
+const newU = () => Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-3);
+function altsSync() {
+  if (!sv || !sv.alts) return;
+  Object.keys(sv.alts).forEach(k => {
+    const n = sv.inv[k] || 0, a = sv.alts[k];
+    if (!(n > 1) || !sv.roll || !sv.roll[k] || !Array.isArray(a)) { delete sv.alts[k]; return; }
+    const cap = Math.min(n - 1, KEEPV_MAX - 1);
+    if (a.length > cap) { a.sort((x, y) => rscore(y) - rscore(x)); a.length = cap; }
+    if (!a.length) delete sv.alts[k];
+  });
+}
+// every kept version of a print, main first, padding missing copies with fresh rolls
+function vers(id, v) {
+  const k = rkey(id, v), c = CARDS[id]; if (!c) return [];
+  const main = rollOf(id, v); if (!main.u) main.u = newU();
+  if (!sv.roll || !(sv.inv[k] > 0)) return [main];
+  const a = (sv.alts = sv.alts || {})[k] || (sv.alts[k] = []);
+  a.forEach(r => { if (!r.u) r.u = newU(); afxFix(r, c); if (!r.e) r.e = main.e.slice(); });
+  const want = Math.min(sv.inv[k], KEEPV_MAX);
+  while (1 + a.length < want) { const r = newRoll(c); r.e = main.e.slice(); r.u = newU(); a.push(r); }
+  if (!a.length) delete sv.alts[k];
+  return [main, ...a];
+}
+const verBy = (id, v, u) => { const L = vers(id, v); return L.find(r => r.u === u) || L[0]; };
+// all versions of one card id across variants, ordered by variant then lowest->best roll
+function binderVers(id) {
+  const out = []; own(id).forEach(v => { vers(id, v).slice().sort((a, b) => rscore(a) - rscore(b)).forEach(r => out.push({ v, r })); });
+  return out;
+}
+function keepvCount(k, keep) { const n = sv.inv[k] || 0, have = 1 + ((sv.alts && sv.alts[k]) || []).length; return Math.max(1, Math.min(n, keep == null ? have : keep)); }
+// all copies of equippable cards for a slot, one entry per version
+function slotEntries(slot) {
+  const out = [];
+  Object.keys(sv.inv).forEach(k => {
+    if (!(sv.inv[k] > 0)) return; const [i, v] = k.split("|"), id = +i; if (!CARDS[id] || !slotOk(slot, CARDS[id])) return;
+    vers(id, v).forEach(r => out.push({ id, v, u: r.u, r }));
+  });
+  return out;
+}
+const entKey = e => e.id + "|" + e.v + "|" + e.u;
+function sortEntries(es, mode) {
+  const P = e => cardPower(e.id, e.v), f = {
+    pwr: (a, b) => gscore(b.id, b.v, b.u) - gscore(a.id, a.v, a.u), rar: (a, b) => CARDS[b.id].tier - CARDS[a.id].tier || P(b) - P(a),
+    el: (a, b) => String(baseOf(CARDS[a.id], a.v)[0]).localeCompare(String(baseOf(CARDS[b.id], b.v)[0])) || P(b) - P(a),
+    vr: (a, b) => VRANK[vGroup(b.v)] - VRANK[vGroup(a.v)] || P(b) - P(a), lvl: (a, b) => getStar(b.id) - getStar(a.id) || P(b) - P(a),
+    rol: (a, b) => rscore(b.r) - rscore(a.r) || P(b) - P(a)
+  }[mode || "pwr"];
+  return es.slice().sort(f);
+}
+function filterEntries(es, el, vg) { return es.filter(e => (el === "all" || baseOf(CARDS[e.id], e.v).includes(el)) && (vg === "all" || vGroup(e.v) === vg)); }
+function afxInline(r, n) { if (!r.p || !r.p.length || !CARDS[r.i]) return ""; return r.p.slice(0, n || 3).map(p => `<span class="${p.s ? "afxi sup" : "afxi"}">+${afxFmt(p.k, afxVal(r.i, p))}% ${AFX[p.k].n.replace("Critical Strike", "Crit").replace("Maximum ", "Max ").replace("Life Regeneration", "Regen")}${p.s ? "★" : ""}</span>`).join(" ") + (r.p.length > (n || 3) ? ` <span class="afxi">+${r.p.length - (n || 3)} more</span>` : ""); }
+
+PATCH_NOTES.unshift({ v: 27, t: "v27: Every duplicate is kept", n: [
+  "Property counts are now Common 1, Uncommon 1, Rare 2, Legendary 3, Mythic 4, and the property list is closer to Diablo (element damages, Dodge, Life on Hit, Damage Over Time). Super-Rolls are now extremely rare on Commons and Uncommons (0.2-0.4%) and still rare on Mythics (6%)",
+  "Duplicates are no longer thrown away. Each copy of a card keeps its own properties, up to 8 versions per card and variant. A slot in the Binder holds all of them: use the Ver button to cycle through every variant and version, and Inspect to see the full properties",
+  "Equip any individual version from the Equipment picker, which now lists each copy with its best properties. The pack opening screen shows the exact copy you pulled",
+  "Eternal Binder Vault slots remember the exact version you store. Sell dupes now only sells copies beyond your 8 kept versions, and the new Keep best 3 button sells down to the top three versions per card",
+  "New custom ASCII art for the Blacksmith & Alchemist's Forge, the Celestial Observatory and the Eternal Binder Vault"] });
+
 // ---- saves: extension and migration ----
 const _e20 = ext;
 ext = function (m) {
@@ -5771,7 +6196,7 @@ Object.keys(HUBS).forEach(k => delete HUBS[k]);
 HUBS["PACKS"] = [["Pack Opening", 0], ["Pack Store", 1], ["Cosmic Anomalies", showAnomalies], ["Daily Market", showMarketPlus], ["Quest Board", showBoard], ["Auction House", showAuction]];
 HUBS["EQUIPMENT"] = [["Paperdoll", 4], ["Element Chemistry", showChem], ["Potions & Relics", showLoadoutFx]];
 HUBS["TOWER & REALMS"] = [["Infinite Tower", 8], ["Dungeon Map", showExpedition], ["Chronomancer's Rift", showCRift], ["Challenges", showChallenges], ["Bestiary", showBestiary], ["Replays", showReplays]];
-HUBS["COLLECTION"] = [["Binder", 3], ["Index", showIndex], ["Museum", showMuseum], ["Hall of Trophies", showHall], ["Print Census", showCensus], ["Overview", showCollection], ["Memorial Wall", showMemorial]];
+HUBS["COLLECTION"] = [["Binder", 3], ["Index", showIndex], ["Eternal Binder", showEternalBinder], ["Hall of Trophies", showHall], ["Print Census", showCensus], ["Overview", showCollection], ["Memorial Wall", showMemorial]];
 HUBS["FORGE & LAB"] = [["Foil & Misprint Lab", showLab], ["Potion Bench", showBrew], ["Relic Forge", showRelicForge], ["Grading Guild", showGrading], ["Century Forge", showForge], ["Cosmetics", showCosmetics], ["Craft & Stars", 5], ["Fusion", 6]];
 HUBS["ASTROLABE"] = [["Skill Tree", showAstrolabe], ["Prestige & Ascension", showAscension], ["Prestige Echoes", showEchoes], ["Legacy Tree", showLegacy]];
 curHub = "PACKS"; curSub = 0;
@@ -5786,8 +6211,9 @@ function UTIL() { return [["Stats", () => { setActive(navBtns[9]); views[9](); }
 function ea(s) { return String(s).replace(/&/g, "&amp;"); }
 function hubGo(h, s) {
   if (!__ready) return;
+  if (h === "TOWN") return townGo();
   h = HUBALIAS[h] || h; if (!HUBS[h]) h = "PACKS"; s = Math.max(0, Math.min(s | 0, HUBS[h].length - 1));
-  curHub = h; curSub = s; drawNav();
+  curHub = h; curSub = s; lastHub = { h, s }; drawNav();
   const e = HUBS[h][s][1]; autoFarming = false; autoPush = false;
   if (typeof e === "number") { setActive(navBtns[e]); views[e](); }
   else { navBtns.forEach(b => b.className = ""); updateHeader(); e(); }
@@ -5795,8 +6221,9 @@ function hubGo(h, s) {
 function drawNav() {
   const hb = document.getElementById("hubbar"), sb = document.getElementById("subbar"); let ub = document.getElementById("utilbar");
   if (!ub) { ub = document.createElement("nav"); ub.id = "utilbar"; ub.className = "bar"; sb.after(ub); }
-  hb.innerHTML = Object.keys(HUBS).map(h => `<button data-h="${ea(h)}" class="${h === curHub ? "on" : ""}">[ ${ea(h)} ]</button>`).join("");
-  sb.innerHTML = HUBS[curHub].map((x, i) => `<button data-s="${i}" class="${i === curSub ? "on" : ""}">${ea(x[0])}</button>`).join("");
+  const inTown = curHub === "TOWN";
+  hb.innerHTML = `<button class="tb-home ${inTown ? "on" : ""}" data-h="TOWN">${inTown ? "[ ⌂ Town ]" : "[ ⌂ Return to Town (Esc) ]"}</button>` + Object.keys(HUBS).map((h, i) => `<button data-h="${ea(h)}" class="${h === curHub ? "on" : ""}"><span class="tb-num">${i + 1}</span>[ ${ea(h)} ]</button>`).join("");
+  sb.innerHTML = inTown ? "" : HUBS[curHub].map((x, i) => `<button data-s="${i}" class="${i === curSub ? "on" : ""}">${ea(x[0])}</button>`).join("");
   ub.innerHTML = UTIL().map((u, i) => `<button data-u="${i}">${u[0]}</button>`).join("");
   hb.querySelectorAll("button").forEach(b => b.onclick = () => hubGo(b.dataset.h, 0));
   sb.querySelectorAll("button").forEach(b => b.onclick = () => hubGo(curHub, +b.dataset.s));
