@@ -457,6 +457,56 @@ h1{text-shadow:0 0 10px #c4491f}
 #title .msg{min-height:1.4em;color:#f472b6}
 .plq{width:100%;box-sizing:border-box;font:11px ui-monospace,monospace}
 .spot{box-shadow:0 0 18px 3px #ffe08a}
+
+.pdoll{display:grid;grid-template-columns:minmax(120px,1fr) auto minmax(120px,1fr);gap:10px;align-items:start;margin:8px 0}
+.pdoll>div{display:flex;flex-direction:column;gap:6px}
+.eslot{width:100%;text-align:left;min-height:54px;font:12px ui-monospace,monospace}
+.hero{font:13px/1.15 ui-monospace,monospace;margin:0;text-align:left;color:var(--fg)}
+.astro{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:8px}
+.astro pre{font:12px/1.9 ui-monospace,monospace;margin:6px 0 0;overflow-x:auto;white-space:pre-wrap}
+.peekbox{position:relative;display:inline-block;touch-action:none;cursor:grab;filter:drop-shadow(0 0 24px #000);transition:transform .1s}
+.peekback{position:absolute;inset:0;border:2px solid #fbbf24;border-radius:6px;z-index:2;-webkit-mask:radial-gradient(circle at var(--px,50%) var(--py,50%),transparent var(--r,0px),#000 calc(var(--r,0px) + 20px));mask:radial-gradient(circle at var(--px,50%) var(--py,50%),transparent var(--r,0px),#000 calc(var(--r,0px) + 20px))}
+.peekback .shade{position:absolute;inset:0;background:radial-gradient(circle,transparent 25%,rgba(0,0,0,.7))}
+.pk-hint{position:absolute;left:0;right:0;bottom:-24px;text-align:center;font:11px ui-monospace,monospace;color:#d9a441}
+.cine{position:absolute;inset:0;z-index:90;pointer-events:none;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.cine b{position:relative;z-index:3;font:bold 22px ui-monospace,monospace;letter-spacing:3px;text-align:center;animation:cnb 1.8s forwards}
+@keyframes cnb{0%{opacity:0;transform:scale(.7)}30%{opacity:1;transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+.cine i{position:absolute;display:block}
+@keyframes cnfl{0%,25%{opacity:0}45%{opacity:1}100%{opacity:0}}
+.c-vb b{color:#ffd700;text-shadow:0 0 14px #ffae00}
+.c-vb .a,.c-vb .b{top:0;bottom:0;width:50%;background:repeating-linear-gradient(90deg,#3a2a08,#6b4d12 12px);border:2px solid #ffd700;animation:vbl 1.6s ease-in forwards}
+.c-vb .a{left:0}.c-vb .b{right:0;animation-name:vbr}
+@keyframes vbl{0%,30%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+@keyframes vbr{0%,30%{transform:translateX(0)}100%{transform:translateX(100%)}}
+.c-vb .c{inset:0;background:radial-gradient(circle,#fff7c0,#ffd700 30%,transparent 65%);opacity:0;animation:cnfl 1.6s forwards}
+.c-sf b{color:#fff;text-shadow:0 0 18px #ffb300}
+.c-sf .a{left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;background:conic-gradient(rgba(255,230,120,0),rgba(255,230,120,.9),rgba(255,230,120,0) 20%,rgba(255,200,60,.9) 45%,rgba(255,230,120,0) 70%,rgba(255,230,120,.9),rgba(255,230,120,0));animation:spn 1.8s linear forwards,cnfl 1.8s forwards}
+.c-sf .c{inset:0;background:radial-gradient(circle,#fff,#ffd54a 40%,transparent 70%);transform:scale(0);animation:sfb 1.8s ease-out forwards}
+@keyframes sfb{0%{transform:scale(0);opacity:1}70%{transform:scale(2.2);opacity:.9}100%{transform:scale(3);opacity:0}}
+.c-rd b{color:#5a3a08;text-shadow:0 0 3px #fff}
+.c-rd .a{left:12%;right:12%;top:50%;height:150px;margin-top:-75px;background:linear-gradient(#e8d9b0,#f5e9c4,#e8d9b0);border:4px double #b8860b;transform:scaleY(0);animation:rdu 1.7s ease-out forwards}
+@keyframes rdu{0%{transform:scaleY(0)}35%,85%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.c-rd .b{inset:10px;border:3px double #ffd700;animation:cnfl 1.7s forwards}
+.c-rd .c{inset:0;background:radial-gradient(circle,rgba(255,215,0,.35),transparent 70%)}
+.c-vr b,.c-pa b,.c-sc b{color:#f5d0fe;text-shadow:0 0 16px #c026d3}
+.c-vr .a{left:50%;top:0;bottom:0;width:6px;margin-left:-3px;background:#e879f9;box-shadow:0 0 30px 10px #a855f7;transform:scaleX(0);animation:vrr 2s ease-out forwards}
+@keyframes vrr{0%{transform:scaleX(0);opacity:1}40%{transform:scaleX(1)}80%{transform:scaleX(60);opacity:.9}100%{transform:scaleX(90);opacity:0}}
+.c-vr .c{left:50%;top:50%;width:700px;height:700px;margin:-350px 0 0 -350px;background:conic-gradient(#0a0414,#a855f7,#0a0414,#e879f9,#0a0414);border-radius:50%;opacity:0;animation:vrs 2s ease-in forwards;filter:blur(6px)}
+@keyframes vrs{0%{opacity:0;transform:rotate(0) scale(.2)}50%{opacity:.9}100%{opacity:0;transform:rotate(540deg) scale(1.3)}}
+.c-pa .a{inset:0;background:radial-gradient(circle,rgba(236,72,153,.7),rgba(88,28,135,.5) 50%,transparent 75%);animation:pap 2s ease-in-out forwards}
+@keyframes pap{0%{opacity:0;transform:scale(.4)}35%{opacity:1;transform:scale(1)}50%{transform:scale(.85)}65%{transform:scale(1.1)}100%{opacity:0;transform:scale(1.4)}}
+.c-pa .b{left:0;right:0;bottom:0;height:0;background:repeating-linear-gradient(90deg,#4c1d95 0 6px,transparent 6px 22px);animation:par 2s ease-out forwards}
+@keyframes par{0%{height:0}50%{height:70%;opacity:1}100%{height:100%;opacity:0}}
+.c-sc .a{left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;border:6px solid #e879f9;box-shadow:0 0 60px #a855f7,inset 0 0 60px #a855f7;animation:scc 2s cubic-bezier(.6,0,1,.6) forwards}
+@keyframes scc{0%{transform:scale(1);opacity:1}85%{transform:scale(.02);opacity:1}100%{transform:scale(.02);opacity:0}}
+.c-sc .c{inset:0;background:#fff;opacity:0;animation:scf 2s forwards}
+@keyframes scf{0%,80%{opacity:0}88%{opacity:1}100%{opacity:0}}
+.glitch{animation:glt .22s steps(2) infinite}
+@keyframes glt{0%{transform:translate(0)}20%{transform:translate(-4px,2px);filter:hue-rotate(60deg)}40%{transform:translate(5px,-2px);filter:hue-rotate(-60deg) saturate(2)}60%{transform:translate(-2px,0);clip-path:inset(0 0 40% 0)}80%{transform:translate(3px,1px);filter:invert(.15)}100%{transform:translate(0)}}
+.cur.fil{padding:14px;border:3px double #d9a441;border-radius:14px;background:radial-gradient(circle,rgba(255,215,0,.18),transparent 70%)}
+.cur.fil::before,.cur.fil::after{content:"❦";position:absolute;color:#ffd700;font-size:22px;text-shadow:0 0 8px #fb0}
+.cur.fil::before{top:-12px;left:-6px}.cur.fil::after{bottom:-12px;right:-6px}
+.forge{font-family:ui-monospace,monospace;width:100%;box-sizing:border-box}
 </style>
 </head>
 <body>
@@ -801,7 +851,7 @@ function sanitizeState(parsed) {
   return migrateState(merged);
 }
 
-const SAVE_VER = 17;
+const SAVE_VER = 18;
 const MIGRATIONS = [
   [15, m => { m.team = m.team.map(s => (s && typeof s === "object" && s.id !== undefined) ? s : null); }],
   [17, m => {
@@ -809,6 +859,10 @@ const MIGRATIONS = [
     Object.keys(m.inv || {}).forEach(k => { if (+k.split("|")[0] >= thr) { m.stash[k] = m.inv[k]; delete m.inv[k]; } });
     m.team = m.team.map(s => (s && s.id >= thr) ? null : s);
     if (m.museum && Array.isArray(m.museum.items)) m.museum.items = m.museum.items.filter(it => +it.k.split("|")[0] < thr);
+  }],
+  [18, m => {
+    const t = m.team || []; m.equip = m.equip || { hero: t[0] || null, main: t[1] || null, torso: t[2] || null, ring: t[3] || null, pet: t[4] || null };
+    m.pbonus = m.pbonus || { pow: 0, dust: 0, coin: 0, hp: 0, luck: 0, log: [] };
   }]
 ];
 function migrateState(m) { const from = m.v || 0; MIGRATIONS.forEach(([v, f]) => { if (from < v) { try { f(m); } catch (e) {} } }); m.v = SAVE_VER; return m; }
@@ -1042,7 +1096,7 @@ function getTeamStats() {
   const rawPower = slotPowers.reduce((a, b) => a + b, 0);
   const fullSynergy = active.length === 5;
   const holyMult = activeElement === "Holy" ? 1.15 : 1;
-  const prestigeBonus = 1 + (sv.prestige || 0) * 0.2;
+  const prestigeBonus = 1 + (sv.prestige || 0) * 0.02 + ((sv.pbonus && sv.pbonus.pow) || 0);
   const totalPower = Math.round(rawPower * (fullSynergy ? 1.25 : 1) * holyMult * prestigeBonus * (1 + 0.05 * astral("might")) * (1 + landBonus()) * (sv.sleeve && sv.sleeve !== "none" ? 1.1 : 1) * (active.length === 5 && active.every(i => sv.corrupt[i.id] === "ash") ? 3 : 1));
 
   const charPwr = slotPowers[0];
@@ -1164,8 +1218,8 @@ function genPack(packKey = "standard") {
 function sell(d) {
   let g = 0, dst = 0;
   const ts = getTeamStats();
-  const coinMult = (1 + (sv.prestige || 0) * 0.25) * (hasRelic("goblin_crown") ? 1.15 : 1) * (1 + 0.1 * astral("coin")) * (1 + trophyBuff().coin);
-  const dustMult = (ts.activeElement === "Shadow" ? 1.15 : 1) * (hasRelic("star_hammer") ? 1.25 : 1) * (1 + 0.1 * astral("dust"));
+  const coinMult = (1 + (sv.prestige || 0) * 0.02 + ((sv.pbonus && sv.pbonus.coin) || 0)) * (hasRelic("goblin_crown") ? 1.15 : 1) * (1 + 0.1 * astral("coin")) * (1 + trophyBuff().coin);
+  const dustMult = (ts.activeElement === "Shadow" ? 1.15 : 1) * (hasRelic("star_hammer") ? 1.25 : 1) * (1 + 0.1 * astral("dust")) * (1 + ((sv.pbonus && sv.pbonus.dust) || 0));
 
   for (const k in sv.inv) {
     const [i, v] = k.split("|");
@@ -1212,7 +1266,7 @@ function tick() {
     generateMarketDeals();
   }
   if (sv.packs < 5) {
-    const RG = 24e4 / (1 + trophyBuff().pack), k = Math.floor((n - sv.t) / RG);
+    const RG = 24e4 / (1 + trophyBuff().pack + 0.1 * astral("regen")), k = Math.floor((n - sv.t) / RG);
     if (k > 0) { sv.packs = Math.min(5, sv.packs + k); sv.t += k * RG; }
     if (sv.packs >= 5) sv.t = n;
   } else { sv.t = n; }
@@ -3535,10 +3589,10 @@ function genPack(kind, set = openSet) {
   const W = { c: C ? [65, 28, 6.5, 0.5, 0] : [100, 0, 0, 0, 0], u: C ? [0, 65, 32, 3, 0] : [0, 100, 0, 0, 0], w: C ? [25, 35, 34, 5.5, 0.5] : [62, 30, 7.6, 0.35, 0.05], r: C ? [0, 0, 82, 16.5, 1.5] : [0, 0, 98.8, 1.1, 0.1] };
   const LW = C ? [55, 22, 17, 5, 1] : [82, 12, 5, 0.8, 0.2];
   const order = [...Array(6).fill("c"), ...Array(3).fill("u"), "L", "w", "w", "r"];
-  foilBoost = C ? 3 : 1; mispBoost = (C ? 10 : 1) * (1 + 0.5 * lg("misp"));
+  foilBoost = C ? 3 : 1; mispBoost = (C ? 10 : 1) * (1 + 0.5 * lg("misp")) * (1 + 0.2 * astral("misp"));
   const out = order.map(s => {
-    let t = pick(s === "L" ? LW : W[s]);
-    if (s === "r") { if (sv.pm >= 249 - 5 * lg("pity")) t = 4; else if (sv.pl >= 59 - 5 * lg("pity") && t < 3) t = 3; }
+    let t = pick((s === "L" ? LW : W[s]).map((x, j) => j >= 2 ? x * LUCK() : x));
+    if (s === "r") { if (sv.pm >= 249 - 5 * lg("pity") - 2 * astral("pity")) t = 4; else if (sv.pl >= 59 - 5 * lg("pity") - 2 * astral("pity") && t < 3) t = 3; }
     const pool = s === "L" ? CARDS.filter(c => c.land && c.tier === t && setOf(c) === set) : poolOf(t, set), c = pool[Math.floor(Math.random() * pool.length)] || CARDS[LAND_IDS[0]];
     let v = rollV(c.tier), sn;
     if (v.includes("serialized")) {
@@ -3759,7 +3813,7 @@ function showCosmetics() {
 // ---- Museum ----
 const mInc = it => { const [i, v] = it.k.split("|"), c = CARDS[+i]; return Math.pow(c.tier + 1, 1.3) * (it.slab ? it.slab.g / 5 : 1) * (v.includes("serialized") ? 3 : 1) * (/white|miscut|crimped|glitch|negative/.test(v) ? 2 : 1); };
 function showMuseum() {
-  const M = sv.museum, x = M.items.reduce((a, it) => a + mInc(it), 0), hrs = Math.min(24, (Date.now() - M.t) / 36e5), dust = Math.floor(x * 2 * hrs), coins = Math.floor(x * 12 * hrs);
+  const M = sv.museum, x = M.items.reduce((a, it) => a + mInc(it), 0), hrs = Math.min(24 + 12 * astral("offl"), (Date.now() - M.t) / 36e5), dust = Math.floor(x * 2 * hrs), coins = Math.floor(x * 12 * hrs);
   const opts = Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]).sort((a, b) => ((sv.slabs[b] ? 9 : 0) + (b.includes("serialized") ? 5 : 0) + CARDS[+b.split("|")[0]].tier) - ((sv.slabs[a] ? 9 : 0) + (a.includes("serialized") ? 5 : 0) + CARDS[+a.split("|")[0]].tier)).slice(0, 80);
   main.innerHTML = `<div class="bar"><b>Card Museum & Vault</b> | Income: ${(x * 2).toFixed(1)} ✦ + ${Math.round(x * 12)}c per hour (24h cap)</div><div class="panel-box" style="text-align:center"><p style="margin:0 0 6px;color:var(--mut)">Displayed cards are locked in the Vault and survive Prestige. Slabs, serialized cards and variants earn more.</p><button id="mc" ${dust + coins > 0 ? "" : "disabled"}>Collect ${dust} ✦ + ${coins}c</button> <button id="mb" ${M.cases < 12 && sv.c >= 300 * M.cases ? "" : "disabled"}>Buy case (${300 * M.cases}c) ${M.cases}/12</button><div style="margin-top:8px"><select id="mp">${opts.map(k => `<option value="${k}">${esc(CARDS[+k.split("|")[0]].name)} (${k.split("|")[1]})${sv.slabs[k] ? " " + slabLabel(sv.slabs[k]) : ""}</option>`).join("")}</select> <button id="mpb" ${M.items.length < M.cases && opts.length ? "" : "disabled"}>Place in case</button></div></div><div class="store-grid">${M.items.map((it, i) => `<div class="case">${it.slab ? `<div class="slab">${slabLabel(it.slab)}</div>` : ""}${cardHTML(CARDS[+it.k.split("|")[0]], it.k.split("|")[1], 0, 1)}<div style="font-size:12px">${mInc(it).toFixed(1)} units/hr</div><button data-r="${i}">Remove</button></div>`).join("")}</div>`;
   main.querySelector("#mc").onclick = () => { sv.dust += dust; sv.c += coins; sv.stats.coinsEarned = (sv.stats.coinsEarned || 0) + coins; M.t = Date.now(); save(); notify(`Museum paid ${dust} ✦ and ${coins}c`); showMuseum(); };
@@ -3870,7 +3924,7 @@ function genBoard() {
 }
 function qual(q) {
   const out = [];
-  for (const k in sv.inv) { if (!(sv.inv[k] > 0)) continue; const [i, v] = k.split("|"), c = CARDS[+i]; if (!c) continue; if (q.t === "var" ? c.category === q.cat && (q.v === "misprint" ? MISP.test(v) : v.includes(q.v)) && cardLvl(c.id) >= q.lvl : q.t === "kw" ? c.name.includes(q.kw) : c.element === q.el && cardLvl(c.id) >= q.lvl) out.push(k); }
+  for (const k in sv.inv) { if (!(sv.inv[k] > 0)) continue; const [i, v] = k.split("|"), c = CARDS[+i]; if (!c || c.bound) continue; if (q.t === "var" ? c.category === q.cat && (q.v === "misprint" ? MISP.test(v) : v.includes(q.v)) && cardLvl(c.id) >= q.lvl : q.t === "kw" ? c.name.includes(q.kw) : c.element === q.el && cardLvl(c.id) >= q.lvl) out.push(k); }
   return out;
 }
 const qText = q => q.t === "var" ? `${q.npc} wants a Level ${q.lvl}+ ${q.vn} ${q.cat} card.` : q.t === "kw" ? `${q.npc} is looking for ${q.n} "${q.kw}" cards.` : `${q.npc} wants to see a Level ${q.lvl}+ ${q.el} card (returned to you).`;
@@ -3927,8 +3981,8 @@ curHub = "Packs"; curSub = 0;
 // NOTE: everything in this file runs in the player's browser, so it cannot be a secure authority.
 // For real protection, point cloudUrl at a Firebase Realtime Database (or compatible REST store)
 // and enforce read/write rules server-side. admins/testers here only control which UI is shown.
-const DEV_CONFIG = { cloudUrl: "", cloudKey: "", admins: ["admin"], betaOnly: false, testers: [] };
-const PATCH_NOTES = [{ v: 17, t: "v17: The Great ASCII Dungeon", n: ["Player accounts with per-account saves, optional cloud sync, admin gifting and closed-beta whitelist", "Versioned save migration (old saves upgrade automatically)", "New Skip All Pauses setting and Open x10 for mass opening", "Booster boxes and the Void Rift set are shelved (your boxes stay safe in your save)", "Foil & Misprint Lab, foil tint, card conditions, autographs, Index and Census", "Boss Bestiary, combat replays, Auction House, Endless Depths and permanent upgrades", "Museum overhaul, card back designer, stage effects, Legacy Tree and Memorial Wall"] }];
+const DEV_CONFIG = { cloudUrl: "https://ascii-tcg-saves-default-rtdb.firebaseio.com", cloudKey: "", admins: ["admin"], betaOnly: false, testers: [] };
+const PATCH_NOTES = [{ v: 18, t: "v18: Equipment, Astrolabe and cinematic pulls", n: ["Diablo-style Equipment sheet: Hero, Head, Torso, Hands, Feet, Main Hand, Off Hand (two-handed weapons block it), Ring, Trinket and Pet. Your old team was converted automatically", "Tower fights now show your adventurer and their gear next to the monster", "The Astrolabe: a four-path skill tree (Archivist, Titan, Alchemist, Chronomancer) spent with Astrolabe Shards", "Prestige now rolls gradual random bonuses instead of flat ones. Every 100th Prestige unlocks the Century Forge to mint your own Mythic card", "Legendary and Mythic pulls rest face-down so you can drag to peek before flipping, with 3 Legendary and 3 Mythic cinematic reveals", "Branch saves: keep up to 3 snapshots of your account"] }, { v: 17, t: "v17: The Great ASCII Dungeon", n: ["Player accounts with per-account saves, optional cloud sync, admin gifting and closed-beta whitelist", "Versioned save migration (old saves upgrade automatically)", "New Skip All Pauses setting and Open x10 for mass opening", "Booster boxes and the Void Rift set are shelved (your boxes stay safe in your save)", "Foil & Misprint Lab, foil tint, card conditions, autographs, Index and Census", "Boss Bestiary, combat replays, Auction House, Endless Depths and permanent upgrades", "Museum overhaul, card back designer, stage effects, Legacy Tree and Memorial Wall"] }];
 const _e5 = ext;
 ext = function (m) {
   _e5(m);
@@ -3981,7 +4035,7 @@ async function pullGifts() {
   if (cloudOn()) { const c = await cloudReq("gifts/" + APR_USER); if (c) { list = list.concat(Object.values(c)); await cloudReq("gifts/" + APR_USER, "PUT", null); } }
   if (list.length) { list.forEach(applyGift); save(); notify(`A gift arrived: ${list.length} item(s)${list[0].msg ? " - " + list[0].msg : ""}`); updateHeader(); }
 }
-async function sendGift(user, g) { user = user.trim().toLowerCase(); if (!user) return false; if (cloudOn()) { const r = await cloudReq("gifts/" + user, "POST", g); if (r) return true; } const l = giftsLocal(user); l.push(g); localStorage.setItem("apr_gifts_" + user, JSON.stringify(l)); return true; }
+async function sendGift(user, g) { user = user.trim().toLowerCase(); if (!user) return false; if (cloudOn()) return !!(await cloudReq("gifts/" + user, "POST", g)); const l = giftsLocal(user); l.push(g); localStorage.setItem("apr_gifts_" + user, JSON.stringify(l)); return true; }
 function logout() { try { sessionStorage.removeItem("apr_user"); } catch (e) {} location.reload(); }
 function showTitle(msg) {
   const el = document.createElement("div"); el.id = "title"; const A = accts(), names = Object.keys(A), legacy = localStorage.getItem("asciiPacks_v10");
@@ -4033,7 +4087,7 @@ function showAdmin() {
   const c = cfg();
   main.innerHTML = `<div class="bar"><b>Developer Tools</b></div><div class="panel-box"><p style="margin-top:0;color:var(--mut)">Client-side tools. For real enforcement, add database rules on your cloud backend.</p><b>Gift a player</b><br><input id="gu" list="gl2" placeholder="username"><datalist id="gl2">${Object.keys(accts()).map(n => `<option value="${n}">`).join("")}</datalist><select id="gk"><option>coins</option><option>dust</option><option>packs</option><option>shards</option><option>marks</option><option>card</option></select><input id="gn" type="number" value="100" style="width:90px"><input id="gi" placeholder="card id (for card)" style="width:120px"><input id="gm" placeholder="message"><button id="gs">Send gift</button><hr><b>Closed beta</b><br><label><input type="checkbox" id="bb" ${c.betaOnly ? "checked" : ""}> Restrict access to testers</label><br><textarea id="bt" rows="3" style="width:100%" placeholder="tester usernames, one per line">${esc((c.testers || []).join("\n"))}</textarea><button id="bs">Save beta settings</button> <button id="bc" ${cloudOn() ? "" : "disabled"}>Publish to cloud</button><div id="adm" style="color:#fbbf24"></div></div>`;
   const $ = s => main.querySelector(s), say = m => $("#adm").textContent = m, read = () => ({ betaOnly: $("#bb").checked, testers: $("#bt").value.split("\n").map(x => x.trim().toLowerCase()).filter(Boolean), admins: c.admins });
-  $("#gs").onclick = async () => { const g = { k: $("#gk").value, n: +$("#gn").value, id: $("#gi").value, msg: $("#gm").value }; say((await sendGift($("#gu").value, g)) ? "Gift queued." : "Enter a username."); };
+  $("#gs").onclick = async () => { const g = { k: $("#gk").value, n: +$("#gn").value, id: $("#gi").value, msg: $("#gm").value }; say((await sendGift($("#gu").value, g)) ? "Gift queued." : "Failed: check the username, and that your cloud rules/key allow gift writes."); };
   $("#bs").onclick = () => { localStorage.setItem("apr_config", JSON.stringify(read())); say("Saved locally."); };
   $("#bc").onclick = async () => { await cloudReq("config", "PUT", read()); say("Published."); };
 }
@@ -4054,10 +4108,10 @@ function showPacks() {
   main.innerHTML = `<div class="bar"><b>The Great ASCII Dungeon</b> | Booster Packs: ${sv.packs}</div><div id="stage" style="min-height:400px"></div><div id="info"></div><div class="bar" id="ctl"></div>`;
   const stage = main.querySelector("#stage"), info = main.querySelector("#info"), ctl = main.querySelector("#ctl"), have = sv.packs;
   stage.innerHTML = dskin(packHTML(false)); stageFX(stage);
-  info.innerHTML = `${flash}Coins: <b>${sv.c}</b> | Stardust: <b>${sv.dust || 0} ✦</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - 5 * lg("pity") - sv.pl} packs, Mythic within ${250 - 5 * lg("pity") - sv.pm}`;
+  info.innerHTML = `${flash}Coins: <b>${sv.c}</b> | Stardust: <b>${sv.dust || 0} ✦</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - 5 * lg("pity") - 2 * astral("pity") - sv.pl} packs, Mythic within ${250 - 5 * lg("pity") - 2 * astral("pity") - sv.pm}`;
   const mk = (t, f, on) => { const b = document.createElement("button"); b.textContent = t; b.onclick = f; if (on) b.classList.add("on"); ctl.appendChild(b); return b; };
   mk("Tear Open Pack", () => openFlow(), 1).disabled = have < 1;
-  if (sv.skipAll) mk("Open x10", () => openMany(10)).disabled = have < 1;
+  if (sv.skipAll) mk("Open x" + bulkN(), () => openMany(bulkN())).disabled = have < 1;
   mk(sv.fastRip ? "⚡ Fast: ON" : "⚡ Fast: OFF", () => { sv.fastRip = !sv.fastRip; save(); showPacks(); }, sv.fastRip);
   mk(sv.skipAll ? "⏭ Skip All Pauses: ON" : "⏭ Skip All Pauses: OFF", () => { sv.skipAll = !sv.skipAll; save(); showPacks(); }, sv.skipAll);
   mk(`Buy pack (${PRICE.pack}c)`, () => { sv.c -= PRICE.pack; sv.packs++; save(); showPacks(); }).disabled = sv.c < PRICE.pack;
@@ -4077,17 +4131,17 @@ function memorial(k, why) { const c = CARDS[+k.split("|")[0]]; if (!c) return; s
 function showLab() {
   const spare = Object.keys(sv.inv).filter(k => sv.inv[k] > 1 && CARDS[+k.split("|")[0]]), A = spare.filter(k => LAB_M.some(m => k.split("|")[1].includes(m))), B = spare.filter(k => LAB_F.some(f => k.split("|")[1].includes(f)));
   const op = l => l.map(k => `<option value="${k}">${esc(CARDS[+k.split("|")[0]].name)} (${k.split("|")[1]})</option>`).join("");
-  main.innerHTML = `<div class="bar"><b>Foil & Misprint Lab</b> | Stardust: ${sv.dust || 0} ✦</div><div class="panel-box"><p style="margin-top:0">Burn one spare misprint card and one spare foil card (plus 300 ✦). The misprint card returns with the foil fused on, making a hybrid like Shiny Glitched or Gold-Trimmed Negative.</p>${A.length && B.length ? `<select id="la">${op(A)}</select> + <select id="lb">${op(B)}</select> <button id="lg" ${(sv.dust || 0) >= 300 ? "" : "disabled"}>Fuse (300 ✦)</button>` : "<span style='color:var(--mut)'>You need a spare (duplicate) misprint card and a spare foil card.</span>"}</div>
-  <div class="panel-box"><b>Foil Tint</b> - shift the colors of Shiny foils (100 ✦ per change)<br><input type="range" id="ti" min="0" max="330" step="30" value="${sv.tint}"> <span id="tv">${sv.tint}°</span> <button id="tb" ${(sv.dust || 0) >= 100 ? "" : "disabled"}>Apply</button></div>`;
+  main.innerHTML = `<div class="bar"><b>Foil & Misprint Lab</b> | Stardust: ${sv.dust || 0} ✦</div><div class="panel-box"><p style="margin-top:0">Burn one spare misprint card and one spare foil card (plus 300 ✦). The misprint card returns with the foil fused on, making a hybrid like Shiny Glitched or Gold-Trimmed Negative.</p>${A.length && B.length ? `<select id="la">${op(A)}</select> + <select id="lb">${op(B)}</select> <button id="lg" ${(sv.dust || 0) >= labCost() ? "" : "disabled"}>Fuse (${labCost()} ✦)</button>` : "<span style='color:var(--mut)'>You need a spare (duplicate) misprint card and a spare foil card.</span>"}</div>
+  <div class="panel-box"><b>Foil Tint</b> - shift the colors of Shiny foils (100 ✦ per change)<br><input type="range" id="ti" min="0" max="330" step="30" value="${sv.tint}"> <span id="tv">${sv.tint}°</span> <button id="tb" ${(sv.dust || 0) >= tintCost() ? "" : "disabled"}>Apply</button></div>`;
   const $ = s => main.querySelector(s);
   if ($("#lg")) $("#lg").onclick = () => {
     const a = $("#la").value, b = $("#lb").value, f = LAB_F.find(x => b.split("|")[1].includes(x)), [i, av] = a.split("|");
-    sv.dust -= 300; memorial(a, "Burned in the Lab"); memorial(b, "Burned in the Lab"); [a, b].forEach(k => { sv.inv[k]--; if (sv.inv[k] <= 0) delete sv.inv[k]; });
+    sv.dust -= labCost(); memorial(a, "Burned in the Lab"); memorial(b, "Burned in the Lab"); [a, b].forEach(k => { sv.inv[k]--; if (sv.inv[k] <= 0) delete sv.inv[k]; });
     const nv = av.includes(f) ? av : normalizeVariant(av + "+" + f), key = i + "|" + nv; sv.inv[key] = (sv.inv[key] || 0) + 1; if (sv.cond[key] === undefined) sv.cond[key] = 3;
     validateTeam(); save(); playFanfare(3); notify(`Fused: ${CARDS[+i].name} (${nv})!`); showLab();
   };
   $("#ti").oninput = () => $("#tv").textContent = $("#ti").value + "°";
-  $("#tb").onclick = () => { sv.dust -= 100; sv.tint = +$("#ti").value; document.body.style.setProperty("--tint", sv.tint + "deg"); save(); showLab(); };
+  $("#tb").onclick = () => { sv.dust -= tintCost(); sv.tint = +$("#ti").value; document.body.style.setProperty("--tint", sv.tint + "deg"); save(); showLab(); };
 }
 document.body.style.setProperty("--tint", sv.tint + "deg");
 function rollV(t) {
@@ -4263,6 +4317,208 @@ else {
   { const g = cfg(); if (g.betaOnly && !(g.testers || []).includes(APR_USER) && !(g.admins || []).includes(APR_USER)) showGate("This build is limited to approved testers. Ask the developer to add your username."); }
   if ((sv.seenV || 0) < SAVE_VER) { showPatchNotes(); sv.seenV = SAVE_VER; save(); }
 }
+// ===================== v18: EQUIPMENT, ASTROLABE, CINEMATICS =====================
+const _e6 = ext;
+ext = function (m) {
+  _e6(m); const t = m.team || [];
+  m.equip = m.equip || { hero: t[0] || null, main: t[1] || null, torso: t[2] || null, ring: t[3] || null, pet: t[4] || null };
+  ["hero", "head", "torso", "hands", "feet", "main", "off", "ring", "trinket", "pet"].forEach(s => { if (m.equip[s] === undefined) m.equip[s] = null; });
+  m.pbonus = m.pbonus || { pow: 0, dust: 0, coin: 0, hp: 0, luck: 0, log: [] }; ["pow", "dust", "coin", "hp", "luck"].forEach(k => { if (typeof m.pbonus[k] !== "number") m.pbonus[k] = 0; }); m.pbonus.log = m.pbonus.log || [];
+  m.forge = m.forge || []; m.forges = m.forges || 0; m.astral = m.astral || {}; return m;
+};
+ext(sv);
+sv.forge.forEach(f => CARDS.push({ ...f, id: CARDS.length, forb: true }));
+const LUCK = () => 1 + 0.03 * astral("luck") + ((sv.pbonus && sv.pbonus.luck) || 0);
+const labCost = () => Math.max(100, 300 - 60 * astral("lab")), tintCost = () => astral("tint") ? 0 : 100, bulkN = () => 10 + 10 * astral("bulk");
+
+// ---- Equipment (paperdoll) ----
+const ESLOTS = [["hero", "Hero"], ["head", "Head"], ["torso", "Torso"], ["hands", "Hands"], ["feet", "Feet"], ["main", "Main Hand"], ["off", "Off Hand"], ["ring", "Ring"], ["trinket", "Trinket"], ["pet", "Pet"]];
+const is2H = c => c.category === "Weapon" && /Bow|Staff|Greatsword|Axe|Hammer|Spear|Scythe|Tome|Halberd/.test(c.name);
+const nameHash = n => { let q = 0; for (const ch of n) q = (q * 31 + ch.charCodeAt(0)) >>> 0; return q; };
+function armorSlot(c) { const n = c.name; if (/Shield|Buckler|Aegis/.test(n)) return "off"; if (/Cap|Hat|Helm|Mask|Hood|Crown/.test(n)) return "head"; if (/Boot|Shoe|Greave|Sandal/.test(n)) return "feet"; if (/Glove|Gauntlet|Mitt/.test(n)) return "hands"; if (/Armor|Giant|Tree/.test(n)) return "torso"; return ["head", "torso", "hands", "feet"][nameHash(n) % 4]; }
+function slotOk(slot, c) {
+  if (!c) return false;
+  switch (slot) {
+    case "hero": return c.category === "Character";
+    case "pet": return c.category === "Pet";
+    case "main": return c.category === "Weapon";
+    case "off": return !(sv.equip.main && CARDS[sv.equip.main.id] && is2H(CARDS[sv.equip.main.id])) && ((c.category === "Armor" && armorSlot(c) === "off") || (c.category === "Weapon" && !is2H(c)) || c.category === "Utility");
+    case "ring": case "trinket": return c.category === "Utility";
+    default: return c.category === "Armor" && armorSlot(c) === slot;
+  }
+}
+function validateEquip() {
+  const E = sv.equip, cnt = {};
+  ESLOTS.forEach(([s]) => { const it = E[s]; if (it && CARDS[it.id] && sv.inv[it.id + "|" + it.v] > 0 && !slotOk(s, CARDS[it.id])) { const alt = ESLOTS.map(x => x[0]).find(s2 => !E[s2] && slotOk(s2, CARDS[it.id])); E[s] = null; if (alt) E[alt] = it; } });
+  ESLOTS.forEach(([s]) => { const it = E[s]; if (it) { const k = it.id + "|" + it.v; if (!CARDS[it.id] || !(sv.inv[k] > 0) || !slotOk(s, CARDS[it.id])) E[s] = null; } });
+  if (E.main && is2H(CARDS[E.main.id])) E.off = null;
+  ESLOTS.forEach(([s]) => { const it = E[s]; if (it) { const k = it.id + "|" + it.v; cnt[k] = (cnt[k] || 0) + 1; if (cnt[k] > sv.inv[k]) E[s] = null; } });
+}
+function syncTeam() {
+  const E = sv.equip, off = E.off && CARDS[E.off.id];
+  const arm = E.torso || E.head || E.hands || E.feet || (off && off.category === "Armor" ? E.off : null);
+  const ut = (E.ring && CARDS[E.ring.id].category === "Utility" ? E.ring : null) || E.trinket || (off && off.category === "Utility" ? E.off : null);
+  sv.team = [E.hero || null, E.main || null, arm || null, ut || null, E.pet || null];
+}
+const _vt = validateTeam;
+validateTeam = function () { _vt(); validateEquip(); syncTeam(); };
+function equipExtra() {
+  const E = sv.equip, prim = new Set(sv.team.filter(Boolean)); let def = 0, off = 0, ut = 0, prow = 0;
+  prim.forEach(it => prow += cardPower(it.id, it.v));
+  ESLOTS.forEach(([s]) => { const it = E[s]; if (!it || prim.has(it)) return; const c = CARDS[it.id], p = cardPower(it.id, it.v); if (c.category === "Armor") def += p; else if (c.category === "Weapon") off += p; else if (c.category === "Utility") ut += p; });
+  const b = Math.max(10, prow); return { def: Math.min(1, def / b), off: Math.min(1, off / b), ut: Math.min(1, ut / b) };
+}
+const _gts4 = getTeamStats;
+getTeamStats = function () {
+  const t = _gts4(), x = equipExtra(), pb = sv.pbonus, m = sv.equip.main && CARDS[sv.equip.main.id] && is2H(CARDS[sv.equip.main.id]);
+  t.maxHP = Math.round(t.maxHP * (1 + 0.5 * x.def) * (1 + pb.hp) * (1 + 0.08 * astral("vit")));
+  t.armorBlock = Math.round(t.armorBlock * (1 + 0.6 * x.def) * (1 + 0.1 * astral("armor")));
+  t.strikeDmg = Math.round(t.strikeDmg * (1 + 0.5 * x.off) * (1 + pb.pow) * (m ? 1.25 : 1));
+  t.utilHeal = Math.round((t.utilHeal || 0) * (1 + 0.5 * x.ut));
+  t.petDmg = Math.round((t.petDmg || 0) * (1 + 0.1 * astral("pet"))); t.critChance = Math.min(75, t.critChance + 2 * astral("crit")); t.vamp = (t.vamp || 0) + 0.5 * astral("vamp");
+  t.totalPower = Math.round(t.totalPower * (1 + 0.5 * (x.def + x.off + x.ut)) * (m ? 1.1 : 1)); t.xtra = x; return t;
+};
+function heroArt() {
+  const E = sv.equip, g = s => E[s] && CARDS[E[s].id] ? (LSYM[CARDS[E[s].id].element] || "*") : null, mc = E.main && CARDS[E.main.id], oc = E.off && CARDS[E.off.id];
+  const W = mc ? (is2H(mc) ? "‡" : "†") : " ", O = oc ? (oc.category === "Armor" ? "◘" : oc.category === "Weapon" ? "†" : "o") : " ", hd = g("head"), to = g("torso"), ha = g("hands"), ft = g("feet"), hr = E.hero ? "@" : "o", pt = E.pet ? "~" : " ";
+  return [hd ? `  /${hd}${hd}${hd}\\ ` : "   ,-.  ", `  (${hr}_${hr})  `, ` ${ha || " "}/|${to ? "[" + to + "]" : "| |"}|\\${ha || " "}`, `${W}  |${to || " "} ${to || " "}|  ${O}`, "   |___|   ", ft ? `  ${ft}/ \\${ft}  ` : "   /   \\  ", `  _/   \\_ ${pt}`];
+}
+var pickSlot = null;
+function showTeamBuilder() {
+  validateEquip(); syncTeam(); const E = sv.equip, ts = getTeamStats();
+  const box = ([s, l]) => { const it = E[s], c = it && CARDS[it.id], dis = s === "off" && E.main && CARDS[E.main.id] && is2H(CARDS[E.main.id]); return `<button class="eslot ${pickSlot === s ? "on" : ""}" data-s="${s}" ${dis ? "disabled" : ""}><small>${l}</small><br>${c ? `<span style="color:${TC[c.tier]}">${esc(c.name)}</span> <small>PWR ${cardPower(it.id, it.v)}</small>` : (dis ? "<small>(two-handed weapon)</small>" : "<small>- empty -</small>")}</button>`; };
+  const L = ESLOTS.filter(x => ["hero", "head", "torso", "hands"].includes(x[0])), R = ESLOTS.filter(x => !["hero", "head", "torso", "hands"].includes(x[0]));
+  main.innerHTML = `<div class="bar"><b>Equipment</b> | PWR ${ts.totalPower} | HP ${ts.maxHP} | Strike ${ts.strikeDmg} | Block ${ts.armorBlock} | Heal ${ts.utilHeal || 0} | Crit ${ts.critChance}%${ts.activeElement ? " | Set: " + ts.activeElement : ""}</div><div class="pdoll"><div>${L.map(box).join("")}</div><pre class="hero">${heroArt().map(esc).join("\n")}</pre><div>${R.map(box).join("")}</div></div><div class="bar"><button id="autoTeamBtn">⚙ Auto-equip best</button><button id="ec">Clear all</button></div><div id="pick"></div><div class="panel-box" style="font-size:12px;color:var(--mut)">Hero, Main Hand, Torso (or any armor), Ring and Pet are your core slots. Extra gear (Head, Hands, Feet, Off Hand, Trinket) adds up to +50% to its stat. Two-handed weapons (Bows, Tomes...) give +25% strike but lock the Off Hand.</div>`;
+  const $ = s => main.querySelector(s), fin = () => { validateEquip(); syncTeam(); save(); showTeamBuilder(); };
+  const keysFor = s => Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]] && slotOk(s, CARDS[+k.split("|")[0]])).sort((a, b) => cardPower(+b.split("|")[0], b.split("|")[1]) - cardPower(+a.split("|")[0], a.split("|")[1]));
+  const used = k => ESLOTS.filter(([s]) => E[s] && E[s].id + "|" + E[s].v === k).length;
+  main.querySelectorAll("[data-s]").forEach(b => b.onclick = () => {
+    const s = b.dataset.s; pickSlot = s; const ks = keysFor(s).filter(k => used(k) < sv.inv[k] || (E[s] && E[s].id + "|" + E[s].v === k));
+    $("#pick").innerHTML = `<div class="panel-box"><b>${ESLOTS.find(x => x[0] === s)[1]}</b> <button data-k="">Unequip</button><br>${ks.slice(0, 60).map(k => `<button data-k="${k}" style="color:${TC[CARDS[+k.split("|")[0]].tier]}">${esc(CARDS[+k.split("|")[0]].name)} (${k.split("|")[1]}) PWR ${cardPower(+k.split("|")[0], k.split("|")[1])}</button>`).join(" ") || "<span style='color:var(--mut)'>No matching cards owned.</span>"}</div>`;
+    $("#pick").querySelectorAll("[data-k]").forEach(p => p.onclick = () => { const k = p.dataset.k; E[s] = k ? { id: +k.split("|")[0], v: k.split("|")[1] } : null; pickSlot = null; fin(); });
+  });
+  $("#ec").onclick = () => { ESLOTS.forEach(([s]) => E[s] = null); fin(); };
+  $("#autoTeamBtn").onclick = () => {
+    ESLOTS.forEach(([s]) => E[s] = null);
+    ["main", "off", "hero", "torso", "head", "hands", "feet", "ring", "trinket", "pet"].forEach(s => { const k = keysFor(s).find(k => used(k) < sv.inv[k]); if (k && slotOk(s, CARDS[+k.split("|")[0]])) E[s] = { id: +k.split("|")[0], v: k.split("|")[1] }; });
+    fin();
+  };
+}
+function bossBlock(t, f) {
+  bossCtx = { t, f }; const m = mutOf(f);
+  return `<div style="text-align:center;margin:6px 0;overflow-x:auto"><div style="display:flex;gap:14px;align-items:flex-end;justify-content:center;flex-wrap:wrap"><pre class="hero">${heroArt().map(esc).join("\n")}\n  ${esc(APR_USER || "YOU")}</pre><pre id="bossArt" class="boss" style="color:${TC[t]}">${bossHTML()}</pre></div><div style="font:12px ui-monospace,monospace">${m ? `<b style="color:#f472b6">${MUTD[m][0]}</b> - ${MUTD[m][1]}` : "<span style='color:var(--mut)'>No mutator this floor</span>"}</div>${artTray()}</div>`;
+}
+validateEquip(); syncTeam();
+
+// ---- Astrolabe ----
+const APATHS = { A: "The Archivist (Economy)", B: "The Titan (Combat)", C: "The Alchemist (Crafting)", D: "The Chronomancer (Automation)" };
+const ASTRO = [
+  ["coin", "Coin Tithe", "+10% sell coins", 5, "A", null], ["dust", "Stardust Lode", "+10% Stardust from dupes", 5, "A", "coin"], ["luck", "Fortune's Eye", "+3% Rare+ luck in packs", 5, "A", "coin"], ["idle", "Idle Mastery", "+15% Arena bounty", 5, "A", "dust"],
+  ["might", "Titan's Might", "+5% team power", 5, "B", null], ["vit", "Iron Heart", "+8% max HP", 5, "B", "might"], ["armor", "Stoneskin", "+10% armor block", 5, "B", "might"], ["crit", "Killer's Eye", "+2% crit chance", 5, "B", "vit"], ["pet", "Beastmaster", "+10% pet damage", 5, "B", "armor"], ["vamp", "Bloodthirst", "+4% lifesteal", 3, "B", "crit"], ["reson", "Resonance", "2 matching elements trigger the set bonus", 1, "B", "pet"],
+  ["foil", "Lucky Foil", "+20% foil chance", 3, "C", null], ["misp", "Chaos Touch", "+20% misprint/white/signed odds", 3, "C", "foil"], ["lab", "Efficient Lab", "-60 Stardust Lab cost", 3, "C", "foil"], ["tint", "Free Tint", "Foil tinting costs nothing", 1, "C", "lab"], ["soul", "Soulbound", "Keep your best card on Prestige", 1, "C", "misp"],
+  ["regen", "Time Flow", "+10% free pack regen", 5, "D", null], ["pity", "Fate Thread", "Pity 2 packs sooner", 3, "D", "regen"], ["bulk", "Bulk Opener", "+10 to Open xN", 3, "D", "regen"], ["auto", "Auto-Claim", "Arena bounty claims itself", 1, "D", "bulk"], ["offl", "Night Curator", "+12h museum accrual", 3, "D", "auto"]
+];
+function showAstrolabe() {
+  const depth = k => { let d = 0, n = ASTRO.find(x => x[0] === k); while (n && n[5]) { d++; n = ASTRO.find(x => x[0] === n[5]); } return d; };
+  main.innerHTML = `<div class="bar"><b>The Astrolabe</b> | Astrolabe Shards: ${sv.shards || 0} ✧ <span style="color:var(--mut)">(earned from Prestige and every 10th Tower floor)</span></div><div class="astro">${Object.keys(APATHS).map(p => `<div class="case"><b>${APATHS[p]}</b><pre>${ASTRO.filter(n => n[4] === p).map(n => { const l = astral(n[0]), d = depth(n[0]), open = !n[5] || astral(n[5]) > 0, cost = l + 1 + d; return `${"│  ".repeat(Math.max(0, d - 1))}${d ? "├─" : "✧─"}[${n[1]} ${"●".repeat(l)}${"○".repeat(n[3] - l)}] ${n[2]} ${l >= n[3] ? "MAX" : open ? `<button data-n="${n[0]}" ${(sv.shards || 0) >= cost ? "" : "disabled"}>${cost}✧</button>` : "🔒"}`; }).join("\n")}</pre></div>`).join("")}</div>`;
+  main.querySelectorAll("[data-n]").forEach(b => b.onclick = () => { const n = ASTRO.find(x => x[0] === b.dataset.n), l = astral(n[0]), cost = l + 1 + depth(n[0]); if ((sv.shards || 0) < cost) return; sv.shards -= cost; sv.astral[n[0]] = l + 1; save(); showAstrolabe(); });
+}
+
+// ---- Prestige: random bonuses, century forge ----
+const PB = [["pow", 30, 0.003, 0.008, "Team Power"], ["dust", 25, 0.005, 0.012, "Stardust yield"], ["coin", 20, 0.004, 0.01, "Coin income"], ["hp", 15, 0.003, 0.008, "Max HP"], ["luck", 8, 0.001, 0.003, "Pack luck"], ["shards", 2, 1, 1, "Astrolabe Shard"]];
+function rollPrestigeBonus() {
+  const out = [];
+  for (let i = 0; i < 3; i++) {
+    let r = Math.random() * PB.reduce((a, b) => a + b[1], 0), e = PB[0]; for (const x of PB) { r -= x[1]; if (r <= 0) { e = x; break; } }
+    if (e[0] === "shards") { sv.shards = (sv.shards || 0) + 1; out.push("+1 Astrolabe Shard"); }
+    else { const v = +(e[2] + Math.random() * (e[3] - e[2])).toFixed(4); sv.pbonus[e[0]] = +(sv.pbonus[e[0]] + v).toFixed(4); out.push(`+${(v * 100).toFixed(2)}% ${e[4]}`); }
+  }
+  sv.pbonus.log.unshift(`Prestige ${sv.prestige}: ${out.join(", ")}`); sv.pbonus.log.length = Math.min(sv.pbonus.log.length, 15); notify("Prestige bonuses: " + out.join(", "));
+}
+function legacyOnPrestige() {
+  const pts = 1 + Math.floor((sv.prestige || 0) / 3) + horizon(); sv.legacy.pts += pts;
+  Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]]).sort((a, b) => CARDS[+b.split("|")[0]].tier - CARDS[+a.split("|")[0]].tier).slice(0, 12).forEach(k => memorial(k, "Lost to Prestige " + sv.prestige));
+  rollPrestigeBonus(); if (sv.prestige % 100 === 0) { sv.forges = (sv.forges || 0) + 1; notify("CENTURY MILESTONE! You may forge a custom Mythic card."); }
+  notify(`+${pts} Legacy Points`);
+}
+function keepBest() {
+  const K = (astral("soul") ? 1 : 0) + lg("keep"), best = Object.keys(sv.inv).filter(k => sv.inv[k] > 0 && CARDS[+k.split("|")[0]] && !CARDS[+k.split("|")[0]].bound).sort((a, b) => cardPower(+b.split("|")[0], b.split("|")[1]) - cardPower(+a.split("|")[0], a.split("|")[1])).slice(0, K);
+  CARDS.filter(c => c.bound && sv.inv[c.id + "|base"] > 0).forEach(c => best.push(c.id + "|base")); return best;
+}
+function showForge() {
+  const n = sv.forges || 0, next = 100 * (Math.floor((sv.prestige || 0) / 100) + 1);
+  if (n < 1) { main.innerHTML = `<div class="bar"><b>Century Forge</b></div><div class="panel-box">Locked. Every 100th Prestige grants one forging (next at Prestige ${next}; you are at ${sv.prestige || 0}). Forged cards: ${sv.forge.length}.</div>`; return; }
+  const lines0 = ["", "", "   ,-.   ", "  (o.o)  ", "   |=|   "];
+  main.innerHTML = `<div class="bar"><b>Century Forge</b> | Forgings available: ${n}</div><div class="panel-box"><p style="margin-top:0">Design your own account-bound Mythic promo card (26 x 10 ASCII grid). It joins your binder and survives every Prestige.</p><input id="fn" class="forge" maxlength="24" placeholder="Card name"><div class="bar"><select id="fc">${CATEGORIES.map(c => `<option>${c}</option>`).join("")}</select><select id="fe">${ELEMENTS.map(e => `<option>${e}</option>`).join("")}</select><input id="fh" type="number" min="0" max="359" value="280" style="width:70px" title="hue"></div><input id="fl" class="forge" maxlength="140" placeholder="Lore"><div class="bar" id="pal">${["░", "▒", "▓", "█", "╔", "╗", "╚", "╝", "═", "║", "☼", "†", "☠", "♦", "*", "~"].map(c => `<button data-c="${c}">${c}</button>`).join("")}</div><textarea id="fa" class="forge" rows="10" cols="26" wrap="off" style="max-width:100%">${lines0.join("\n")}</textarea><div id="fv" style="margin:8px 0"></div><button id="fm">Mint Mythic card</button></div>`;
+  const $ = s => main.querySelector(s), def = () => ({ tier: 4, category: $("#fc").value, element: $("#fe").value, basePower: 900 + 25 * Math.floor((sv.prestige || 0) / 100), name: $("#fn").value.trim() || "Nameless Legend", art: $("#fa").value.split("\n").slice(0, 10).map(l => l.slice(0, 26)), acc: "*", hue: (+$("#fh").value || 0) % 360, lore: ($("#fl").value || `Forged by ${APR_USER} at Prestige ${sv.prestige}.`).slice(0, 140), src: "forge", bound: true });
+  const prev = () => { try { $("#fv").innerHTML = cardHTML({ ...def(), id: 99999, forb: true }, "base", 0, 0); } catch (e) { $("#fv").textContent = "(preview unavailable)"; } };
+  ["#fn", "#fc", "#fe", "#fh", "#fl", "#fa"].forEach(s => { $(s).oninput = prev; $(s).onchange = prev; }); prev();
+  main.querySelectorAll("[data-c]").forEach(b => b.onclick = () => { const t = $("#fa"), p = t.selectionStart; t.value = t.value.slice(0, p) + b.dataset.c + t.value.slice(t.selectionEnd); t.focus(); t.selectionStart = t.selectionEnd = p + 1; prev(); });
+  $("#fm").onclick = () => {
+    if (!$("#fn").value.trim()) return notify("Name your card first."); const d = def(); sv.forge.push(d); const c = { ...d, id: CARDS.length, forb: true }; CARDS.push(c);
+    sv.inv[c.id + "|base"] = 1; sv.cond[c.id + "|base"] = 3; sv.forges--; checkMiles(); save(); playFanfare(4); notify(`${c.name} has been forged!`); showForge();
+  };
+}
+
+// ---- Peeking and cinematic reveals ----
+async function peekCard(S, it) {
+  S.cur.innerHTML = `<div class="peekbox" id="pb"><div class="peekfront" id="pf">${cardHTML(it.c, it.v, it.sn)}</div><div class="peekback bk-${sv.cos.back}" id="pbk">${customBackInner()}<div class="shade"></div></div><div class="pk-hint">Drag to peek at the edges...</div></div>`;
+  S.info.textContent = `A ${TIERS[it.c.tier]} card rests face-down in the shadows. Drag it to peek, then flip.`; S.lt.className = "light";
+  const box = S.cur.querySelector("#pb"), bk = S.cur.querySelector("#pbk");
+  await anim(S.cur, [{ transform: CENTER + " scale(.7)", opacity: 0 }, { transform: CENTER + " scale(1)", opacity: 1 }], { duration: 300 * S.spd, fill: "forwards" });
+  await new Promise(res => {
+    let down = false, sx = 0, sy = 0;
+    const mv = e => { if (!down) return; const r = box.getBoundingClientRect(), dx = Math.max(-45, Math.min(45, e.clientX - sx)), dy = Math.max(-45, Math.min(45, e.clientY - sy)); box.style.transform = `translate(${dx * 0.6}px,${dy * 0.6}px) rotateX(${-dy / 3}deg) rotateY(${dx / 3}deg)`; bk.style.setProperty("--px", (e.clientX - r.left) + "px"); bk.style.setProperty("--py", (e.clientY - r.top) + "px"); bk.style.setProperty("--r", "58px"); };
+    box.onpointerdown = e => { down = true; sx = e.clientX; sy = e.clientY; try { box.setPointerCapture(e.pointerId); } catch (x) {} mv(e); };
+    box.onpointermove = mv; box.onpointerup = () => { down = false; box.style.transform = ""; bk.style.setProperty("--r", "0px"); };
+    const b = document.createElement("button"); b.textContent = "Flip ▶"; b.className = "on"; S.ctl.innerHTML = ""; S.ctl.append(b); b.onclick = () => res();
+  });
+  S.ctl.innerHTML = "";
+}
+const CINE_L = [["THE VAULT BREACH", "vb"], ["THE SOLAR FLARE", "sf"], ["THE ROYAL DECREE", "rd"]], CINE_M = [["THE VOID RIFT", "vr"], ["THE PRIMORDIAL AWAKENING", "pa"], ["THE SINGULARITY COLLAPSE", "sc"]];
+async function cine(S, t) {
+  const [name, k] = rnd(t === 3 ? CINE_L : CINE_M), d = document.createElement("div"); d.className = "cine c-" + k; d.innerHTML = `<i class="a"></i><i class="b"></i><i class="c"></i><b>${name}</b>`;
+  S.stage.appendChild(d); S.stage.classList.add("shake"); if (t === 4) S.stage.classList.add("glitch"); sfx(2 + t); playFanfare(t); haptic(120);
+  await sleep((t === 4 ? 2100 : 1750) * Math.max(S.spd, 0.3)); d.remove(); S.stage.classList.remove("shake", "glitch");
+}
+async function spot(S, it, wait, hold) {
+  const t = it.c.tier, sp = isSpecial(it.v);
+  if (t >= 3 && !S.skip) await cine(S, t);
+  if (t >= 3 && wait && !S.skip) await peekCard(S, it);
+  S.lt.className = "light " + (t === 3 ? "g" : t === 4 ? "p" : "");
+  S.cur.innerHTML = cardHTML(it.c, it.v, it.sn) + (it.isNew ? '<b class="nw">NEW</b>' : ""); S.cur.classList.toggle("fil", t === 3);
+  S.info.innerHTML = `<span style="color:${TC[t]}">${esc(it.c.name)} [${it.c.category}/${EL_ICON[it.c.element]}] - ${TIERS[t]}${it.v !== "base" ? " - " + it.v : ""}</span>${sp ? " <b style='color:#f472b6'>SPECIAL VARIANT!</b>" : ""}`;
+  sfx(2 + t); haptic(t > 2 ? 80 : 30); if (t >= 3 && S.skip) playFanfare(t);
+  if (t >= 3) { S.stage.classList.add("shake"); setTimeout(() => S.stage.classList.remove("shake"), t > 3 ? 900 : 500); }
+  await anim(S.cur, [{ transform: CENTER + " scale(.6) rotateY(90deg)", opacity: 0 }, { transform: CENTER + " scale(1.05)", opacity: 1, offset: .7 }, { transform: CENTER + " scale(1)", opacity: 1 }], { duration: (t > 2 ? 600 : 320) * S.spd, fill: "forwards" });
+  if (wait) await waitNext(S); else await sleep(hold);
+  S.lt.className = "light"; S.cur.classList.remove("fil");
+}
+
+// ---- save branches, guide, hubs ----
+const brKey = n => "apr_br_" + APR_USER + "_" + n;
+const _sa = showAccount;
+showAccount = function () {
+  _sa();
+  const rows = [1, 2, 3].map(n => { let info = "empty"; try { const b = JSON.parse(localStorage.getItem(brKey(n)) || "null"); if (b) info = `Prestige ${b.prestige || 0}, ${b.c} coins, saved ${new Date(b.ts).toLocaleString()}`; } catch (e) {} return `<div style="margin:4px 0">Branch ${n}: ${esc(info)} <button data-bs="${n}">Save here</button> <button data-bl="${n}" ${info === "empty" ? "disabled" : ""}>Load</button> <button data-bd="${n}" ${info === "empty" ? "disabled" : ""}>Delete</button></div>`; }).join("");
+  main.insertAdjacentHTML("beforeend", `<div class="panel-box"><b>Save branches</b><br><span style="color:var(--mut);font-size:12px">Snapshot your account to try a different path. Branches stay on this device.</span>${rows}</div>`);
+  main.querySelectorAll("[data-bs]").forEach(b => b.onclick = () => { sv.ts = Date.now(); localStorage.setItem(brKey(b.dataset.bs), JSON.stringify(sv)); showAccount(); });
+  main.querySelectorAll("[data-bd]").forEach(b => b.onclick = () => { localStorage.removeItem(brKey(b.dataset.bd)); showAccount(); });
+  main.querySelectorAll("[data-bl]").forEach(b => b.onclick = () => { localStorage.setItem(SAVE_KEY, localStorage.getItem(brKey(b.dataset.bl))); location.reload(); });
+};
+function showGuide() {
+  const S = [["The Great ASCII Dungeon", "Open Dungeon Booster Packs (13 cards, including a Land), equip your adventurer and climb the Endless Tower. Booster boxes and the second set return later."], ["Equipment", "The Equipment sheet has ten slots: Hero, Head, Torso, Hands, Feet, Main Hand, Off Hand, Ring, Trinket and Pet. Two-handed weapons lock the Off Hand but hit harder. Extra gear adds up to +50% to its matching stat."], ["The Astrolabe", "Spend Astrolabe Shards on four paths: Archivist (economy), Titan (combat), Alchemist (crafting) and Chronomancer (automation). Shards come from Prestige and every 10th Tower floor."], ["Prestige & the Forge", "Each Prestige rolls three random gradual bonuses (power, Stardust, coins, HP, luck, or a shard) that stack forever. Every 100th Prestige unlocks the Century Forge to design a custom Mythic card."], ["Pack Openings", "Legendary and Mythic pulls play a cinematic reveal and rest face-down so you can drag to peek before flipping. Skip All Pauses turns all of that off, and Open xN opens packs in bulk."], ["Accounts & Saves", "Create an account on the title screen. Saves are per account and sync if cloud is configured. Old saves migrate automatically, and you can keep three save branches."], ["Tower, Expeditions & Economy", "Clear Floor 40 to Ascend. Hardcore feats, the Weekly Gauntlet, Bestiary and Replays live under Tower. Expedition, Auction House, Quest Board and the Museum cover the rest of the economy."]];
+  main.innerHTML = `<div class="bar"><b>? Guide</b></div>` + S.map((s, i) => `<details class="g" ${i === 0 ? "open" : ""}><summary>${s[0]}</summary><p>${s[1]}</p></details>`).join("");
+}
+Object.keys(HUBS).forEach(k => delete HUBS[k]);
+HUBS["Packs"] = [["Open Packs", 0], ["Pack Store", 1]];
+HUBS["Collection"] = [["Binder", 3], ["Index & Census", showIndex], ["Overview", showCollection], ["Museum", showMuseum]];
+HUBS["Tower"] = [["Equipment", 4], ["Endless Tower", 8], ["Challenges", showChallenges], ["Bestiary", showBestiary], ["Replays", showReplays], ["Expedition", showExpedition]];
+HUBS["Customize"] = [["Craft & ★ Foils", 5], ["Fusion", 6], ["Foil Lab", showLab], ["Grading", showGrading], ["Cosmetics", showCosmetics], ["Century Forge", showForge]];
+HUBS["Market"] = [["Daily Market", showMarketPlus], ["Quest Board", showBoard], ["Auction House", showAuction]];
+HUBS["More"] = [["Astrolabe", showAstrolabe], ["Legacy Tree", showLegacy], ["Memorial Wall", showMemorial], ["Stats & Saves", 9], ["Awards", 10], ["Account", showAccount], ["Patch Notes", () => { showPatchNotes(); }], ["? Guide", showGuide]];
+if (isAdmin()) HUBS["More"].push(["Admin", showAdmin]);
+if (APR_USER) { drawNav(); drawStatus(); hubGo(curHub in HUBS ? curHub : "Packs", 0); }
 </script>
 </body>
 </html>
