@@ -1603,7 +1603,7 @@ function zoom(it, onUpdate) {
     const cost = getAscendCost(it.c.id);
     const spare = totalCopiesOfCard(it.c.id) - 1;
     const vParts = it.v === "base" ? [] : it.v.split("+");
-    const ownsThisVariant = (sv.inv[`${it.c.id}|${it.v}`] || 0) > 0;
+    const ownsThisVariant = false; // v28: variants can no longer be painted on
 
     o.innerHTML = `<div style="text-align:center; padding: 16px; max-width: 440px;" id="zoomBox">
       ${cardHTML(it.c, it.v, it.sn)}
@@ -6172,6 +6172,7 @@ PATCH_NOTES.unshift({ v: 27, t: "v27: Every duplicate is kept", n: [
   "Duplicates are no longer thrown away. Each copy of a card keeps its own properties, up to 8 versions per card and variant. A slot in the Binder holds all of them: use the Ver button to cycle through every variant and version, and Inspect to see the full properties",
   "Equip any individual version from the Equipment picker, which now lists each copy with its best properties. The pack opening screen shows the exact copy you pulled",
   "Eternal Binder Vault slots remember the exact version you store. Sell dupes now only sells copies beyond your 8 kept versions, and the new Keep best 3 button sells down to the top three versions per card",
+  "Foil can no longer be painted onto cards in the card zoom. Special variants only come from packs. Star upgrades (duplicates + Stardust) still work",
   "New custom ASCII art for the Blacksmith & Alchemist's Forge, the Celestial Observatory and the Eternal Binder Vault"] });
 
 // ---- saves: extension and migration ----
