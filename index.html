@@ -906,6 +906,55 @@ h1,#statusbar,#tickerWrap{position:relative;z-index:1}
 @media (max-width:700px){.fanc{width:96px;left:calc((100% - 125px) * var(--t,.5))}.fanc .card{transform:scale(.73);transform-origin:top left;margin-bottom:-30%}.dxfan{height:220px;margin:4px 14px 10px}}
 .pdcol .sock35{flex:0 0 auto;height:auto}
 .dxfan{margin:4px 34px 10px}
+/* Nexus: tree on the left, info panels beside it */
+.nxwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:10px;align-items:start}
+.nxside{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.nxside .panel-box{margin:0}.nxside .nxbon .rxchip{display:inline-block;margin:2px}
+.nxside .nxlist{max-height:260px;overflow:auto}
+@media (max-width:900px){.nxwrap{grid-template-columns:1fr}.nxside{max-height:none}}
+.nxwrap{padding:0 12px;box-sizing:border-box}
+
+/* ===== v39: Alchemy Lab, Re-Roll Bench ===== */
+.alc{max-width:1300px;margin:0 auto;padding:8px 16px;box-sizing:border-box}
+.alchead{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center;border:1px solid #4ade8044;border-radius:12px;padding:10px 16px;background:radial-gradient(ellipse at 20% 60%,rgba(74,222,128,.12),transparent 60%),rgba(0,0,0,.25)}
+.alchead h2{margin:0 0 4px;color:#86efac;letter-spacing:2px}.alchead p{margin:0 0 6px;font-size:13px;max-width:620px}
+.cauld{margin:0;font:12px/1.15 ui-monospace,Menlo,monospace;color:#86efac;text-shadow:0 0 10px rgba(74,222,128,.55);animation:cbub 2.2s ease-in-out infinite alternate}
+@keyframes cbub{to{color:#bbf7d0;text-shadow:0 0 18px rgba(74,222,128,.9)}}
+.alcres{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:12px}
+.alcact{margin:10px 0}.potchip{display:inline-block;border:1px solid;border-radius:14px;padding:2px 10px;margin:2px 4px;font-size:12px}
+.potgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(560px,1fr));gap:10px}
+.potcard{border:1px solid color-mix(in srgb,var(--pc) 50%,transparent);border-radius:10px;padding:8px 10px;background:rgba(0,0,0,.25)}
+.pothd{display:flex;flex-direction:column;margin-bottom:6px}.pothd b{color:var(--pc)}.pothd small{color:var(--mut,#9b8f74)}
+.potlv{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.plv{display:flex;flex-direction:column;align-items:center;gap:3px;border:1px dashed #ffffff1a;border-radius:8px;padding:6px 4px;text-align:center;font-size:11px}
+.bott{margin:0;font:11px/1.05 ui-monospace,monospace}.plvt b{color:var(--pc)}
+.pcost{font-size:10.5px;line-height:1.5}.pcost .no{color:#f87171}
+.plv button{width:100%;font-size:11px;padding:3px 4px}
+.sbpot b{color:inherit!important}
+.rrwrap{display:grid;grid-template-columns:260px minmax(0,1fr);gap:14px;max-width:1300px;margin:0 auto;padding:8px 16px;box-sizing:border-box;align-items:start}
+.rrside{display:flex;flex-direction:column;gap:5px}.rrside h4{margin:6px 0 2px}
+.rrpk{text-align:left;border:1px solid;border-left-width:4px;padding:5px 8px;font-size:12px;background:rgba(0,0,0,.25)}.rrpk.on{box-shadow:0 0 10px #fbbf24}
+.rrbench{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start}
+.rrlines h4{margin:0 0 6px}.rrl{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid #ffffff1a;border-radius:8px;padding:6px 8px;margin-bottom:6px}
+.rrl.locked{opacity:.45}.rrl.act{border-color:#fbbf24}.rrl .afxs{flex:1}
+.rrch{border:1px solid #fbbf24;border-radius:10px;padding:8px;margin:8px 0;background:rgba(251,191,36,.06)}
+.rropts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}.rropts button{text-align:left;padding:6px 8px;display:flex;flex-direction:column;gap:3px}
+.rropts button.sup{border-color:#f0abfc;box-shadow:0 0 12px #f0abfc66}.rrnote{font-size:12px}
+@media (max-width:800px){.potgrid{grid-template-columns:1fr}.potlv{grid-template-columns:repeat(2,1fr)}.rrwrap,.rrbench{grid-template-columns:1fr}.rropts{grid-template-columns:1fr}.cauld{font-size:9px}}
+/* two-page binder */
+.split.wide{grid-template-columns:minmax(0,1.9fr) minmax(400px,1fr)}
+.book{display:grid;grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr);gap:0;margin:6px 0;border:1px solid #d9a44144;border-radius:10px;background:rgba(0,0,0,.2);padding:8px 4px}
+.bkpg{min-width:0;padding:0 8px}.bkspine{background:linear-gradient(90deg,transparent,rgba(0,0,0,.6) 45%,rgba(217,164,65,.25) 50%,rgba(0,0,0,.6) 55%,transparent);border-radius:4px}
+.bkhd{text-align:center;font:12px ui-monospace,monospace;color:#d9a441;margin:2px 0 6px}.bkblank{display:flex;align-items:center;justify-content:center;min-height:300px;color:var(--mut,#9b8f74);font:12px ui-monospace,monospace}
+.book .wbgrid{gap:6px;padding:2px}.book .wbgrid .card{font-size:7.4px!important}.book .bslot.dexmiss,.book .shwe{min-height:170px}
+@media (max-width:1100px){.split.wide{grid-template-columns:1fr}}
+@media (max-width:760px){.book{grid-template-columns:1fr}.bkspine{height:10px}}
+/* open compare */
+.duel{display:grid;grid-template-columns:minmax(0,1fr) 150px minmax(0,1fr);gap:10px;align-items:start;border:1px solid #fbbf2455;border-radius:10px;padding:10px;margin-bottom:10px;background:rgba(251,191,36,.04)}
+.dside h4{margin:0 0 6px;display:flex;justify-content:space-between;align-items:center}.dside .card{max-width:100%}
+.dvs{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-top:60px;font-size:12px}.dvs>b{font-size:22px;color:#fbbf24}.dvs .up{color:#4ade80}.dvs .dn{color:#f87171}
+.inspR.full{grid-column:1 / -1}.cmp[data-cmp]{cursor:pointer}.cmp.selc{border-color:#fbbf24!important;box-shadow:0 0 8px #fbbf2466}.cmphint{font-size:11px;font-weight:normal}
+@media (max-width:760px){.duel{grid-template-columns:1fr}.dvs{padding-top:0}}
 </style>
 </head>
 <body>
@@ -1425,7 +1474,7 @@ function sanitizeState(parsed) {
   return migrateState(merged);
 }
 
-const SAVE_VER = 37;
+const SAVE_VER = 39;
 const MIGRATIONS = [
   [15, m => { m.team = m.team.map(s => (s && typeof s === "object" && s.id !== undefined) ? s : null); }],
   [17, m => {
@@ -2040,7 +2089,7 @@ function showPacks() {
 
   busy = false;
   tick();
-  info.innerHTML = `${flash}Active Pack: <b>${PACK_TYPES[currentPackKey].name}</b> | Packs: <b>${sv.packs}</b> | Coins: <b>${sv.c}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: legendary within ${25 - sv.pl} packs, mythic within ${80 - sv.pm}`;
+  info.innerHTML = `${flash}Active Pack: <b>${PACK_TYPES[currentPackKey].name}</b> | Packs: <b>${sv.packs}</b> | Gold: <b>${fmtN(sv.c)}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: legendary within ${25 - sv.pl} packs, mythic within ${80 - sv.pm}`;
 
   stage.className = "";
   if (currentPackKey === 'magical') stage.classList.add('magical-glow');
@@ -2116,7 +2165,7 @@ function showPacks() {
 
 function showMarket() {
   tick();
-  main.innerHTML = `<div class="bar"><b>Daily Card Marketplace & Trading Post</b> | Coins: ${sv.c} | Raw Glyphs: ${sv.dust || 0} ░▒▓</div>
+  main.innerHTML = `<div class="bar"><b>Daily Card Marketplace & Trading Post</b> | Gold: ${fmtN(sv.c)} | Raw Glyphs: ${sv.dust || 0} ░▒▓</div>
   <div class="panel-box" style="text-align:center;">
     <p style="margin-top:0;">Spend Raw Glyphs at the Broker's desk to guarantee an uncollected card from the 200-card archive, or buy rotating daily singles below!</p>
     <button id="tradeWishBtn" style="padding:10px 20px; font-weight:bold; background:#fbbf2433; border-color:#fbbf24;">Request Random Missing Card (Cost: 50 ░▒▓ Raw Glyphs)</button>
@@ -2525,7 +2574,7 @@ function showArena() {
   reward = Math.floor(reward);
   if (astral("auto") && reward > 0) { sv.c += reward; sv.stats.coinsEarned = (sv.stats.coinsEarned || 0) + reward; sv.arena.time = Date.now(); save(); notify("Auto-claimed +" + reward + " coins!"); reward = 0; }
 
-  main.innerHTML = `<div class="bar"><b>Idle Dungeon Battle Arena</b> | Coins: ${sv.c}</div>
+  main.innerHTML = `<div class="bar"><b>Idle Dungeon Battle Arena</b> | Gold: ${fmtN(sv.c)}</div>
   <div class="panel-box" style="text-align:center;">
     <h3>Active Dungeon Expedition</h3>
     <p>Equipped Team: <b>${ts.count}/5 Classes</b> | Combat Power: <b style="color:#60a5fa">${ts.totalPower}</b>
@@ -2573,7 +2622,7 @@ function showTower() {
     floorOptions.push(`<option value="${f}" ${f === floor ? "selected" : ""}>Floor ${f}${msTag}${statusTag}</option>`);
   }
 
-  main.innerHTML = `${ascBanner()}<div class="bar"><b>Infinite Tower</b> (push upward or farm a floor) | Coins: ${sv.c} | Raw Glyphs: ${sv.dust || 0} ░▒▓</div>
+  main.innerHTML = `${ascBanner()}<div class="bar"><b>Infinite Tower</b> (push upward or farm a floor) | Gold: ${fmtN(sv.c)} | Raw Glyphs: ${sv.dust || 0} ░▒▓</div>
   <div class="panel-box">
     <div class="bar" style="justify-content:space-between; background:rgba(11,13,23,0.45); padding:8px 12px; border-radius:8px; margin:0 0 14px;">
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
@@ -2773,7 +2822,7 @@ function showTower() {
 
     if (bHP <= 0 && pHP > 0) {
       const coinMult = (hasRelic("goblin_crown") ? 1.15 : 1) * weatherCoin() * (1 + afx().gold / 100);
-      const _lm = lootMult(floor), coinReward = Math.round(_lm * floor * 95 * coinMult * (1 + 0.15 * (ts.greed || 0))) * (hasARel("eye") ? 1.25 : 1) * (1 + 0.1 * horizon()) + midasC;
+      const _lm = lootMult(floor), coinReward = Math.round(_lm * floor * 95 * coinMult * (1 + 0.15 * (ts.greed || 0))) * ascGold() * (1 + 0.1 * horizon()) + midasC;
       const dustReward = 0;
       sv.c += coinReward; sv.tower.top = Math.max(sv.tower.top || 0, floor);
       if (false) { const sh = 0; notify(`+${sh} The Nexus shard${sh > 1 ? "s" : ""}`); }
@@ -3030,7 +3079,7 @@ function showBinder() {
     $("#pg").textContent = `Page ${binderPageNum + 1} / ${pages}`;
 
     const have = CARDS.filter(c => own(c.id).length > 0);
-    $("#sum").textContent = `Coins: ${sv.c} | Raw Glyphs: ${sv.dust || 0} ░▒▓ | ${have.length}/200 collected | ` +
+    $("#sum").textContent = `Gold: ${fmtN(sv.c)} | Raw Glyphs: ${sv.dust || 0} ░▒▓ | ${have.length}/200 collected | ` +
       TIERS.map((t, i) => `${t[0].toUpperCase()}: ${have.filter(c => c.tier === i).length}/${CARDS.filter(c => !c.forb && c.tier === i).length}`).join("  ");
 
     if (dir) binderPage.classList.remove("turn-left", "turn-right");
@@ -3295,7 +3344,7 @@ function applyLook() { document.body.dataset.sleeve = sv.sleeve || "none"; docum
 applyLook();
 function showCustomize() {
   const row = (list, pre, cur, label) => `<h3 style="margin:14px 0 6px">${label}</h3>` + list.map(x => { const own = sv.owned.includes(pre + ":" + x[0]); return `<div style="margin:4px 0">${x[1]} ${own ? `<button data-eq="${pre}:${x[0]}" ${cur === x[0] ? "disabled" : ""}>${cur === x[0] ? "Equipped" : "Equip"}</button>` : `<button data-buy="${pre}:${x[0]}:${x[2]}" ${sv.c < x[2] ? "disabled" : ""}>Buy (${x[2]}c)</button>`}</div>`; }).join("");
-  main.innerHTML = `<div class="bar"><b>Sleeves & Playmats</b> | Coins: ${sv.c}</div><div class="panel-box">Any sleeve other than Plain gives +10% team Power.${row(SLEEVES, "sl", sv.sleeve, "Card Sleeves")}${row(MATS, "mt", sv.mat, "Playmats")}</div>`;
+  main.innerHTML = `<div class="bar"><b>Sleeves & Playmats</b> | Gold: ${fmtN(sv.c)}</div><div class="panel-box">Any sleeve other than Plain gives +10% team Power.${row(SLEEVES, "sl", sv.sleeve, "Card Sleeves")}${row(MATS, "mt", sv.mat, "Playmats")}</div>`;
   main.querySelectorAll("[data-buy]").forEach(b => b.onclick = () => { const [p, k, c] = b.dataset.buy.split(":"); if (sv.c < +c) return; sv.c -= +c; sv.owned.push(p + ":" + k); save(); showCustomize(); });
   main.querySelectorAll("[data-eq]").forEach(b => b.onclick = () => { const [p, k] = b.dataset.eq.split(":"); if (p === "sl") sv.sleeve = k; else sv.mat = k; applyLook(); save(); updateHeader(); showCustomize(); });
 }
@@ -3438,7 +3487,7 @@ function riftNext() { rift.i++; if (rift.i >= 10) rift.over = "win"; showRift();
 function showRift() {
   const ts = getTeamStats();
   if (!rift) {
-    main.innerHTML = `<div class="bar"><b>The Deep Rift</b> | Coins: ${sv.c}</div><div class="panel-box" style="text-align:center"><p style="margin-top:0">Delve 10 nodes with your team. Campfires heal or buff, ❓ events reward owning a Lockpick, Torch or Hemp Rope card, and the final 💀 boss pays Astral Prisms, a Rune and Packs. Entry: 300 Gold.</p><button id="rGo" ${ts.count && sv.c >= 300 ? "" : "disabled"}>Enter the Rift</button>${ts.count ? "" : "<p>Equip a team first.</p>"}</div>`;
+    main.innerHTML = `<div class="bar"><b>The Deep Rift</b> | Gold: ${fmtN(sv.c)}</div><div class="panel-box" style="text-align:center"><p style="margin-top:0">Delve 10 nodes with your team. Campfires heal or buff, ❓ events reward owning a Lockpick, Torch or Hemp Rope card, and the final 💀 boss pays Astral Prisms, a Rune and Packs. Entry: 300 Gold.</p><button id="rGo" ${ts.count && sv.c >= 300 ? "" : "disabled"}>Enter the Rift</button>${ts.count ? "" : "<p>Equip a team first.</p>"}</div>`;
     main.querySelector("#rGo").onclick = () => {
       sv.c -= 300; const n = []; for (let i = 0; i < 9; i++) { const r = Math.random(); n.push(i === 0 ? "combat" : i === 4 ? "camp" : r < 0.5 ? "combat" : r < 0.75 ? "event" : "camp"); } n.push("boss");
       rift = { n, i: 0, hp: ts.maxHP, mx: ts.maxHP, mult: 1, log: ["You descend into the Rift..."], over: false }; save(); showRift();
@@ -3481,7 +3530,7 @@ function dPow() {
 }
 function showDraft() {
   if (!draft) {
-    main.innerHTML = `<div class="bar"><b>Sealed Draft Gauntlet</b> | Coins: ${sv.c}</div><div class="panel-box" style="text-align:center"><p style="margin-top:0">Pay 400 Gold for a temporary pool of 50 cards (5 packs). Build a 5-card team from the pool only and beat 5 bracket rounds for coins, Raw Glyphs and an exclusive Promo card.</p><button id="dGo" ${sv.c >= 400 ? "" : "disabled"}>Enter Draft (400c)</button></div>`;
+    main.innerHTML = `<div class="bar"><b>Sealed Draft Gauntlet</b> | Gold: ${fmtN(sv.c)}</div><div class="panel-box" style="text-align:center"><p style="margin-top:0">Pay 400 Gold for a temporary pool of 50 cards (5 packs). Build a 5-card team from the pool only and beat 5 bracket rounds for coins, Raw Glyphs and an exclusive Promo card.</p><button id="dGo" ${sv.c >= 400 ? "" : "disabled"}>Enter Draft (400c)</button></div>`;
     main.querySelector("#dGo").onclick = () => {
       sv.c -= 400; const pool = [];
       for (let i = 0; i < 50; i++) { const t = pick(PACK_TYPES.standard.slots[i % 10]), p = CARDS.filter(c => !c.forb && c.tier === t); pool.push(p[Math.floor(Math.random() * p.length)].id); }
@@ -3529,7 +3578,7 @@ function showShop() {
   const match = [];
   if (!cm.k) for (const k in sv.inv) { const c = CARDS[+k.split("|")[0]]; if (sv.inv[k] > 0 && c && (cm.req.t === "cat" ? c.category : c.element) === cm.req.v) match.push(k); }
   const say = b.none ? "Come back when you have spare duplicates to sell." : b.gone ? "Hmph! Too greedy. I'm leaving." : `"I'm after your ${b.c.name}${b.v !== "base" ? " (" + b.v + ")" : ""}. I'll pay ${b.base} Gold."`;
-  main.innerHTML = `<div class="bar"><b>NPC Shop Counter</b> | Coins: ${sv.c}</div><div class="panel-box"><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center"><pre style="margin:0;font:13px ui-monospace,monospace">${NPC[b.art].join("\n")}</pre><div style="max-width:420px">💬 ${esc(say)}</div></div>
+  main.innerHTML = `<div class="bar"><b>NPC Shop Counter</b> | Gold: ${fmtN(sv.c)}</div><div class="panel-box"><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center"><pre style="margin:0;font:13px ui-monospace,monospace">${NPC[b.art].join("\n")}</pre><div style="max-width:420px">💬 ${esc(say)}</div></div>
   <div class="bar">${b.none || b.gone ? "" : `<button data-h="1">Safe 100% (${b.base}c)</button><button data-h="1.3">Push +30% (${Math.floor(b.base * 1.3)}c, 70%)</button><button data-h="1.65">Greedy +65% (${Math.floor(b.base * 1.65)}c, 40%)</button>`}<button id="nb">Next customer</button></div></div>
   <div class="panel-box"><b>Adventurer Commission</b><br>${cm.k ? `Your <b>${esc(CARDS[+cm.k.split("|")[0]].name)}</b> is on loan. Returns in <span id="commT"></span> <button id="commClaim" disabled>Claim fee + chest</button>` : `An adventurer needs any ${cm.req.t === "cat" ? cm.req.v + " card" : EL_ICON[cm.req.v] + " " + cm.req.v + " card"} for 60 seconds. ${match.length ? `<br><select id="cmSel">${match.slice(0, 60).map(k => `<option value="${k}">${esc(CARDS[+k.split("|")[0]].name)} (${k.split("|")[1]}) PWR ${cardPower(+k.split("|")[0], k.split("|")[1])}</option>`).join("")}</select> <button id="cmGo">Loan it out</button>` : "<br><span style='color:var(--mut)'>You have no matching card.</span> <button id=\"cmSkip\">New request</button>"}`}</div>`;
   const $ = s => main.querySelector(s);
@@ -3853,7 +3902,7 @@ function showPacks() {
   main.innerHTML = `<div class="bar">${items.map(x => `<button data-s="${x[0]}" class="${openSel === x[0] ? "on" : ""}">${x[1]} (${x[2]})</button>`).join("")}</div><div id="stage" style="min-height:400px"></div><div id="info"></div><div class="bar" id="ctl"></div>`;
   const stage = main.querySelector("#stage"), info = main.querySelector("#info"), ctl = main.querySelector("#ctl"), have = items.find(x => x[0] === openSel)[2];
   stage.innerHTML = openSel === "pack" ? packHTML(false) : boxHTML(openSel, false);
-  info.innerHTML = `${flash}Coins: <b>${sv.c}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - sv.pl} packs, Mythic within ${250 - sv.pm}`;
+  info.innerHTML = `${flash}Gold: <b>${fmtN(sv.c)}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - sv.pl} packs, Mythic within ${250 - sv.pm}`;
   const mk = (t, f, on) => { const b = document.createElement("button"); b.textContent = t; b.onclick = f; if (on) b.classList.add("on"); ctl.appendChild(b); return b; };
   mk(openSel === "pack" ? "Tear Open Pack" : "Open Box", () => openFlow(), 1).disabled = have < 1;
   mk(sv.fastRip ? "⚡ Fast: ON" : "⚡ Fast: OFF", () => { sv.fastRip = !sv.fastRip; save(); showPacks(); }, sv.fastRip);
@@ -3982,7 +4031,7 @@ function showPacks() {
   main.innerHTML = `<div class="bar">${[1, 2].map(n => `<button data-set="${n}" class="${s === n ? "on" : ""}">${SETN[n]}</button>`).join("")}</div><div class="bar">${items.map(x => `<button data-s="${x[0]}" class="${openSel === x[0] ? "on" : ""}">${x[1]} (${getPk(s, x[0])})</button>`).join("")}</div><div id="stage" style="min-height:400px"></div><div id="info"></div><div class="bar" id="ctl"></div>`;
   const stage = main.querySelector("#stage"), info = main.querySelector("#info"), ctl = main.querySelector("#ctl"), have = getPk(s, openSel);
   stage.innerHTML = skin(openSel === "pack" ? packHTML(false) : boxHTML(openSel, false), s);
-  info.innerHTML = `${flash}Coins: <b>${sv.c}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${s === 1 && sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - sv.pl} packs, Mythic within ${250 - sv.pm}`;
+  info.innerHTML = `${flash}Gold: <b>${fmtN(sv.c)}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${s === 1 && sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - sv.pl} packs, Mythic within ${250 - sv.pm}`;
   const mk = (t, f, on) => { const b = document.createElement("button"); b.textContent = t; b.onclick = f; if (on) b.classList.add("on"); ctl.appendChild(b); return b; };
   mk(openSel === "pack" ? "Tear Open Pack" : "Open Box", () => openFlow(), 1).disabled = have < 1;
   mk(sv.fastRip ? "⚡ Fast: ON" : "⚡ Fast: OFF", () => { sv.fastRip = !sv.fastRip; save(); showPacks(); }, sv.fastRip);
@@ -4282,7 +4331,7 @@ function showPacks() {
   main.innerHTML = `<div class="bar"><b>${GAME_TITLE}</b> | Booster Packs: ${sv.packs}</div><div id="stage" style="min-height:400px"></div><div id="info"></div><div class="bar" id="ctl"></div>`;
   const stage = main.querySelector("#stage"), info = main.querySelector("#info"), ctl = main.querySelector("#ctl"), have = sv.packs;
   stage.innerHTML = dskin(packHTML(false)); stageFX(stage);
-  info.innerHTML = `${flash}Coins: <b>${sv.c}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - 5 * lg("pity") - 2 * astral("pity") - sv.pl} packs, Mythic within ${250 - 5 * lg("pity") - 2 * astral("pity") - sv.pm}`;
+  info.innerHTML = `${flash}Gold: <b>${fmtN(sv.c)}</b> | Raw Glyphs: <b>${sv.dust || 0} ░▒▓</b>${sv.packs < 5 ? " | next free pack in " + Math.ceil((sv.t + 24e4 - Date.now()) / 6e4) + " min" : ""}<br>Pity: Legendary within ${60 - 5 * lg("pity") - 2 * astral("pity") - sv.pl} packs, Mythic within ${250 - 5 * lg("pity") - 2 * astral("pity") - sv.pm}`;
   const mk = (t, f, on) => { const b = document.createElement("button"); b.textContent = t; b.onclick = f; if (on) b.classList.add("on"); ctl.appendChild(b); return b; };
   mk("Tear Open Pack", () => openFlow(), 1).disabled = have < 1;
   if (sv.skipAll) mk("Open x" + bulkN(), () => openMany(bulkN())).disabled = have < 1;
@@ -4354,7 +4403,7 @@ function auctionTick() {
 setInterval(() => { if (APR_USER) { auctionTick(); if (main.querySelector("#aucRoot")) showAuction(); } }, 15000);
 function showAuction() {
   auctionTick(); const A = sv.auction, now = Date.now();
-  main.innerHTML = `<div class="bar" id="aucRoot"><b>Auction House</b> | Coins: ${sv.c} | Rival collectors bid every 30s. Bids are held in escrow and refunded if you are outbid.</div><div class="store-grid">${A.l.map((l, i) => `<div class="store-card">${cardHTML(CARDS[l.id], l.v, 0, 1)}<div style="font:12px ui-monospace,monospace">Bid <b>${l.bid}c</b> (${l.leader === "you" ? "<span style='color:#4ade80'>you lead</span>" : "rival"}) · est. value ${l.val}c<br>${l.done ? "<b>Closed</b>" : `Ends in ${Math.max(0, Math.ceil((l.ends - now) / 60000))} min`}</div>${l.done ? "" : `<button data-b="${i}" ${sv.c + (l.leader === "you" ? l.yours : 0) >= Math.ceil(l.bid * 1.1) ? "" : "disabled"}>Bid ${Math.ceil(l.bid * 1.1)}c</button>`}</div>`).join("")}</div><div class="panel-box" style="font:12px ui-monospace,monospace">${A.log.join("<br>") || "No results yet."}</div>`;
+  main.innerHTML = `<div class="bar" id="aucRoot"><b>Auction House</b> | Gold: ${fmtN(sv.c)} | Rival collectors bid every 30s. Bids are held in escrow and refunded if you are outbid.</div><div class="store-grid">${A.l.map((l, i) => `<div class="store-card">${cardHTML(CARDS[l.id], l.v, 0, 1)}<div style="font:12px ui-monospace,monospace">Bid <b>${l.bid}c</b> (${l.leader === "you" ? "<span style='color:#4ade80'>you lead</span>" : "rival"}) · est. value ${l.val}c<br>${l.done ? "<b>Closed</b>" : `Ends in ${Math.max(0, Math.ceil((l.ends - now) / 60000))} min`}</div>${l.done ? "" : `<button data-b="${i}" ${sv.c + (l.leader === "you" ? l.yours : 0) >= Math.ceil(l.bid * 1.1) ? "" : "disabled"}>Bid ${Math.ceil(l.bid * 1.1)}c</button>`}</div>`).join("")}</div><div class="panel-box" style="font:12px ui-monospace,monospace">${A.log.join("<br>") || "No results yet."}</div>`;
   main.querySelectorAll("[data-b]").forEach(b => b.onclick = () => { const l = A.l[+b.dataset.b], nb = Math.ceil(l.bid * 1.1), pay = nb - (l.leader === "you" ? l.yours : 0); if (sv.c < pay) return; sv.c -= pay; l.yours = nb; l.bid = nb; l.leader = "you"; save(); showAuction(); });
 }
 
@@ -4466,7 +4515,7 @@ ext = function (m) {
 };
 ext(sv);
 sv.forge.forEach(f => CARDS.push({ ...f, id: CARDS.length, forb: true }));
-const LUCK = () => 1 + afx().luck / 100 + 0.03 * astral("luck") + ((sv.pbonus && sv.pbonus.luck) || 0) + (sv.buff && sv.buff.luck > 0 ? 0.15 : 0) + (weather().k === "fog" ? 0.15 : 0) + (todNight() ? 0.05 : 0) + crFx("luck");
+const LUCK = () => 1 + afx().luck / 100 + 0.03 * astral("luck") + ((sv.pbonus && sv.pbonus.luck) || 0) + (sv.buff && sv.buff.luck > 0 ? 0.15 : 0) + (weather().k === "fog" ? 0.15 : 0) + (todNight() ? 0.05 : 0) + crFx("luck") + potFx("fortune");
 const labCost = () => Math.max(100, 300 - 60 * astral("lab")), tintCost = () => astral("tint") ? 0 : 100, bulkN = () => 10 + Math.floor(10 * astral("bulk"));
 
 // ---- Equipment (paperdoll, v20: ten symmetrical slots) ----
@@ -4610,11 +4659,11 @@ function keepBest() {
   CARDS.filter(c => c.bound && sv.inv[c.id + "|base"] > 0).forEach(c => best.push(c.id + "|base")); return best;
 }
 function showForge() {
-  const n = sv.forges || 0, next = 100 * (Math.floor((sv.prestige || 0) / 100) + 1);
-  if (n < 1) { main.innerHTML = `<div class="bar"><b>Century Forge</b></div><div class="panel-box">Locked. Every 100th Prestige grants one forging (next at Prestige ${next}; you are at ${sv.prestige || 0}). Forged cards: ${sv.forge.length}.</div>`; return; }
+  const n = sv.forges || 0, an = (sv.asc && sv.asc.n) || 0, next = 10 * (Math.floor(an / 10) + 1);
+  if (n < 1) { main.innerHTML = `<div class="bar"><b>Century Forge</b></div><div class="panel-box">Locked. Every 10th Tribute Ascension grants one forging: design your own Mythic card. Next forging at Ascension ${next} (you are at Ascension ${an}). Cards forged so far: ${sv.forge.length}.</div>`; return; }
   const lines0 = ["", "", "   ,-.   ", "  (o.o)  ", "   |=|   "];
-  main.innerHTML = `<div class="bar"><b>Century Forge</b> | Forgings available: ${n}</div><div class="panel-box"><p style="margin-top:0">Design your own account-bound Mythic promo card (26 x 10 ASCII grid). It joins your binder and survives every Prestige.</p><input id="fn" class="forge" maxlength="24" placeholder="Card name"><div class="bar"><select id="fc">${CATEGORIES.map(c => `<option>${c}</option>`).join("")}</select><select id="fe">${ELEMENTS.map(e => `<option>${e}</option>`).join("")}</select><input id="fh" type="number" min="0" max="359" value="280" style="width:70px" title="hue"></div><input id="fl" class="forge" maxlength="140" placeholder="Lore"><div class="bar" id="pal">${["░", "▒", "▓", "█", "╔", "╗", "╚", "╝", "═", "║", "☼", "†", "☠", "♦", "*", "~"].map(c => `<button data-c="${c}">${c}</button>`).join("")}</div><textarea id="fa" class="forge" rows="10" cols="26" wrap="off" style="max-width:100%">${lines0.join("\n")}</textarea><div id="fv" style="margin:8px 0"></div><button id="fm">Mint Mythic card</button></div>`;
-  const $ = s => main.querySelector(s), def = () => ({ tier: 4, category: $("#fc").value, element: $("#fe").value, basePower: 900 + 25 * Math.floor((sv.prestige || 0) / 100), name: $("#fn").value.trim() || "Nameless Legend", art: $("#fa").value.split("\n").slice(0, 10).map(l => l.slice(0, 26)), acc: "*", hue: (+$("#fh").value || 0) % 360, lore: ($("#fl").value || `Forged by ${APR_USER} at Prestige ${sv.prestige}.`).slice(0, 140), src: "forge", bound: true });
+  main.innerHTML = `<div class="bar"><b>Century Forge</b> | Forgings available: ${n}</div><div class="panel-box"><p style="margin-top:0">Design your own one-of-a-kind Mythic card: name, gear slot, element, color, lore and ASCII art (26 x 10 grid). It joins your binder under its own card number and is bound to your account. Each forging is used up when you forge.</p><input id="fn" class="forge" maxlength="24" placeholder="Card name"><div class="bar"><select id="fc">${CATEGORIES.map(c => `<option>${c}</option>`).join("")}</select><select id="fe">${ELEMENTS.map(e => `<option>${e}</option>`).join("")}</select><input id="fh" type="number" min="0" max="359" value="280" style="width:70px" title="hue"></div><input id="fl" class="forge" maxlength="140" placeholder="Lore"><div class="bar" id="pal">${["░", "▒", "▓", "█", "╔", "╗", "╚", "╝", "═", "║", "☼", "†", "☠", "♦", "*", "~"].map(c => `<button data-c="${c}">${c}</button>`).join("")}</div><textarea id="fa" class="forge" rows="10" cols="26" wrap="off" style="max-width:100%">${lines0.join("\n")}</textarea><div id="fv" style="margin:8px 0"></div><button id="fm">Mint Mythic card</button></div>`;
+  const $ = s => main.querySelector(s), def = () => ({ tier: 4, category: $("#fc").value, element: $("#fe").value, basePower: 900 + 25 * Math.floor(((sv.asc && sv.asc.n) || 0) / 10), name: $("#fn").value.trim() || "Nameless Legend", art: $("#fa").value.split("\n").slice(0, 10).map(l => l.slice(0, 26)), acc: "*", hue: (+$("#fh").value || 0) % 360, lore: ($("#fl").value || `Forged by ${APR_USER} at Ascension ${(sv.asc && sv.asc.n) || 0}.`).slice(0, 140), src: "forge", bound: true });
   const prev = () => { try { $("#fv").innerHTML = cardHTML({ ...def(), id: 99999, forb: true }, "base", 0, 0); } catch (e) { $("#fv").textContent = "(preview unavailable)"; } };
   ["#fn", "#fc", "#fe", "#fh", "#fl", "#fa"].forEach(s => { $(s).oninput = prev; $(s).onchange = prev; }); prev();
   main.querySelectorAll("[data-c]").forEach(b => b.onclick = () => { const t = $("#fa"), p = t.selectionStart; t.value = t.value.slice(0, p) + b.dataset.c + t.value.slice(t.selectionEnd); t.focus(); t.selectionStart = t.selectionEnd = p + 1; prev(); });
@@ -5235,7 +5284,7 @@ function showGuide() {
     ["Equipment", "Ten slots: Helmet, Armor, Gloves, Boots and Main Hand on the left; Amulet, Ring 1, Ring 2, Off Hand and Pet on the right. Rings fit either ring slot. There are no Character or Land cards: all 200 cards are one of nine gear types."],
     ["Gear properties", "Every pulled card rolls random properties like a Diablo item. Weapons roll offense (Damage, Crit Chance, Crit Damage, Attack Speed). Helmet, Armor, Gloves and Boots roll defense (Max Life, Armor, Thorns, Regeneration). Amulets and Rings roll any of those plus Luck. Pets roll Gold Find, Raw Glyphs Find, Healing Pulse, Companion Damage and Pack Regeneration. Off Hands roll offense or defense. Common and Uncommon cards get 1 property, Rare 2, Legendary 3 and Mythic 4. Each value rolls inside a range that grows with rarity and star level, and each can Super-Roll for 1.5x the maximum (2% on Commons up to 5% on Mythics). Every card also has one pure element (Legendaries 25% chance of a second, Mythics always two). You keep the best roll of each print you own, so duplicates are chances at better rolls."],
     ["Element Chemistry", "Any two different base elements on your sheet trigger a reaction in Tower fights: Thermal Fracture, Ionized Flame, Wildfire, Fulgurite, Blightfrost or Shockvine. The Element Chemistry tab shows which ones you have and what you are missing."],
-    ["The Infinite Tower", "One smooth curve forever: enemies gain about 10% HP and 9.5% attack per floor, with a boss every 5th floor. Each floor shows its Recommended Power and your Estimated Floor Level. Loot is full within 5 floors of your level, up to +50% above it, and falls to 5% when you farm far below it. Auto-Advance on Win keeps climbing until you lose. Monster families cycle and mutate past Floor 40 with hybrid Amalgam bosses."],
+    ["The Infinite Tower", "One smooth curve forever: enemies gain about 10% HP and 9.5% attack per floor, with a boss every 5th floor. Each floor shows its Enemy Power (fixed for that floor) and your Estimated Floor Level. Loot is full within 5 floors of your level, up to +50% above it, and falls to 5% when you farm far below it. Auto-Advance on Win keeps climbing until you lose. Monster families cycle and mutate past Floor 40 with hybrid Amalgam bosses."],
     ["Tribute Ascension", "From Floor 20, and every 5 floors after (20, 25, 30, ...), pay a tribute of coins, monster drops and unlocked cards (Commons and Uncommons first, then Rares, Legendaries and Mythics at deeper tiers). You gain Prisms (for The Nexus and binder pages) and a permanent +5% Power and HP per tier. Nothing is ever reset, and locked or equipped cards are never taken."],
     ["The Nexus", "A huge radial skill tree. Drag to pan, scroll or pinch to zoom, tap a node and spend shards. You can only unlock nodes next to ones you already own. Five sectors: Pyre (offense), Glacial (defense), Luck (packs and foils), Tower (scaling and speed) and Alchemy (alchemy and pets). Maxing it takes hundreds of Ascensions."],
     ["Accounts & Cloud", "Your save lives in this browser under your account name. With cloud sync on it is also stored online so you can continue on another device."]
@@ -5363,10 +5412,10 @@ function showAstrolabe() {
   const avail = AT.nodes.filter(treeAvail).sort((a, b) => treeCost(a) - treeCost(b)).slice(0, 24);
   const tot = Object.keys(sv.astral).filter(k => Math.abs(sv.astral[k]) > 0.0001 && AEFF[k]);
   main.innerHTML = `<div class="bar"><b>The Nexus</b> | Prisms: <b>${sv.shards || 0} 🟣</b> | Nodes ${nAlloc}/${AT.nodes.length - 1} | Spent ${spent}/${AT.cap} | <button id="ac">Center</button><button id="azi">+</button><button id="azo">-</button>${SECT.map((s, i) => `<button data-sj="${i}" style="border-color:hsl(${s.hue},70%,55%)">${s.short}</button>`).join("")}<button id="ars" class="${astResetC ? "on" : ""}">${astResetC ? "Confirm respec (1000 ░▒▓)" : "Respec"}</button></div>
-  <div style="position:relative"><canvas id="acv" height="520" style="width:100%;height:520px;touch-action:none;background:#05060d;border:1px solid var(--bd);border-radius:6px;cursor:grab;display:block"></canvas></div>
-  <div class="panel-box" id="ainfo"></div>
-  <div class="panel-box"><b>Your bonuses</b><br>${tot.map(k => `<span class="rxchip">${AEFF[k](sv.astral[k])}</span>`).join("") || "<span style='color:var(--mut)'>Nothing unlocked yet. Click a glowing node next to the origin.</span>"}<br><small style="color:var(--mut)">Prisms come from Ascensions and every 10th new Tower floor. Drag to pan, scroll or pinch to zoom, click a node to inspect it. A node unlocks only when it touches one you already own.</small></div>
-  <details class="panel-box"><summary>Unlockable nodes (list view)</summary>${avail.map(n => `<div style="margin:3px 0"><button data-qa="${n.id}" ${(sv.shards || 0) >= treeCost(n) ? "" : "disabled"}>${treeCost(n)} 🟣</button> <b style="color:hsl(${n.hue},70%,65%)">${esc(n.name)}</b> (${n.type}, rank ${treeRank(n.id)}/${n.max}) ${nodeEff(n, 1)}</div>`).join("") || "None"}</details>`;
+  <div class="nxwrap"><div style="position:relative;min-width:0"><canvas id="acv" height="520" style="width:100%;height:520px;touch-action:none;background:#05060d;border:1px solid var(--bd);border-radius:6px;cursor:grab;display:block"></canvas></div>
+  <div class="nxside"><div class="panel-box" id="ainfo"></div>
+  <div class="panel-box nxbon"><b>Your bonuses</b><br>${tot.map(k => `<span class="rxchip">${AEFF[k](sv.astral[k])}</span>`).join("") || "<span style='color:var(--mut)'>Nothing unlocked yet. Click a glowing node next to the origin.</span>"}<br><small style="color:var(--mut)">Prisms come from Ascensions and every 10th new Tower floor. Drag to pan, scroll or pinch to zoom, click a node to inspect it. A node unlocks only when it touches one you already own.</small></div>
+  <details class="panel-box nxlist" open><summary>Unlockable nodes (list view)</summary>${avail.map(n => `<div style="margin:3px 0"><button data-qa="${n.id}" ${(sv.shards || 0) >= treeCost(n) ? "" : "disabled"}>${treeCost(n)} 🟣</button> <b style="color:hsl(${n.hue},70%,65%)">${esc(n.name)}</b> (${n.type}, rank ${treeRank(n.id)}/${n.max}) ${nodeEff(n, 1)}</div>`).join("") || "None"}</details></div></div>`;
   const cv = main.querySelector("#acv"), info = main.querySelector("#ainfo");
   const show = () => {
     const n = AT.by[V.sel]; if (!n) { info.innerHTML = "<span style='color:var(--mut)'>Select a node to see what it does.</span>"; return; }
@@ -5488,10 +5537,10 @@ function rsHideInsp() { clearTimeout(rsInspT); rsPin = false; rsInspI = -1; cons
 function rsInspSchedule() { clearTimeout(rsInspT); rsInspT = setTimeout(() => { if (!rsPin) rsHideInsp(); }, 180); }
 function rsInspHTML(i) {
   const it = rs.cards[i], c = it.c, k = rsCompare(it), r = it.roll || rollOf(c.id, it.v);
-  const sec = (lab, cc, v, sn, pw, rl) => `<div><div class="rsil">${lab}</div>${cardHTML(cc, v, sn)}<div class="rsir">PWR <b>${pw}</b> ${baseIcons(cc, v)}<br></div>${afxLines(rl, 1)}</div>`;
+  const sec = (lab, cc, v, sn, pw, rl) => `<div><div class="rsil">${lab}</div>${cardHTML(cc, v, sn, 0, rl)}<div class="rsir">${rl && rl.p ? `Grade ${gradeBadge(rl, v, "inl")} · ` : ""}PWR <b>${pw}</b> ${baseIcons(cc, v)}<br></div>${afxLines(rl, 1)}</div>`;
   const dl = k.worn ? `<span class="rsd">Already equipped</span>` : k.curC ? `<span class="rsd ${k.delta > 0 ? "up" : k.delta < 0 ? "dn" : ""}">${k.delta > 0 ? "▲ +" + k.delta : k.delta < 0 ? "▼ " + k.delta : "= same"} PWR vs equipped</span>` : k.slot ? `<span class="rsd up">Empty ${SLOT_NAME(k.slot)} slot ▲</span>` : `<span class="rsd dn">${c.category === "Off Hand" ? "Two-handed weapon equipped" : "Cannot be equipped"}</span>`;
   const btn = k.worn ? `<button disabled>EQUIPPED ✔</button>` : k.slot ? `<button class="cta" data-eq>[EQUIP NOW]</button>` : "";
-  return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec("PULLED", c, it.v, it.sn, k.pw, r)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot), k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v, k.cur.u)) : ""}</div><div class="rsfoot">${dl}<span style="color:var(--mut)">${rgText(r)}</span>${btn}</div>`;
+  return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec("PULLED", c, it.v, it.sn, k.pw, r)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot), k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v, k.cur.u)) : ""}</div><div class="rsfoot">${dl}${k.curC && !k.worn ? (() => { const eR = rollOf(k.cur.id, k.cur.v, k.cur.u), gN = gradeOf(r, it.v), gE = eR && eR.p ? gradeOf(eR, k.cur.v) : null; return gE ? `<span class="rsd ${GORD.indexOf(gN.g) > GORD.indexOf(gE.g) ? "up" : GORD.indexOf(gN.g) < GORD.indexOf(gE.g) ? "dn" : ""}">Grade ${gN.g} vs ${gE.g}</span>` : ""; })() : ""}<span style="color:var(--mut)">${rgText(r)}</span>${btn}</div>`;
 }
 function rsInsp(i, anchor) {
   if (!rs || !rs.cards[i] || rs.down.has(i)) return; clearTimeout(rsInspT);
@@ -5650,7 +5699,7 @@ function rsDockUpdate() {
   { const ovn = Math.max(0, (sv.cards || []).length - binderCap()); if (ovn) stat += ` · <b style="color:#f87171">⚠ ${ovn} in Overflow</b>`; }
   if (rs && !dealing) { const vis = rs.cards.filter((_, i) => !rs.down.has(i)), nw = vis.filter(x => x.isNew).length, ups = vis.filter(x => { const k = rsCompare(x); return k.upgrade && !k.fill; }).length; stat = `${rs.bulk ? rs.nPacks + " packs · best " + rs.cards.length + " of " + rs.all.length + " cards" : rs.cards.length + " cards"} · <b>${nw}</b> new · <b>${ups}</b> upgrade${ups === 1 ? "" : "s"} · ` + stat; }
   const rip = (n, lab) => `<button class="rip ${n === 1 && !dn ? "cta" : ""}" data-rip="${n}" ${lock || left < 1 ? "disabled" : ""}>[ ${lab} ]</button>`;
-  d.innerHTML = `${rip(1, "Rip 1x")}${rip(5, "Rip 5x")}${rip(10, "Rip 10x")}${rip(99999, "Rip Max (" + left + ")")}<span class="sep"></span><button class="${dn ? "cta" : ""}" id="rsAll" ${!dn || dealing ? "disabled" : ""}>[ Reveal All ]</button>${rs ? `<button id="rsDone" ${dealing ? "disabled" : ""}>[ Done ]</button>` : ""}<button id="rsAuto" class="${sv.autoSalv ? "on" : ""}" title="Salvage pulls of Uncommon or lower with grade D or lower straight into Raw Glyphs (finishes and misprints are kept)">[⚡ Auto-Salvage ≤ D & Uncommon: ${sv.autoSalv ? "ON" : "OFF"}]</button><span class="rsdm">${o33.last && rs ? `⚡ auto-salvaged ${o33.last.n} → +${fmtN(o33.last.d)} ░▒▓ · ` : ""}${dealing ? "Dealing…" : dn ? dn + " face-down · click one or press Space" : "Space = rip next"} · ${stat}</span>`;
+  d.innerHTML = `${rip(1, "Rip 1x")}${rip(5, "Rip 5x")}${rip(10, "Rip 10x")}<span class="sep"></span><button class="${dn ? "cta" : ""}" id="rsAll" ${!dn || dealing ? "disabled" : ""}>[ Reveal All ]</button>${rs ? `<button id="rsDone" ${dealing ? "disabled" : ""}>[ Done ]</button>` : ""}<button id="rsAuto" class="${sv.autoSalv ? "on" : ""}" title="Salvage pulls of Uncommon or lower with grade D or lower straight into Raw Glyphs (finishes and misprints are kept)">[⚡ Auto-Salvage ≤ D & Uncommon: ${sv.autoSalv ? "ON" : "OFF"}]</button><span class="rsdm">${o33.last && rs ? `⚡ auto-salvaged ${o33.last.n} → +${fmtN(o33.last.d)} ░▒▓ · ` : ""}${dealing ? "Dealing…" : dn ? dn + " face-down · click one or press Space" : "Space = rip next"} · ${stat}</span>`;
   d.querySelectorAll("[data-rip]").forEach(b => b.onclick = () => rsNext(+b.dataset.rip));
   const $ = s => d.querySelector(s);
   if ($("#rsAll")) $("#rsAll").onclick = () => rsRevealAll();
@@ -6370,7 +6419,7 @@ var EST = { k: "", f: 1, t: 0 };
 function estFloor() {
   const ts = getTeamStats(), key = [ts.strikeDmg, ts.maxHP, ts.armorBlock, ts.critChance, ts.critMult, ts.petDmg, ts.utilHeal].join("|");
   if (EST.k === key && Date.now() - EST.t < 15000) return EST.f;
-  const wins = f => { let w = 0; for (let i = 0; i < 6; i++) if (estFight(ts, f)) w++; return w >= 3; };
+  const wins = f => { let w = 0; for (let i = 0; i < 6; i++) if (estFight(ts, f, i)) w++; return w >= 3; };
   // boss floors (every 5th) are the walls: find the deepest boss you beat, then walk the floors after it
   let lo = 0, hi = 1; while (hi < 4000 && wins(5 * hi)) { lo = hi; hi *= 2; }
   while (hi - lo > 1) { const m = (lo + hi) >> 1; if (wins(5 * m)) lo = m; else hi = m; }
@@ -6378,18 +6427,19 @@ function estFloor() {
   EST = { k: key, f: Math.max(1, f), t: Date.now() }; return EST.f;
 }
 // a light copy of the real Tower fight (strike, crit, pet, burn, lifesteal, heals, regen, thorns, block, resistance, dodge)
-function estFight(ts, f) {
+function estFight(ts, f, seed) {
+  let _s = (Math.imul(f, 2654435761) ^ Math.imul((seed || 0) + 1, 40503)) >>> 0; const rnd = () => { _s = (_s + 0x6D2B79F5) >>> 0; let t = _s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   const maxB = towerHP(f), FM = monsterOf(f), RX = reactions(), mut = mutOf(f); let bHP = maxB, pHP = ts.maxHP; const atk = towerAtk(f) * (ts.activeElement === "Glacial" ? 0.8 : 1) * (f % 10 === 0 ? 1.4 : 1), healEvery = hasRelic("seraph_halo") ? 1 : 2;
   const ls = (ts.activeElement === "Venom" ? 0.12 : 0) + (hasRelic("necrotic_rib") ? 0.10 : 0) + 0.08 * (ts.vamp || 0) + (ts.loh || 0) / 100 + (sv.buff && sv.buff.vamp > 0 ? 0.25 : 0);
   for (let t = 1; t <= 25; t++) {
-    let d = mut === "ethereal" && t % 2 === 0 ? 0 : Math.round(ts.strikeDmg * (0.92 + Math.random() * 0.16) * (Math.random() * 100 < ts.critChance ? ts.critMult : 1));
+    let d = mut === "ethereal" && t % 2 === 0 ? 0 : Math.round(ts.strikeDmg * (0.92 + rnd() * 0.16) * (rnd() * 100 < ts.critChance ? ts.critMult : 1));
     const fx = fxStrike(FM, RX, d, t, ts); d = fx.dmg; bHP -= d + (fx.extra || 0); pHP = Math.min(ts.maxHP, pHP + (fx.heal || 0) + d * ls);
     if (ts.activeElement === "Pyre") bHP -= Math.round(ts.strikeDmg * 0.25 * (1 + (ts.dot || 0) / 100));
     bHP -= ts.petDmg || 0;
     if (sv.team[3] && t % healEvery === 0) pHP = Math.min(ts.maxHP, pHP + (ts.utilHeal || 0));
     if (ts.activeElement === "Venom") pHP = Math.min(ts.maxHP, pHP + ts.maxHP * 0.05);
     if (bHP <= 0) return mut === "volatile" ? pHP > ts.maxHP * 0.12 : true;
-    const raw = atk * fxAtk(FM, t) * (0.9 + Math.random() * 0.2), net = Math.random() * 100 < (ts.dodge || 0) ? 0 : Math.max(4, (raw - ts.armorBlock) * (1 - (ts.res || 0) / 100));
+    const raw = atk * fxAtk(FM, t) * (0.9 + rnd() * 0.2), net = rnd() * 100 < (ts.dodge || 0) ? 0 : Math.max(4, (raw - ts.armorBlock) * (1 - (ts.res || 0) / 100));
     const bx = fxBossTurn(FM, RX, Math.round(net), t, ts, maxB); pHP -= bx.hit; bHP -= (bx.back || 0) + raw * (ts.thorns || 0) / 100; bHP = Math.min(maxB, bHP + (bx.bheal || 0) + (mut === "vampiric" ? net * 0.5 : 0)); pHP = Math.min(ts.maxHP, pHP + (bx.pheal || 0));
     if (pHP > 0) pHP = Math.min(ts.maxHP, pHP + ts.maxHP * ((ts.regen || 0) + (t % 2 === 0 ? ts.pheal || 0 : 0)) / 100);
     if (pHP <= 0) return false; if (bHP <= 0) return true;
@@ -6397,14 +6447,15 @@ function estFight(ts, f) {
   return false;
 }
 const REC_G = Math.sqrt(1.10 * 1.095);
-function recPower(f) { const E = estFloor(), P = Math.max(1, getTeamStats().totalPower); return Math.round(P * Math.pow(REC_G, f - E)); }
+// Recommended Power depends only on the floor: the same floor always shows the same enemy
+function recPower(f) { return Math.round(1100 * Math.pow(REC_G, f - 1) * (f % 10 === 0 ? 1.71 : f % 5 === 0 ? 1.44 : 1)); }
 // loot yield: full (or better) near your power level, steep falloff when farming far below it
 function lootMult(f) { const d = estFloor() - f; if (d <= 0) return Math.min(1.5, 1 + 0.05 * -d); if (d <= 5) return 1; return Math.max(0.05, 1 - (d - 5) * 0.06); }
 const _dm30 = dropMats; dropMats = function (f) { const m = lootMult(f); if (m >= 1) { _dm30(f); if (Math.random() < m - 1) _dm30(f); } else if (Math.random() < m) _dm30(f); };
 function towerPanel() {
   const f = sv.tower.floor || 1, E = estFloor(), P = getTeamStats().totalPower, rp = recPower(f), lm = lootMult(f), A = sv.asc || { n: 0 }, nx = ascFloor(A.n);
   return `<div class="panel-box tpan"><b>Floor ${f}</b>${f % 5 === 0 ? " 👑 boss" : ""} · Enemy HP ${towerHP(f).toLocaleString()} · ATK ${towerAtk(f).toLocaleString()}
-  <br>Recommended Power <b style="color:${P >= rp ? "#4ade80" : "#f87171"}">${rp.toLocaleString()}</b> · Your Power <b>${P.toLocaleString()}</b> · Estimated floor level <b>${E}</b>
+  <br>Enemy Power <b style="color:${P >= rp ? "#4ade80" : "#f87171"}">${rp.toLocaleString()}</b> · Your Power <b>${P.toLocaleString()}</b> · Estimated floor level <b>${E}</b>
   · Loot yield <b style="color:${lm >= 1 ? "#4ade80" : lm >= 0.5 ? "#fbbf24" : "#f87171"}">${Math.round(lm * 100)}%</b>${lm < 0.5 ? " <span style='color:var(--mut)'>(you are far stronger than this floor; climb higher for full rewards)</span>" : lm > 1 ? " <span style='color:var(--mut)'>(above your level: bonus loot)</span>" : ""}
   <br>🌀 Tribute Ascension ${A.n} · next tier at Floor ${nx} ${(sv.tower.maxFloor || 1) > nx ? `<b style="color:#fbbf24">ready</b> <button onclick="hubGo('THE NEXUS',1)">Ascend</button>` : `(best ${Math.max(1, (sv.tower.maxFloor || 1) - 1)})`}</div>`;
 }
@@ -6413,7 +6464,8 @@ views[8] = showTower;
 
 // ---- Tribute Ascension: Floor 20, then every 5 floors. Pay a tribute, keep everything else. ----
 function ascFloor(n) { return 20 + 5 * n; }
-function ascPow() { return Math.pow(1.05, (sv.asc && sv.asc.n) || 0); }
+function ascPow() { return Math.pow(1.07, (sv.asc && sv.asc.n) || 0); }
+function ascGold() { return 1 + 0.08 * ((sv.asc && sv.asc.n) || 0); }
 function tribute(n) {
   const coins = Math.round(2000 * Math.pow(1.6, n)), matsC = Math.round(6 * Math.pow(1.3, n)), matsR = n < 2 ? 0 : Math.round(1 + Math.pow(1.25, n - 2));
   let cards;
@@ -6424,14 +6476,14 @@ function tribute(n) {
 function matCount(suf) { return Object.keys(sv.mats || {}).filter(k => k.endsWith(suf)).reduce((a, k) => a + (sv.mats[k] || 0), 0); }
 function takeMats(suf, n) { Object.keys(sv.mats || {}).filter(k => k.endsWith(suf)).sort((a, b) => sv.mats[b] - sv.mats[a]).forEach(k => { const t = Math.min(n, sv.mats[k]); sv.mats[k] -= t; n -= t; }); }
 function sacrificeList(T) { const out = []; T.cards.forEach(([t, n]) => { const pool = (sv.cards || []).filter(c => CARDS[c.i] && CARDS[c.i].tier === t && !isProt(c)).sort((a, b) => gradeScore(a.r, a.v) - gradeScore(b.r, b.v) || a.l - b.l); out.push({ t, n, pick: pool.slice(0, n) }); }); return out; }
-function ascReward(n) { return { shards: 5 + 2 * n + Math.floor(astral("shardf")), pow: 5 }; }
+function ascReward(n) { return { shards: 8 + 3 * n + Math.floor(astral("shardf")), pow: 7, packs: 3 + Math.floor(n / 2) }; }
 var ascConfirm = false;
 function showAscension() {
   const A = sv.asc, n = A.n, need = ascFloor(n), best = Math.max(1, (sv.tower.maxFloor || 1) - 1), T = tribute(n), S = sacrificeList(T), rw = ascReward(n);
   const floorOk = best >= need, coinOk = sv.c >= T.coins, cOk = matCount("_c") >= T.matsC, rOk = matCount("_r") >= T.matsR, cardOk = S.every(x => x.pick.length >= x.n), ok = floorOk && coinOk && cOk && rOk && cardOk;
   const chk = b => b ? `<b style="color:#4ade80">✔</b>` : `<b style="color:#f87171">✘</b>`;
   main.innerHTML = `<div class="bar"><b>🌀 Tribute Ascension</b> | Tier ${n} | Permanent bonus +${Math.round((ascPow() - 1) * 100)}% Power & HP | Prisms ${sv.shards || 0} 🟣</div>
-  <div class="panel-box"><p style="margin:0 0 6px">Ascension never resets your cards, equipment or Tower progress. Each tier unlocks 5 floors after the last (Floor 20, 25, 30, …). Pay the tribute to gain <b>${rw.shards} 🟣 Prisms</b> and a permanent <b>+5% Power and HP</b> (compounding).</p>
+  <div class="panel-box"><p style="margin:0 0 6px">Ascension never resets your cards, equipment or Tower progress. Each tier unlocks 5 floors after the last (Floor 20, 25, 30, …). Pay the tribute to gain <b>${rw.shards} 🟣 Prisms</b> a permanent <b>+7% Power and HP</b> (compounding), <b>+8% Tower Gold</b> and <b>${rw.packs} free Booster Packs</b>.</p>
   <table class="trib"><tr><td>${chk(floorOk)}</td><td>Reach Floor ${need}</td><td>best cleared: ${best}</td></tr>
   <tr><td>${chk(coinOk)}</td><td>${T.coins.toLocaleString()} Gold</td><td>you have ${sv.c.toLocaleString()}</td></tr>
   <tr><td>${chk(cOk)}</td><td>${T.matsC} common monster drops</td><td>you have ${matCount("_c")}</td></tr>
@@ -6440,8 +6492,7 @@ function showAscension() {
   <p style="color:var(--mut);font-size:12px;margin:6px 0">Locked (🔒) and equipped cards are never sacrificed. The lowest-grade unlocked cards of each rarity are chosen first:</p>
   <div class="tsac">${S.flatMap(x => x.pick.slice(0, x.n)).map(c => `<span style="color:${TC[CARDS[c.i].tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(CARDS[c.i].name)} Lv${c.l}</span>`).join(" · ") || "—"}</div>
   <div class="bar"><button id="ascGo" class="${ascConfirm ? "on" : ""}" ${ok ? "" : "disabled"}>${ascConfirm ? "Click again to pay the tribute and ASCEND" : "Pay tribute & Ascend"}</button><button onclick="hubGo('THE TOWER',0)">Back to the Tower</button></div></div>
-  <div class="panel-box"><b>Next tiers</b><br>${[1, 2, 3].map(k => { const t = tribute(n + k); return `Tier ${n + k + 1}: Floor ${ascFloor(n + k)} · ${t.coins.toLocaleString()}c · ${t.matsC} common${t.matsR ? " + " + t.matsR + " rare" : ""} drops · ${t.cards.map(([tt, nn]) => nn + " " + TIERS[tt]).join(" + ")}`; }).join("<br>")}</div>
-  <div class="panel-box"><b>Ascension relics</b><br>${Object.keys(ARELICS).map(k => `<span class="relic-pill" style="opacity:${hasARel(k) ? 1 : 0.35}">${ARELICS[k][0]}: ${ARELICS[k][1]}</span>`).join(" ")}</div>`;
+  <div class="panel-box"><b>Next tiers</b><br>${[1, 2, 3].map(k => { const t = tribute(n + k); return `Tier ${n + k + 1}: Floor ${ascFloor(n + k)} · ${t.coins.toLocaleString()}c · ${t.matsC} common${t.matsR ? " + " + t.matsR + " rare" : ""} drops · ${t.cards.map(([tt, nn]) => nn + " " + TIERS[tt]).join(" + ")}`; }).join("<br>")}</div>`;
   main.querySelector("#ascGo").onclick = () => { if (!ascConfirm) { ascConfirm = true; showAscension(); return; } ascConfirm = false; ascendNow(); showAscension(); };
 }
 function ascendNow() {
@@ -6450,11 +6501,11 @@ function ascendNow() {
   sv.c -= T.coins; takeMats("_c", T.matsC); takeMats("_r", T.matsR);
   S.forEach(x => x.pick.slice(0, x.n).forEach(c => instRemove(c)));
   const rw = ascReward(n); A.n++; A.on = false; sv.stats.ascensions = (sv.stats.ascensions || 0) + 1; sv.shards = (sv.shards || 0) + rw.shards;
-  const rl = ["crown", "eye", "anvil"][A.n - 1]; if (rl && !A.relics.includes(rl)) A.relics.push(rl);
+  const rl = null; sv.packs = (sv.packs || 0) + (rw.packs || 0);
   if (A.n % 10 === 0) sv.forges = (sv.forges || 0) + 1;
   try { sv.legacy.pts += 1 + Math.floor(A.n / 3); } catch (e) {}
   validateEquip(); syncTeam(); recalcAstral(); save(); updateHeader(); try { drawStatus(); } catch (e) {} playFanfare(4); haptic(150);
-  notify(`ASCENSION ${A.n}! +${rw.shards} 🟣 and a permanent +5% Power & HP${rl ? ", relic: " + ARELICS[rl][0] : ""}${A.n % 10 === 0 ? ", and a Century Forge charge" : ""}.`);
+  notify(`ASCENSION ${A.n}! +${rw.shards} 🟣 ${rw.packs} Booster Packs, a permanent +7% Power & HP and +8% Tower Gold${A.n % 10 === 0 ? ", and a Century Forge charge" : ""}.`);
   return rw;
 }
 function prestigeNow() { return false; }
@@ -6554,11 +6605,11 @@ function snapModal(s) {
   o.innerHTML = `<div class="imbox"><button class="imx">✕</button><div class="imcard">${cardHTML(c, s.v, s.sn, 0, r)}</div><div class="iminfo"><h3 style="color:${TC[c.tier]}">${esc(c.name)}</h3><div>${TIERS[c.tier]} ${c.category} · Level ${r.lv} · ${s.v === "base" ? "Standard print" : s.v.split("+").map(x => VNAME[x] || x).join(" + ")}${s.sn ? " #" + s.sn + "/100" : ""}</div><div style="margin:6px 0">${gradeBadge(r, s.v, "inl")} <b>${rgText(r)}</b></div><div style="font-size:11px;color:#9aa4b2;font-family:ui-monospace,monospace">PROPERTIES</div>${afxLines(r, 1)}<p style="color:var(--mut);font-size:12px">Linked in chat: a snapshot of the card when it was shared.</p></div></div>`;
   o.querySelector(".imx").onclick = () => o.remove(); o.onclick = e => { if (e.target === o) o.remove(); }; document.body.appendChild(o);
 }
-function chMe() { return { u: (typeof dispName === "function" ? dispName() : APR_USER) || "guest", k: pKey(APR_USER), f: (sv.tower && sv.tower.top) || 0, a: (sv.asc && sv.asc.n) || 0 }; }
+function chMe() { return { u: (typeof dispName === "function" ? dispName() : APR_USER) || "guest", k: pKey(APR_USER), f: topFloor(), a: (sv.asc && sv.asc.n) || 0 }; }
 async function chPost(m, card, kind) {
   if (!APR_USER) return notify("Log in to chat.");
   const now = Date.now(); if (kind !== "ann" && now - CH.last < 1500) return notify("Slow down a little."); CH.last = now;
-  const msg = Object.assign(chMe(), { t: now, m: String(m || "").slice(0, 240), k: kind || "msg" }); if (card) msg.c = card;
+  const msg = Object.assign(chMe(), { t: now, m: String(m || "").slice(0, 240), ty: kind || "msg" }); if (card) msg.c = card;
   if (cloudOn()) { try { const r = await fetch(chUrl(), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(msg) }); if (!r.ok) throw new Error(r.status); if (!CH.es) chPull(); return; } catch (e) { CH.status = "offline: the database refused the chat message"; } }
   chLocal(msg);
 }
@@ -6585,8 +6636,8 @@ function chConnect() {
 }
 function chLine(m, j) {
   const t = new Date(m.t || 0), hh = String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0"), card = m.c && snapOk(m.c) ? snapBadge(m.c, j) : "";
-  if (m.k === "ann") return `<div class="chm ann"><span class="cht">${hh}</span> 📣 ${esc(m.m || "")} ${card}</div>`;
-  return `<div class="chm ${(m.k || m.u) === pKey(APR_USER) || m.u === APR_USER ? "me" : ""}"><span class="cht">${hh}</span> <b class="chu" data-pu="${esc(String(m.k || m.u || "?").slice(0, 40))}" title="Inspect loadout">${esc(String(m.u || "?").slice(0, 20))}</b><span class="chb">F${m.f | 0}${m.a ? " 🌀" + (m.a | 0) : ""}</span>: ${esc(m.m || "")} ${card}</div>`;
+  const pk = m.k && m.k !== "msg" && m.k !== "ann" ? m.k : ""; if (m.ty === "ann" || m.k === "ann") return `<div class="chm ann"><span class="cht">${hh}</span> 📣 ${esc(m.m || "")} ${card}</div>`;
+  return `<div class="chm ${(pk || m.u) === pKey(APR_USER) || m.u === APR_USER ? "me" : ""}"><span class="cht">${hh}</span> <b class="chu" data-pu="${esc(String(pk || m.u || "?").slice(0, 40))}" title="Inspect loadout">${esc(String(m.u || "?").slice(0, 20))}</b><span class="chb">F${m.f | 0}${m.a ? " 🌀" + (m.a | 0) : ""}</span>: ${esc(m.m || "")} ${card}</div>`;
 }
 function chDraw() {
   let w = document.getElementById("chatw"); if (!APR_USER || !__ready) { if (w) w.remove(); return; }
@@ -6652,7 +6703,7 @@ const _mo33 = monsterOf; monsterOf = function (floor) { const m = _mo33(floor); 
 // header: no relic count
 function updateHeader() {
   const badge = document.getElementById("prestigeBadge"); if (!badge) return; const ts = getTeamStats(), parts = [];
-  if (sv.asc && sv.asc.n > 0) parts.push("🌀 Ascension " + sv.asc.n + " (+" + Math.round((Math.pow(1.05, sv.asc.n) - 1) * 100) + "% Power & HP)");
+  if (sv.asc && sv.asc.n > 0) parts.push("🌀 Ascension " + sv.asc.n + " (+" + Math.round((ascPow() - 1) * 100) + "% Power & HP)");
   if (ts.count > 0) parts.push(`⚔️ Team PWR: ${ts.totalPower.toLocaleString()}${ts.activeElement ? " · " + EL_ICON[ts.activeElement] + " " + ts.activeElement + " set" : ""}`);
   badge.textContent = parts.join("  |  ");
 }
@@ -6834,7 +6885,7 @@ setInterval(() => { try { if (__ready && APR_USER && document.visibilityState ==
 function collectorScore() { let s = 0; (sv.cards || []).forEach(c => { const card = CARDS[c.i]; if (!card) return; if (card.tier === 4) s += 10; s += 3 * vParts(c.v).length; if (gradeOf(c.r, c.v).g === "S+") s += 5; }); return s; }
 function mySummary() {
   const ts = getTeamStats();
-  return { u: dispName(), k: pKey(APR_USER), floor: Math.max((sv.tower && sv.tower.top) || 0, 0), power: ts.totalPower, packs: (sv.stats && sv.stats.packsOpened) || 0, asc: (sv.asc && sv.asc.n) || 0, coll: collectorScore(), play: sv.playMs || 0, t: Date.now(),
+  return { u: dispName(), k: pKey(APR_USER), floor: topFloor(), power: ts.totalPower, packs: (sv.stats && sv.stats.packsOpened) || 0, asc: (sv.asc && sv.asc.n) || 0, coll: collectorScore(), play: sv.playMs || 0, t: Date.now(),
     title: (sv.cos && sv.cos.title) || "", el: ts.activeElement || "" };
 }
 function myLoadout() {
@@ -6955,7 +7006,7 @@ function guideTab(B) {
   <h3>Properties and 1.5x Super-Rolls</h3><p>Weapons roll offense (Damage, Crit Chance, Crit Damage, Attack Speed), armor rolls defense (Max Life, Armor, Thorns, Regeneration), jewelry rolls either plus Luck, pets roll support. Commons and Uncommons get 1 property, Rares 2, Legendaries 3, Mythics 4. Each property has a 2% (Common) to 5% (Mythic) chance to Super-Roll at 1.5x its maximum (★). Levels 1 to 25 add 10% power and 4% to every property per level.</p>
   <h3>Finishes and misprints</h3><p>Pure RNG on every pull. Finishes: Shiny, Gold-Trimmed, Black-Trimmed, Glitched, Ghost, Serialized #/100. Factory misprints: Miscut, Rotated, Negative Ink, Double-Struck, Inverted Cut. A card can have one of each; both raise power and salvage value.</p>
   <h3>Element Chemistry</h3><p>Every card has a base element (Pyre, Glacial, Voltaic, Venom). Matching elements on your sheet form a set bonus: Pyre burns, Glacial weakens boss attacks, Voltaic adds power, Venom adds lifesteal and regeneration. Two different elements trigger a reaction in Tower fights.</p>
-  <h3>Tribute Ascension</h3><p>From Floor 20 and every 5 floors after, pay a tribute of Gold, monster drops and unlocked cards to gain Prisms and a permanent +5% Power and HP. Nothing is ever reset; locked and equipped cards are never taken.</p>
+  <h3>Tribute Ascension</h3><p>From Floor 20 and every 5 floors after, pay a tribute of Gold, monster drops and unlocked cards to gain Prisms, free Booster Packs, a permanent +7% Power and HP and +8% Tower Gold. Nothing is ever reset; locked and equipped cards are never taken.</p>
   <h3>Hotkeys</h3><p>Hover a card: <b>X</b> salvage, <b>F</b> favorite, Shift+Click salvage. <b>Space</b> rips the next pack. Keys <b>1-6</b> switch tabs. <b>Esc</b> closes windows.</p></div>`;
 }
 function statsTab(B) {
@@ -6986,16 +7037,25 @@ function equipInst(c, slot) {
 }
 function rowHTML(c, cur) {
   const p = cardPower(c.i, c.v, c.u), cp = cur ? cardPower(cur.id, cur.v, cur.u) : 0, dp = p - cp;
-  return `<div class="cmp" data-hu="${c.u}"><div class="cmpn" style="color:${TC[CARDS[c.i].tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(CARDS[c.i].name)} ${c.f ? "🔒" : ""}</div><div class="cmpm">Lv ${c.l} · ${c.v === "base" ? "" : esc(c.v) + " · "}PWR ${fmtN(p)} <b class="${dp >= 0 ? "up" : "dn"}">${dp >= 0 ? "+" : ""}${fmtN(dp)}</b></div><div class="eqdd">${diffChips(c, cur) || "<i>same properties</i>"}</div><div class="cmpb"><button data-eqp="${c.u}">[ Equip ]</button><button data-qs="${c.u}" title="Salvage (X)">🗑️ Salvage</button><button data-qf="${c.u}" title="Favorite (F)">${c.f ? "🔒" : "🔓"}</button></div></div>`;
+  return `<div class="cmp ${WBS.cmp === c.u ? "selc" : ""}" data-hu="${c.u}" data-cmp="${c.u}"><div class="cmpn" style="color:${TC[CARDS[c.i].tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(CARDS[c.i].name)} ${c.f ? "🔒" : ""}</div><div class="cmpm">Lv ${c.l} · ${c.v === "base" ? "" : esc(c.v) + " · "}PWR ${fmtN(p)} <b class="${dp >= 0 ? "up" : "dn"}">${dp >= 0 ? "+" : ""}${fmtN(dp)}</b></div><div class="eqdd">${diffChips(c, cur) || "<i>same properties</i>"}</div><div class="cmpb"><button data-eqp="${c.u}">[ Equip ]</button><button data-qs="${c.u}" title="Salvage (X)">🗑️ Salvage</button><button data-qf="${c.u}" title="Favorite (F)">${c.f ? "🔒" : "🔓"}</button></div></div>`;
 }
 function wbInspect() {
   const s = WBS.slot; if (!s) return `<div class="wbempty"><pre>  ┌───────────────────┐\n  │  SLOT INSPECTOR   │\n  │    & COMPARE      │\n  └───────────────────┘</pre>Click any of the 10 gear sockets on the right to inspect what's equipped there and compare every card you own for that slot.</div>`;
   const cur = sv.equip[s], inst = cur && instByU(cur.u), nm = ESLOTS.find(x => x[0] === s)[1], ov = overflowSet();
   const cands = (sv.cards || []).filter(c => CARDS[c.i] && slotOk(s, CARDS[c.i]) && !ov.has(c.u) && !isEquippedU(c.u));
-  const SO = { grade: (a, b) => gradeScore(b.r, b.v) - gradeScore(a.r, a.v) || cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u), pwr: (a, b) => cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u), lvl: (a, b) => b.l - a.l };
+  const SO = { grade: (a, b) => gradeScore(b.r, b.v) - gradeScore(a.r, a.v) || cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u), pwr: (a, b) => cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u), lvl: (a, b) => b.l - a.l, rar: (a, b) => CARDS[b.i].tier - CARDS[a.i].tier || gradeScore(b.r, b.v) - gradeScore(a.r, a.v) || cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u) };
   cands.sort(SO[WBS.so] || SO.grade);
-  return `<div class="insp"><div class="inspL"><h4>Equipped · ${nm}</h4>${inst ? `${cardHTML(CARDS[inst.i], inst.v, inst.sn, 0, inst.r)}<div class="mut">${gradeBadge(inst.r, inst.v, "inl")} ${rgText(inst.r)}${vParts(inst.v).length ? " · " + vParts(inst.v).map(x => VNAME[x] || x).join(" + ") : ""}</div>${afxLines(inst.r, 1)}${upgradePanel(inst)}<div class="imact"><button id="wLock">${inst.f ? "🔒 Favorited" : "🔓 Favorite"}</button><button id="wLink">💬 Link in Chat</button><button id="wOff">Unequip</button></div>` : `<div class="wbempty">Nothing equipped in this slot.</div>`}</div>
-  <div class="inspR"><h4>Your ${nm} cards (${cands.length}) <select id="wSo">${[["grade", "Sort: Grade"], ["pwr", "Sort: Power"], ["lvl", "Sort: Level"]].map(([v, n]) => `<option value="${v}" ${WBS.so === v ? "selected" : ""}>${n}</option>`).join("")}</select></h4><div class="cmpl">${cands.slice(0, 80).map(c => rowHTML(c, cur)).join("") || `<p class="mut">No other ${nm} cards in your binder.</p>`}</div></div></div>`;
+  const sc = WBS.cmp && instByU(WBS.cmp); if (!(sc && CARDS[sc.i] && slotOk(s, CARDS[sc.i]) && !isEquippedU(sc.u))) WBS.cmp = null;
+  const list = `<div class="inspR ${WBS.cmp ? "full" : ""}"><h4>Your ${nm} cards (${cands.length}) <span class="mut cmphint">click a card to open it</span> <select id="wSo">${[["grade", "Sort: Grade"], ["rar", "Sort: Rarity"], ["pwr", "Sort: Power"], ["lvl", "Sort: Level"]].map(([v, n]) => `<option value="${v}" ${WBS.so === v ? "selected" : ""}>${n}</option>`).join("")}</select></h4><div class="cmpl">${cands.slice(0, 80).map(c => rowHTML(c, cur)).join("") || `<p class="mut">No other ${nm} cards in your binder.</p>`}</div></div>`;
+  if (WBS.cmp) {
+    const cp = inst ? cardPower(inst.i, inst.v, inst.u) : 0, sp = cardPower(sc.i, sc.v, sc.u), dp = sp - cp, gS = gradeOf(sc.r, sc.v), gE = inst ? gradeOf(inst.r, inst.v) : null;
+    const side = (lab, c, extra) => `<div class="dside"><h4>${lab}</h4>${cardHTML(CARDS[c.i], c.v, c.sn, 0, c.r)}<div class="mut">${gradeBadge(c.r, c.v, "inl")} Lv ${c.l} · PWR ${fmtN(cardPower(c.i, c.v, c.u))}${vParts(c.v).length ? " · " + vParts(c.v).map(x => VNAME[x] || x).join(" + ") : ""}</div>${afxLines(c.r, 1)}${extra || ""}</div>`;
+    return `<div class="duel">${inst ? side("Equipped · " + nm, inst) : `<div class="dside"><h4>Equipped · ${nm}</h4><div class="wbempty">Empty slot</div></div>`}
+    <div class="dvs"><b>VS</b><div class="${dp >= 0 ? "up" : "dn"}">PWR ${dp >= 0 ? "+" : ""}${fmtN(dp)}</div>${gE ? `<div class="${GORD.indexOf(gS.g) > GORD.indexOf(gE.g) ? "up" : GORD.indexOf(gS.g) < GORD.indexOf(gE.g) ? "dn" : ""}">Grade ${gS.g} vs ${gE.g}</div>` : ""}<div class="eqdd">${diffChips(sc, cur) || "<i>same properties</i>"}</div></div>
+    ${side(`Selected <button id="dX" title="Close">✕</button>`, sc, `<div class="imact"><button class="cta" data-eqp="${sc.u}">[ Equip ]</button><button data-rrb="${sc.u}">🎲 Re-roll</button><button data-qf="${sc.u}">${sc.f ? "🔒 Unfavorite" : "🔓 Favorite"}</button><button data-qs="${sc.u}">🗑️ Salvage</button><button data-ins="${sc.u}">Upgrade</button></div>`)}</div>${list}`;
+  }
+  return `<div class="insp"><div class="inspL"><h4>Equipped · ${nm}</h4>${inst ? `${cardHTML(CARDS[inst.i], inst.v, inst.sn, 0, inst.r)}<div class="mut">${gradeBadge(inst.r, inst.v, "inl")} ${rgText(inst.r)}${vParts(inst.v).length ? " · " + vParts(inst.v).map(x => VNAME[x] || x).join(" + ") : ""}</div>${afxLines(inst.r, 1)}${upgradePanel(inst)}<div class="imact"><button id="wLock">${inst.f ? "🔒 Favorited" : "🔓 Favorite"}</button><button data-rrb="${inst.u}" title="Re-roll a property in THE FORGE">🎲 Re-roll</button><button id="wLink">💬 Link in Chat</button><button id="wOff">Unequip</button></div>` : `<div class="wbempty">Nothing equipped in this slot.</div>`}</div>
+  ${list}</div>`;
 }
 function wbGridCell(c) { return `<div class="bslot ${isEquippedU(c.u) ? "eq" : ""} ${WBS.sel === c.u ? "selc" : ""}" data-u="${c.u}" data-hu="${c.u}">${hovBtns(c)}${cardHTML(CARDS[c.i], c.v, c.sn, 1, c.r)}<div class="bsb"><span>${c.f ? "🔒 " : ""}Lv ${c.l}</span>${isEquippedU(c.u) ? `<span class="eqtag">EQUIPPED</span>` : ""}</div></div>`; }
 function selStrip() { const c = WBS.sel && instByU(WBS.sel); if (!c) return `<div class="selstrip mut">Click a card to select it · hover: <b>X</b> salvage, <b>F</b> favorite</div>`;
@@ -7022,15 +7082,14 @@ function dexStack(i, copies) {
     return `<div class="fanc ${x.u === c.u ? "on" : ""}" data-fu="${x.u}" data-hu="${x.u}" style="--t:${t.toFixed(4)};--r:${r}deg;--y:${y}px;z-index:${n + 1}" title="${esc(card.name)} · Lv ${x.l} · PWR ${fmtN(cardPower(x.i, x.v, x.u))}">${cardHTML(card, x.v, x.sn, 1, x.r)}<span class="fant">${gradeBadge(x.r, x.v, "inl")}Lv ${x.l}${x.f ? " 🔒" : ""}${isEquippedU(x.u) ? " ⚔️" : ""}${inShow(x.u) ? " ⭐" : ""}</span></div>`; }).join("");
   return `<div class="dxstack"><h4><span style="color:${TC[card.tier]}">${dexNo(i)} ${esc(card.name)}</span> · ${all} cop${all > 1 ? "ies" : "y"}${all > N ? ` <span class="mut">(fanning the top ${N})</span>` : ""} <button id="dxX" title="Close">✕</button></h4>
   <div class="dxfan">${fan}</div>
-  <div class="cmp dxsel" data-hu="${c.u}"><div class="cmpn" style="color:${TC[card.tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(card.name)} ${c.f ? "🔒" : ""}${isEquippedU(c.u) ? ` <span class="eqtag">EQUIPPED</span>` : ""}${inShow(c.u) ? ` <span class="dxshow">⭐ ON DISPLAY</span>` : ""} <span class="mut">copy ${at + 1} of ${all}</span></div><div class="cmpm">Lv ${c.l} · ${c.v === "base" ? "" : esc(vParts(c.v).map(x => VNAME[x] || x).join(" + ")) + " · "}PWR ${fmtN(cardPower(c.i, c.v, c.u))} · ${rgText(c.r)}</div>${afxLines(c.r, 0)}<div class="cmpb"><button data-eqd="${c.u}">[ Equip ]</button><button data-ins="${c.u}">Inspect & Upgrade</button><button data-shu="${c.u}">${inShow(c.u) ? "⭐ Remove from Display" : (sv.showcase || []).length >= 9 ? "⭐ Display full" : "⭐ Put on Display"}</button><button data-qf="${c.u}" title="Favorite (F)">${c.f ? "🔒 Unfavorite" : "🔓 Favorite"}</button><button data-qs="${c.u}" title="Salvage (X)">🗑️ Salvage</button></div></div></div>`;
+  <div class="cmp dxsel" data-hu="${c.u}"><div class="cmpn" style="color:${TC[card.tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(card.name)} ${c.f ? "🔒" : ""}${isEquippedU(c.u) ? ` <span class="eqtag">EQUIPPED</span>` : ""}${inShow(c.u) ? ` <span class="dxshow">⭐ ON DISPLAY</span>` : ""} <span class="mut">copy ${at + 1} of ${all}</span></div><div class="cmpm">Lv ${c.l} · ${c.v === "base" ? "" : esc(vParts(c.v).map(x => VNAME[x] || x).join(" + ")) + " · "}PWR ${fmtN(cardPower(c.i, c.v, c.u))} · ${rgText(c.r)}</div>${afxLines(c.r, 0)}<div class="cmpb"><button data-eqd="${c.u}">[ Equip ]</button><button data-ins="${c.u}">Inspect & Upgrade</button><button data-rrb="${c.u}">🎲 Re-roll</button><button data-shu="${c.u}">${inShow(c.u) ? "⭐ Remove from Display" : (sv.showcase || []).length >= 9 ? "⭐ Display full" : "⭐ Put on Display"}</button><button data-qf="${c.u}" title="Favorite (F)">${c.f ? "🔒 Unfavorite" : "🔓 Favorite"}</button><button data-qs="${c.u}" title="Salvage (X)">🗑️ Salvage</button></div></div></div>`;
 }
-function showcasePage(G, srt) {
+function showcaseBody() {
   const L = (sv.showcase || []).map(u => instByU(u)).filter(Boolean);
   const cells = [...Array(9)].map((_, k) => { const c = L[k];
     if (!c) return `<div class="bslot shwe"><pre>  .  *  .\n *  ⭐  *\n  '  *  '</pre><b>Empty display slot</b><small>Open any card in the binder and press ⭐ Put on Display</small></div>`;
     return `<div class="bslot shw ${WBS.dex === c.i ? "selc" : ""}" data-dex="${c.i}" data-u="${c.u}" data-hu="${c.u}">${cardHTML(CARDS[c.i], c.v, c.sn, 1, c.r)}<div class="bsb"><span>${dexNo(c.i)}</span><span>Lv ${c.l}</span><button class="shx" data-unshow="${c.u}" title="Remove from display">✕</button></div></div>`; }).join("");
-  const st = WBS.dex != null && CARDS[WBS.dex] ? dexStack(WBS.dex, (G.get(WBS.dex) || []).sort(srt)) : "";
-  return `<div class="pgbar"><button disabled>◀</button><span>⭐ Display Case · ${L.length} / 9</span><button id="pNx">▶ Collection #001</button></div><p class="mut shwp">Your nine favorite cards, shown first in your binder and to anyone who inspects you on the leaderboards. Cards on display are protected from salvage.</p><div class="bgrid wbgrid shwg">${cells}</div>${st}`;
+  return `<div class="bkhd">⭐ Display Case · ${L.length} / 9</div><div class="bgrid wbgrid shwg">${cells}</div>`;
 }
 function wbBinder() {
   const G = dexGroups(), srt = dispSort(WBS.disp), q = (bf.q || "").toLowerCase().trim(), qn = /^#?\d+$/.test(q) ? +q.replace("#", "") : 0;
@@ -7042,20 +7101,24 @@ function wbBinder() {
     const copies = (G.get(i) || []).filter(copyOk).sort(srt);
     if (bf.own === "own" && !copies.length) continue; if (bf.own === "miss" && (G.get(i) || []).length) continue; if (copyF && !copies.length) continue;
     rows.push([i, copies]); }
-  if (WBS.page < 0) return showcasePage(G, srt);
-  const pages = Math.max(1, Math.ceil(rows.length / 9)); WBS.page = Math.max(0, Math.min(WBS.page, pages - 1));
+  // the book: page -1 is the Display Case, then 9-card pages; each spread shows two facing pages
+  const pages = Math.max(1, Math.ceil(rows.length / 9)), spreads = Math.ceil((pages + 1) / 2);
+  let k = Math.floor((WBS.page + 1) / 2); k = Math.max(0, Math.min(k, spreads - 1)); WBS.page = 2 * k - 1;
+  const L = 2 * k - 1, R = 2 * k;
+  const rng = p => p < 0 ? "Display Case" : p >= pages || !rows.length ? "" : `${dexNo(rows[p * 9][0])}–${dexNo(rows[Math.min(rows.length - 1, p * 9 + 8)][0])}`;
+  const body = p => p < 0 ? showcaseBody() : p >= pages ? `<div class="bkhd">&nbsp;</div><div class="bkblank">· end of binder ·</div>` : `<div class="bkhd">Page ${p + 1} · ${rng(p)}</div><div class="bgrid wbgrid">${rows.slice(p * 9, p * 9 + 9).map(([i, c]) => dexCell(i, c)).join("") || `<p class="mut">No cards match.</p>`}</div>`;
   const owned = [...G.keys()].length, sel = (id, cur, opts) => `<select id="${id}">${opts.map(([v, n]) => `<option value="${v}" ${String(cur) === String(v) ? "selected" : ""}>${n}</option>`).join("")}</select>`;
-  const st = WBS.dex != null && CARDS[WBS.dex] ? dexStack(WBS.dex, (G.get(WBS.dex) || []).filter(copyOk).sort(srt)) : "";
+  const st = WBS.dex != null && CARDS[WBS.dex] ? dexStack(WBS.dex, (G.get(WBS.dex) || []).filter(x => copyOk(x) || (sv.showcase || []).includes(x.u)).sort(srt)) : "";
   return `<div class="bfil35">${sel("fD", WBS.disp, DISPS)}${sel("fO", bf.own || "all", [["all", "All cards"], ["own", "Collected"], ["miss", "Not collected"]])}${sel("fC", bf.cat, [["all", "All slots"], ...CATEGORIES.map(c => [c, c])])}${sel("fT", bf.tier, [["all", "All rarities"], ...TIERS.map((t, i) => [i, t])])}${sel("fG", bf.grade, [["all", "All grades"], ...GORD.slice().reverse().map(g => [g, "Grade " + g])])}${sel("fE", bf.el, [["all", "All elements"], ...ELEMENTS.map(e => [e, EL_ICON[e] + " " + e])])}${sel("fV", bf.vg, VGROUPS)}<input id="fQ" placeholder="name or #" value="${esc(bf.q)}" size="9"></div>
-  <div class="pgbar"><button id="pSh" title="Display Case">⭐</button><button id="pPv">◀</button><span>Page ${WBS.page + 1} / ${pages} · ${dexNo(rows.length ? rows[WBS.page * 9][0] : 0)}–${dexNo(rows.length ? rows[Math.min(rows.length - 1, WBS.page * 9 + 8)][0] : 0)}</span><button id="pNx" ${WBS.page < pages - 1 ? "" : "disabled"}>▶</button><span class="mut">📖 ${fmtN(owned)} / ${fmtN(CARDS.length)} collected · ${fmtN((sv.cards || []).length)} copies</span><button id="pFeed">[ ⬆️ Feed Dupes ]</button></div>
-  <div class="bgrid wbgrid">${rows.slice(WBS.page * 9, WBS.page * 9 + 9).map(([i, c]) => dexCell(i, c)).join("") || `<p class="mut">No cards match.</p>`}</div>${st}${massBar("msB", sv.cards || [])}`;
+  <div class="pgbar"><button id="pSh" title="Back to the Display Case" ${k ? "" : "disabled"}>⭐</button><button id="pPv" ${k ? "" : "disabled"}>◀</button><span>Spread ${k + 1} / ${spreads}</span><button id="pNx" ${k < spreads - 1 ? "" : "disabled"}>▶</button><span class="mut">📖 ${fmtN(owned)} / ${fmtN(CARDS.length)} collected · ${fmtN((sv.cards || []).length)} copies</span><button id="pFeed">[ ⬆️ Feed Dupes ]</button></div>
+  <div class="book"><div class="bkpg bkl">${body(L)}</div><div class="bkspine"></div><div class="bkpg bkr">${body(R)}</div></div>${st}${massBar("msB", sv.cards || [])}`;
 }
 showTeamBuilder = function () {
   instSync(); validateEquip(); syncTeam(); applyFrame();
   const ts = getTeamStats(), tot = (sv.cards || []).length, own = new Set((sv.cards || []).map(c => c.i)).size;
   if (WBS.sel && !instByU(WBS.sel)) WBS.sel = null; if (WBS.mode === "overflow") WBS.mode = "binder";
   const body = WBS.mode === "binder" ? wbBinder() : wbInspect();
-  main.innerHTML = `<div class="split">
+  main.innerHTML = `<div class="split ${WBS.mode === "binder" ? "wide" : ""}">
   <section class="wb"><div class="wbbar"><button data-wm="inspect" class="${WBS.mode === "inspect" ? "on" : ""}">[ 🔍 Slot Inspector & Compare ]</button><button data-wm="binder" class="${WBS.mode === "binder" ? "on" : ""}">[ 📖 Binder (${fmtN(own)}/${fmtN(CARDS.length)}) ]</button></div><div class="wbbody">${body}</div></section>
   <section class="pd"><div class="pdh"><b>⚔️ Team PWR ${fmtN(ts.totalPower)}</b><span class="chem" title="${esc(chemTip(ts))}">${ts.activeElement ? EL_ICON[ts.activeElement] + " " + ts.activeElement + " resonance" : "No resonance"} ⓘ</span>
     <div class="pdb"><button id="pAuto">[ Auto-Equip Best ]</button><button id="pFeed2">[ ⬆️ Feed Dupes ]</button><button id="pClear">[ Unequip All ]</button><button id="pCos">[ 🎨 Cosmetics ]</button></div></div>
@@ -7063,7 +7126,7 @@ showTeamBuilder = function () {
     ${gearGrid(ts)}</section></div>`;
   const $ = s => main.querySelector(s), redo = () => showTeamBuilder();
   main.querySelectorAll("[data-wm]").forEach(b => b.onclick = () => { WBS.mode = b.dataset.wm; redo(); });
-  main.querySelectorAll("[data-slot]").forEach(b => b.onclick = () => { WBS.slot = b.dataset.slot; WBS.mode = "inspect"; redo(); });
+  main.querySelectorAll("[data-slot]").forEach(b => b.onclick = () => { if (WBS.slot !== b.dataset.slot) WBS.cmp = null; WBS.slot = b.dataset.slot; WBS.mode = "inspect"; redo(); });
   $("#pBook").onclick = () => { WBS.mode = "binder"; redo(); };
   $("#pAuto").onclick = () => { autoEquip(); save(); updateHeader(); redo(); };
   $("#pFeed2").onclick = () => { feedDupes(); redo(); };
@@ -7075,12 +7138,14 @@ showTeamBuilder = function () {
   const ins = WBS.slot && sv.equip[WBS.slot] && instByU(sv.equip[WBS.slot].u);
   if ($("#wLock") && ins) { $("#wLock").onclick = () => { ins.f = ins.f ? 0 : 1; save(); redo(); }; $("#wLink").onclick = () => chLinkInst(ins); $("#wOff").onclick = () => { sv.equip[WBS.slot] = null; syncTeam(); save(); updateHeader(); redo(); }; }
   bindUpgrade(main, redo);
-  main.querySelectorAll("[data-eqp]").forEach(b => b.onclick = () => { if (equipInst(instByU(b.dataset.eqp), WBS.slot)) redo(); });
+  main.querySelectorAll("[data-eqp]").forEach(b => b.onclick = e => { e.stopPropagation(); if (equipInst(instByU(b.dataset.eqp), WBS.slot)) { WBS.cmp = null; redo(); } });
+  main.querySelectorAll(".inspR [data-cmp]").forEach(r => r.onclick = e => { if (e.target.closest("button") || e.shiftKey) return; WBS.cmp = WBS.cmp === r.dataset.cmp ? null : r.dataset.cmp; redo(); const d = main.querySelector(".duel"); if (d && d.scrollIntoView) d.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
+  if ($("#dX")) $("#dX").onclick = () => { WBS.cmp = null; redo(); };
   // binder and overflow
   if ($("#fD")) $("#fD").onchange = () => { WBS.disp = $("#fD").value; redo(); };
-  [["#fO", "own"], ["#fC", "cat"], ["#fT", "tier"], ["#fG", "grade"], ["#fE", "el"], ["#fV", "vg"]].forEach(([s, k]) => { if ($(s)) $(s).onchange = () => { bf[k] = $(s).value; WBS.page = 0; redo(); }; });
-  if ($("#fQ")) $("#fQ").oninput = () => { bf.q = $("#fQ").value; WBS.page = 0; clearTimeout(WBS.qt); WBS.qt = setTimeout(() => { redo(); const q = main.querySelector("#fQ"); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 300); };
-  if ($("#pPv")) $("#pPv").onclick = () => { WBS.page--; WBS.dex = null; redo(); }; if ($("#pNx")) $("#pNx").onclick = () => { WBS.page++; WBS.dex = null; redo(); };
+  [["#fO", "own"], ["#fC", "cat"], ["#fT", "tier"], ["#fG", "grade"], ["#fE", "el"], ["#fV", "vg"]].forEach(([s, k]) => { if ($(s)) $(s).onchange = () => { bf[k] = $(s).value; WBS.page = -1; redo(); }; });
+  if ($("#fQ")) $("#fQ").oninput = () => { bf.q = $("#fQ").value; WBS.page = -1; clearTimeout(WBS.qt); WBS.qt = setTimeout(() => { redo(); const q = main.querySelector("#fQ"); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 300); };
+  if ($("#pPv")) $("#pPv").onclick = () => { WBS.page -= 2; WBS.dex = null; redo(); }; if ($("#pNx")) $("#pNx").onclick = () => { WBS.page += 2; WBS.dex = null; redo(); };
   main.querySelectorAll(".wbgrid .bslot[data-dex]").forEach(el => el.onclick = e => { if (e.shiftKey || (e.target.closest && e.target.closest(".hov"))) return; const i = +el.dataset.dex; WBS.dex = WBS.dex === i ? null : i; WBS.sel = el.dataset.u || null; redo(); const st = main.querySelector(".dxstack"); if (st && st.scrollIntoView) st.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
   if ($("#pSh")) $("#pSh").onclick = () => { WBS.page = -1; WBS.dex = null; redo(); };
   main.querySelectorAll("[data-fu]").forEach(el => el.onclick = e => { if (e.shiftKey) return; WBS.sel = el.dataset.fu; redo(); });
@@ -7177,6 +7242,136 @@ PATCH_NOTES.unshift({ v: 37, t: "v37: The collection binder and your Display Cas
   "Click a slot to fan out all its copies like a hand of cards. Click any copy to equip, inspect and upgrade, favorite, salvage or put it on display",
   "New Display Case: the first page of your binder holds your nine favorite cards. Other players see it when they inspect you on the leaderboards, and displayed cards are protected from salvage",
   "Mass salvage now keeps the best copy of every card by default. Binder pages are no longer sold; any Prisms you spent on them were refunded"] });
+function topFloor() { return Math.max((sv.tower && sv.tower.top) || 0, ((sv.tower && sv.tower.maxFloor) || 1) - 1); }
+// Ascension relics are retired; their power moved into every Ascension tier (+7% Power & HP, +8% Tower Gold, free packs)
+PATCH_NOTES.unshift({ v: 37.1, t: "v37.1: Stronger Ascensions, no relics", n: [
+  "The leftover Ascension relics panel is gone (the relics had already stopped doing anything when relics were removed). Every Ascension tier is stronger instead",
+  "Each Tribute Ascension now gives a permanent +7% Power & HP (was +5%, compounding), +8% Tower Gold, more Prisms (8 + 3 per tier, was 5 + 2) and free Booster Packs (3, plus 1 more every 2 tiers)",
+  "Already ascended? Your existing tiers get the new bonuses automatically"] });
+PATCH_NOTES.unshift({ v: 38, t: "v38: Steady floors, clearer comparisons, SOCIAL", n: [
+  "Tower: every floor now has a fixed Enemy Power that depends only on the floor, so farming one floor always shows the same enemy. Your Estimated Floor Level is now steady too (it no longer shifts between checks)",
+  "Pack opening: hovering a new card shows the Grade of both the pulled card and your equipped card, plus a 'Grade X vs Y' line",
+  "Equipment: the Slot Inspector can sort by Rarity as well as Grade, Power and Level",
+  "The Nexus: the node info, your bonuses and the unlockable list sit beside the skill web, so you no longer scroll up and down",
+  "Century Forge: the text now matches how it works. Every 10th Tribute Ascension grants a forging (Prestige is long gone)",
+  "TRADE HUB is now called SOCIAL"] });
+
+// ===================== v39: Alchemy Lab (potions) and the Re-Roll Bench =====================
+const POT = {
+  might:   { n: "Potion of Might",    i: "⚔️", col: "#f87171", d: "Team Power, Strike Damage and Max HP", v: [0.08, 0.15, 0.25, 0.40] },
+  fortune: { n: "Elixir of Fortune",  i: "🍀", col: "#4ade80", d: "Pack luck: better odds of Rare, Legendary and Mythic pulls", v: [0.10, 0.20, 0.35, 0.60] },
+  glyph:   { n: "Salvager's Draught", i: "░▒", col: "#22d3ee", d: "Raw Glyphs gained from salvaging", v: [0.15, 0.30, 0.50, 1.00] },
+  gold:    { n: "Midas Brew",         i: "🪙", col: "#fbbf24", d: "Gold earned from Tower floors", v: [0.15, 0.30, 0.50, 1.00] },
+  hunt:    { n: "Hunter's Tonic",     i: "🦴", col: "#c084fc", d: "Chance of a bonus monster-drop roll after each win", v: [0.20, 0.40, 0.70, 1.00] }
+};
+const POT_RN = ["I", "II", "III", "IV"], POT_MIN = [1, 5, 10, 20], POT_CAP = 60;
+const POT_COST = [{ c: 3, r: 0, g: 100, p: 0.2 }, { c: 8, r: 1, g: 500, p: 0.75 }, { c: 16, r: 3, g: 2000, p: 2 }, { c: 30, r: 8, g: 6000, p: 5 }];
+function potCost(l) { const C = POT_COST[l]; return { c: C.c, r: C.r, g: C.g, gold: Math.round(packPrice() * C.p) }; }
+function potActive(k) { const a = sv.potA && sv.potA[k]; return a && a.until > Date.now() ? a : null; }
+function potFx(k) { const a = potActive(k); return a ? POT[k].v[a.lv] : 0; }
+function potLeft(a) { const s = Math.max(0, Math.ceil((a.until - Date.now()) / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+function potPct(k, l) { return "+" + Math.round(POT[k].v[l] * 100) + "%"; }
+function brewPot(k, l) {
+  const C = potCost(l);
+  if (matCount("_c") < C.c || matCount("_r") < C.r || (sv.dust || 0) < C.g || (sv.c || 0) < C.gold) { notify("Not enough ingredients for that brew."); return false; }
+  takeMats("_c", C.c); if (C.r) takeMats("_r", C.r); sv.dust -= C.g; sv.c -= C.gold;
+  sv.potI = sv.potI || {}; sv.potI[k + "|" + l] = (sv.potI[k + "|" + l] || 0) + 1; save(); try { drawStatus(); } catch (e) {} notify(`🧪 Brewed ${POT[k].n} ${POT_RN[l]}`); return true;
+}
+function drinkPot(k, l) {
+  const key = k + "|" + l; if (!(sv.potI && sv.potI[key] > 0)) return false;
+  sv.potA = sv.potA || {}; const a = potActive(k), now = Date.now(), dur = POT_MIN[l] * 60000;
+  if (a && a.lv > l) { notify(`A stronger ${POT[k].n} (${POT_RN[a.lv]}) is already active.`); return false; }
+  sv.potA[k] = a && a.lv === l ? { lv: l, until: Math.min(now + POT_CAP * 60000, a.until + dur) } : { lv: l, until: now + dur };
+  sv.potI[key]--; EST.k = ""; save(); try { drawStatus(); updateHeader(); } catch (e) {} notify(`🧪 ${POT[k].n} ${POT_RN[l]}: ${potPct(k, l)} for ${potLeft(sv.potA[k])}`); return true;
+}
+function potHud() { return Object.keys(POT).filter(potActive).map(k => { const a = potActive(k); return `<span class="sbi sbpot" data-pk="${k}" title="${esc(POT[k].n + " " + POT_RN[a.lv] + ": " + potPct(k, a.lv) + " " + POT[k].d)}" style="color:${POT[k].col}">🧪${POT[k].i} <b>${potLeft(a)}</b></span>`; }).join(""); }
+setInterval(() => { try { const sb = document.getElementById("statusbar"); if (!sb) return; const els = sb.querySelectorAll(".sbpot"); let stale = false; els.forEach(el => { const a = potActive(el.dataset.pk); if (!a) stale = true; else el.querySelector("b").textContent = potLeft(a); }); if (stale) drawStatus(); if (curHub === "THE FORGE" && document.querySelector(".alc")) document.querySelectorAll("[data-pleft]").forEach(el => { const a = potActive(el.dataset.pleft); el.textContent = a ? potLeft(a) : "done"; }); } catch (e) {} }, 1000);
+// effects
+const _gts39 = getTeamStats; getTeamStats = function () { const t = _gts39(), m = 1 + potFx("might"); if (m > 1) { t.maxHP = Math.round(t.maxHP * m); t.strikeDmg = Math.round(t.strikeDmg * m); t.totalPower = Math.round(t.totalPower * m); } return t; };
+const _sd39 = salvDust; salvDust = function (c) { return Math.round(_sd39(c) * (1 + potFx("glyph"))); };
+const _ag39 = ascGold; ascGold = function () { return _ag39() * (1 + potFx("gold")); };
+const _dm39 = dropMats; dropMats = function (f) { _dm39(f); if (Math.random() < potFx("hunt")) _dm39(f); };
+
+const CAULDRON = String.raw`         )    (      )   (
+     (    .-~~~~~~-.    )      .
+   .    .'  o   O   '.   (   o
+       /  O   .  o  O \     .
+  ~~~~|~~~~~~~~~~~~~~~~|~~~~
+      |   ~ BUBBLE ~   |
+      \   ~  TOIL  ~   /
+       '.____________.'
+        /  ||    ||  \
+   ^^^^^ ^^^^^^^^^^^^ ^^^^^`;
+function bottle(k, l) { const c = POT[k].col, f = ["  ", "░░", "▒▒", "▓▓"][l]; return `<pre class="bott" style="color:${c}">  _\n [_]\n /${f}\\\n|${f}${f}|\n'----'</pre>`; }
+function showAlchemy() {
+  sv.potI = sv.potI || {}; const have = (k, l) => sv.potI[k + "|" + l] || 0;
+  const act = Object.keys(POT).filter(potActive);
+  main.innerHTML = `<div class="alc"><div class="alchead"><pre class="cauld">${esc(CAULDRON)}</pre><div><h2>🧪 ALCHEMY LAB</h2><p>Brew potions from Tower monster drops, Raw Glyphs and Gold, then drink them for a timed boost.<br>Strength <b>I</b> lasts 1 min, <b>II</b> 5 min, <b>III</b> 10 min, <b>IV</b> 20 min. Drinking the same strength again adds time (up to ${POT_CAP} min); a stronger one replaces a weaker one. Timers run in real time, even when you are away.</p>
+  <div class="alcres">${CUR.gold(sv.c)} ${CUR.gly(sv.dust)} <span class="sbi">🦴 Common drops <b>${fmtN(matCount("_c"))}</b></span> <span class="sbi">💎 Rare drops <b>${fmtN(matCount("_r"))}</b></span></div></div></div>
+  <div class="panel-box alcact"><b>Active potions</b> ${act.length ? act.map(k => { const a = potActive(k); return `<span class="potchip" style="border-color:${POT[k].col}">${POT[k].i} ${POT[k].n} ${POT_RN[a.lv]} · ${potPct(k, a.lv)} · <b data-pleft="${k}">${potLeft(a)}</b></span>`; }).join("") : `<span class="mut">none. Brew one below, then press Drink.</span>`}</div>
+  <div class="potgrid">${Object.keys(POT).map(k => `<div class="potcard" style="--pc:${POT[k].col}"><div class="pothd"><b>${POT[k].i} ${POT[k].n}</b><small>${POT[k].d}</small></div>
+    <div class="potlv">${[0, 1, 2, 3].map(l => { const C = potCost(l), ok = matCount("_c") >= C.c && matCount("_r") >= C.r && (sv.dust || 0) >= C.g && (sv.c || 0) >= C.gold, ok2 = x => x ? "" : "class=\"no\"";
+      return `<div class="plv">${bottle(k, l)}<div class="plvt"><b>${POT_RN[l]}</b> ${potPct(k, l)} · ${POT_MIN[l]} min</div><div class="pcost"><span ${ok2(matCount("_c") >= C.c)}>🦴${C.c}</span>${C.r ? ` <span ${ok2(matCount("_r") >= C.r)}>💎${C.r}</span>` : ""} <span ${ok2((sv.dust || 0) >= C.g)}>░${fmtN(C.g)}</span> <span ${ok2((sv.c || 0) >= C.gold)}>🪙${fmtN(C.gold)}</span></div><button data-brew="${k}|${l}" ${ok ? "" : "disabled"}>Brew</button><button data-drink="${k}|${l}" ${have(k, l) ? "class=\"cta\"" : "disabled"}>Drink (${have(k, l)})</button></div>`; }).join("")}</div></div>`).join("")}</div></div>`;
+  main.querySelectorAll("[data-brew]").forEach(b => b.onclick = () => { const [k, l] = b.dataset.brew.split("|"); if (brewPot(k, +l)) { try { playFanfare(1); } catch (e) {} showAlchemy(); } });
+  main.querySelectorAll("[data-drink]").forEach(b => b.onclick = () => { const [k, l] = b.dataset.drink.split("|"); if (drinkPot(k, +l)) showAlchemy(); });
+}
+
+// ---- Re-Roll Bench: re-roll one property on a card (Diablo-style enchanting) ----
+var RR = { u: null };
+const RR_G = [40, 100, 250, 600, 1500];
+function rrCost(c) { const t = CARDS[c.i].tier, n = c.rn || 0; return { g: Math.round(RR_G[t] * Math.pow(1.55, n)), c: Math.ceil((t + 1) * Math.pow(1.3, n)), n }; }
+function rrOpt(c, j) {
+  const card = CARDS[c.i], pool = (AFX_POOL[card.category] || AFX_DEF).filter(k => !c.r.p.some((p, x) => x !== j && p.k === k));
+  const k = pool[Math.floor(Math.random() * pool.length)];
+  return { k, t: +Math.random().toFixed(3), s: Math.random() < (AFX_SUPER[card.tier] || 0.002) * 2 ? 1 : 0 };
+}
+function rrLine(c, p) { return afxLines(Object.assign({}, c.r, { p: [p] }), 1); }
+function rrRoll(c, j) {
+  if (c.rp) return;
+  const C = rrCost(c); if ((sv.dust || 0) < C.g || matCount("_c") < C.c) return notify(`Re-rolling needs ${fmtN(C.g)} Raw Glyphs and ${C.c} common monster drops.`);
+  sv.dust -= C.g; takeMats("_c", C.c); c.rn = C.n + 1; c.rp = { j, o: [rrOpt(c, j), rrOpt(c, j)] };
+  sv.stats.rerolls = (sv.stats.rerolls || 0) + 1; save(); try { drawStatus(); } catch (e) {}
+}
+function rrPick(c, w) {
+  if (!c.rp) return; if (w >= 0) { c.r.p[c.rp.j] = c.rp.o[w]; if (c.rp.o[w].s) { try { playFanfare(4); } catch (e) {} notify("★ SUPER-ROLL!"); } }
+  delete c.rp; validateEquip(); syncTeam(); EST.k = ""; save(); try { updateHeader(); } catch (e) {}
+}
+function showReroll() {
+  let c = RR.u && instByU(RR.u); if (c && (!c.r || !c.r.p || !c.r.p.length)) c = null;
+  const eq = ESLOTS.map(([s]) => sv.equip[s] && instByU(sv.equip[s].u)).filter(Boolean), pend = (sv.cards || []).filter(x => x.rp && x !== c);
+  const pick = list => list.map(x => `<button class="rrpk ${c && x.u === c.u ? "on" : ""}" data-rrp="${x.u}" style="border-color:${TC[CARDS[x.i].tier]}">${gradeBadge(x.r, x.v, "inl")}<span style="color:${TC[CARDS[x.i].tier]}">${esc(CARDS[x.i].name)}</span> <small>Lv ${x.l}${x.rn ? " · " + x.rn + "🎲" : ""}${x.rp ? " · ⚠ choice waiting" : ""}</small></button>`).join("");
+  let bench = `<div class="wbempty"><pre>   _______\n  /  🎲   /|\n /______ / |\n |      |  /\n |______|/</pre>Pick a card: one of your equipped cards on the left, or open any card in the Binder and press <b>🎲 Re-roll</b>.</div>`;
+  if (c) {
+    const card = CARDS[c.i], C = rrCost(c), can = (sv.dust || 0) >= C.g && matCount("_c") >= C.c;
+    bench = `<div class="rrbench"><div>${cardHTML(card, c.v, c.sn, 0, c.r)}<div class="mut" style="text-align:center;margin-top:4px">Grade ${gradeBadge(c.r, c.v, "inl")} · Lv ${c.l} · PWR ${fmtN(cardPower(c.i, c.v, c.u))}</div></div><div class="rrlines">
+    <h4>Properties <small class="mut">choose any property to re-roll</small></h4>
+    ${c.r.p.map((p, j) => `<div class="rrl ${c.rp && c.rp.j === j ? "act" : ""}">${rrLine(c, p)}${c.rp ? "" : `<button data-rrj="${j}" ${can ? "" : "disabled"}>🎲 Re-roll · ░${fmtN(C.g)} + 🦴${C.c}</button>`}</div>`).join("")}
+    ${c.rp ? `<div class="rrch"><b>Choose the result</b> <span class="mut">(the cost is already paid)</span><div class="rropts"><button data-rrw="-1"><small>KEEP CURRENT</small>${rrLine(c, c.r.p[c.rp.j])}</button>${c.rp.o.map((o, w) => `<button data-rrw="${w}" class="${o.s ? "sup" : ""}"><small>NEW OPTION ${w + 1}</small>${rrLine(c, o)}</button>`).join("")}</div></div>` : ""}
+    <p class="mut rrnote">Re-rolls on this card: <b>${C.n}</b>. Every property can be re-rolled as often as you like; each re-roll on this card costs about 55% more Raw Glyphs (and more drops) than the last. You get two new options and can always keep the current property. Super-Rolls (★ ×1.5) are twice as likely as in packs.</p></div></div>`;
+  }
+  main.innerHTML = `<div class="rrwrap"><div class="rrside"><h4>Equipped</h4>${pick(eq) || `<span class="mut">nothing equipped</span>`}${pend.length ? `<h4>Waiting for a choice</h4>${pick(pend)}` : ""}</div><div class="rrmain"><div class="bar"><b>🎲 RE-ROLL BENCH</b> | ${CUR.gly(sv.dust)} | 🦴 Common drops ${fmtN(matCount("_c"))}</div>${bench}</div></div>`;
+  main.querySelectorAll("[data-rrp]").forEach(b => b.onclick = () => { RR.u = b.dataset.rrp; showReroll(); });
+  main.querySelectorAll("[data-rrj]").forEach(b => b.onclick = () => { rrRoll(c, +b.dataset.rrj); showReroll(); });
+  main.querySelectorAll("[data-rrw]").forEach(b => b.onclick = () => { rrPick(c, +b.dataset.rrw); showReroll(); });
+}
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-rrb]"); if (!b) return; e.stopPropagation(); RR.u = b.dataset.rrb; document.querySelectorAll(".m35,.ov.imod").forEach(x => x.remove()); hubGo("THE FORGE", 2); }, true);
+PATCH_NOTES.unshift({ v: 39, t: "v39: Alchemy Lab and the Re-Roll Bench", n: [
+  "THE FORGE > Alchemy Lab: brew five potions (Might, Fortune, Salvager's Draught, Midas Brew, Hunter's Tonic) in strengths I to IV from monster drops, Raw Glyphs and Gold. I lasts 1 minute, II 5, III 10 and IV 20. Active potions show a countdown in the top bar",
+  "THE FORGE > Re-Roll Bench: re-roll any property on any card. Each roll gives two new options and you can keep the current one. Each re-roll on a card costs about 55% more than the last",
+  "Open the Re-Roll Bench from any card with the 🎲 Re-roll button in the Binder fan or the Slot Inspector",
+  "The Rip Max button is gone from the pack screen"] });
+// Salvage: only Favorited and Equipped cards are protected. Legendary, Mythic and S+ cards ask for a second press.
+function isProt(c) { return !!(c && (c.f || isEquippedU(c.u))); }
+function instProt(c) { return !c || isProt(c); }
+var SALV2 = { u: null, t: 0 };
+function salvageOne(c, quiet) {
+  if (!c) return 0; if (isProt(c)) { if (!quiet) notify("Favorited and equipped cards can't be salvaged. Unfavorite or unequip it first."); return 0; }
+  const big = CARDS[c.i] && (CARDS[c.i].tier >= 3 || gradeOf(c.r, c.v).g === "S+");
+  if (big && !quiet && !(SALV2.u === c.u && Date.now() - SALV2.t < 4000)) { SALV2 = { u: c.u, t: Date.now() }; notify(`${TIERS[CARDS[c.i].tier]} ${gradeOf(c.r, c.v).g} card: press salvage again to confirm`); return 0; }
+  SALV2 = { u: null, t: 0 }; const d = salvage([c]); if (!quiet) notify(`Salvaged for +${fmtN(d)} ░▒▓ Raw Glyphs`); return d;
+}
+const _salv39 = salvage; salvage = function (list) { const d = _salv39(list); if (sv.showcase) sv.showcase = sv.showcase.filter(u => instByU(u)); return d; };
+PATCH_NOTES[0].n.push("Equipment: in the Slot Inspector, click any card in the list to open it next to your equipped card (full cards, properties, Power and Grade side by side)", "The Binder opens like a book: two facing pages per spread, starting with your Display Case beside page 1", "Salvaging: only Favorited and Equipped cards are protected now. Legendary, Mythic, S+ and Display Case cards can be salvaged (single salvages of Legendary, Mythic or S+ ask you to press twice)");
 
 // ---- saves: extension and migration ----
 const _e20 = ext;
@@ -7197,13 +7392,13 @@ MIGRATIONS.push([20, m => { m.roll = m.roll || {}; convEquip(m); m.board = { day
 // ---- navigation: six hubs and a small utility bar ----
 Object.assign(HUBALIAS, { "Packs": "PACKS", "Collection": "COLLECTION", "Tower": "TOWER & REALMS", "Customize": "FORGE & LAB", "Market": "PACKS", "More": "ASTROLABE", "Workshop": "FORGE & LAB", "Exchange": "PACKS", "Expeditions": "TOWER & REALMS", "Astral & Studio": "ASTROLABE" });
 Object.keys(HUBS).forEach(k => delete HUBS[k]);
-Object.assign(HUBALIAS, { "EQUIPMENT": "EQUIPMENT & BINDER", "COLLECTION": "EQUIPMENT & BINDER", "TOWER & REALMS": "THE TOWER", "FORGE & LAB": "RELIC FORGE", "ASTROLABE": "THE NEXUS", "TOWN": "PACKS" });
+Object.assign(HUBALIAS, { "EQUIPMENT": "EQUIPMENT & BINDER", "COLLECTION": "EQUIPMENT & BINDER", "TOWER & REALMS": "THE TOWER", "FORGE & LAB": "RELIC FORGE", "ASTROLABE": "THE NEXUS", "TOWN": "PACKS", "TRADE HUB": "SOCIAL" });
 HUBS["PACKS"] = [["Pack Opening", 0]];
 HUBS["EQUIPMENT & BINDER"] = [["Loadout", 4], ["Binder", 3]];
 HUBS["THE TOWER"] = [["Infinite Tower", 8], ["Tribute Ascension", showAscension], ["Challenges", showChallenges]];
-HUBS["THE FORGE"] = [["Charm Forge", showRelicForge], ["Century Forge", showForge]];
+HUBS["THE FORGE"] = [["Charm Forge", showRelicForge], ["Alchemy Lab", showAlchemy], ["Re-Roll Bench", showReroll], ["Century Forge", showForge]];
 HUBS["THE NEXUS"] = [["Skill Web", showAstrolabe], ["Tribute Ascension", showAscension]];
-HUBS["TRADE HUB"] = [["Leaderboards", showBoards], ["Live Trading", showTradeSoon]];
+HUBS["SOCIAL"] = [["Leaderboards", showBoards], ["Live Trading", showTradeSoon]];
 Object.assign(HUBALIAS, { "RELIC FORGE": "THE FORGE", "FORGE & LAB": "THE FORGE" });
 var NOSUB = new Set(["EQUIPMENT & BINDER", "PACKS"]);
 curHub = "PACKS"; curSub = 0;
@@ -7240,8 +7435,8 @@ function drawStatus() {
   const sb = document.getElementById("statusbar"); sb.classList.add("sb36");
   sb.innerHTML = `<span class="sbn">${APR_USER ? esc(typeof dispName === "function" ? dispName() : APR_USER) : ""}${sv.cos.title ? ` <i>[${esc(sv.cos.title)}]</i>` : ""}</span>
   <span title="Gold: earned only in the Tower, spent on Booster Packs">${CUR.gold(sv.c)}</span><span title="Raw Glyphs: earned only by salvaging cards, spent on card levels and THE FORGE">${CUR.gly(sv.dust)}</span><span title="Prisms: earned only from Tribute Ascension, spent in The Nexus">${CUR.pri(sv.shards)}</span>
-  <span class="sbi" title="Booster Packs ready">📦 <b>${sv.packs}</b></span><span class="sbi" title="Highest floor cleared">🗼 <b>${fmtN(Math.max((sv.tower && sv.tower.top) || 0, ((sv.tower && sv.tower.maxFloor) || 1) - 1))}</b></span><span class="sbi" title="Team Power${ts.activeElement ? " · " + ts.activeElement + " resonance" : ""}">⚔️ <b>${fmtN(ts.totalPower)}</b>${ts.activeElement ? " " + EL_ICON[ts.activeElement] : ""}</span>${sv.asc.n ? `<span class="sbi" title="Ascension tier: +${Math.round((Math.pow(1.05, sv.asc.n) - 1) * 100)}% Power & HP">🌀 <b>${sv.asc.n}</b></span>` : ""}
-  <span class="sbi" title="${esc(w.n + ": " + w.d)}">${w.i} ${w.n}</span>${an === "sale" ? `<span class="sbi hot">✦ Packs half price</span>` : an ? `<span class="sbi hot">✦ Foil storm</span>` : ""}`;
+  <span class="sbi" title="Booster Packs ready">📦 <b>${sv.packs}</b></span><span class="sbi" title="Highest floor cleared">🗼 <b>${fmtN(Math.max((sv.tower && sv.tower.top) || 0, ((sv.tower && sv.tower.maxFloor) || 1) - 1))}</b></span><span class="sbi" title="Team Power${ts.activeElement ? " · " + ts.activeElement + " resonance" : ""}">⚔️ <b>${fmtN(ts.totalPower)}</b>${ts.activeElement ? " " + EL_ICON[ts.activeElement] : ""}</span>${sv.asc.n ? `<span class="sbi" title="Ascension tier: +${Math.round((ascPow() - 1) * 100)}% Power & HP">🌀 <b>${sv.asc.n}</b></span>` : ""}
+  ${typeof potHud === "function" ? potHud() : ""}<span class="sbi" title="${esc(w.n + ": " + w.d)}">${w.i} ${w.n}</span>${an === "sale" ? `<span class="sbi hot">✦ Packs half price</span>` : an ? `<span class="sbi hot">✦ Foil storm</span>` : ""}`;
 }
 
 // ---- keys 1-6 switch tabs ----
