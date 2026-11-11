@@ -988,6 +988,17 @@ h1,#statusbar,#tickerWrap{position:relative;z-index:1}
 .nxside .nxlist>div{display:block;margin:0!important;padding:4px 0;border-bottom:1px dashed #ffffff12;font-size:12px}
 .nxside .nxlist>div button{padding:1px 6px!important;font-size:11px!important;margin-right:4px}
 @media (max-width:900px){.nxwrap{grid-template-columns:1fr!important}#acv{height:62vh!important}.nxside{max-height:none!important}}
+/* ===== pack dock: one primary action, status, two toggles ===== */
+.rsdock{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px!important;align-items:center}
+.rsdock .dk-l{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+.rsdock .dk-r{display:flex;gap:8px;align-items:center;justify-content:flex-start}
+.rsdock .dk-go{min-width:220px;font-size:16px!important;padding:11px 22px!important}
+.rsdock .dk-done{font-size:12px!important;padding:8px 12px!important;opacity:.85}
+.rsdock .dk-m{display:flex;flex-direction:column;align-items:center;gap:2px;font:12px ui-monospace,monospace;text-align:center;min-width:240px}
+.rsdock .dk-stat{color:#e8d9b0}.rsdock .dk-hint{color:var(--mut,#9b8f74);font-size:11px}.rsdock .dk-salv{color:#22d3ee;font-size:11px}
+.rsdock .dk-tog{font:12px ui-monospace,monospace!important;letter-spacing:0!important;padding:7px 12px!important;border-radius:16px;border:1px solid #5a4a30;background:rgba(0,0,0,.35);color:#cbbf9a}
+.rsdock .dk-tog b{margin-left:4px;color:#9b8f74}.rsdock .dk-tog.on{border-color:#4ade80;box-shadow:0 0 10px rgba(74,222,128,.35);color:#e8ffe8}.rsdock .dk-tog.on b{color:#4ade80}
+@media (max-width:900px){.rsdock{grid-template-columns:1fr!important;gap:8px!important}.rsdock .dk-l,.rsdock .dk-r{justify-content:center}.rsdock .dk-go{min-width:0;flex:1;font-size:14px!important}.rsdock .dk-m{order:-1;min-width:0}}
 </style>
 </head>
 <body>
@@ -5692,7 +5703,7 @@ function rsSpread(cards, o) {
   });
   rsDockUpdate();
   const spd = sv.fastRip ? 0.5 : 1, stag = (bulk ? 30 : 50) * spd, dur = 480 * spd;
-  const finish = () => { if (!rsAlive(tok)) return; rs.dealing = false; busy = false; rsDockUpdate(); };
+  const finish = () => { if (!rsAlive(tok)) return; rs.dealing = false; busy = false; rsDockUpdate(); if (sv.autoRip) setTimeout(rsAutoStep, 50); };
   if (inst) { rs.tiles.forEach((_, i) => rsLand(i, true)); finish(); return; }
   const tr = table.getBoundingClientRect(), ox = tr.left + tr.width / 2, oy = tr.top + Math.min(tr.height * 0.4, 320);
   list.forEach((it, i) => {
@@ -5725,20 +5736,38 @@ async function rsRevealAll() {
   rs.revAll = false;
 }
 
-// ---- action bar ----
+// ---- action bar: one primary button, a status line, and two toggles ----
 function rsDockUpdate() {
   const d = document.getElementById("rsdock"); if (!d) return;
   const K = PKIND[packKind] || PKIND.standard, left = K.get(), dealing = !!(rs && rs.dealing), dn = rs ? rs.down.size : 0, lock = dealing || (busy && !rs);
-  let stat = `${left} ${K.n.split(" ")[0]} pack${left === 1 ? "" : "s"} left`;
-  { const ovn = Math.max(0, (sv.cards || []).length - binderCap()); if (ovn) stat += ` · <b style="color:#f87171">⚠ ${ovn} in Overflow</b>`; }
-  if (rs && !dealing) { const vis = rs.cards.filter((_, i) => !rs.down.has(i)), nw = vis.filter(x => x.isNew).length, ups = vis.filter(x => { const k = rsCompare(x); return k.upgrade && !k.fill; }).length; stat = `${rs.bulk ? rs.nPacks + " packs · best " + rs.cards.length + " of " + rs.all.length + " cards" : rs.cards.length + " cards"} · <b>${nw}</b> new · <b>${ups}</b> upgrade${ups === 1 ? "" : "s"} · ` + stat; }
-  const rip = (n, lab) => `<button class="rip ${n === 1 && !dn ? "cta" : ""}" data-rip="${n}" ${lock || left < 1 ? "disabled" : ""}>[ ${lab} ]</button>`;
-  d.innerHTML = `${rip(1, "Rip 1x")}${rip(5, "Rip 5x")}${rip(10, "Rip 10x")}<span class="sep"></span><button class="${dn ? "cta" : ""}" id="rsAll" ${!dn || dealing ? "disabled" : ""}>[ Reveal All ]</button>${rs ? `<button id="rsDone" ${dealing ? "disabled" : ""}>[ Done ]</button>` : ""}<button id="rsAuto" class="${sv.autoSalv ? "on" : ""}" title="Salvage pulls of Uncommon or lower with grade D or lower straight into Raw Glyphs (finishes and misprints are kept)">[⚡ Auto-Salvage ≤ D & Uncommon: ${sv.autoSalv ? "ON" : "OFF"}]</button><span class="rsdm">${o33.last && rs ? `⚡ auto-salvaged ${o33.last.n} → +${fmtN(o33.last.d)} ░▒▓ · ` : ""}${dealing ? "Dealing…" : dn ? dn + " face-down · click one or press Space" : "Space = rip next"} · ${stat}</span>`;
-  d.querySelectorAll("[data-rip]").forEach(b => b.onclick = () => rsNext(+b.dataset.rip));
+  let stat = `<b>${left}</b> pack${left === 1 ? "" : "s"} left`;
+  if (rs && !dealing) { const vis = rs.cards.filter((_, i) => !rs.down.has(i)), nw = vis.filter(x => x.isNew).length, ups = vis.filter(x => { const k = rsCompare(x); return k.upgrade && !k.fill; }).length; stat = `${rs.cards.length} cards · <b>${nw}</b> new · <b>${ups}</b> upgrade${ups === 1 ? "" : "s"} · ` + stat; }
+  const salv = o33.last && rs ? `<span class="dk-salv">♻ salvaged ${o33.last.n} → +${fmtN(o33.last.d)} ░▒▓</span>` : "";
+  const main = dn && !sv.autoRip ? `<button class="cta dk-go" id="rsAll" ${dealing ? "disabled" : ""}>[ Reveal All (${dn}) ]</button>` : `<button class="cta dk-go" data-rip="1" ${lock || left < 1 || (dn && sv.autoRip) ? "disabled" : ""}>[ ${left < 1 ? "No packs left" : rs ? "Rip Next Pack" : "Rip Pack"} ]</button>`;
+  const hint = sv.autoRip ? (left < 1 ? "Auto: out of packs" : "Auto-opening… hover a card to pause") : dealing ? "Dealing…" : dn ? "Click a face-down card or press Space" : "Space = rip next";
+  d.innerHTML = `<div class="dk-l">${main}${rs ? `<button class="dk-done" id="rsDone" ${dealing ? "disabled" : ""} title="Clear the table">Done</button>` : ""}</div>
+  <div class="dk-m"><span class="dk-stat">${stat}</span><span class="dk-hint">${hint}</span>${salv}</div>
+  <div class="dk-r"><button class="dk-tog ${sv.autoRip ? "on" : ""}" id="rsAutoRip" title="Open packs one after another: each pack is shown for a moment, face-down Legendaries and Mythics flip by themselves, then the next pack opens. Turn off any time.">▶ Auto <b>${sv.autoRip ? "ON" : "OFF"}</b></button><button class="dk-tog ${sv.autoSalv ? "on" : ""}" id="rsAuto" title="Salvage pulls of Uncommon or lower with grade D or lower straight into Raw Glyphs (finishes and misprints are kept)">♻ Auto-Salvage <b>${sv.autoSalv ? "ON" : "OFF"}</b></button></div>`;
+  d.querySelectorAll("[data-rip]").forEach(b => b.onclick = () => rsNext(1));
   const $ = s => d.querySelector(s);
   if ($("#rsAll")) $("#rsAll").onclick = () => rsRevealAll();
   if ($("#rsAuto")) $("#rsAuto").onclick = () => { sv.autoSalv = !sv.autoSalv; save(); rsDockUpdate(); };
-  if ($("#rsDone")) $("#rsDone").onclick = () => showPacks();
+  if ($("#rsAutoRip")) $("#rsAutoRip").onclick = () => { sv.autoRip = !sv.autoRip; save(); rsDockUpdate(); if (sv.autoRip) rsAutoStep(); };
+  if ($("#rsDone")) $("#rsDone").onclick = () => { sv.autoRip = false; save(); showPacks(); };
+}
+// Auto: flip the face-down cards by themselves, let the pack sit on the table for a moment, then rip the next one
+var RSA = { run: 0 };
+async function rsAutoStep() {
+  if (!sv.autoRip || curHub !== "PACKS") return; const me = ++RSA.run, K = PKIND[packKind] || PKIND.standard;
+  const alive = () => sv.autoRip && me === RSA.run && curHub === "PACKS" && document.getElementById("rsdock");
+  if (!rs) { if (K.get() < 1) { sv.autoRip = false; save(); rsDockUpdate(); return notify("Auto stopped: no packs left."); } if (!busy) rsTear(); return; }
+  while (rs && rs.dealing) { await sleep(150); if (!alive()) return; }
+  if (rs.down.size) { await sleep(600); for (const i of [...rs.down].sort((a, b) => a - b)) { if (!alive() || !rs) return; await rsFlip(i); await sleep(rs.cards[i] && rs.cards[i].c.tier >= 4 ? 1600 : 1000); } }
+  if (!rs) return; const best = Math.max(...rs.cards.map(x => x.c.tier));
+  let wait = best >= 4 ? 3600 : best >= 3 ? 2600 : 1700; const t0 = Date.now();
+  while (Date.now() - t0 < wait) { await sleep(150); if (!alive()) return; if (rsPin || document.getElementById("rsinsp")) wait += 150; }
+  if (!alive()) return; if (K.get() < 1) { sv.autoRip = false; save(); rsDockUpdate(); return notify("Auto stopped: no packs left."); }
+  rsNext(1);
 }
 async function rsNext(n) {
   n = n || 1; const K = PKIND[packKind] || PKIND.standard;
@@ -6446,8 +6475,9 @@ PATCH_NOTES.unshift({ v: 29, t: "v29: The Binder & Equipment rework (Phase 2)", 
 
 // ===================== v30 (Phase 3): smooth tower, power-matched loot, Tribute Ascension =====================
 // ---- one smooth curve from Floor 1 to infinity: +10% HP and +9.5% attack per floor, boss spike every 5th floor ----
-function towerHP(f) { return Math.round(3600 * Math.pow(1.10, f - 1) * (f % 5 === 0 ? 1.6 : 1)); }
-function towerAtk(f) { return Math.round(560 * Math.pow(1.095, f - 1) * (f % 5 === 0 ? 1.3 : 1)); }
+var TOWER_G = { h: 1.08, a: 1.075 };
+function towerHP(f) { return Math.round(3600 * Math.pow(TOWER_G.h, f - 1) * (f % 5 === 0 ? 1.6 : 1)); }
+function towerAtk(f) { return Math.round(560 * Math.pow(TOWER_G.a, f - 1) * (f % 5 === 0 ? 1.3 : 1)); }
 // estimated floor: the highest floor your current team beats at least half the time (simulated)
 var EST = { k: "", f: 1, t: 0 };
 function estFloor() {
@@ -6480,9 +6510,9 @@ function estFight(ts, f, seed) {
   }
   return false;
 }
-const REC_G = Math.sqrt(1.10 * 1.095);
+var REC_G = Math.sqrt(TOWER_G.h * TOWER_G.a);
 // Recommended Power depends only on the floor: the same floor always shows the same enemy
-function recPower(f) { return Math.round(1100 * Math.pow(REC_G, f - 1) * (f % 10 === 0 ? 1.71 : f % 5 === 0 ? 1.44 : 1)); }
+function recPower(f) { return Math.round(1000 * Math.pow(REC_G, f - 1) * (f % 10 === 0 ? 1.71 : f % 5 === 0 ? 1.44 : 1)); }
 // loot yield: full (or better) near your power level, steep falloff when farming far below it
 function lootMult(f) { const d = estFloor() - f; if (d <= 0) return Math.min(1.5, 1 + 0.05 * -d); if (d <= 5) return 1; return Math.max(0.05, 1 - (d - 5) * 0.06); }
 const _dm30 = dropMats; dropMats = function (f) { const m = lootMult(f); if (m >= 1) { _dm30(f); if (Math.random() < m - 1) _dm30(f); } else if (Math.random() < m) _dm30(f); };
@@ -7484,7 +7514,7 @@ async function ltdReveal(n, tok) {
   return { serial: x.s, v: x.v || "base", p: x.p || [] };
 }
 function ltdBarHTML() {
-  if (!ltdKey() || (LTD.fetched && !LTD.pub)) return `<div id="ltdbar" hidden></div>`;
+  if (!ltdKey() || !LTD.pub) return `<div id="ltdbar" hidden></div>`;
   const P = ltdP(), left = Math.max(0, P.packs - P.opened), mine = (P.users && P.users[APR_USER]) || 0, price = ltdPrice(), guest = !APR_USER || APR_USER === "guest";
   const chips = [...Array(P.of)].map((_, i) => { const s = ltdSer(P, i + 1); return s ? `<span class="lsc got" title="Pulled by ${esc(s.u)} from pack #${s.pack}${s.v && s.v !== "base" ? " · " + esc(s.v) : ""}">#${i + 1} ✔ ${esc(s.u)}</span>` : `<span class="lsc">#${i + 1} ???</span>`; }).join("");
   const why = guest ? "Log in to join" : !cloudOn() || !ltdKey() ? "Drop not set up yet" : !LTD.pub ? "No drop running" : left < 1 ? "SOLD OUT" : mine >= P.perUser ? `You opened your ${P.perUser}` : sv.c < price ? "Not enough Gold" : "";
@@ -7588,6 +7618,10 @@ PATCH_NOTES.unshift({ v: 40, t: "v40: Limited Drops", n: [
   "A Limited pack costs 5 Tower floors' worth of Gold and opens like a Collector pack (better rarity, finish and misprint odds). Each player can open up to 10",
   "Pack numbers, the 10-pack limit and which packs hide a serial are enforced by the online database, so they can't be faked. Serialized copies are much more likely to have a finish or a misprint, carry a #n/5 stamp (✔ when it matches the public registry) and are auto-favorited",
   "Logging in also signs you in to the drop. Drop admins start a new drop from Account & Guide"] });
+PATCH_NOTES.unshift({ v: 41, t: "v41: Gentler Tower, Auto pack opening", n: [
+  "The Tower scales more gently: monster HP grows 8% per floor (was 10%) and attack 7.5% (was 9.5%). The same team now climbs roughly 5 to 20 floors higher",
+  "Pack opening: Rip 5x and Rip 10x are gone. The bottom bar is now one big Rip / Reveal button, a status line, and two toggles",
+  "New ▶ Auto toggle: packs open one after another. Each pack stays on the table for a moment (longer for Legendary and Mythic pulls), face-down cards flip by themselves, and hovering a card pauses it. Auto stops when you run out of packs or press Done"] });
 
 // ---- saves: extension and migration ----
 const _e20 = ext;
