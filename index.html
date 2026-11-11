@@ -884,6 +884,28 @@ h1,#statusbar,#tickerWrap{position:relative;z-index:1}
 #wxsky .wgl{position:absolute;font:bold 11px ui-monospace,monospace;color:#f0abfc;text-shadow:2px 0 #22d3ee;animation:wgl .6s steps(2) infinite;opacity:.8}
 @keyframes wgl{50%{opacity:.2;transform:translate(2px,-2px)}}
 @media (prefers-reduced-motion:reduce){#wxsky *{animation:none!important}}
+
+/* ===== v37: collection binder, fan, display case ===== */
+.bslot.dexmiss{border:1px dashed color-mix(in srgb,var(--tc) 45%,transparent);border-radius:8px;opacity:.55;display:flex;align-items:center;justify-content:center;min-height:200px;cursor:default}
+.dxm{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;font:11px ui-monospace,monospace;color:var(--mut,#9b8f74)}.dxm b{color:var(--tc)}.dxm pre{margin:4px 0;color:var(--tc);opacity:.6}.dxm small{font-size:10px}
+.bslot.dex .dxn{background:#d9a441;color:#1a1408;border-radius:9px;padding:0 6px;font-weight:bold}
+.dxstack{margin:10px 0;padding:10px;border:1px solid #d9a44155;border-radius:10px;background:rgba(0,0,0,.25)}
+.dxstack h4{margin:0 0 6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.dxstack h4 #dxX{margin-left:auto}
+.dxfan{position:relative;height:290px;margin:4px 6px 10px;overflow:visible}
+.fanc{position:absolute;top:18px;left:calc((100% - 165px) * var(--t,.5));width:132px;cursor:pointer;transform-origin:50% 120%;transform:translateY(var(--y)) rotate(var(--r));transition:transform .18s ease,filter .18s;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}
+.fanc .card{width:132px;max-width:132px;box-sizing:border-box;font-size:8px}
+.fanc:hover,.fanc.on{transform:translateY(calc(var(--y) - 20px)) rotate(var(--r));z-index:500!important}
+.fanc.on{filter:drop-shadow(0 0 10px #fbbf24)}
+.fant{display:block;text-align:center;font:10px ui-monospace,monospace;color:#e8d9b0;background:rgba(0,0,0,.65);border-radius:4px;margin-top:2px}
+.dxsel{border-color:#fbbf24!important}.dxshow{color:#fbbf24;font-size:10px;border:1px solid #fbbf24;border-radius:4px;padding:0 4px}
+.shwp{margin:4px 0 8px;font-size:12px}
+.shwg .bslot.shwe{border:1px dashed #fbbf2466;border-radius:8px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;color:var(--mut,#9b8f74);font:11px ui-monospace,monospace;padding:8px}
+.shwe pre{margin:0;color:#fbbf24aa}.shwg .bslot.shw{box-shadow:0 0 0 1px #fbbf2466,0 0 14px #fbbf2433;border-radius:8px}
+.shx{padding:0 5px!important;font-size:10px!important}
+.pshow{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}.pshc{padding:0;background:none;border:0;cursor:pointer}.pshc .card{font-size:7px;max-width:100%}
+@media (max-width:700px){.fanc{width:96px;left:calc((100% - 125px) * var(--t,.5))}.fanc .card{transform:scale(.73);transform-origin:top left;margin-bottom:-30%}.dxfan{height:220px;margin:4px 14px 10px}}
+.pdcol .sock35{flex:0 0 auto;height:auto}
+.dxfan{margin:4px 34px 10px}
 </style>
 </head>
 <body>
@@ -1403,7 +1425,7 @@ function sanitizeState(parsed) {
   return migrateState(merged);
 }
 
-const SAVE_VER = 36;
+const SAVE_VER = 37;
 const MIGRATIONS = [
   [15, m => { m.team = m.team.map(s => (s && typeof s === "object" && s.id !== undefined) ? s : null); }],
   [17, m => {
@@ -5206,7 +5228,7 @@ function showGuide() {
   const S = [
     ["The Loop", "Open packs to chase gear with great stat rolls, equip it on the ten-slot paperdoll, and climb the Infinite Tower. Everything else (forge, lab, astrolabe, collection) exists to make that loop stronger."],
     ["Currencies", "Three currencies, each with one source and one use. 🪙 Gold drops only in the Tower and buys Booster Packs (a pack costs about three floor clears at your best floor). ░▒▓ Raw Glyphs come only from salvaging cards (rarer cards, better grades, finishes and misprints give more) and pay for card levels and THE FORGE. 🟣 Prisms come only from Tribute Ascension and unlock Nexus nodes and binder pages. A free pack arrives every 30 minutes (up to 3 waiting)."],
-    ["Salvage hotkeys", "Hover any card in the Binder, Overflow tray or pack spread: X (or Shift+Click, or 🗑️) salvages it, F favorites it. Favorites, equipped, Legendary/Mythic and S+ cards are protected. The mass-salvage bar filters by rarity AND grade and keeps finishes and misprints unless you untick it. Feed Duplicates levels your equipped cards with matching unlocked copies, and Auto-Salvage on the pack bar breaks down weak pulls as you rip."],
+    ["Salvage hotkeys", "Hover any card in the Binder, a card fan or the pack spread: X (or Shift+Click, or 🗑️) salvages it, F favorites it. Favorites, equipped, Legendary/Mythic and S+ cards are protected. The mass-salvage bar filters by rarity AND grade and keeps finishes and misprints unless you untick it. Feed Duplicates levels your equipped cards with matching unlocked copies, and Auto-Salvage on the pack bar breaks down weak pulls as you rip."],
     ["Packs", "Buy and open packs right on the pack table. Every pack has 14 cards and each card rolls 60% Common, 27% Uncommon, 10% Rare, 2.5% Legendary, 0.5% Mythic (Luck raises the top three). The bottom bar always has Rip 1x, 5x, 10x and Max, plus Reveal All; Space keeps ripping. Legendary and Mythic cards land face-down: click to flip. Pity guarantees a Legendary within 60 packs and a Mythic within 250."],
     ["Finishes & Misprints", "Cards are pure RNG: nothing can be painted on. A card can roll one finish (Shiny, Gold-Trimmed, Black-Trimmed, Glitched, Ghost, Serialized #/100) and one factory misprint (Miscut, Rotated, Negative Ink, Double-Struck, Inverted Cut). Both raise power and value."],
     ["Roll grades", "Every card shows a grade from F to S+ in its top-left corner. It reflects how high each property rolled versus its maximum, how useful those properties are, any 1.5x Super-Rolls, and its finish and misprint."],
@@ -6817,7 +6839,7 @@ function mySummary() {
 }
 function myLoadout() {
   const ts = getTeamStats(), slots = {}; ESLOTS.forEach(([s]) => { const e = sv.equip[s]; slots[s] = e ? cardSnap(instByU(e.u)) : null; });
-  return { u: dispName(), k: pKey(APR_USER), t: Date.now(), slots, stats: { pwr: ts.totalPower, hp: ts.maxHP, str: ts.strikeDmg, blk: ts.armorBlock, cr: ts.critChance, cm: ts.critMult, el: ts.activeElement || "" } };
+  return { u: dispName(), k: pKey(APR_USER), t: Date.now(), slots, show: (sv.showcase || []).map(u => instByU(u)).filter(Boolean).slice(0, 9).map(cardSnap), stats: { pwr: ts.totalPower, hp: ts.maxHP, str: ts.strikeDmg, blk: ts.armorBlock, cr: ts.critChance, cm: ts.critMult, el: ts.activeElement || "" } };
 }
 var LBS = { timer: null, last: "", rows: null, cat: "floor", err: "" };
 function lbQueue() { if (!cloudOn() || !APR_USER || APR_USER === "guest") return; clearTimeout(LBS.timer); LBS.timer = setTimeout(lbPush, 15000); }
@@ -6856,9 +6878,10 @@ async function inspectPlayer(u) {
     const c = CARDS[sn.i], r = snapRoll(sn); return `<button class="pslot" data-ps="${s}" style="--tc:${TC[c.tier]}"><span class="tsb">${nm}</span><span class="tsn" style="color:${TC[c.tier]}">${gradeBadge(r, sn.v, "inl")}${esc(c.name)}</span><span class="tsm">Lv ${r.lv} · ${TIERS[c.tier]}${sn.v !== "base" ? " · " + sn.v.split("+").map(x => VNAME[x] || x).join("+") : ""}</span>${afxLines(r, 0)}</button>`; };
   box.innerHTML = `<button class="imx">✕</button><h3 style="margin:0 0 4px;color:#fbbf24">🔍 ${esc(String(L.u || u).slice(0, 20))}'s loadout</h3>
   <div class="pstats">PWR <b>${fmtN(num(st.pwr))}</b> · HP ${fmtN(num(st.hp))} · Strike ${fmtN(num(st.str))} · Block ${fmtN(num(st.blk))} · Crit ${num(st.cr)}% ×${num(st.cm)}${ELEMENTS.includes(st.el) ? " · " + EL_ICON[st.el] + " " + st.el + " set" : ""}</div>
-  <div class="pgrid"><div>${ESL.map(slot).join("")}</div><div>${ESR.map(slot).join("")}</div></div><p style="color:var(--mut);font-size:12px;margin:6px 0 0">Read-only. Click a slot to see the full card.</p>`;
+  <div class="pgrid"><div>${ESL.map(slot).join("")}</div><div>${ESR.map(slot).join("")}</div></div>${Array.isArray(L.show) && L.show.filter(snapOk).length ? `<h4 style="margin:10px 0 4px;color:#fbbf24">⭐ Display Case</h4><div class="pshow">${L.show.slice(0, 9).map((sn, j) => snapOk(sn) ? `<button class="pshc" data-psh="${j}">${cardHTML(CARDS[sn.i], sn.v, 0, 1, snapRoll(sn))}</button>` : "").join("")}</div>` : ""}<p style="color:var(--mut);font-size:12px;margin:6px 0 0">Read-only. Click a slot to see the full card.</p>`;
   box.querySelector(".imx").onclick = () => o.remove();
   box.querySelectorAll("[data-ps]").forEach(b => b.onclick = () => snapModal(L.slots[b.dataset.ps]));
+  box.querySelectorAll("[data-psh]").forEach(b => b.onclick = () => snapModal(L.show[+b.dataset.psh]));
 }
 (function lbBoot() { if (!__ready) return setTimeout(lbBoot, 800); if (APR_USER) setTimeout(lbPush, 3000); })();
 
@@ -6927,7 +6950,7 @@ function accTab(B, redo, M) {
 }
 function guideTab(B) {
   B.innerHTML = `<div class="guide35">
-  <h3>The three currencies</h3><p><span class="cy gold">🪙 Gold</span> drops only in the Tower and buys Booster Packs (about three floor clears per pack). <span class="cy gly">░▒▓ Raw Glyphs</span> come only from salvaging cards and pay for card levels and THE FORGE. <span class="cy pri">🟣 Prisms</span> come only from Tribute Ascension and unlock Nexus nodes and binder pages.</p>
+  <h3>The three currencies</h3><p><span class="cy gold">🪙 Gold</span> drops only in the Tower and buys Booster Packs (about three floor clears per pack). <span class="cy gly">░▒▓ Raw Glyphs</span> come only from salvaging cards and pay for card levels and THE FORGE. <span class="cy pri">🟣 Prisms</span> come only from Tribute Ascension and unlock Nexus nodes.</p>
   <h3>Card grades F to S+</h3><p>Every card copy is graded by how close its properties rolled to their maximum, how useful they are, Super-Rolls, and its finish and misprint: <b>F D C B A S S+</b>. Grades show in the corner of every card.</p>
   <h3>Properties and 1.5x Super-Rolls</h3><p>Weapons roll offense (Damage, Crit Chance, Crit Damage, Attack Speed), armor rolls defense (Max Life, Armor, Thorns, Regeneration), jewelry rolls either plus Luck, pets roll support. Commons and Uncommons get 1 property, Rares 2, Legendaries 3, Mythics 4. Each property has a 2% (Common) to 5% (Mythic) chance to Super-Roll at 1.5x its maximum (★). Levels 1 to 25 add 10% power and 4% to every property per level.</p>
   <h3>Finishes and misprints</h3><p>Pure RNG on every pull. Finishes: Shiny, Gold-Trimmed, Black-Trimmed, Glitched, Ghost, Serialized #/100. Factory misprints: Miscut, Rotated, Negative Ink, Double-Struck, Inverted Cut. A card can have one of each; both raise power and salvage value.</p>
@@ -6947,7 +6970,7 @@ const _gp35 = genPack; genPack = function (k, s) { const o = _gp35(k, s); sv.sta
 const _an35 = ascendNow; ascendNow = function () { const p0 = sv.shards || 0, r = _an35.apply(this, arguments); if (r) sv.stats.prisms = (sv.stats.prisms || 0) + Math.max(0, (sv.shards || 0) - p0); return r; };
 
 // ---- Equipment & Binder: workbench on the left, paperdoll on the right ----
-var WBS = { mode: "inspect", slot: null, sel: null, so: "grade", page: 0, opage: 0 };
+var WBS = { mode: "inspect", slot: null, sel: null, so: "grade", page: -1, opage: 0, dex: null, disp: "pwr" };
 function sockHTML(s) {
   const it = sv.equip[s], c = it && CARDS[it.id], inst = it && instByU(it.u), nm = ESLOTS.find(x => x[0] === s)[1], on = WBS.slot === s && WBS.mode === "inspect";
   if (!c) return `<button class="sock35 empty ${on ? "on" : ""}" data-slot="${s}"><span class="sl">${nm}</span><span class="sn">— empty —</span></button>`;
@@ -6955,7 +6978,7 @@ function sockHTML(s) {
   return `<button class="sock35 ${on ? "on" : ""}" data-slot="${s}" style="--tc:${TC[c.tier]}"><span class="sl">${nm}</span><span class="sn" style="color:${TC[c.tier]}">${esc(c.name)}</span><span class="sm">${gradeBadge(r, it.v, "inl")}Lv ${inst ? inst.l : 1} ${baseIcons(c, it.v)} · ${fmtN(cardPower(it.id, it.v, it.u))}</span></button>`;
 }
 function equipInst(c, slot) {
-  if (!c || !CARDS[c.i]) return false; if (inOverflow(c.u)) { notify("That card is in the Overflow tray. Free some binder space first."); return false; }
+  if (!c || !CARDS[c.i]) return false;
   const opts = (CAT_SLOTS[CARDS[c.i].category] || []).filter(s => slotOk(s, CARDS[c.i]));
   let s = slot && opts.includes(slot) ? slot : opts.find(x => !sv.equip[x]) || opts[0]; if (!s) { notify("That card doesn't fit any slot."); return false; }
   ESLOTS.forEach(([x]) => { if (sv.equip[x] && sv.equip[x].u === c.u) sv.equip[x] = null; });
@@ -6977,31 +7000,66 @@ function wbInspect() {
 function wbGridCell(c) { return `<div class="bslot ${isEquippedU(c.u) ? "eq" : ""} ${WBS.sel === c.u ? "selc" : ""}" data-u="${c.u}" data-hu="${c.u}">${hovBtns(c)}${cardHTML(CARDS[c.i], c.v, c.sn, 1, c.r)}<div class="bsb"><span>${c.f ? "🔒 " : ""}Lv ${c.l}</span>${isEquippedU(c.u) ? `<span class="eqtag">EQUIPPED</span>` : ""}</div></div>`; }
 function selStrip() { const c = WBS.sel && instByU(WBS.sel); if (!c) return `<div class="selstrip mut">Click a card to select it · hover: <b>X</b> salvage, <b>F</b> favorite</div>`;
   return `<div class="selstrip"><b style="color:${TC[CARDS[c.i].tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(CARDS[c.i].name)}</b> Lv ${c.l} <button id="sEq">[ Equip ]</button><button id="sFav">${c.f ? "🔒 Unfavorite" : "🔓 Favorite"}</button><button id="sIn">Inspect & Upgrade</button><button id="sSal">🗑️ Salvage</button></div>`; }
-function wbBinder() {
-  const sp = binderSplit(), match = c => { const card = CARDS[c.i]; if (!card) return false; return (!bf.q || card.name.toLowerCase().includes(bf.q.toLowerCase())) && (bf.tier === "all" || card.tier === +bf.tier) && (bf.grade === "all" || gradeOf(c.r, c.v).g === bf.grade) && (bf.cat === "all" || card.category === bf.cat) && (bf.el === "all" || baseOf(card, c.v).includes(bf.el)) && (bf.vg === "all" || vGroup(c.v) === bf.vg); };
-  const SO = { new: (a, b) => b.t - a.t, rar: (a, b) => CARDS[b.i].tier - CARDS[a.i].tier || gradeScore(b.r, b.v) - gradeScore(a.r, a.v), grade: (a, b) => gradeScore(b.r, b.v) - gradeScore(a.r, a.v), lvl: (a, b) => b.l - a.l, pwr: (a, b) => cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u), name: (a, b) => CARDS[a.i].name.localeCompare(CARDS[b.i].name) };
-  const list = sp.inside.filter(match).sort(SO[bf.so] || SO.new), pages = Math.max(1, Math.ceil(list.length / 9)); WBS.page = Math.max(0, Math.min(WBS.page, pages - 1));
-  const sel = (id, cur, opts) => `<select id="${id}">${opts.map(([v, n]) => `<option value="${v}" ${String(cur) === String(v) ? "selected" : ""}>${n}</option>`).join("")}</select>`;
-  return `<div class="bfil35">${sel("fC", bf.cat, [["all", "All slots"], ...CATEGORIES.map(c => [c, c])])}${sel("fT", bf.tier, [["all", "All rarities"], ...TIERS.map((t, i) => [i, t])])}${sel("fG", bf.grade, [["all", "All grades"], ...GORD.slice().reverse().map(g => [g, "Grade " + g])])}${sel("fE", bf.el, [["all", "All elements"], ...ELEMENTS.map(e => [e, EL_ICON[e] + " " + e])])}${sel("fV", bf.vg, VGROUPS)}${sel("fS", ["new", "rar", "grade", "lvl", "pwr", "name"].includes(bf.so) ? bf.so : "new", [["new", "Sort: Newest"], ["rar", "Sort: Rarity"], ["grade", "Sort: Grade"], ["lvl", "Sort: Level"], ["pwr", "Sort: Power"], ["name", "Sort: Name"]])}<input id="fQ" placeholder="search" value="${esc(bf.q)}" size="9"></div>
-  <div class="pgbar"><button id="pPv" ${WBS.page > 0 ? "" : "disabled"}>◀</button><span>Page ${WBS.page + 1} / ${pages} · ${list.length} cards</span><button id="pNx" ${WBS.page < pages - 1 ? "" : "disabled"}>▶</button><button id="pBuy" ${(sv.shards || 0) >= pageCost() ? "" : "disabled"}>[ ➕ Buy +9-Slot Page (Cost: ${CUR.pri(pageCost())}) ]</button><button id="pFeed">[ ⬆️ Feed Dupes ]</button></div>
-  <div class="bgrid wbgrid">${list.slice(WBS.page * 9, WBS.page * 9 + 9).map(wbGridCell).join("") || `<p class="mut">No cards match.</p>`}</div>${selStrip()}${massBar("msB", sp.inside)}`;
+// ---- the Binder as a collection book: one slot per card number, every copy stacked inside it ----
+var DISPS = [["pwr", "Show: Highest Power"], ["new", "Show: Most Recent"], ["grade", "Show: Best Grade"], ["lvl", "Show: Highest Level"], ["eq", "Show: Equipped first"]];
+function dispSort(k) {
+  const P = (a, b) => cardPower(b.i, b.v, b.u) - cardPower(a.i, a.v, a.u);
+  return { pwr: P, new: (a, b) => b.t - a.t, grade: (a, b) => gradeScore(b.r, b.v) - gradeScore(a.r, a.v) || P(a, b), lvl: (a, b) => b.l - a.l || P(a, b), eq: (a, b) => (isEquippedU(b.u) ? 1 : 0) - (isEquippedU(a.u) ? 1 : 0) || (b.f ? 1 : 0) - (a.f ? 1 : 0) || P(a, b) }[k] || P;
 }
-function wbOverflow() {
-  const over = binderSplit().over, pages = Math.max(1, Math.ceil(over.length / 9)); WBS.opage = Math.max(0, Math.min(WBS.opage, pages - 1));
-  if (!over.length) return `<div class="wbempty">The Overflow tray is empty. New pulls go here when your binder is full.</div>${massBar("msO", [])}`;
-  return `<div class="pgbar"><button id="oPv" ${WBS.opage > 0 ? "" : "disabled"}>◀</button><span>Overflow page ${WBS.opage + 1} / ${pages} · ${fmtN(over.length)} cards</span><button id="oNx" ${WBS.opage < pages - 1 ? "" : "disabled"}>▶</button><button id="pFeed">[ ⬆️ Feed Dupes ]</button></div>
-  <p class="mut" style="margin:4px 0">Overflow cards can't be equipped. Salvage them, feed them as duplicates, or buy binder pages.</p><div class="bgrid wbgrid">${over.slice(WBS.opage * 9, WBS.opage * 9 + 9).map(wbGridCell).join("")}</div>${selStrip()}${massBar("msO", over)}`;
+function dexGroups() { const g = new Map(); (sv.cards || []).forEach(c => { if (!CARDS[c.i]) return; let a = g.get(c.i); if (!a) g.set(c.i, a = []); a.push(c); }); return g; }
+function dexNo(i) { return "#" + String(i + 1).padStart(3, "0"); }
+function dexCell(i, copies) {
+  const card = CARDS[i];
+  if (!copies.length) return `<div class="bslot dexmiss" data-dex="${i}" style="--tc:${TC[card.tier]}"><div class="dxm"><b>${dexNo(i)}</b><pre>  .---.\n  | ? |\n  '---'</pre><span>${esc(card.name)}</span><small>${TIERS[card.tier]} · not collected</small></div></div>`;
+  const c = copies[0], eq = copies.some(x => isEquippedU(x.u));
+  return `<div class="bslot dex ${eq ? "eq" : ""} ${WBS.dex === i ? "selc" : ""}" data-dex="${i}" data-u="${c.u}" data-hu="${c.u}">${hovBtns(c)}${cardHTML(card, c.v, c.sn, 1, c.r)}<div class="bsb"><span>${dexNo(i)}</span><span>${c.f ? "🔒 " : ""}Lv ${c.l}</span>${copies.length > 1 ? `<span class="dxn" title="${copies.length} copies in this slot">×${copies.length}</span>` : ""}${eq ? `<span class="eqtag">EQUIPPED</span>` : ""}</div></div>`;
+}
+function dexStack(i, copies) {
+  const card = CARDS[i]; if (!card || !copies.length) return "";
+  const all = copies.length, shown = copies.slice(0, 60), N = shown.length, c = copies.find(x => x.u === WBS.sel) || copies[0], at = copies.indexOf(c);
+  const rmax = Math.min(16, N * 2.5), dip = Math.min(26, N * 3);
+  const fan = shown.map((x, n) => { const t = N > 1 ? n / (N - 1) : 0.5, r = ((t - 0.5) * 2 * rmax).toFixed(1), y = (Math.pow(t - 0.5, 2) * 4 * dip).toFixed(1);
+    return `<div class="fanc ${x.u === c.u ? "on" : ""}" data-fu="${x.u}" data-hu="${x.u}" style="--t:${t.toFixed(4)};--r:${r}deg;--y:${y}px;z-index:${n + 1}" title="${esc(card.name)} · Lv ${x.l} · PWR ${fmtN(cardPower(x.i, x.v, x.u))}">${cardHTML(card, x.v, x.sn, 1, x.r)}<span class="fant">${gradeBadge(x.r, x.v, "inl")}Lv ${x.l}${x.f ? " 🔒" : ""}${isEquippedU(x.u) ? " ⚔️" : ""}${inShow(x.u) ? " ⭐" : ""}</span></div>`; }).join("");
+  return `<div class="dxstack"><h4><span style="color:${TC[card.tier]}">${dexNo(i)} ${esc(card.name)}</span> · ${all} cop${all > 1 ? "ies" : "y"}${all > N ? ` <span class="mut">(fanning the top ${N})</span>` : ""} <button id="dxX" title="Close">✕</button></h4>
+  <div class="dxfan">${fan}</div>
+  <div class="cmp dxsel" data-hu="${c.u}"><div class="cmpn" style="color:${TC[card.tier]}">${gradeBadge(c.r, c.v, "inl")}${esc(card.name)} ${c.f ? "🔒" : ""}${isEquippedU(c.u) ? ` <span class="eqtag">EQUIPPED</span>` : ""}${inShow(c.u) ? ` <span class="dxshow">⭐ ON DISPLAY</span>` : ""} <span class="mut">copy ${at + 1} of ${all}</span></div><div class="cmpm">Lv ${c.l} · ${c.v === "base" ? "" : esc(vParts(c.v).map(x => VNAME[x] || x).join(" + ")) + " · "}PWR ${fmtN(cardPower(c.i, c.v, c.u))} · ${rgText(c.r)}</div>${afxLines(c.r, 0)}<div class="cmpb"><button data-eqd="${c.u}">[ Equip ]</button><button data-ins="${c.u}">Inspect & Upgrade</button><button data-shu="${c.u}">${inShow(c.u) ? "⭐ Remove from Display" : (sv.showcase || []).length >= 9 ? "⭐ Display full" : "⭐ Put on Display"}</button><button data-qf="${c.u}" title="Favorite (F)">${c.f ? "🔒 Unfavorite" : "🔓 Favorite"}</button><button data-qs="${c.u}" title="Salvage (X)">🗑️ Salvage</button></div></div></div>`;
+}
+function showcasePage(G, srt) {
+  const L = (sv.showcase || []).map(u => instByU(u)).filter(Boolean);
+  const cells = [...Array(9)].map((_, k) => { const c = L[k];
+    if (!c) return `<div class="bslot shwe"><pre>  .  *  .\n *  ⭐  *\n  '  *  '</pre><b>Empty display slot</b><small>Open any card in the binder and press ⭐ Put on Display</small></div>`;
+    return `<div class="bslot shw ${WBS.dex === c.i ? "selc" : ""}" data-dex="${c.i}" data-u="${c.u}" data-hu="${c.u}">${cardHTML(CARDS[c.i], c.v, c.sn, 1, c.r)}<div class="bsb"><span>${dexNo(c.i)}</span><span>Lv ${c.l}</span><button class="shx" data-unshow="${c.u}" title="Remove from display">✕</button></div></div>`; }).join("");
+  const st = WBS.dex != null && CARDS[WBS.dex] ? dexStack(WBS.dex, (G.get(WBS.dex) || []).sort(srt)) : "";
+  return `<div class="pgbar"><button disabled>◀</button><span>⭐ Display Case · ${L.length} / 9</span><button id="pNx">▶ Collection #001</button></div><p class="mut shwp">Your nine favorite cards, shown first in your binder and to anyone who inspects you on the leaderboards. Cards on display are protected from salvage.</p><div class="bgrid wbgrid shwg">${cells}</div>${st}`;
+}
+function wbBinder() {
+  const G = dexGroups(), srt = dispSort(WBS.disp), q = (bf.q || "").toLowerCase().trim(), qn = /^#?\d+$/.test(q) ? +q.replace("#", "") : 0;
+  const copyOk = c => (bf.grade === "all" || gradeOf(c.r, c.v).g === bf.grade) && (bf.vg === "all" || vGroup(c.v) === bf.vg), copyF = bf.grade !== "all" || bf.vg !== "all";
+  const rows = [];
+  for (let i = 0; i < CARDS.length; i++) { const card = CARDS[i]; if (!card) continue;
+    if (bf.tier !== "all" && card.tier !== +bf.tier) continue; if (bf.cat !== "all" && card.category !== bf.cat) continue; if (bf.el !== "all" && !baseOf(card, "base").includes(bf.el)) continue;
+    if (q && !(qn ? i + 1 === qn : card.name.toLowerCase().includes(q))) continue;
+    const copies = (G.get(i) || []).filter(copyOk).sort(srt);
+    if (bf.own === "own" && !copies.length) continue; if (bf.own === "miss" && (G.get(i) || []).length) continue; if (copyF && !copies.length) continue;
+    rows.push([i, copies]); }
+  if (WBS.page < 0) return showcasePage(G, srt);
+  const pages = Math.max(1, Math.ceil(rows.length / 9)); WBS.page = Math.max(0, Math.min(WBS.page, pages - 1));
+  const owned = [...G.keys()].length, sel = (id, cur, opts) => `<select id="${id}">${opts.map(([v, n]) => `<option value="${v}" ${String(cur) === String(v) ? "selected" : ""}>${n}</option>`).join("")}</select>`;
+  const st = WBS.dex != null && CARDS[WBS.dex] ? dexStack(WBS.dex, (G.get(WBS.dex) || []).filter(copyOk).sort(srt)) : "";
+  return `<div class="bfil35">${sel("fD", WBS.disp, DISPS)}${sel("fO", bf.own || "all", [["all", "All cards"], ["own", "Collected"], ["miss", "Not collected"]])}${sel("fC", bf.cat, [["all", "All slots"], ...CATEGORIES.map(c => [c, c])])}${sel("fT", bf.tier, [["all", "All rarities"], ...TIERS.map((t, i) => [i, t])])}${sel("fG", bf.grade, [["all", "All grades"], ...GORD.slice().reverse().map(g => [g, "Grade " + g])])}${sel("fE", bf.el, [["all", "All elements"], ...ELEMENTS.map(e => [e, EL_ICON[e] + " " + e])])}${sel("fV", bf.vg, VGROUPS)}<input id="fQ" placeholder="name or #" value="${esc(bf.q)}" size="9"></div>
+  <div class="pgbar"><button id="pSh" title="Display Case">⭐</button><button id="pPv">◀</button><span>Page ${WBS.page + 1} / ${pages} · ${dexNo(rows.length ? rows[WBS.page * 9][0] : 0)}–${dexNo(rows.length ? rows[Math.min(rows.length - 1, WBS.page * 9 + 8)][0] : 0)}</span><button id="pNx" ${WBS.page < pages - 1 ? "" : "disabled"}>▶</button><span class="mut">📖 ${fmtN(owned)} / ${fmtN(CARDS.length)} collected · ${fmtN((sv.cards || []).length)} copies</span><button id="pFeed">[ ⬆️ Feed Dupes ]</button></div>
+  <div class="bgrid wbgrid">${rows.slice(WBS.page * 9, WBS.page * 9 + 9).map(([i, c]) => dexCell(i, c)).join("") || `<p class="mut">No cards match.</p>`}</div>${st}${massBar("msB", sv.cards || [])}`;
 }
 showTeamBuilder = function () {
   instSync(); validateEquip(); syncTeam(); applyFrame();
-  const ts = getTeamStats(), cap = binderCap(), tot = (sv.cards || []).length, ov = Math.max(0, tot - cap);
-  if (WBS.sel && !instByU(WBS.sel)) WBS.sel = null;
-  const body = WBS.mode === "binder" ? wbBinder() : WBS.mode === "overflow" ? wbOverflow() : wbInspect();
+  const ts = getTeamStats(), tot = (sv.cards || []).length, own = new Set((sv.cards || []).map(c => c.i)).size;
+  if (WBS.sel && !instByU(WBS.sel)) WBS.sel = null; if (WBS.mode === "overflow") WBS.mode = "binder";
+  const body = WBS.mode === "binder" ? wbBinder() : wbInspect();
   main.innerHTML = `<div class="split">
-  <section class="wb"><div class="wbbar"><button data-wm="inspect" class="${WBS.mode === "inspect" ? "on" : ""}">[ 🔍 Slot Inspector & Compare ]</button><button data-wm="binder" class="${WBS.mode === "binder" ? "on" : ""}">[ 📖 Binder (${fmtN(Math.min(tot, cap))}/${fmtN(cap)}) ]</button><button data-wm="overflow" class="${WBS.mode === "overflow" ? "on" : ""} ${ov ? "warn" : ""}">[ ⚠️ Overflow (${fmtN(ov)}) ]</button></div><div class="wbbody">${body}</div></section>
+  <section class="wb"><div class="wbbar"><button data-wm="inspect" class="${WBS.mode === "inspect" ? "on" : ""}">[ 🔍 Slot Inspector & Compare ]</button><button data-wm="binder" class="${WBS.mode === "binder" ? "on" : ""}">[ 📖 Binder (${fmtN(own)}/${fmtN(CARDS.length)}) ]</button></div><div class="wbbody">${body}</div></section>
   <section class="pd"><div class="pdh"><b>⚔️ Team PWR ${fmtN(ts.totalPower)}</b><span class="chem" title="${esc(chemTip(ts))}">${ts.activeElement ? EL_ICON[ts.activeElement] + " " + ts.activeElement + " resonance" : "No resonance"} ⓘ</span>
     <div class="pdb"><button id="pAuto">[ Auto-Equip Best ]</button><button id="pFeed2">[ ⬆️ Feed Dupes ]</button><button id="pClear">[ Unequip All ]</button><button id="pCos">[ 🎨 Cosmetics ]</button></div></div>
-    <div class="pdgrid"><div class="pdcol">${ESL.map(sockHTML).join("")}</div><div class="pdav"><pre class="hero">${heroArt().map(esc).join("\n")}</pre><pre class="pet">${petArt().map(esc).join("\n")}</pre><div class="pedestal"></div><button class="pdbook" id="pBook" title="Open the Binder"><pre> _______\n|[][][] |\n|[][][] |\n'-------'</pre><b>📖 ${fmtN(Math.min(tot, cap))}/${fmtN(cap)}</b>${ov ? `<span class="bov">+${fmtN(ov)} overflow</span>` : ""}</button></div><div class="pdcol">${ESR.map(sockHTML).join("")}</div></div>
+    <div class="pdgrid"><div class="pdcol">${ESL.map(sockHTML).join("")}</div><div class="pdav"><pre class="hero">${heroArt().map(esc).join("\n")}</pre><pre class="pet">${petArt().map(esc).join("\n")}</pre><div class="pedestal"></div><button class="pdbook" id="pBook" title="Open the Binder"><pre> _______\n|[][][] |\n|[][][] |\n'-------'</pre><b>📖 ${fmtN(own)}/${fmtN(CARDS.length)}</b><span class="mut"> · ${fmtN(tot)} copies</span></button></div><div class="pdcol">${ESR.map(sockHTML).join("")}</div></div>
     ${gearGrid(ts)}</section></div>`;
   const $ = s => main.querySelector(s), redo = () => showTeamBuilder();
   main.querySelectorAll("[data-wm]").forEach(b => b.onclick = () => { WBS.mode = b.dataset.wm; redo(); });
@@ -7019,16 +7077,19 @@ showTeamBuilder = function () {
   bindUpgrade(main, redo);
   main.querySelectorAll("[data-eqp]").forEach(b => b.onclick = () => { if (equipInst(instByU(b.dataset.eqp), WBS.slot)) redo(); });
   // binder and overflow
-  [["#fC", "cat"], ["#fT", "tier"], ["#fG", "grade"], ["#fE", "el"], ["#fV", "vg"], ["#fS", "so"]].forEach(([s, k]) => { if ($(s)) $(s).onchange = () => { bf[k] = $(s).value; WBS.page = 0; redo(); }; });
+  if ($("#fD")) $("#fD").onchange = () => { WBS.disp = $("#fD").value; redo(); };
+  [["#fO", "own"], ["#fC", "cat"], ["#fT", "tier"], ["#fG", "grade"], ["#fE", "el"], ["#fV", "vg"]].forEach(([s, k]) => { if ($(s)) $(s).onchange = () => { bf[k] = $(s).value; WBS.page = 0; redo(); }; });
   if ($("#fQ")) $("#fQ").oninput = () => { bf.q = $("#fQ").value; WBS.page = 0; clearTimeout(WBS.qt); WBS.qt = setTimeout(() => { redo(); const q = main.querySelector("#fQ"); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 300); };
-  if ($("#pPv")) { $("#pPv").onclick = () => { WBS.page--; redo(); }; $("#pNx").onclick = () => { WBS.page++; redo(); }; }
-  if ($("#oPv")) { $("#oPv").onclick = () => { WBS.opage--; redo(); }; $("#oNx").onclick = () => { WBS.opage++; redo(); }; }
-  if ($("#pBuy")) $("#pBuy").onclick = () => { const c = pageCost(); if ((sv.shards || 0) < c) return; sv.shards -= c; sv.bpages = (sv.bpages || 0) + 1; save(); try { drawStatus(); } catch (e) {} notify("Binder page bought: +9 slots"); redo(); };
-  if ($("#oQuick")) $("#oQuick").onclick = () => { quickSalvageOverflow(); redo(); };
-  main.querySelectorAll(".wbgrid .bslot").forEach(el => el.onclick = e => { if (e.shiftKey || (e.target.closest && e.target.closest(".hov"))) return; WBS.sel = el.dataset.u; redo(); });
-  const sc = WBS.sel && instByU(WBS.sel);
-  if ($("#sEq") && sc) { $("#sEq").onclick = () => { if (equipInst(sc)) { WBS.mode = "inspect"; redo(); } }; $("#sFav").onclick = () => { toggleFav(sc); redo(); }; $("#sIn").onclick = () => instModal(sc.u, redo); $("#sSal").onclick = () => { if (salvageOne(sc)) { WBS.sel = null; redo(); } }; }
-  bindMass(main, "msB", () => binderSplit().inside, redo); bindMass(main, "msO", () => binderSplit().over, redo); bindHov(main);
+  if ($("#pPv")) $("#pPv").onclick = () => { WBS.page--; WBS.dex = null; redo(); }; if ($("#pNx")) $("#pNx").onclick = () => { WBS.page++; WBS.dex = null; redo(); };
+  main.querySelectorAll(".wbgrid .bslot[data-dex]").forEach(el => el.onclick = e => { if (e.shiftKey || (e.target.closest && e.target.closest(".hov"))) return; const i = +el.dataset.dex; WBS.dex = WBS.dex === i ? null : i; WBS.sel = el.dataset.u || null; redo(); const st = main.querySelector(".dxstack"); if (st && st.scrollIntoView) st.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
+  if ($("#pSh")) $("#pSh").onclick = () => { WBS.page = -1; WBS.dex = null; redo(); };
+  main.querySelectorAll("[data-fu]").forEach(el => el.onclick = e => { if (e.shiftKey) return; WBS.sel = el.dataset.fu; redo(); });
+  main.querySelectorAll("[data-shu]").forEach(b => b.onclick = () => { toggleShow(b.dataset.shu); redo(); });
+  main.querySelectorAll("[data-unshow]").forEach(b => b.onclick = e => { e.stopPropagation(); toggleShow(b.dataset.unshow); redo(); });
+  if ($("#dxX")) $("#dxX").onclick = () => { WBS.dex = null; redo(); };
+  main.querySelectorAll("[data-eqd]").forEach(b => b.onclick = () => { if (equipInst(instByU(b.dataset.eqd))) { WBS.mode = "inspect"; redo(); } });
+  main.querySelectorAll("[data-ins]").forEach(b => b.onclick = () => instModal(b.dataset.ins, redo));
+  bindMass(main, "msB", () => sv.cards || [], redo); bindHov(main);
 };
 showBinder = function () { WBS.mode = "binder"; return showTeamBuilder(); };
 views[3] = showBinder; views[4] = showTeamBuilder;
@@ -7039,7 +7100,7 @@ function afterInstChange(u) {
 applyFrame();
 const _e35 = ext; ext = function (m) { _e35(m); m.stats = m.stats || {}; return m; };
 PATCH_NOTES.unshift({ v: 35, t: "v35: Workbench & Paperdoll", n: [
-  "EQUIPMENT & BINDER is now a two-panel ARPG screen: your paperdoll and total stats always on the right, and a workbench on the left that switches between Slot Inspector & Compare, the Binder (3x3 pages) and the Overflow tray",
+  "EQUIPMENT & BINDER is now a two-panel ARPG screen: your paperdoll and total stats always on the right, and a workbench on the left that switches between Slot Inspector & Compare and the Binder (3x3 pages)",
   "Click a gear socket to inspect, upgrade, favorite or chat-link the equipped card next to a list of every card you own for that slot, with green/red stat differences and one-click Equip or Salvage",
   "Cosmetics and Account & Guide are rebuilt as proper windows. Cosmetics: sleeves, playmats, table themes, binder frames and card backs, all free and applied instantly. Account & Guide: player name for chat and leaderboards, export/import save, room settings, hard reset, a full game guide, and lifetime stats & awards"] });
 
@@ -7068,6 +7129,54 @@ PATCH_NOTES.unshift({ v: 36, t: "v36: Calmer weather, cleaner header", n: [
   "Weather and Cosmic Anomalies no longer recolour the menus. They now play in a sky strip behind the title: drifting clouds, a Blood Moon, rain in the Abyssal Fog, a Solar Flare sun, stars at night and sparkles during a foil storm",
   "The top of the screen is one clean status line: name, the three currencies, packs ready, highest floor, Team Power and resonance, Ascension tier and the weather",
   "Quick-Salvage in the Overflow tray now lets you choose any rarity up to Mythic and any grade up to S+ (it asks twice before salvaging Legendary, Mythic or S+ cards). The Binder's mass-salvage bar has the same full range"] });
+
+// ===================== v37: the Binder is a collection book (no Overflow) + Display Case =====================
+// Every card number has one slot; all copies stack inside it. Nothing ever overflows.
+function binderCap() { return 1e9; }
+function binderSplit() { return { inside: sv.cards || [], over: [] }; }
+function overflowSet() { return new Set(); }
+function inOverflow() { return false; }
+function quickSalvageOverflow() { return 0; }
+// Display Case: nine chosen copies, protected from salvage and shown to other players
+function inShow(u) { return !!(sv.showcase && sv.showcase.includes(u)); }
+function toggleShow(u) {
+  sv.showcase = (sv.showcase || []).filter(x => instByU(x));
+  if (inShow(u)) { sv.showcase = sv.showcase.filter(x => x !== u); notify("Removed from your Display Case"); }
+  else if (sv.showcase.length >= 9) { notify("Your Display Case is full (9). Remove a card first."); return false; }
+  else { sv.showcase.push(u); notify("⭐ Put on display"); }
+  save(); try { lbQueue(); } catch (e) {} return true;
+}
+function isProt(c) { return !!(c.f || isEquippedU(c.u) || inShow(c.u)); }
+// mass salvage keeps the best copy of every card number by default
+var MSV = { r: 1, g: 1, keepV: true, kb: true }, MSO = MSV;
+function massList(scope, st) {
+  st = st || MSV; const best = new Map();
+  if (st.kb) (sv.cards || []).forEach(c => { const b = best.get(c.i); if (!b || cardPower(c.i, c.v, c.u) > cardPower(b.i, b.v, b.u)) best.set(c.i, c); });
+  return scope.filter(c => CARDS[c.i] && !isProt(c) && CARDS[c.i].tier <= st.r && gIdx(c) <= st.g && !(st.keepV && vParts(c.v).length) && !(st.kb && best.get(c.i) === c));
+}
+function massBar(id, scope) {
+  const st = MSV, L = massList(scope, st), d = L.reduce((a, c) => a + salvDust(c), 0), sel = (k, cur, opts) => `<select data-ms="${k}">${opts.map(([v, n]) => `<option value="${v}" ${+cur === v ? "selected" : ""}>${n}</option>`).join("")}</select>`;
+  return `<div class="msbar" id="${id}">🔥 Salvage unfavorited cards where Rarity ≤ ${sel("r", st.r, TIERS.map((t, i) => [i, t[0].toUpperCase() + t.slice(1)]))} AND Grade ≤ ${sel("g", st.g, GORD.map((g, i) => [i, g]))} <label><input type="checkbox" data-ms="kb" ${st.kb ? "checked" : ""}> Keep best copy of each card</label> <label><input type="checkbox" data-ms="keepV" ${st.keepV ? "checked" : ""}> Preserve Variants & Misprints</label> <button class="msgo" ${L.length ? "" : "disabled"}>[ 🔥 Salvage ${fmtN(L.length)} Cards → +${fmtN(d)} Raw Glyphs ]</button>${L.some(c => CARDS[c.i].tier >= 3 || gradeOf(c.r, c.v).g === "S+") ? `<span class="mswarn">⚠ includes Legendary/Mythic or S+ cards</span>` : ""}</div>`;
+}
+function bindMass(root, id, scopeFn, redo) {
+  const bar = root.querySelector("#" + id); if (!bar) return; const st = MSV;
+  bar.querySelectorAll("[data-ms]").forEach(s => s.onchange = () => { const k = s.dataset.ms; st[k] = s.type === "checkbox" ? s.checked : +s.value; redo(); });
+  bar.querySelector(".msgo").onclick = () => { const b = bar.querySelector(".msgo"), L = massList(scopeFn(), st), risky = L.some(c => CARDS[c.i].tier >= 3 || gradeOf(c.r, c.v).g === "S+");
+    if (risky && b.dataset.ok !== "1") { b.dataset.ok = "1"; b.textContent = `Click again: this salvages ${L.length} cards including Legendary/Mythic or S+`; return; }
+    const d = salvage(L); notify(`Salvaged ${L.length} cards for +${fmtN(d)} ░▒▓`); redo(); };
+}
+// save upgrade: Display Case, and Prisms back for binder pages that no longer exist
+const _e37 = ext;
+ext = function (m) { _e37(m); m.showcase = Array.isArray(m.showcase) ? m.showcase.filter(x => typeof x === "string").slice(0, 9) : [];
+  if (!m.v37) { let r = 0; for (let k = 0; k < (m.bpages || 0); k++) r += Math.ceil(PAGE_BASE_SHARDS * Math.pow(1.4, k)); m.shards = (m.shards || 0) + r; m.bpages = 0; m.v37 = 1; if (r) m.ref37 = r; } return m; };
+ext(sv);
+(function boot37() { if (!__ready) return setTimeout(boot37, 500); if (sv.ref37) { notify(`Binder pages are gone (the binder no longer fills up): refunded ${fmtN(sv.ref37)} 🟣 Prisms.`); delete sv.ref37; save(); } })();
+PATCH_NOTES.unshift({ v: 37, t: "v37: The collection binder and your Display Case", n: [
+  "The Overflow tray is gone. The Binder is now a collection book in card-number order (#001 to #400): each card has one slot, and every copy you own stacks inside it. Cards you haven't found yet show as empty slots",
+  "Choose which copy each slot shows: Highest Power, Most Recent, Best Grade, Highest Level or Equipped first. Filter by collected or missing, slot, rarity, grade, element and variant, or search by name or #number",
+  "Click a slot to fan out all its copies like a hand of cards. Click any copy to equip, inspect and upgrade, favorite, salvage or put it on display",
+  "New Display Case: the first page of your binder holds your nine favorite cards. Other players see it when they inspect you on the leaderboards, and displayed cards are protected from salvage",
+  "Mass salvage now keeps the best copy of every card by default. Binder pages are no longer sold; any Prisms you spent on them were refunded"] });
 
 // ---- saves: extension and migration ----
 const _e20 = ext;
@@ -7130,7 +7239,7 @@ function drawStatus() {
   const ts = getTeamStats(), w = weather(), an = anomaly();
   const sb = document.getElementById("statusbar"); sb.classList.add("sb36");
   sb.innerHTML = `<span class="sbn">${APR_USER ? esc(typeof dispName === "function" ? dispName() : APR_USER) : ""}${sv.cos.title ? ` <i>[${esc(sv.cos.title)}]</i>` : ""}</span>
-  <span title="Gold: earned only in the Tower, spent on Booster Packs">${CUR.gold(sv.c)}</span><span title="Raw Glyphs: earned only by salvaging cards, spent on card levels and THE FORGE">${CUR.gly(sv.dust)}</span><span title="Prisms: earned only from Tribute Ascension, spent in The Nexus and on binder pages">${CUR.pri(sv.shards)}</span>
+  <span title="Gold: earned only in the Tower, spent on Booster Packs">${CUR.gold(sv.c)}</span><span title="Raw Glyphs: earned only by salvaging cards, spent on card levels and THE FORGE">${CUR.gly(sv.dust)}</span><span title="Prisms: earned only from Tribute Ascension, spent in The Nexus">${CUR.pri(sv.shards)}</span>
   <span class="sbi" title="Booster Packs ready">📦 <b>${sv.packs}</b></span><span class="sbi" title="Highest floor cleared">🗼 <b>${fmtN(Math.max((sv.tower && sv.tower.top) || 0, ((sv.tower && sv.tower.maxFloor) || 1) - 1))}</b></span><span class="sbi" title="Team Power${ts.activeElement ? " · " + ts.activeElement + " resonance" : ""}">⚔️ <b>${fmtN(ts.totalPower)}</b>${ts.activeElement ? " " + EL_ICON[ts.activeElement] : ""}</span>${sv.asc.n ? `<span class="sbi" title="Ascension tier: +${Math.round((Math.pow(1.05, sv.asc.n) - 1) * 100)}% Power & HP">🌀 <b>${sv.asc.n}</b></span>` : ""}
   <span class="sbi" title="${esc(w.n + ": " + w.d)}">${w.i} ${w.n}</span>${an === "sale" ? `<span class="sbi hot">✦ Packs half price</span>` : an ? `<span class="sbi hot">✦ Foil storm</span>` : ""}`;
 }
