@@ -7018,6 +7018,7 @@ function accTab(B, redo, M) {
   <section><h3>Export / Import save</h3><p class="mut">Copy this text somewhere safe. Pasting it back restores the save on any device.</p><textarea id="aExp" rows="4" readonly></textarea><div class="bar" style="justify-content:flex-start"><button id="aCopy">Copy</button><button id="aDl">Download .json</button>${cloudOn() ? `<button id="aSync">☁ Sync to cloud now</button>` : ""}</div>
     <textarea id="aImp" rows="3" placeholder="Paste an exported save here"></textarea><button id="aImpGo">Import save (replaces this one)</button></section>
   <section><h3>Multiplayer room</h3><p class="mut">Chat room and database used for chat, leaderboards and cloud saves.</p>Chat room <input id="aRoom" maxlength="24" value="${esc(chRoom())}"><br>Database URL <input id="aUrl" size="44" value="${esc(cloudUrl())}" placeholder="https://your-db.firebaseio.com"><br>Database key <input id="aKey" type="password" value="${esc(localStorage.getItem("apr_cloud_key") || "")}" placeholder="optional"><br><button id="aNet">Save room settings</button></section>
+  <section>${typeof ltdAdminHTML === "function" ? ltdAdminHTML() : ""}</section>
   <section><h3>Hard reset</h3><p class="mut">Deletes this account's progress on this device and in the cloud. Type <b>RESET</b> to confirm.</p><input id="aRst" placeholder="RESET"> <button id="aRstGo" class="danger">Hard reset</button> <button id="aOut">Log out</button></section></div><div id="aMsg" class="mut"></div>`;
   const $ = s => B.querySelector(s), say = m => $("#aMsg").textContent = m;
   let code = ""; try { code = btoa(unescape(encodeURIComponent(JSON.stringify(sv)))); } catch (e) { code = JSON.stringify(sv); } $("#aExp").value = code;
@@ -7410,55 +7411,93 @@ PATCH_NOTES[0].n.push("Equipment: in the Slot Inspector, click any card in the l
 // ===================== v40: Limited Drops (server-verified scarcity) =====================
 // The Cloud Functions in /server decide pack numbers, the per-player limit and every serialized card.
 // This file only shows the drop, asks the server to open a pack and builds the cards it is told about.
-var LTD = { id: "td1", pub: null, busy: false, at: 0, rec: false, def: { name: "Godslayer Test Drop", card: "Godslayer, the Last Edge", packs: 100, of: 5, perUser: 10, opened: 0 } };
-function fnBase() {
-  const c = cfg(); if (c.fnBase) return String(c.fnBase).replace(/\/$/, "");
-  const m = /^https:\/\/([a-z0-9-]+?)(?:-default-rtdb)?\.(?:firebaseio\.com|[a-z0-9-]+\.firebasedatabase\.app)/.exec(cloudUrl()); return m ? `https://us-central1-${m[1]}.cloudfunctions.net` : "";
+var LTD = { id: "td1", pub: null, raw: null, busy: false, at: 0, rec: false, def: { name: "Godslayer Test Drop", card: "Godslayer, the Last Edge", packs: 100, of: 5, perUser: 10, opened: 0 } };
+// ---- free Firebase sign-in (Email/Password provider) tied to the game account ----
+// Each game account gets a Firebase login "<username>@ascii-rip-it.invalid" with the game password,
+// so the database rules can check who is writing. Nothing here needs the paid plan.
+const LTD_MAIL = "@ascii-rip-it.invalid";
+const ltdKey = () => cfg().fbApiKey || "";
+const ltdIdt = () => cfg().idtBase || "https://identitytoolkit.googleapis.com/v1";
+const ltdSt = () => cfg().stBase || "https://securetoken.googleapis.com/v1";
+const ltdPw = pw => "arit:" + pw; // Firebase needs 6+ characters; game passwords can be 4
+var LTA = { tok: "", exp: 0, uid: "" };
+function ltdSess() { try { return JSON.parse(localStorage.getItem("apr_lsess_" + APR_USER) || "null"); } catch (e) { return null; } }
+async function ltdPost(url, body, form) {
+  try { const r = await fetch(url, { method: "POST", headers: { "Content-Type": form ? "application/x-www-form-urlencoded" : "application/json" }, body: form ? body : JSON.stringify(body) }); let j = {}; try { j = await r.json(); } catch (e) {} return { ok: r.ok, status: r.status, body: j }; }
+  catch (e) { return { ok: false, status: 0, body: { error: { message: "NETWORK" } } }; }
 }
-const ltdTokKey = () => "apr_ltok_" + APR_USER;
-function ltdTok() { try { return localStorage.getItem(ltdTokKey()) || ""; } catch (e) { return ""; } }
-async function ltdCall(name, body) {
-  const base = fnBase(); if (!base) return { status: 0, body: { err: "no_server" } };
-  try { const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 15000); const r = await fetch(`${base}/${name}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl.signal }); clearTimeout(to); let j = {}; try { j = await r.json(); } catch (e) {} return { status: r.status, body: j }; }
-  catch (e) { return { status: 0, body: { err: "network" } }; }
-}
-// sign in to the drop server with the game password (called from the login screen and from the drop panel)
 async function ltdLogin(u, pw) {
-  let r = await ltdCall("limitedLogin", { u, pw });
-  if (r.status === 404 && cloudOn()) { const a = accts()[u]; if (a) { await cloudReq("auth/" + u, "PUT", a); r = await ltdCall("limitedLogin", { u, pw }); } }
-  if (r.status === 200 && r.body.tok) { try { localStorage.setItem("apr_ltok_" + u, r.body.tok); } catch (e) {} return true; }
-  return r.body.err || "network";
+  const k = ltdKey(); if (!k) return "no_key";
+  const email = u + LTD_MAIL, body = { email, password: ltdPw(pw), returnSecureToken: true };
+  let r = await ltdPost(`${ltdIdt()}/accounts:signInWithPassword?key=${k}`, body);
+  if (!r.ok && r.status) { const s = await ltdPost(`${ltdIdt()}/accounts:signUp?key=${k}`, body); if (s.ok) r = s; else if (/EMAIL_EXISTS/.test((s.body.error || {}).message || "")) return "wrong_password"; else return ((s.body.error || {}).message || "signup_failed").toLowerCase(); }
+  if (!r.ok) return "network";
+  try { localStorage.setItem("apr_lsess_" + u, JSON.stringify({ uid: r.body.localId, rt: r.body.refreshToken })); } catch (e) {}
+  if (u === APR_USER) LTA = { tok: r.body.idToken, exp: Date.now() + (+r.body.expiresIn || 3600) * 1000 - 60000, uid: r.body.localId };
+  return true;
+}
+async function ltdToken() {
+  if (LTA.tok && Date.now() < LTA.exp) return LTA.tok;
+  const s = ltdSess(), k = ltdKey(); if (!s || !s.rt || !k) return "";
+  const r = await ltdPost(`${ltdSt()}/token?key=${k}`, "grant_type=refresh_token&refresh_token=" + encodeURIComponent(s.rt), true);
+  if (!r.ok) { if (r.status === 400) try { localStorage.removeItem("apr_lsess_" + APR_USER); } catch (e) {} return ""; }
+  LTA = { tok: r.body.id_token, exp: Date.now() + (+r.body.expires_in || 3600) * 1000 - 60000, uid: r.body.user_id };
+  try { localStorage.setItem("apr_lsess_" + APR_USER, JSON.stringify({ uid: r.body.user_id, rt: r.body.refresh_token || s.rt })); } catch (e) {}
+  return LTA.tok;
+}
+function ltdTok() { return (ltdSess() || {}).rt || ""; }
+const ltdUid = () => LTA.uid || (ltdSess() || {}).uid || "";
+async function ltdDb(path, method, body, tok) {
+  try { const r = await fetch(`${cloudUrl()}/${path}.json${tok ? "?auth=" + encodeURIComponent(tok) : ""}`, { method: method || "GET", headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }); let j = null; try { j = await r.json(); } catch (e) {} return { ok: r.ok, status: r.status, body: j }; }
+  catch (e) { return { ok: false, status: 0, body: null }; }
+}
+// turn the raw drop node into what the banner shows
+function ltdShape(d) {
+  if (!d || !d.meta) return null; const m = d.meta, byName = {};
+  const users = d.users || {}, packs = d.packs || {}; Object.keys(packs).forEach(n => { const p = packs[n]; if (p && p.u && p.name) byName[p.name] = users[p.u] || 0; });
+  const ser = {}; const S = d.serials || {}; Object.keys(S).forEach(k => { const x = S[k]; if (x) ser[k] = { u: x.name, pack: x.pack, v: x.v }; });
+  return { name: m.name, card: m.card, packs: m.packs, of: m.of, perUser: m.perUser, started: m.started || 0, opened: d.count || 0, users: byName, serials: ser };
 }
 function ltdPrice() { const f = Math.max(10, topFloor()), n = (sv.asc && sv.asc.n) || 0; return Math.round(5 * f * 95 * (1 + 0.08 * n)); }
 function ltdP() { return Object.assign({}, LTD.def, LTD.pub || {}); }
 const ltdSer = (P, n) => P.serials ? P.serials[n] || P.serials[String(n)] : null;
 async function ltdRefresh(force) {
   if (!cloudOn() || (!force && Date.now() - LTD.at < 4000)) return; LTD.at = Date.now();
-  const p = await cloudReq(`limited/${LTD.id}/pub`); if (p) LTD.pub = p; ltdPaint();
-  if (!LTD.rec && APR_USER && APR_USER !== "guest") { LTD.rec = true; ltdRecover(); }
+  const r = await ltdDb(`limited/${LTD.id}`); if (r.ok) { LTD.raw = r.body; LTD.pub = ltdShape(r.body); LTD.fetched = true; } ltdPaint();
+  if (!LTD.rec && APR_USER && APR_USER !== "guest" && ltdTok() && LTD.raw) { LTD.rec = true; ltdRecover(); }
 }
-// packs the server opened for you that never reached this save (closed tab, lost connection)
+// packs you claimed that never reached this save (closed tab, lost connection, another device)
 async function ltdRecover() {
-  const o = await cloudReq(`limited/${LTD.id}/opens/${APR_USER}`); if (!o) return;
+  const d = LTD.raw, uid = ltdUid(); if (!d || !d.packs || !uid) return;
   sv.ltd = sv.ltd || { got: [] }; const st = ltdP().started || 0, got = new Set(sv.ltd.got || []);
-  const miss = Object.keys(o).filter(k => o[k] && !got.has(st + ":" + k)).map(Number).sort((a, b) => a - b);
-  for (const n of miss) { const x = o[n]; await ltdDeliver({ pack: n, started: st, serial: x.serial || 0, v: x.v, p: x.p, of: ltdP().of, card: ltdP().card, drop: LTD.id }, true, true); }
-  if (miss.length) notify(`Recovered ${miss.length} Limited pack${miss.length > 1 ? "s" : ""} you had already opened.`);
+  const mine = Object.keys(d.packs).filter(n => d.packs[n] && d.packs[n].u === uid && !got.has(st + ":" + n)).map(Number).sort((a, b) => a - b);
+  if (!mine.length) return; const tok = await ltdToken(); if (!tok) return;
+  for (const n of mine) { const h = await ltdReveal(n, tok); await ltdDeliver(Object.assign({ pack: n, started: st, of: ltdP().of, card: ltdP().card, drop: LTD.id }, h), true, true); }
+  notify(`Recovered ${mine.length} Limited pack${mine.length > 1 ? "s" : ""} you had already opened.`);
+}
+// read the hidden slot for a pack you own; if it holds a serial, record it in the public registry
+async function ltdReveal(n, tok) {
+  const h = await ltdDb(`_hid/${LTD.id}/${n}`, "GET", undefined, tok), x = h.ok && h.body;
+  if (!x || !x.s) return { serial: 0 };
+  const S = (LTD.raw && LTD.raw.serials) || {};
+  if (!S[x.s]) await ltdDb(`limited/${LTD.id}/serials/${x.s}`, "PUT", { u: ltdUid(), name: APR_USER, pack: n, v: x.v || "base", t: { ".sv": "timestamp" } }, tok);
+  return { serial: x.s, v: x.v || "base", p: x.p || [] };
 }
 function ltdBarHTML() {
+  if (!ltdKey() || (LTD.fetched && !LTD.pub)) return `<div id="ltdbar" hidden></div>`;
   const P = ltdP(), left = Math.max(0, P.packs - P.opened), mine = (P.users && P.users[APR_USER]) || 0, price = ltdPrice(), guest = !APR_USER || APR_USER === "guest";
   const chips = [...Array(P.of)].map((_, i) => { const s = ltdSer(P, i + 1); return s ? `<span class="lsc got" title="Pulled by ${esc(s.u)} from pack #${s.pack}${s.v && s.v !== "base" ? " · " + esc(s.v) : ""}">#${i + 1} ✔ ${esc(s.u)}</span>` : `<span class="lsc">#${i + 1} ???</span>`; }).join("");
-  const why = guest ? "Log in to join" : !cloudOn() || !fnBase() ? "Drop server not connected" : left < 1 ? "SOLD OUT" : mine >= P.perUser ? `You opened your ${P.perUser}` : sv.c < price ? "Not enough Gold" : "";
+  const why = guest ? "Log in to join" : !cloudOn() || !ltdKey() ? "Drop not set up yet" : !LTD.pub ? "No drop running" : left < 1 ? "SOLD OUT" : mine >= P.perUser ? `You opened your ${P.perUser}` : sv.c < price ? "Not enough Gold" : "";
   return `<div class="ltdbar" id="ltdbar"><pre class="ltdlogo">╔═╗ LIMITED\n╚═╝  DROP</pre>
   <div class="ltdmid"><div class="ltdt"><b>${esc(P.name)}</b> · ${fmtN(P.packs)} packs worldwide · ${P.of} serialized <span class="ltdcard">${esc(P.card)}</span> (#1-#${P.of})</div>
   <div class="ltdprog"><i style="width:${(left / P.packs * 100).toFixed(1)}%"></i><span>${fmtN(left)} / ${fmtN(P.packs)} packs left</span></div><div class="ltdchips">${chips}</div></div>
   <div class="ltdbuy"><button class="cta" id="ltdGo" ${why || LTD.busy ? "disabled" : ""}>${LTD.busy ? "Opening…" : why || `⚡ Rip Limited Pack`}</button><small>🪙 ${fmtN(price)} (5 floors of Gold) · you: ${mine}/${P.perUser}</small></div></div>`;
 }
 function ltdPaint() { const b = document.getElementById("ltdbar"); if (!b) return; b.outerHTML = ltdBarHTML(); const n = document.getElementById("ltdGo"); if (n) n.onclick = ltdRip; }
-function ltdAskPw(msg) {
+function ltdAskPw(msg, then) {
   const m = modal35("⚡ Join the Limited Drop"); m.body.innerHTML = `<p>${msg || "Limited packs are opened by the game server, so it needs to know it's really you."} Enter your password for <b>${esc(APR_USER)}</b> once on this device.</p><input id="lpw" type="password" placeholder="password" autocomplete="current-password" style="width:100%"><div class="imact"><button class="cta" id="lpo">Sign in</button></div><p class="mut" id="lpm"></p>`;
   const go = async () => { const pw = m.body.querySelector("#lpw").value; if (!pw) return; m.body.querySelector("#lpm").textContent = "Checking…"; const r = await ltdLogin(APR_USER, pw);
-    if (r === true) { m.close(); notify("Signed in to the Limited Drop."); ltdRip(); } else m.body.querySelector("#lpm").textContent = { wrong_password: "Wrong password.", too_many_attempts: "Too many tries. Wait 15 minutes.", no_account: "This account isn't in the online database yet. Log out and back in while online.", network: "Can't reach the drop server.", no_server: "Drop server not set up." }[r] || "Sign-in failed: " + r; };
+    if (r === true) { m.close(); notify("Signed in to the Limited Drop."); (then || ltdRip)(); } else m.body.querySelector("#lpm").textContent = { wrong_password: "Wrong password.", too_many_attempts: "Too many tries. Wait 15 minutes.", network: "Can't reach Firebase.", no_key: "The drop isn't set up yet (missing Firebase Web API key).", operation_not_allowed: "Email/Password sign-in is not enabled in Firebase Authentication yet." }[r] || "Sign-in failed: " + r; };
   m.body.querySelector("#lpo").onclick = go; m.body.querySelector("#lpw").onkeydown = e => { if (e.key === "Enter") go(); }; setTimeout(() => { const i = m.body.querySelector("#lpw"); if (i) i.focus(); }, 50);
 }
 async function ltdRip() {
@@ -7466,11 +7505,50 @@ async function ltdRip() {
   const price = ltdPrice(); if (sv.c < price) return notify(`A Limited pack costs ${fmtN(price)} Gold.`);
   if (!ltdTok()) return ltdAskPw();
   if (rs && rs.down && rs.down.size) await rsRevealAll();
-  LTD.busy = true; ltdPaint(); const r = await ltdCall("limitedOpen", { tok: ltdTok() }); LTD.busy = false;
-  if (r.status === 401) { try { localStorage.removeItem(ltdTokKey()); } catch (e) {} ltdPaint(); return ltdAskPw("Your drop sign-in expired."); }
-  if (r.status !== 200) { notify({ sold_out: "Sold out! All packs in this drop have been opened.", limit: `You've opened your ${r.body.perUser || ""} Limited packs.`, network: "Can't reach the drop server. Try again.", no_server: "The drop server isn't set up yet.", busy: "The drop is busy, try again." }[r.body.err] || "The drop server said no: " + (r.body.err || r.status)); ltdRefresh(true); return; }
-  await ltdDeliver(r.body, true); ltdRefresh(true);
+  LTD.busy = true; ltdPaint(); let res = null;
+  try { res = await ltdClaim(); } finally { LTD.busy = false; }
+  if (res.err === "sign_in") { try { localStorage.removeItem("apr_lsess_" + APR_USER); } catch (e) {} ltdPaint(); return ltdAskPw("Your drop sign-in expired."); }
+  if (res.err) { notify({ sold_out: "Sold out! All packs in this drop have been opened.", limit: `You've opened your ${ltdP().perUser} Limited packs.`, network: "Can't reach Firebase. Try again.", none: "No Limited Drop is running right now.", busy: "Lots of people are ripping right now. Try again!" }[res.err] || "The drop said no: " + res.err); ltdRefresh(true); return; }
+  await ltdDeliver(res, true); ltdRefresh(true);
 }
+async function ltdClaim() {
+  const tok = await ltdToken(); if (!tok) return { err: "sign_in" }; const uid = ltdUid();
+  for (let a = 0; a < 6; a++) {
+    const r = await ltdDb(`limited/${LTD.id}`); if (!r.ok) return { err: "network" }; const d = r.body; if (!d || !d.meta) return { err: "none" };
+    LTD.raw = d; LTD.pub = ltdShape(d); const n = (d.count || 0) + 1, mine = (d.users && d.users[uid]) || 0;
+    if (n > d.meta.packs) return { err: "sold_out" }; if (mine >= d.meta.perUser) return { err: "limit" };
+    const w = await ltdDb(`limited/${LTD.id}`, "PATCH", { count: n, ["packs/" + n]: { u: uid, name: APR_USER, t: { ".sv": "timestamp" } }, ["users/" + uid]: mine + 1 }, tok);
+    if (w.ok) { const h = await ltdReveal(n, tok); return Object.assign({ pack: n, packs: d.meta.packs, started: d.meta.started || 0, of: d.meta.of, card: d.meta.card, drop: LTD.id }, h); }
+    if (w.status === 401 && /expired|invalid/i.test(JSON.stringify(w.body || ""))) { LTA.exp = 0; return { err: "sign_in" }; }
+    if (w.status === 0) return { err: "network" };
+    await sleep(150 + Math.random() * 450); // someone else took that pack number; try the next one
+  }
+  return { err: "busy" };
+}
+// ---- drop admin: deal a fresh drop (only accounts listed under _admins in the database can) ----
+function ltdDeal(packs, of, perUser) {
+  const nums = [...Array(packs)].map((_, i) => i + 1).sort(() => Math.random() - 0.5).slice(0, of), sers = [...Array(of)].map((_, i) => i + 1).sort(() => Math.random() - 0.5), hid = {};
+  const pw = (L) => { const t = L.reduce((a, x) => a + x[1], 0); let r = Math.random() * t; for (const [k, w] of L) if ((r -= w) <= 0) return k; return L[0][0]; };
+  nums.forEach((n, i) => { const parts = []; if (Math.random() < 0.6) parts.push(pw([["shiny", 0.8], ["gold", 0.25], ["black", 0.25], ["glitched", 0.12], ["ghost", 0.08]])); if (Math.random() < 0.4) parts.push(pw([["miscut", 0.2], ["rotated", 0.1], ["negative", 0.1], ["double", 0.08], ["inverted", 0.02]]));
+    hid[n] = { s: sers[i], v: parts.length ? normalizeVariant(parts.join("+")) : "base", p: ["dmg", "crit", "critd", "aspd"].sort(() => Math.random() - 0.5).map(k => ({ k, t: +Math.random().toFixed(3), s: Math.random() < 0.05 ? 1 : 0 })) }; });
+  return hid;
+}
+async function ltdStartDrop() {
+  const tok = await ltdToken(); if (!tok) return "Sign in to the drop first (button above).";
+  const D = LTD.def, hid = ltdDeal(D.packs, D.of, D.perUser);
+  const a = await ltdDb(`_hid/${LTD.id}`, "PUT", hid, tok); if (!a.ok) return a.status === 401 ? "Permission denied: add your drop ID under _admins in the database first." : "Couldn't write the drop (" + a.status + ").";
+  const b = await ltdDb(`limited/${LTD.id}`, "PUT", { meta: { name: D.name, card: D.card, packs: D.packs, of: D.of, perUser: D.perUser, started: { ".sv": "timestamp" } }, count: 0 }, tok);
+  if (!b.ok) return "Couldn't start the drop (" + b.status + ").";
+  LTD.rec = false; ltdRefresh(true); return true;
+}
+function ltdAdminHTML() { const uid = ltdUid(); return `<h3>⚡ Limited Drop</h3><p>Your drop ID: <code id="ltdUidC">${uid ? esc(uid) : "(not signed in to the drop yet)"}</code> ${uid ? `<button id="ltdCopy">Copy</button>` : `<button id="ltdSign">Sign in to the drop</button>`}</p><p class="mut">Drop admins can deal a fresh ${LTD.def.packs}-pack drop with ${LTD.def.of} serialized ${esc(LTD.def.card)}. This replaces the current drop. Players keep the cards they pulled, but the old serials lose their ✔.</p><div class="imact"><button id="ltdStart">Start a new Limited Drop</button></div><p id="ltdAdm" class="mut"></p>`; }
+document.addEventListener("click", async e => {
+  const c = e.target.closest && e.target.closest("#ltdCopy, #ltdStart, #ltdSign"); if (!c) return;
+  if (c.id === "ltdSign") { document.querySelectorAll(".m35").forEach(x => x.remove()); return ltdAskPw("", () => openAccountGuide()); }
+  if (c.id === "ltdCopy") { try { await navigator.clipboard.writeText(ltdUid()); notify("Drop ID copied"); } catch (er) {} return; }
+  const m = document.getElementById("ltdAdm"); if (c.dataset.ok !== "1") { c.dataset.ok = "1"; c.textContent = "Click again to replace the current drop"; return; }
+  if (m) m.textContent = "Dealing…"; const r = await ltdStartDrop(); if (m) m.textContent = r === true ? "New drop started!" : r; c.dataset.ok = ""; c.textContent = "Start a new Limited Drop";
+});
 function ltdSerialItem(b) {
   const c = CARDS.find(x => x && x.name === b.card && !x.forb); if (!c) return null;
   const v = (b.v && b.v !== "base" ? normalizeVariant(String(b.v)) : "base") || "base", key = c.id + "|" + v, isNew = !sv.inv[key];
@@ -7506,10 +7584,10 @@ const _sp40 = showPacks; showPacks = function (chain) { _sp40(chain); const root
 views[0] = showPacks;
 setInterval(() => { if (document.getElementById("ltdbar") && !document.hidden) ltdRefresh(); }, 5000);
 PATCH_NOTES.unshift({ v: 40, t: "v40: Limited Drops", n: [
-  "PACKS: a Limited Drop banner. Only 100 Limited packs exist for everyone, and 5 of them hold a serialized Godslayer, the Last Edge (#1/5 to #5/5). The counter and the list of who pulled each serial update live",
+  "PACKS: Limited Drops. Only 100 Limited packs exist for everyone, and 5 of them hold a serialized Godslayer, the Last Edge (#1/5 to #5/5). The counter and the list of who pulled each serial update live",
   "A Limited pack costs 5 Tower floors' worth of Gold and opens like a Collector pack (better rarity, finish and misprint odds). Each player can open up to 10",
-  "The game server decides every pack and every serial, so they can't be faked. Serialized copies are much more likely to have a finish or a misprint, carry a #n/5 stamp (✔ when verified against the server's registry) and are auto-favorited",
-  "Sign in to the drop once per device with your password (logging in normally does this for you)"] });
+  "Pack numbers, the 10-pack limit and which packs hide a serial are enforced by the online database, so they can't be faked. Serialized copies are much more likely to have a finish or a misprint, carry a #n/5 stamp (✔ when it matches the public registry) and are auto-favorited",
+  "Logging in also signs you in to the drop. Drop admins start a new drop from Account & Guide"] });
 
 // ---- saves: extension and migration ----
 const _e20 = ext;
