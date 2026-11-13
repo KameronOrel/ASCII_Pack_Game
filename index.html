@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="arit-build" content="20261113070603">
 <meta charset="utf-8">
 <title>ASCII RIP IT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1283,6 +1284,66 @@ body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px
 .sci{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:6px;cursor:pointer}.sci:hover,.sci.on{background:rgba(217,164,65,.15)}
 .scpin{padding:0 6px;border:0;background:none;color:var(--mut);font-size:16px}.scpin.on{color:#fbbf24}.scf{font-size:11px;margin-top:8px}
 .scpb{font-size:12px;border-color:#7c6aa8}
+/* pack shelf: one pack per type above the table */
+.rsright{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}.rsright>.rstable{flex:1}
+.rsshelf{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--bd);border-radius:12px;background:linear-gradient(#1a1430,#0d0a16)}
+.rspk{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:118px;margin:0;padding:8px 6px 6px;border-radius:10px;border:1px solid #2a2340;background:rgba(255,255,255,.02);font-size:11px;transition:transform .2s,box-shadow .2s,border-color .2s}
+.rspk:hover{transform:translateY(-4px);border-color:#7c6aa8}
+.rspk.on{border-color:#fbbf24;box-shadow:0 0 0 1px #fbbf24,0 0 22px rgba(251,191,36,.35);transform:translateY(-6px)}
+.rspk.pick{transform:translateY(-14px) scale(1.12);box-shadow:0 0 30px rgba(251,191,36,.7)}
+.rspka{position:relative;width:46px;height:62px}
+.rspka i{position:absolute;left:0;top:0;width:44px;height:60px;border-radius:4px;border:1px solid #fbbf24;background:linear-gradient(115deg,#2b1a5e,#6b3fd0 30%,#f0cf7a 46%,#8a5bff 62%,#2b1a5e);box-shadow:0 4px 9px #000b}
+.rspka i:nth-child(1){transform:translateX(-7px) rotate(-8deg)}.rspka i:nth-child(3){transform:translateX(7px) rotate(8deg)}.rspka i:nth-child(2){z-index:2}
+.rspk.collector .rspka i{border-color:#fff3b0;background:linear-gradient(115deg,#3b2a07,#b45309 28%,#fff3b0 46%,#f59e0b 62%,#3b2a07)}
+.rspk b{font-size:11px;letter-spacing:.5px;white-space:nowrap}.rspkn{color:#fbbf24;font:600 12px var(--mono)}
+.rspk:not(.on) .rspka{filter:saturate(.6) brightness(.8)}
+#pk.zoomin{animation:pkzoom .55s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pkzoom{0%{transform:translateX(-50%) translateY(-160px) scale(.3);opacity:.2}100%{transform:translateX(-50%) translateY(0) scale(1.12);opacity:1}}
+.rs.spread .rsshelf{display:none}
+#rstip{position:fixed;z-index:8900;pointer-events:none;min-width:200px;max-width:280px;padding:8px 10px;text-align:left;font:12px/1.45 var(--mono);color:#e8e8f2;background:rgba(14,11,22,.97);border:1px solid var(--tc,#d9a441);border-radius:8px;box-shadow:0 8px 28px #000c,0 0 14px color-mix(in srgb,var(--tc,#d9a441) 35%,transparent)}
+#rstip .rstn{font-weight:700;color:var(--tc,#fff)}#rstip .rstv{color:#f9a8d4}#rstip .rstp{margin:4px 0;padding:4px 0;border-top:1px dashed #33364a;border-bottom:1px dashed #33364a}#rstip .rsth{font-size:10px;margin-top:4px}
+/* face-down cards with special finishes or misprints shake (harder with more of them) */
+.rsc.down.vs1:not(:hover) .rsflip{--sa:1.5px;--sr:.6deg;animation:vshake 1.6s ease-in-out infinite}
+.rsc.down.vs2:not(:hover) .rsflip{--sa:3px;--sr:1.4deg;animation:vshake .9s ease-in-out infinite}
+.rsc.down.vs3:not(:hover) .rsflip{--sa:5px;--sr:2.4deg;animation:vshake .45s linear infinite}
+.rsc.down.vs4:not(:hover) .rsflip{--sa:7px;--sr:3.5deg;animation:vshake .22s linear infinite}
+#stage.dealing .rsc .rsflip{animation:none!important}
+@keyframes vshake{0%,100%{transform:rotateY(180deg) translate(0,0) rotate(0)}20%{transform:rotateY(180deg) translate(calc(var(--sa) * -1),calc(var(--sa) * -.4)) rotate(calc(var(--sr) * -1))}40%{transform:rotateY(180deg) translate(var(--sa),0) rotate(var(--sr))}60%{transform:rotateY(180deg) translate(calc(var(--sa) * -.6),calc(var(--sa) * .4)) rotate(calc(var(--sr) * -.6))}80%{transform:rotateY(180deg) translate(calc(var(--sa) * .5),0) rotate(calc(var(--sr) * .5))}}
+.rsc.down.vs3 .rsaura,.rsc.down.vs4 .rsaura{filter:brightness(1.5) saturate(1.4)}
+@media (prefers-reduced-motion:reduce){.rsc.down[class*=" vs"] .rsflip{animation:none!important}}
+.pprof{margin:6px 0;text-align:left}.pttl{color:#c9c4d8;font-style:italic;margin-right:6px}.ptag{color:#fbbf24;font:700 12px var(--mono)}
+.pps{display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0;font-size:13px}.prare{margin:4px 0;font-size:12px}
+#pFriend{font-size:12px;padding:4px 10px}#pFriend.on{border-color:#fbbf24;color:#fbbf24}.frs{color:#fbbf24}#lbF.on{border-color:#fbbf24;color:#fbbf24}
+/* achievements */
+.achg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.ach{padding:8px 10px;border:1px solid var(--bd);border-radius:8px;text-align:left;font-size:13px}.ach.got{border-color:#7c6aa8}.ach.done{border-color:#245c3a;background:rgba(34,197,94,.06)}
+.achh{display:flex;justify-content:space-between;gap:6px}.achr i{font-style:normal;color:#4b4560}.achr i.on{color:#fbbf24}.achv{font-size:11px}
+/* Heat flair on names */
+.hn1{color:#fdba74;text-shadow:0 0 6px rgba(251,146,60,.6)}
+.hn2{color:#fb923c;text-shadow:0 0 8px rgba(249,115,22,.85)}.hn2::before{content:"🔥";font-size:.85em;margin-right:2px}
+.hn3{background:linear-gradient(90deg,#fde047,#fb923c,#ef4444,#fb923c,#fde047);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hnfl 2.4s linear infinite;font-weight:700}.hn3::before{content:"🔥";margin-right:2px;color:initial}
+.hn4{background:linear-gradient(90deg,#fff7ae,#fbbf24,#ef4444,#a855f7,#ef4444,#fbbf24,#fff7ae);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hnfl 1.6s linear infinite;font-weight:800;filter:drop-shadow(0 0 4px rgba(239,68,68,.8))}.hn4::before{content:"🔥🔥";margin-right:2px;color:initial}
+@keyframes hnfl{to{background-position:200% 0}}
+.hemb{display:inline-block;margin-right:3px;filter:drop-shadow(0 0 5px #f97316);animation:hemb 1.2s ease-in-out infinite alternate}@keyframes hemb{to{transform:scale(1.2)}}
+@media (prefers-reduced-motion:reduce){.hn3,.hn4,.hemb{animation:none}}
+/* chat reactions and the pinned message */
+.chrs{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle;flex-wrap:wrap}
+.chre{font-size:11px;padding:0 5px;border-radius:9px;line-height:1.5;margin:0}.chre.on{border-color:#fbbf24;background:rgba(251,191,36,.18)}
+.chre.add{opacity:0;transition:opacity .15s}.chm:hover .chre.add{opacity:.8}
+.chpick{display:inline-flex;gap:2px;background:#1c1e2c;border:1px solid var(--bd);border-radius:10px;padding:1px 3px;margin-left:3px}.chpick button{padding:0 3px;border:0;background:none;font-size:14px;margin:0}
+.chpinbar{padding:5px 8px;margin:0 0 4px;border-left:3px solid #fbbf24;background:rgba(251,191,36,.1);font-size:12px;text-align:left;max-height:3.2em;overflow:hidden}
+@media (hover:none){.chre.add{opacity:.7}}
+.adm .bar button.on{border-color:#fbbf24;color:#fbbf24}.admmsg{color:#fbbf24;min-height:1.2em;text-align:center}
+.admstats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.admstats div{min-width:120px;padding:8px;border:1px solid var(--bd);border-radius:8px}.admstats b{display:block;font-size:22px;color:#fbbf24}.admstats span{font-size:12px;color:var(--mut)}
+.admrow{text-align:left;padding:3px 0}.admgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 12px;text-align:left;font-size:13px;margin:8px 0}
+#verbar{position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:11000;padding:8px 14px;border:1px solid #fbbf24;border-radius:10px;background:rgba(20,16,8,.97);color:#fde68a;font-size:14px;box-shadow:0 8px 30px #000c;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:calc(100vw - 24px)}
+#verbar button{padding:4px 10px;margin:0}
+/* currencies */
+.m35-cur .m35box{max-width:960px}.curg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:8px;text-align:left}
+.curc{padding:8px 10px;border:1px solid var(--bd);border-radius:10px;font-size:13px}.curc.on{border-color:#fbbf24;box-shadow:0 0 14px rgba(251,191,36,.35)}
+.curh{display:flex;align-items:center;gap:8px;margin-bottom:4px}.curi{font-size:18px}.curn{margin-left:auto;font:600 13px var(--mono);color:#fbbf24}
+.curl{display:grid;grid-template-columns:44px 1fr;gap:4px}.curl>span{font:600 10px var(--mono);color:var(--mut);text-transform:uppercase;padding-top:3px}.curl ul{margin:0 0 4px;padding-left:16px}
+#statusbar .cy,#statusbar .sbi{cursor:pointer}
 
 </style>
 </head>
@@ -1293,6 +1354,7 @@ body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px
 <div id="toast"></div>
 
 <script>
+const BUILD_ID = "20261113070603";
 // ===================== Game events =====================
 // Systems that react to play (goals, challenges, seasons) listen here instead of patching other functions.
 const EVT = {};
@@ -1302,7 +1364,7 @@ function gameEvent(k, d) { (EVT[k] || []).forEach(f => { try { f(d || {}); } cat
 // ===================== Save data =====================
 // One shape for the save. Loading fills in anything missing and drops fields no system uses any more.
 // Saves from before v44 (the attribute rework) are not upgraded: they are kept in a backup slot and a fresh save starts.
-const SAVE_VER = 57, OLDEST_SAVE = 44;
+const SAVE_VER = 58, OLDEST_SAVE = 44;
 const SLOT_NAMES = ["helm", "armor", "gloves", "boots", "main", "amulet", "ring1", "ring2", "off", "pet"];
 function freshState() {
   return {
@@ -1311,7 +1373,7 @@ function freshState() {
     p: 0, pl: 0, pm: 0, ps: 0, mile: [], ach: [],                // packs opened, pity counters, milestones, awards
     inv: {}, ser: {}, cards: [], fav: [], showcase: [], hist: {}, census: {},
     equip: Object.fromEntries(SLOT_NAMES.map(s => [s, null])), loadouts: [],
-    dep: {}, spire: {}, hunt: {}, rare: {}, fr: {}, deep: 0,
+    dep: {}, spire: {}, hunt: {}, raid: {}, rare: {}, club: {}, fr: {}, deep: 0,
     asc: { n: 0, on: false, ready: false }, hc: { iron: 0, noheal: 0, half: 0 },
     web: { a: { heart: 1 } }, forge: [], forges: 0,
     mats: {}, runes: {}, crelics: [], crOn: [], potI: {}, potA: {},
@@ -1319,7 +1381,7 @@ function freshState() {
     sleeve: "none", mat: "none", owned: ["sl:none", "mt:none"], bframe: "",
     coll: {}, ltd: { got: [] }, goals: {}, wk: {}, wb: {}, season: {}, lf: { rules: [], on: true }, salv: null,
     stats: { packsOpened: 0, cardsPulled: 0, coinsEarned: 0, depthBest: 0 },
-    music: false, mute: 0, fastRip: false, skipAll: false, autoRip: false, autoN: 1, pins: [], autoSalv: false, fightSpeed: 3, anim: 1, tint: 0, cart: "", carts: [], stems: { bass: 1, lead: 1, arp: 1, drums: 0 },
+    music: false, mute: 0, fastRip: false, skipAll: false, autoRip: false, autoN: 1, pins: [], friends: [], achv: {}, autoSalv: false, fightSpeed: 3, anim: 1, tint: 0, cart: "", carts: [], stems: { bass: 1, lead: 1, arp: 1, drums: 0 },
     tourDone: 0, playMs: 0, dname: ""
   };
 }
@@ -2078,6 +2140,7 @@ const LBC = [
   ["packs", "Packs Opened", r => fmtN(r.packs) + " packs"],
   ["rare", "Rarest Card Packed", r => r.ro > 1 ? `1 in ${fmtOdds(r.ro)} cards <span class="mut">· ~${fmtOdds(Math.max(1, r.ro / 14))} packs</span>` : "none yet"],
   ["hunt", "Dragon Hunts", r => r.hunt ? `Rank ${fmtN(r.hunt)}` : "not yet"],
+  ["ach", "Achievement Points", r => `🏅 ${fmtN(r.ach)} pts`],
   ["asc", "Ascension Tier", r => "🌀 " + (r.asc | 0)],
   ["play", "Time Played", r => { const h = (r.play || 0) / 36e5; return h >= 1 ? h.toFixed(1) + " h" : Math.round(h * 60) + " min"; }]
 ];
@@ -2229,7 +2292,7 @@ PATCH_NOTES.unshift({ v: 44, t: "v44: Imbuing", n: [
 // Saves, leaderboard rows, loadouts and chat messages are written with your Firebase sign-in,
 // and the database rules only accept writes to your own name.
 var OWN = { warned: false, need: false };
-const OWN_PATHS = /^(users|players|loadouts|lb|weekly|season|wb|spire|hunt|presence|gifts|config)\//;
+const OWN_PATHS = /^(users|players|loadouts|lb|weekly|season|wb|spire|hunt|raid|presence|clubs|gifts|config)\//;
 Object.assign(EL_DESC, {
   Pyre: "3+: +35% Crit Damage and your strikes ignite a Burn each turn (25% of a strike, boosted by Damage over Time). 6+: Burn 40%",
   Glacial: "3+: Chill: enemies hit 20% softer. 6+: 30% softer, and the first enemy hit of every fight is frozen solid",
@@ -2284,10 +2347,10 @@ PATCH_NOTES.unshift({ v: 49, t: "v49: Tour, accessibility, chat tools", n: [
   "Chat keeps your cursor in the message box after you send, so you can keep typing"] });
 HUBS["PACKS"] = [["Pack Opening", 0]];
 HUBS["EQUIPMENT & BINDER"] = [["Loadout", 4], ["Binder", 3]];
-HUBS["ADVENTURE"] = [["The Frontier", showFrontier], ["The Wyrmspire", showSpire], ["Dragon Hunts", showHunts], ["Tribute Ascension", showAscension], ["Challenges", showChallenges]];
+HUBS["ADVENTURE"] = [["The Frontier", showFrontier], ["The Wyrmspire", showSpire], ["Dragon Hunts", showHunts], ["Raid Wyrm", showRaid], ["Tribute Ascension", showAscension], ["Challenges", showChallenges]];
 HUBS["THE FORGE"] = [["Charm Forge", showRelicForge], ["Alchemy Lab", showAlchemy], ["Imbuing", showReroll], ["Etching", showEtching], ["Century Forge", showForge]];
 HUBS["THE NEXUS"] = [["Skill Web", showAstrolabe]];
-HUBS["SOCIAL"] = [["Leaderboards", showBoards], ["Live Trading", showTradeSoon]];
+HUBS["SOCIAL"] = [["Leaderboards", showBoards], ["Achievements", showAchievements], ["Clubs", showClubs], ["Live Trading", showTradeSoon]];
 var NOSUB = new Set(["EQUIPMENT & BINDER", "PACKS"]);
 curHub = "PACKS";
 curSub = 0;
@@ -2361,6 +2424,19 @@ PATCH_NOTES.unshift({ v: 57, t: "v57: Skill Web mastery, Starlight, Rebirth, Sho
   "Frontier bounties now scale with tier: they're rolled for the tier you're on (kills count on that tier or higher), ask for more kills and elites as tiers rise, add a champion bounty from tier 20 and a kill-streak bounty from tier 40, and the chest pays more: Booster Packs from tier 15, Prisms from tier 25 and a card with better Legendary and Mythic odds from tier 10. Move tiers and you can re-roll them for your new tier",
   "Limited Drops are retired. Cards you already pulled from them keep their drop number. Account & Guide now has an Online sign-in section showing whether you're signed in on this device",
   "Double finishes and misprints: a finished card has a 0.4% chance of a second finish and a misprinted card a 0.4% chance of a second misprint, for the rarest cards in the game (about 1 in 10,000 cards gets a double finish, and a card with two finishes has a 25% chance at a second misprint: two finishes and two misprints together is about 1 in 13 million cards). Auto-Salvage never takes them"] });
+PATCH_NOTES.unshift({ v: 58, t: "v58: Pack shelf, achievements, clubs, the Raid Wyrm and more", n: [
+  "Packs: every pack type sits on its own shelf above the table; pick one and it zooms onto the table. Collector Boosters now say 12 cards",
+  "Hover a revealed card for a quick summary (grade, Power, attributes, how it compares); click for the full comparison",
+  "Face-down cards with a finish or misprint shake before you flip them, harder for every extra one",
+  "Achievements: a full page under SOCIAL with ranks, points, hidden achievements and an Achievement Points leaderboard",
+  "The Raid Wyrm (ADVENTURE): once you've beaten Vharzyx, everyone attacks one dragon with 100 billion HP; milestones pay everyone who hit it",
+  "Clubs (SOCIAL): create or join a club, wear its tag, chase a weekly club goal for a chest and use the club's own chat room",
+  "Friends and profiles: click any name for a profile (Heat, rarest pull, titles, display case, club) and add friends; friends are highlighted on leaderboards and in Who's online",
+  "Heat flair: names glow at Heat 5, 10, 25 and 50, and the week's highest-Heat climber wears a 🔥 emblem",
+  "Chat: react to messages with emoji, and admins can pin a message to the top of chat",
+  "Admin dashboard: player counts, player lookup (save details and download), gifts, announcements, bans and chat mutes",
+  "Currencies: click any currency in the top bar (or see the Guide) for where it comes from and what it buys",
+  "When a new version of the game goes live, a banner offers to reload"] });
 
 // ===================== Small helpers =====================
 function notify(text) {
@@ -3005,7 +3081,7 @@ function openPowerBreakdown() {
 
 // ===================== Pack opening screen =====================
 // Pack and box visuals
-function packHTML(col) { return `<div class="fpack ${col ? "col" : ""}" id="pk"><div class="lid"><i class="crimp"></i></div><div class="bod"><div class="pl"><b>${GAME_TITLE}</b><pre>${col ? " .-*-.\n(  ◆  )\n '-*-'" : " /\\  /\\\n/  \\/  \\\n\\  **  /\n \\____/"}</pre><span>${col ? "COLLECTOR BOOSTER" : "BOOSTER PACK"}</span><span>14 CARDS</span></div><i class="crimp bt"></i></div><i class="sheen"></i></div>`; }
+function packHTML(col) { return `<div class="fpack ${col ? "col" : ""}" id="pk"><div class="lid"><i class="crimp"></i></div><div class="bod"><div class="pl"><b>${GAME_TITLE}</b><pre>${col ? " .-*-.\n(  ◆  )\n '-*-'" : " /\\  /\\\n/  \\/  \\\n\\  **  /\n \\____/"}</pre><span>${col ? "COLLECTOR BOOSTER" : "BOOSTER PACK"}</span><span>${(PACK_INFO[col ? "collector" : "standard"] || {}).cards || 14} CARDS</span></div><i class="crimp bt"></i></div><i class="sheen"></i></div>`; }
 function price(s, k) { return Math.round(PRICE[k] * (s === 2 ? 1.25 : 1)); }
 function dskin(html) { return html.replace(/ASCII PACK RIP/g, "ASCII DUNGEON"); }
 function stageFX(stage) {
@@ -3041,7 +3117,9 @@ function rsEquip(i) {
 function rsTile(it, i, down) {
   const t = it.c.tier, v = it.v, h = (v.includes("serialized") ? "ser " : "") + (v.includes("glitched") ? "gl" : "");
   const inst = it.roll && instByU(it.roll.u), lf = inst && lootMatch(inst);
-  return `<div class="rsc t${t} ${down ? "down" : ""}${lf ? " lf" : ""}" style="${inst ? lfStyle(inst) : ""}" data-i="${i}" data-hu="${it.roll && it.roll.u ? it.roll.u : ""}"><div class="rsaura"></div><div class="rsflip"><div class="rsface">${cardHTML(it.c, v, it.sn, 0, it.roll)}</div><div class="rsback bk-${sv.cos.back}" data-h="${h}">${customBackInner()}<span class="rsglyph">?</span></div></div><div class="rsbadges"></div><div class="rscap"></div><button class="rseq" hidden>[EQUIP NOW]</button></div>`;
+  // face-down cards with a finish or misprint shake; the more of them, the harder
+  const nv = Math.min(4, vParts(v).length);
+  return `<div class="rsc t${t} ${down ? "down" : ""}${lf ? " lf" : ""}${nv ? " vs" + nv : ""}" style="${inst ? lfStyle(inst) : ""}" data-i="${i}" data-hu="${it.roll && it.roll.u ? it.roll.u : ""}"><div class="rsaura"></div><div class="rsflip"><div class="rsface">${cardHTML(it.c, v, it.sn, 0, it.roll)}</div><div class="rsback bk-${sv.cos.back}" data-h="${h}">${customBackInner()}<span class="rsglyph">?</span></div></div><div class="rsbadges"></div><div class="rscap"></div><button class="rseq" hidden>[EQUIP NOW]</button></div>`;
 }
 function rsRefreshTile(i) {
   const el = rs.tiles[i], it = rs.cards[i]; if (!el) return;
@@ -3069,7 +3147,7 @@ function rsFit() {
   const vw = window.innerWidth, n = g.children.length, cols = vw >= 1000 ? (n <= 10 ? 5 : n <= 12 ? 6 : 7) : vw >= 640 ? 5 : 3, gap = vw >= 640 ? 12 : 8, W = (g.clientWidth || 700) - 28, tw = (W - gap * (cols - 1)) / cols;
   g.style.setProperty("--cols", cols); g.style.setProperty("--gap", gap + "px"); g.style.setProperty("--cs", Math.max(4.6, Math.min(13, tw / 18.4)).toFixed(2) + "px");
 }
-function rsHideInsp() { clearTimeout(rsInspT); rsPin = false; rsInspI = -1; const p = document.getElementById("rsinsp"); if (p) p.remove(); }
+function rsHideInsp() { rsTipHide(); clearTimeout(rsInspT); rsPin = false; rsInspI = -1; const p = document.getElementById("rsinsp"); if (p) p.remove(); }
 function rsInspSchedule() { clearTimeout(rsInspT); rsInspT = setTimeout(() => { if (!rsPin) rsHideInsp(); }, 180); }
 // compare a fresh pull with the equipped card at the same level, so the numbers mean something (toggle in the footer)
 var RSC = { eq: true };
@@ -3085,7 +3163,19 @@ function rsInspHTML(i) {
   const noteN = scale ? `as if Lv${eL} · it is Lv${nL} now (${k.pw} PWR)` : "", noteE = k.curC && k.cur.u && etchRank(k.cur.u) ? `includes Etching rank ${etchRank(k.cur.u)}` : "";
   return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec(scale ? `PULLED · shown at Lv${eL}` : "PULLED", c, it.v, it.sn, pwS, rS, noteN)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot) + ` · Lv${eL}`, k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v, k.cur.u), noteE) : ""}</div><div class="rsfoot">${dl}${k.curC && !k.worn ? (() => { const eR = rollOf(k.cur.id, k.cur.v, k.cur.u), gN = gradeOf(r, it.v), gE = eR && eR.p ? gradeOf(eR, k.cur.v) : null; return gE ? `<span class="rsd ${GORD.indexOf(gN.g) > GORD.indexOf(gE.g) ? "up" : GORD.indexOf(gN.g) < GORD.indexOf(gE.g) ? "dn" : ""}">Grade ${gN.g} vs ${gE.g}</span>` : ""; })() : ""}${tog}<span style="color:var(--mut)">${rgText(r)}</span>${btn}</div>`;
 }
+// ---- the quick hover summary ----
+function rsTipHide() { const t = document.getElementById("rstip"); if (t) t.remove(); }
+function rsTip(i, el) {
+  rsTipHide(); const it = rs && rs.cards[i]; if (!it) return; const c = it.c, r = it.roll || rollOf(c.id, it.v), k = rsCompare(it), G = r && r.p ? gradeOf(r, it.v) : null;
+  const vn = vParts(it.v).map(x => VNAME[x] || x).join(" + "), props = (r.p || []).slice(0, 4).map(p => { const a = AFX[p.k]; return a ? `<div>${p.s ? "✦ " : ""}<b>+${afxFmt(p.k, afxVal(c.id, p, r))}${a.u}</b> ${esc(pName(p))}</div>` : ""; }).join("");
+  const cmp = k.worn ? `<span class="mut">equipped</span>` : k.curC ? (() => { const eL = lvOf(k.cur.id, k.cur.v, k.cur.u), d = pwAt(c.id, it.v, r.u, Math.max(eL, 1)) - k.cp; return `<span class="${d > 0 ? "ok" : d < 0 ? "bad" : ""}">${d > 0 ? "▲ +" : d < 0 ? "▼ " : "= "}${d ? fmtN(Math.abs(d)) : ""} PWR vs equipped${eL > 1 ? ` (at Lv${eL})` : ""}</span>`; })() : k.slot ? `<span class="ok">fills an empty slot</span>` : "";
+  const t = document.createElement("div"); t.id = "rstip"; t.style.setProperty("--tc", TC[c.tier]);
+  t.innerHTML = `<div class="rstn">${esc(c.name)}</div><div class="mut">${TIERS[c.tier]}${vn ? ` · <b class="rstv">${esc(vn)}</b>` : ""}</div><div>${G ? `Grade <b>${G.g}</b> · ` : ""}PWR <b>${fmtN(k.pw)}</b></div>${props ? `<div class="rstp">${props}</div>` : ""}${cmp ? `<div>${cmp}</div>` : ""}<div class="mut rsth">Click for the full comparison</div>`;
+  document.body.appendChild(t); const a = el.getBoundingClientRect(), b = t.getBoundingClientRect();
+  let x = a.right + 8; if (x + b.width > innerWidth - 8) x = a.left - b.width - 8; t.style.left = Math.max(8, x) + "px"; t.style.top = Math.max(8, Math.min(a.top, innerHeight - b.height - 8)) + "px";
+}
 function rsInspCore(i, anchor) {
+  rsTipHide();
   if (!rs || !rs.cards[i] || rs.down.has(i)) return; clearTimeout(rsInspT);
   let p = document.getElementById("rsinsp");
   if (!p) { p = document.createElement("div"); p.id = "rsinsp"; document.body.appendChild(p); p.onmouseenter = () => clearTimeout(rsInspT); p.onmouseleave = () => { if (!rsPin) rsInspSchedule(); }; }
@@ -3109,17 +3199,18 @@ function showPacksCore(chain) {
   main.innerHTML = `<div class="rs ${chain === true ? "spread chain" : ""}" id="rsroot"><div class="rsmain">
   <aside class="rsq"><h4>PACK QUEUE</h4><div class="rsstack">${minis}</div><div class="rscount">×${have}</div>
     <div class="rsmeta">Gold <b>${sv.c}</b> | Raw Glyphs <b>${sv.dust || 0} ░▒▓</b>${have < 5 ? `<br>Free pack in ${Math.max(1, Math.ceil((sv.t + 24e4 - Date.now()) / 6e4))} min` : ""}</div>
-    <div class="rskind" ${Object.keys(PKIND).length < 2 ? "hidden" : ""}>${Object.keys(PKIND).map(k => `<button data-kind="${k}" class="${k === packKind ? "on" : ""}">${PKIND[k].n.split(" ")[0]} ×${PKIND[k].get()}</button>`).join("")}</div>
     <div style="font-size:11px;color:var(--mut);text-align:center">${K.n} · ${(PACK_INFO[packKind] || PACK_INFO.standard).cards} cards · 🪙 ${pp.toLocaleString()} each · ${CUR.gold(sv.c)}</div>
     <div class="rsbuy">${[1, 5, 10].map(q => `<button data-buy="${q}" ${sv.c < pp * q ? "disabled" : ""}>Buy ${q}<br>🪙 ${(pp * q).toLocaleString()}</button>`).join("")}</div>
     <div class="rsbuyn"><input id="rsBuyN" type="number" min="1" max="${Math.max(1, Math.floor(sv.c / pp))}" value="${Math.max(1, Math.min(RSB.n, Math.floor(sv.c / pp) || 1))}"><button id="rsBuyGo">Buy</button><button id="rsBuyMax" ${sv.c < pp ? "disabled" : ""} title="Buy as many as you can afford">Max (${fmtN(Math.floor(sv.c / pp))})</button><div class="mut" id="rsBuyCost"></div></div>
     <div class="rstoggles"><button id="rsFast" class="${sv.fastRip ? "on" : ""}">⚡ Fast: ${sv.fastRip ? "ON" : "OFF"}</button><button id="rsSkip" class="${sv.skipAll ? "on" : ""}">⏭ Skip: ${sv.skipAll ? "ON" : "OFF"}</button><button id="rsSnd">${sv.mute ? "Sound: off" : "Sound: on"}</button><button id="rsMus">${sv.music ? "Music: on" : "Music: off"}</button></div>
     <div class="rsmeta pity">${flash}${(P => `Guaranteed: a Legendary within <b>${P.leg}</b> packs, a Mythic within <b>${P.my}</b>, an S+ within <b>${P.sp}</b> Rare+ cards`)(pityText())}</div>
     <div class="rstoggles"><button id="rsOdds">📊 Odds</button><button id="rsLF">🔦 Loot Filter</button></div></aside>
-  <section class="rstable ${have < 1 ? "empty" : ""}" id="stage"><div class="rshint">${chain === true ? "" : have > 0 ? "▼ CLICK OR SWIPE ACROSS THE TOP TO TEAR · SPACE ▼" : "NO PACKS LEFT · BUY SOME ON THE LEFT"}</div>${sparks}<div class="rsped"></div><div class="rspshadow"></div>${dskin(packHTML(packKind === "collector"))}</section></div><div class="rsdock" id="rsdock"></div></div>`;
+  <section class="rsright"><div class="rsshelf" id="rsShelf">${Object.keys(PKIND).map(k => `<button class="rspk ${k} ${k === packKind ? "on" : ""}" data-kind="${k}" title="${esc(PKIND[k].n)}: ${(PACK_INFO[k] || PACK_INFO.standard).cards} cards, 🪙 ${PKIND[k].price().toLocaleString()} each"><span class="rspka"><i></i><i></i><i></i></span><b>${esc(PKIND[k].n)}</b><span class="rspkn">×${fmtN(PKIND[k].get())}</span></button>`).join("")}</div>
+  <section class="rstable ${have < 1 ? "empty" : ""}" id="stage"><div class="rshint">${chain === true ? "" : have > 0 ? "▼ CLICK OR SWIPE ACROSS THE TOP TO TEAR · SPACE ▼" : "NO PACKS LEFT · BUY SOME ON THE LEFT"}</div>${sparks}<div class="rsped"></div><div class="rspshadow"></div>${dskin(packHTML(packKind === "collector"))}</section></section></div><div class="rsdock" id="rsdock"></div></div>`;
   const root = main.querySelector("#rsroot"), table = root.querySelector("#stage"), pk = table.querySelector("#pk"), $ = s => root.querySelector(s);
   stageFX(table); pk.classList.add("arrive"); pk.onclick = null;
-  root.querySelectorAll("[data-kind]").forEach(b => b.onclick = () => { packKind = b.dataset.kind; showPacks(); });
+  // picking a pack type: the chosen pack lifts off the shelf, then zooms onto the table
+  root.querySelectorAll("[data-kind]").forEach(b => b.onclick = async () => { if (b.dataset.kind === packKind || busy) return; b.classList.add("pick"); await sleep(220); packKind = b.dataset.kind; showPacks(); const p = document.getElementById("pk"); if (p) { p.classList.remove("arrive"); void p.offsetWidth; p.classList.add("zoomin"); } });
   const buy = q => { q = Math.floor(q); if (q < 1) return; if (sv.c < pp * q) return notify(`Not enough Gold for ${q} packs.`); sv.c -= pp * q; K.add(q); save(); notify(`Bought ${q} ${K.n}${q > 1 ? "s" : ""}.`); showPacks(); };
   root.querySelectorAll("[data-buy]").forEach(b => b.onclick = () => buy(+b.dataset.buy));
   const bn = $("#rsBuyN"), cost = () => { RSB.n = Math.max(1, +bn.value || 1); $("#rsBuyCost").textContent = `🪙 ${(pp * RSB.n).toLocaleString()}`; };
@@ -3196,8 +3287,9 @@ function rsSpread(cards, o) {
     const it = list[i], t = it.c.tier;
     if (t >= 3) { const pc = t === 4 ? ["#c084fc", "#f87171", "#e9d5ff"] : ["#fbbf24", "#fde68a", "#fb923c"], au = el.querySelector(".rsaura"); au.innerHTML = [...Array(10)].map((_, k) => `<i class="rspt" style="--x:${10 + Math.random() * 80}%;--dx:${Math.round(Math.random() * 60 - 30)}px;--d:${1.4 + Math.random() * 1.6}s;--dl:-${(Math.random() * 3).toFixed(1)}s;--pc:${pc[k % 3]}">${["✦", "·", "*"][k % 3]}</i>`).join(""); }
     el.onclick = e => { if (e.target.closest && e.target.closest(".rseq")) return; if (!el.classList.contains("landed")) return; if (rs.down.has(i)) return rsFlip(i); rsPin = true; rsInsp(i, el); };
-    el.onmouseenter = () => { if (!rsHoverOK() || rs.down.has(i) || rsPin || !el.classList.contains("landed")) return; rsInsp(i, el); };
-    el.onmouseleave = () => { if (!rsPin) rsInspSchedule(); };
+    // hover shows a quick summary; click opens the full comparison
+    el.onmouseenter = () => { if (!rsHoverOK() || rs.down.has(i) || rsPin || !el.classList.contains("landed") || document.getElementById("rsinsp")) return; rsTip(i, el); };
+    el.onmouseleave = () => { rsTipHide(); if (!rsPin) rsInspSchedule(); };
     el.querySelector(".rseq").onclick = e => { e.stopPropagation(); rsEquip(i); };
   });
   rsDockUpdate();
@@ -3437,7 +3529,7 @@ function accTab(B, redo, M) {
 }
 function guideTab(B) {
   B.innerHTML = `<div class="guide35">
-  <h3>The three currencies</h3><p><span class="cy gold">🪙 Gold</span> drops in the Frontier and the Wyrmspire and buys Booster Packs (a pack costs about three Frontier kills at your tier). <span class="cy gly">░▒▓ Raw Glyphs</span> come only from salvaging cards and pay for card levels and THE FORGE. <span class="cy pri">🟣 Prisms</span> come from new Depths, Frontier champions, Tribute Ascension, goals and events, and buy Skill Web nodes. <b>🪨 Deepstone</b> comes from clearing the Depths and pays for Etching.</p>
+  <h3>Currencies</h3><p>The game has Gold, Raw Glyphs, Prisms, Spirestone, Dragon Scales, Booster Packs, Collector Boosters, monster drops and season points. <button id="gCur">💰 See where each comes from and what it buys</button> (or click any currency in the bar at the top).</p>
   <h3>The Skill Web</h3><p>THE NEXUS holds a web of 1,134 nodes in 14 regions. Threads cost 1 🟣, named knots 3 and crowns 8. Take any node next to one you own, click a far node to take the whole path, or use <b>Quick allocate</b> to spend Prisms on the nodes nearest the Heart or inside one region. Refunds are always free.</p>
   <h3>Card grades F to S+</h3><p>A grade measures the <b>identity and quality</b> of a card's rolls. Every card has a <b>MAIN</b> attribute (always one of its slot's signature stats, rolled at 1.5× range) worth half the grade. The other half comes from its other properties: signature attributes for the slot (✦) count fully, anything else 60%. Grades are ranked within each rarity, so every rarity has the same odds: F 10%, D 20%, C 30%, B 22%, A 12%, S 5%, S+ 1%.</p><p><b>Signature attributes by slot:</b> Main Hand: All Damage, Elemental Damage, Crit Damage, Attack Speed · Off Hand: Armor, Damage Reduction, Thorns, Max Life · Helmet: Max Life, Crit Chance, Damage Reduction · Armor: Max Life, Armor, Damage Reduction, Thorns · Gloves: Attack Speed, Crit Chance, Crit Damage, Life per Strike · Boots: Dodge, Max Life, Armor · Amulet: Elemental Damage, All Damage, Max Life, Crit Damage · Rings: Crit Chance, Crit Damage, Life per Strike, Attack Speed · Pet: Companion Damage, Gold Find, Loot Find.</p><p><b>Elemental Damage</b> rolls one element: Pyre burns harder, Glacial chills enemies, Voltaic chains extra strike damage, Poison stacks every turn. It counts fully while 3+ equipped cards share that element, ¼ otherwise. Elemental Damage of a card's own element always counts as signature.</p>
   <h3>Power</h3><p><b>Card PWR</b> = base power × finish/misprint × 1.10 per level × grade (F ×0.85, D ×0.92, C ×1, B ×1.08, A ×1.16, S ×1.25, S+ ×1.4).</p><p><b>Power</b> is your Combat Rating: 2 × √(Offense × Defense). Offense is your strike damage with crits, damage over time and your pet. Defense is your HP after damage reduction and dodge, plus armor. Each Tower floor shows the Enemy Power you need to win about half your fights there.</p>
@@ -3448,7 +3540,8 @@ function guideTab(B) {
   <h3>The Frontier</h3><p>Pick a tier and your character fights on its own, on every screen, until you stop it. Normal enemies pay Gold; <b>elites</b> (more common on higher tiers) pay more and drop Spirestone and runes; a few elites are <b>champions</b> with a guaranteed Rare+ card and a Prism. Each band of 10 tiers favors two card types and one element. While the game is closed it keeps going at reduced pace for 2 hours, or longer with Frontier nodes in the Skill Web. You can farm up to 5 tiers past your deepest Depth.</p>
   <h3>The Wyrmspire</h3><p>150 floors in 15 flights of ten, rebuilt every Monday. Each flight is one run: nine floors of its monsters (elites on the 4th and 8th) and its own boss on the 10th, up to Vharzyx the Spire Wyrm on floor 150. Your HP carries from floor to floor. Clear a flight to open the next one for the rest of the week. Each floor pays Gold and each boss pays Spirestone and a Booster Pack once a week; a boss pays Prisms the first time you ever beat it. Your time is the number of fight turns, and the leaderboards track the highest floor, each flight's fastest clear and the fastest full climb.</p><h3>Challenges, goals and seasons</h3><p>THE TOWER › Challenges has the <b>Weekly Challenge</b> (ten fixed boss fights with two twists, the same for everyone), the <b>World Boss</b> (Friday to Sunday, one shared HP pool, three attacks a day) and Hardcore feats. 🎯 Goals gives three daily goals and one weekly goal; everything you do earns <b>season points</b> toward season-only rewards. Seasons last eight weeks and never reset your cards.</p>
   <h3>Tribute Ascension</h3><p>Each tier has a trial: one boss fight at full HP (tries are free), starting as tough as a boss on Spire floor 15 and getting tougher every tier with no ceiling. Pass it, then pay a tribute of Gold, monster drops and unlocked cards to gain Prisms, free Booster Packs, a permanent +7% Power and HP and +8% Gold. Nothing is ever reset; locked and equipped cards are never sacrificed.</p>
-  <h3>Hotkeys</h3><p>Hover a card: <b>X</b> salvage, <b>F</b> favorite, Shift+Click salvage. <b>Space</b> rips the next pack. Keys <b>1-6</b> switch tabs. <b>Esc</b> closes windows.</p></div>`;
+  <h3>Hotkeys</h3><p>Hover a card: <b>X</b> salvage, <b>F</b> favorite, Shift+Click salvage. <b>Space</b> rips the next pack. Keys <b>1-6</b> switch tabs. <b>Ctrl+K</b> or <b>/</b> opens ⚡ Shortcuts. <b>Esc</b> closes windows.</p></div>`;
+  const gc = B.querySelector("#gCur"); if (gc) gc.onclick = () => openCurrencies();
 }
 function statsTab(B) {
   const S = sv.stats || {}, h = (sv.playMs || 0) / 36e5, achs = (() => { try { return getAchievementsList(); } catch (e) { return []; } })(), got = achs.filter(a => (sv.ach || []).includes(a.id));
@@ -3517,19 +3610,6 @@ function drawStatus() {
   ${typeof potHud === "function" ? potHud() : ""}<span class="sbi" title="${esc(w.n + ": " + w.d)}">${w.i} ${w.n}</span>${an === "sale" ? `<span class="sbi hot">✦ Packs half price</span>` : an ? `<span class="sbi hot">✦ Foil storm</span>` : ""}${OWN.need ? `<button class="sbi sbsync" id="sbSync" title="Online backup is paused on this device">☁ Sign in to sync</button>` : ""}`;
   const sy = document.getElementById("sbSync"); if (sy) sy.onclick = () => syncSignIn();
 }
-function getAchievementsList() {
-  const totalCards = CARDS.filter(c => !c.forb && own(c.id).length > 0).length;
-  return [
-    { id: "packs10", t: "Pack Rat", desc: "Open 10 booster packs", check: () => sv.p >= 10 },
-    { id: "cards50", t: "Curator", desc: "Collect 50 unique cards", check: () => totalCards >= 50 },
-    { id: "cards125", t: "Grand Archivist", desc: "Collect 125 unique cards", check: () => totalCards >= 125 },
-    { id: "serial1", t: "One of a Kind", desc: "Pull a Serialized #/100 card", check: () => Object.values(sv.ser || {}).flat().length > 0 },
-    { id: "tower10", t: "First Flight", desc: "Reach Wyrmspire floor 10", check: () => topFloor() >= 10 },
-    { id: "tower50", t: "Above the Clouds", desc: "Reach Wyrmspire floor 50", check: () => topFloor() >= 50 },
-    { id: "splus", t: "Flawless", desc: "Own an S+ card", check: () => (sv.cards || []).some(c => gradeOf(c.r, c.v).g === "S+") }
-  ];
-}
-function checkAchievements() { getAchievementsList().forEach(a => { if (!sv.ach.includes(a.id) && a.check()) { sv.ach.push(a.id); notify(`🏆 Award: ${a.t}`); } }); }
 
 // ===================== Accounts, cloud saves, gifts and admin =====================
 function accts() { try { return JSON.parse(localStorage.getItem("apr_accounts") || "{}"); } catch (e) { return {}; } }
@@ -3537,9 +3617,12 @@ function saveAccts(a) { return localStorage.setItem("apr_accounts", JSON.stringi
 function cloudUrl() { return (localStorage.getItem("apr_cloud_url") || DEV_CONFIG.cloudUrl || "").replace(/\/$/, ""); }
 function cloudKey() { return localStorage.getItem("apr_cloud_key") || DEV_CONFIG.cloudKey || ""; }
 function cloudOn() { return !!cloudUrl(); }
+// whether the last cloud request succeeded (a successful DELETE, or a write some servers answer with null, still counts)
+var CLOUDST = { ok: false };
+function cloudOk() { return CLOUDST.ok; }
 async function cloudReqCore(path, method = "GET", body) {
-  if (!cloudOn()) return null;
-  try { const r = await fetch(`${cloudUrl()}/${path}.json${cloudKey() ? "?auth=" + encodeURIComponent(cloudKey()) : ""}`, { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }); return r.ok ? await r.json() : null; } catch (e) { return null; }
+  if (!cloudOn()) return null; CLOUDST.ok = false;
+  try { const r = await fetch(`${cloudUrl()}/${path}.json${cloudKey() ? "?auth=" + encodeURIComponent(cloudKey()) : ""}`, { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }); CLOUDST.ok = r.ok; return r.ok ? await r.json() : null; } catch (e) { return null; }
 }
 async function hashPw(pw, salt) {
   try { if (window.crypto && crypto.subtle) { const k = await crypto.subtle.importKey("raw", enc(pw), "PBKDF2", false, ["deriveBits"]); const b = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: enc(salt), iterations: 100000, hash: "SHA-256" }, k, 256); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); } } catch (e) {}
@@ -3598,24 +3681,16 @@ function showTitle(msg) {
   };
 }
 function showGate(why) { const g = document.createElement("div"); g.id = "gate"; g.innerHTML = `<pre>╔══════════════════════╗\n║   CLOSED BETA        ║\n╚══════════════════════╝</pre><p>${why}</p><button id="gl">Log out</button>`; document.body.appendChild(g); g.querySelector("#gl").onclick = logout; }
-function showAdmin() {
-  if (!isAdmin()) return main.innerHTML = '<div class="panel-box">Admins only.</div>';
-  const c = cfg();
-  main.innerHTML = `<div class="bar"><b>Developer Tools</b></div><div class="panel-box"><p style="margin-top:0;color:var(--mut)">Client-side tools. For real enforcement, add database rules on your cloud backend.</p><b>Gift a player</b><br><input id="gu" list="gl2" placeholder="username"><datalist id="gl2">${Object.keys(accts()).map(n => `<option value="${n}">`).join("")}</datalist><select id="gk"><option>coins</option><option>dust</option><option>packs</option><option>shards</option><option>marks</option><option>card</option></select><input id="gn" type="number" value="100" style="width:90px"><input id="gi" placeholder="card id (for card)" style="width:120px"><input id="gm" placeholder="message"><button id="gs">Send gift</button><hr><b>Closed beta</b><br><label><input type="checkbox" id="bb" ${c.betaOnly ? "checked" : ""}> Restrict access to testers</label><br><textarea id="bt" rows="3" style="width:100%" placeholder="tester usernames, one per line">${esc((c.testers || []).join("\n"))}</textarea><button id="bs">Save beta settings</button> <button id="bc" ${cloudOn() ? "" : "disabled"}>Publish to cloud</button><div id="adm" style="color:#fbbf24"></div></div>`;
-  const $ = s => main.querySelector(s), say = m => $("#adm").textContent = m, read = () => ({ betaOnly: $("#bb").checked, testers: $("#bt").value.split("\n").map(x => x.trim().toLowerCase()).filter(Boolean), admins: c.admins });
-  $("#gs").onclick = async () => { const g = { k: $("#gk").value, n: +$("#gn").value, id: $("#gi").value, msg: $("#gm").value }; say((await sendGift($("#gu").value, g)) ? "Gift queued." : "Failed: check the username, and that your cloud rules/key allow gift writes."); };
-  $("#bs").onclick = () => { localStorage.setItem("apr_config", JSON.stringify(read())); say("Saved locally."); };
-  $("#bc").onclick = async () => { await cloudReq("config", "PUT", read()); say("Published."); };
-}
 async function cloudReq(path, method = "GET", body) {
   if (method === "GET" || !OWN_PATHS.test(path) || !cloudOn()) return cloudReqCore(path, method, body);
   const send = async tok => { const q = tok ? `?auth=${encodeURIComponent(tok)}` : cloudKey() ? `?auth=${encodeURIComponent(cloudKey())}` : ""; return fetch(`${cloudUrl()}/${path}.json${q}`, { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }); };
+  CLOUDST.ok = false;
   try {
     let tok = typeof ltdToken === "function" ? await ltdToken() : "", r = await send(tok);
     // an expired token: refresh once and try again
     if (r.status === 401 && tok) { LTA.exp = 0; try { const s = ltdSess(); if (s) { s.exp = 0; localStorage.setItem("apr_lsess_" + APR_USER, JSON.stringify(s)); } } catch (e) {} tok = await ltdToken(); if (tok) r = await send(tok); }
     if (r.status === 401 || r.status === 403) { if (tok) console.warn("Cloud write refused by the database rules:", path); else ownWarn(); }
-    return r.ok ? await r.json() : null;
+    CLOUDST.ok = r.ok; return r.ok ? await r.json() : null;
   } catch (e) { return null; }
 }
 // signed out of the online save: say so once, and put a "Sign in to sync" chip in the status bar. Never pop a password box on its own.
@@ -3627,6 +3702,71 @@ function ownWarn() {
   if (!told) notify("Online backup is paused on this device. Click ☁ Sign in to sync in the status bar when you have a moment.");
 }
 function syncSignIn() { ltdAskPw("Your progress is saved on this device. Sign in once so it also backs up online, shows on the leaderboard and can use chat.", () => { OWN.need = false; OWN.warned = false; try { save(); drawStatus(); } catch (e) {} notify("Signed in. Online backup is on."); }, "☁ Sign in to sync"); }
+
+// ===================== ADMIN DASHBOARD =====================
+// For accounts listed as admins. Everything that changes other players is also enforced by the database rules
+// (only uids in /_admins can write /config, /chatpin and other players' gifts), so this page is just the controls.
+// Bans and chat mutes live in /config as ban/<player> and cmute/<player>.
+var ADM = { tab: "overview", q: "", rows: null };
+function admBanned(k) { const c = cfg(); return !!(c.ban && c.ban[pKey(k)]); }
+function admMuted(k) { const c = cfg(); return !!(c.cmute && c.cmute[pKey(k)]); }
+async function admCfg(change) {
+  // merge into the published config so nothing else is lost
+  const cur = (await cloudReq("config")) || {}, next = Object.assign({}, cur, change(JSON.parse(JSON.stringify(cur))));
+  const r = await cloudReq("config", "PUT", next); if (r || cloudOk()) { cloudCfg = next; return true; } return false;
+}
+async function admSetFlag(map, k, on) { k = pKey(k); return admCfg(c => { const m = Object.assign({}, c[map] || {}); if (on) m[k] = true; else delete m[k]; return { [map]: m }; }); }
+async function showAdmin() {
+  if (!isAdmin()) return main.innerHTML = '<div class="panel-box">Admins only.</div>';
+  const tabs = [["overview", "📊 Overview"], ["players", "👤 Players"], ["gifts", "🎁 Gifts"], ["mod", "🛡 Moderation"], ["access", "🔒 Access"]];
+  main.innerHTML = `<div class="adm"><div class="bar"><b>🛠 Admin</b> ${tabs.map(([k, n]) => `<button data-at="${k}" class="${ADM.tab === k ? "on" : ""}">${n}</button>`).join("")}</div><div id="admB" class="panel-box">Loading…</div><div id="adm" class="admmsg"></div></div>`;
+  main.querySelectorAll("[data-at]").forEach(b => b.onclick = () => { ADM.tab = b.dataset.at; showAdmin(); });
+  const B = main.querySelector("#admB"), say = m => { const e = main.querySelector("#adm"); if (e) e.textContent = m; };
+  if (!cloudOn()) { B.innerHTML = "The admin tools need the cloud connection."; return; }
+  const c = cfg(), now = Date.now();
+  if (ADM.tab === "overview") {
+    const [P, O] = await Promise.all([cloudReq("players"), cloudReq("presence")]);
+    const rows = P && typeof P === "object" ? Object.values(P).filter(r => r && typeof r.u === "string") : [], on = O && typeof O === "object" ? Object.values(O).filter(r => r && now - (+r.t || 0) < 180000) : [];
+    const day = rows.filter(r => now - num(r.t) < 864e5), week = rows.filter(r => now - num(r.t) < 7 * 864e5);
+    B.innerHTML = `<div class="admstats"><div><b>${on.length}</b><span>online now</span></div><div><b>${day.length}</b><span>active today</span></div><div><b>${week.length}</b><span>active this week</span></div><div><b>${rows.length}</b><span>players ever</span></div><div><b>${fmtN(rows.reduce((a, r) => a + num(r.packs), 0))}</b><span>packs opened (all players)</span></div></div>
+     <h4>Online now</h4>${on.length ? on.map(r => `<div class="admrow"><button class="lbu" data-pu="${esc(pKey(r.u))}">${esc(r.u)}</button> <span class="mut">${esc(String(r.w || ""))}</span></div>`).join("") : `<p class="mut">Nobody right now.</p>`}
+     <h4>Most recently active</h4>${rows.sort((a, b) => num(b.t) - num(a.t)).slice(0, 15).map(r => `<div class="admrow"><button class="lbu" data-pu="${esc(pKey(r.k || r.u))}">${esc(r.u)}</button> <span class="mut">${new Date(num(r.t)).toLocaleString()} · Heat ${num(r.heat)} · ${fmtN(num(r.power))} PWR</span></div>`).join("")}`;
+  } else if (ADM.tab === "players") {
+    B.innerHTML = `<p>Look up a player by username.</p><input id="aq" placeholder="username" value="${esc(ADM.q)}"> <button id="aqGo" class="cta">Look up</button><div id="aqR"></div>`;
+    const go = async () => {
+      ADM.q = B.querySelector("#aq").value.trim().toLowerCase(); const R = B.querySelector("#aqR"); if (!ADM.q) return; R.innerHTML = "Loading…";
+      const [P, U] = await Promise.all([cloudReq("players/" + pKey(ADM.q)), cloudReq("users/" + ADM.q)]); let S = null; try { S = U && U.d ? JSON.parse(U.d) : null; } catch (e) {}
+      if (!P && !S) { R.innerHTML = `<p class="bad">No player called ${esc(ADM.q)}.</p>`; return; }
+      const k = pKey(ADM.q), sp = S && S.spire || {};
+      R.innerHTML = `<h3>${esc(ADM.q)} ${admBanned(k) ? `<span class="bad">BANNED</span>` : ""} ${admMuted(k) ? `<span class="warn">chat-muted</span>` : ""}</h3>
+       <div class="admgrid"><span>Last seen <b>${P ? new Date(num(P.t)).toLocaleString() : "?"}</b></span><span>Cloud save <b>${U && U.ts ? new Date(U.ts).toLocaleString() : "none"}</b> (${U && U.d ? fmtN(U.d.length / 1024) + " KB" : "—"})</span>
+        ${S ? `<span>Gold <b>${fmtN(S.c)}</b></span><span>Packs <b>${fmtN(S.packs)}</b> + ${fmtN(S.cpacks || 0)} collector</span><span>Prisms <b>${fmtN(S.shards)}</b></span><span>Glyphs <b>${fmtN(S.dust)}</b></span><span>Spirestone <b>${fmtN(S.deep)}</b></span><span>Cards <b>${fmtN((S.cards || []).length)}</b></span><span>Heat <b>${num(sp.heatMax)}</b> · best floor ${num(sp.peak)}</span><span>Ascension <b>${num(S.asc && S.asc.n)}</b></span><span>Packs opened <b>${fmtN(S.stats && S.stats.packsOpened)}</b></span><span>Played <b>${(num(S.playMs) / 36e5).toFixed(1)} h</b></span>` : `<span class="mut">No cloud save to read.</span>`}</div>
+       <div class="imact"><button id="aIns">👤 Profile and loadout</button>${S ? `<button id="aDl">⬇ Download save</button>` : ""}<button id="aGift">🎁 Send a gift</button><button id="aMute">${admMuted(k) ? "🔊 Unmute in chat" : "🔇 Mute in chat"}</button><button id="aBan" class="danger">${admBanned(k) ? "Unban" : "⛔ Ban"}</button></div>`;
+      R.querySelector("#aIns").onclick = () => inspectPlayer(k);
+      const dl = R.querySelector("#aDl"); if (dl) dl.onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([U.d], { type: "application/json" })); a.download = `${ADM.q}-save.json`; a.click(); };
+      R.querySelector("#aGift").onclick = () => { ADM.tab = "gifts"; ADM.giftTo = ADM.q; showAdmin(); };
+      R.querySelector("#aMute").onclick = async () => { say((await admSetFlag("cmute", k, !admMuted(k))) ? "Saved." : "Couldn't save (are you in /_admins?)"); go(); };
+      R.querySelector("#aBan").onclick = async b => { const btn = R.querySelector("#aBan"); if (!admBanned(k) && btn.dataset.ok !== "1") { btn.dataset.ok = "1"; btn.textContent = "Click again to ban"; return; } say((await admSetFlag("ban", k, !admBanned(k))) ? "Saved." : "Couldn't save (are you in /_admins?)"); go(); };
+    };
+    B.querySelector("#aqGo").onclick = go; B.querySelector("#aq").onkeydown = e => { e.stopPropagation(); if (e.key === "Enter") go(); }; if (ADM.q) go();
+  } else if (ADM.tab === "gifts") {
+    B.innerHTML = `<p>Gifts arrive the next time the player opens the game.</p><input id="gu" placeholder="username" value="${esc(ADM.giftTo || "")}"> <select id="gk"><option value="coins">Gold</option><option value="dust">Raw Glyphs</option><option value="packs">Booster Packs</option><option value="shards">Prisms</option><option value="card">A card (by id)</option></select> <input id="gn" type="number" value="100" style="width:100px"> <input id="gi" placeholder="card id" style="width:90px"> <input id="gm" placeholder="message (optional)"> <button id="gs" class="cta">Send gift</button>
+     <h4>Announcement</h4><p class="mut">Posts a 📣 message to the chat room everyone is in.</p><input id="an" maxlength="240" placeholder="Server restart at 6pm…" style="width:70%"> <button id="anGo">Announce</button>`;
+    B.querySelector("#gs").onclick = async () => { const g = { k: B.querySelector("#gk").value, n: +B.querySelector("#gn").value, id: B.querySelector("#gi").value, msg: B.querySelector("#gm").value }; say((await sendGift(B.querySelector("#gu").value, g)) ? "Gift sent." : "Failed: check the username, and that you're in /_admins."); };
+    B.querySelector("#anGo").onclick = () => { const v = B.querySelector("#an").value.trim(); if (!v) return; chPost(v, null, "ann"); say("Announced."); B.querySelector("#an").value = ""; };
+  } else if (ADM.tab === "mod") {
+    const bans = Object.keys(c.ban || {}), mutes = Object.keys(c.cmute || {});
+    B.innerHTML = `<h4>Banned</h4>${bans.length ? bans.map(k => `<div class="admrow">${esc(k)} <button data-ub="${esc(k)}">Unban</button></div>`).join("") : `<p class="mut">Nobody.</p>`}
+     <h4>Muted in chat</h4>${mutes.length ? mutes.map(k => `<div class="admrow">${esc(k)} <button data-um="${esc(k)}">Unmute</button></div>`).join("") : `<p class="mut">Nobody.</p>`}
+     <p class="mut">Banned players see a "banned" screen and can't post to chat. Chat-muted players' messages are hidden for everyone and the database refuses new ones. Message deletes and pins are on each chat message (🗑 and 📌) for admins.</p>`;
+    B.querySelectorAll("[data-ub]").forEach(b => b.onclick = async () => { await admSetFlag("ban", b.dataset.ub, false); showAdmin(); });
+    B.querySelectorAll("[data-um]").forEach(b => b.onclick = async () => { await admSetFlag("cmute", b.dataset.um, false); showAdmin(); });
+  } else {
+    B.innerHTML = `<p><label><input type="checkbox" id="bb" ${c.betaOnly ? "checked" : ""}> Closed beta: only testers can play</label></p><textarea id="bt" rows="4" style="width:100%" placeholder="tester usernames, one per line">${esc((c.testers || []).join("\n"))}</textarea><button id="bc" class="cta">Publish</button>`;
+    B.querySelector("#bc").onclick = async () => { const ok = await admCfg(() => ({ betaOnly: B.querySelector("#bb").checked, testers: B.querySelector("#bt").value.split("\n").map(x => x.trim().toLowerCase()).filter(Boolean) })); say(ok ? "Published." : "Couldn't publish (are you in /_admins?)"); };
+  }
+  B.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => inspectPlayer(b.dataset.pu));
+}
 
 // ===================== Leaderboards and player inspection =====================
 function showTradeSoon() {
@@ -3657,7 +3797,7 @@ function mySummary() {
   const ts = getStats();
   const R = rareState(), H = sv.hunt || {};
   return { u: dispName(), k: pKey(APR_USER), floor: topFloor(), heat: (sv.spire && sv.spire.heatMax) || 0, power: ts.totalPower, packs: (sv.stats && sv.stats.packsOpened) || 0, asc: (sv.asc && sv.asc.n) || 0, coll: collectorScore(), play: sv.playMs || 0, t: Date.now(),
-    hunt: Math.max(0, (H.top || 1) - 1), ro: Math.round(R.o || 0), rc: R.s || null,
+    hunt: Math.max(0, (H.top || 1) - 1), ro: Math.round(R.o || 0), rc: R.s || null, ach: (() => { try { return achPoints(); } catch (e) { return 0; } })(), club: (sv.club && sv.club.tag) || "", h: (sv.spire && sv.spire.heatMax) || 0,
     title: (sv.cos && sv.cos.title) || "", el: ts.activeElement || "" };
 }
 function myLoadout() {
@@ -3666,7 +3806,7 @@ function myLoadout() {
 }
 function lbQueue() { if (!cloudOn() || !APR_USER || APR_USER === "guest") return; clearTimeout(LBS.timer); LBS.timer = setTimeout(lbPush, 15000); }
 async function lbPush() {
-  try { const s = mySummary(), key = JSON.stringify([s.floor, s.heat, s.power, s.packs, s.asc, s.hunt, s.ro, Math.floor(s.play / 6e5), s.title]); if (key === LBS.last) return; LBS.last = key;
+  try { const s = mySummary(), key = JSON.stringify([s.floor, s.heat, s.power, s.packs, s.asc, s.hunt, s.ro, s.ach, s.club, Math.floor(s.play / 6e5), s.title]); if (key === LBS.last) return; LBS.last = key;
     await cloudReq("players/" + pKey(APR_USER), "PUT", s); await cloudReq("loadouts/" + pKey(APR_USER), "PUT", myLoadout()); } catch (e) {}
 }
 // the number a category sorts by
@@ -3674,15 +3814,15 @@ function lbVal(r, k) { return k === "heat" ? r.heat * 1000 + r.floor : k === "ra
 async function showBoards() {
   const draw = () => {
     const C = LBC.find(c => c[0] === LBS.cat) || LBC[0], me = mySummary();
-    let rows = (LBS.rows || []).filter(r => r && typeof r.u === "string").map(r => ({ u: r.u.slice(0, 20), k: pKey(r.k || r.u), floor: num(r.floor), heat: num(r.heat), power: num(r.power), packs: num(r.packs), asc: num(r.asc), hunt: num(r.hunt), ro: num(r.ro), rc: r.rc && snapOk(r.rc) ? r.rc : null, play: num(r.play), title: String(r.title || "").slice(0, 30), t: num(r.t) }));
+    let rows = (LBS.rows || []).filter(r => r && typeof r.u === "string").map(r => ({ u: r.u.slice(0, 20), k: pKey(r.k || r.u), floor: num(r.floor), heat: num(r.heat), power: num(r.power), packs: num(r.packs), asc: num(r.asc), hunt: num(r.hunt), ach: num(r.ach), club: String(r.club || "").slice(0, 4), ro: num(r.ro), rc: r.rc && snapOk(r.rc) ? r.rc : null, play: num(r.play), title: String(r.title || "").slice(0, 30), t: num(r.t) }));
     if (!rows.some(r => r.k === me.k)) rows.push(me); else rows = rows.map(r => r.k === me.k ? me : r);
-    rows.sort((a, b) => lbVal(b, C[0]) - lbVal(a, C[0]) || b.power - a.power); rows = rows.slice(0, 100); LBS.view = rows;
+    rows.sort((a, b) => lbVal(b, C[0]) - lbVal(a, C[0]) || b.power - a.power); if (LBS.fr) rows = rows.filter(r => r.k === me.k || isFriend(r.k)); rows = rows.slice(0, 100); LBS.view = rows;
     const extra = r => C[0] === "rare" && r.rc ? snapBadge(r.rc, "lb" + rows.indexOf(r)) : "";
-    main.innerHTML = `<div class="bar"><b>🏆 Leaderboards</b> | ${rows.length} player${rows.length === 1 ? "" : "s"} ${LBS.err ? `<span style="color:#f87171">· ${esc(LBS.err)}</span>` : ""}<button id="lbR">↻ Refresh</button></div>
+    main.innerHTML = `<div class="bar"><b>🏆 Leaderboards</b> | ${rows.length} player${rows.length === 1 ? "" : "s"} ${LBS.err ? `<span style="color:#f87171">· ${esc(LBS.err)}</span>` : ""}<button id="lbR">↻ Refresh</button><button id="lbF" class="${LBS.fr ? "on" : ""}">★ Friends only</button></div>
     <div class="bar lbcats">${LBC.map(c => `<button data-lc="${c[0]}" class="${c[0] === LBS.cat ? "on" : ""}">${c[1]}</button>`).join("")}</div>
-    <div class="panel-box"><table class="lbt"><tr><th>#</th><th>Player</th><th>${C[1]}</th>${C[0] === "rare" ? "<th>Card</th>" : ""}</tr>${rows.map((r, i) => `<tr class="${r.k === me.k ? "me" : ""}"><td>${i + 1}</td><td><button class="lbu" data-pu="${esc(r.k)}">${esc(r.u)}</button>${r.title ? ` <i>[${esc(r.title)}]</i>` : ""}</td><td><b>${C[2](r)}</b></td>${C[0] === "rare" ? `<td>${extra(r)}</td>` : ""}</tr>`).join("")}</table>
+    <div class="panel-box"><table class="lbt"><tr><th>#</th><th>Player</th><th>${C[1]}</th>${C[0] === "rare" ? "<th>Card</th>" : ""}</tr>${rows.map((r, i) => `<tr class="${r.k === me.k ? "me" : ""}"><td>${i + 1}</td><td>${isFriend(r.k) ? `<span class="frs" title="Friend">★</span> ` : ""}<button class="lbu" data-pu="${esc(r.k)}">${nameHTML(r.u, r.k, r.heat)}</button>${r.club ? ` <span class="ptag">⟦${esc(r.club)}⟧</span>` : ""}${r.title ? ` <i>[${esc(r.title)}]</i>` : ""}</td><td><b>${C[2](r)}</b></td>${C[0] === "rare" ? `<td>${extra(r)}</td>` : ""}</tr>`).join("")}</table>
     <p style="color:var(--mut);font-size:12px">${LB_NOTE[C[0]] || ""} Click a name to inspect that player's loadout. Your entry updates a few seconds after your progress changes.</p></div>`;
-    main.querySelector("#lbR").onclick = () => load();
+    main.querySelector("#lbR").onclick = () => load(); main.querySelector("#lbF").onclick = () => { LBS.fr = !LBS.fr; draw(); };
     main.querySelectorAll("[data-lc]").forEach(b => b.onclick = () => { LBS.cat = b.dataset.lc; draw(); });
     main.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => inspectPlayer(b.dataset.pu));
     main.querySelectorAll("[data-cs^='lb']").forEach(b => b.onclick = () => { const r = LBS.view[+b.dataset.cs.slice(2)]; if (r && r.rc) snapModal(r.rc); });
@@ -3697,6 +3837,7 @@ const LB_NOTE = {
   rare: "The rarest single card each player has pulled, as the odds of pulling that exact rarity, finish, misprint and grade, and roughly how many 14-card Booster Packs that takes on average. Click a card to inspect it.",
   hunt: "The highest Dragon Hunt rank ever slain.",
   asc: "Tribute Ascension tier.",
+  ach: "Achievement points: every rank of every achievement adds points. See SOCIAL → Achievements.",
   play: "Time with the game open."
 };
 // read-only inspection of another player's loadout
@@ -3704,23 +3845,57 @@ async function inspectPlayer(u) {
   document.querySelectorAll(".ov.pmod").forEach(x => x.remove());
   const o = document.createElement("div"); o.className = "ov pmod"; o.innerHTML = `<div class="pmbox"><button class="imx">✕</button><p>Loading ${esc(u)}…</p></div>`; document.body.appendChild(o);
   o.onclick = e => { if (e.target === o) o.remove(); }; o.querySelector(".imx").onclick = () => o.remove();
-  let L = null; if (pKey(u) === pKey(APR_USER)) L = myLoadout(); else if (cloudOn()) L = await cloudReq("loadouts/" + pKey(u));
+  const mine = pKey(u) === pKey(APR_USER); let L = null, P = null;
+  if (mine) { L = myLoadout(); P = mySummary(); } else if (cloudOn()) [L, P] = await Promise.all([cloudReq("loadouts/" + pKey(u)), cloudReq("players/" + pKey(u))]);
   const box = o.querySelector(".pmbox"); if (!box) return;
   if (!L || typeof L !== "object" || !L.slots) { box.innerHTML = `<button class="imx">✕</button><p>No loadout found for <b>${esc(u)}</b> yet.</p>`; box.querySelector(".imx").onclick = () => o.remove(); return; }
   const st = L.stats || {}, slot = s => { const sn = L.slots[s], nm = ESLOTS.find(x => x[0] === s)[1]; if (!snapOk(sn)) return `<div class="pslot empty"><span class="tsb">${nm}</span>— empty —</div>`;
     const c = CARDS[sn.i], r = snapRoll(sn); return `<button class="pslot" data-ps="${s}" style="--tc:${TC[c.tier]}"><span class="tsb">${nm}</span><span class="tsn" style="color:${TC[c.tier]}">${gradeBadge(r, sn.v, "inl")}${esc(c.name)}</span><span class="tsm">Lv ${r.lv} · ${TIERS[c.tier]}${sn.v !== "base" ? " · " + sn.v.split("+").map(x => VNAME[x] || x).join("+") : ""}</span>${afxLines(r, 0)}</button>`; };
-  box.innerHTML = `<button class="imx">✕</button><h3 style="margin:0 0 4px;color:#fbbf24">🔍 ${esc(String(L.u || u).slice(0, 20))}'s loadout</h3>
+  P = P && typeof P === "object" ? P : {}; const fr = isFriend(u);
+  const prof = `<div class="pprof">${P.title ? `<span class="pttl">[${esc(String(P.title).slice(0, 30))}]</span>` : ""}${P.club ? `<span class="ptag">⟦${esc(String(P.club).slice(0, 4))}⟧</span>` : ""}
+   <div class="pps"><span>🔥 <b>${num(P.heat) ? "Heat " + fmtN(P.heat) : "Floor " + fmtN(P.floor)}</b></span><span>⚔️ <b>${fmtN(num(P.power || st.pwr))}</b> PWR</span><span>🌀 <b>${num(P.asc)}</b></span><span>🐉 <b>${num(P.hunt) ? "Rank " + num(P.hunt) : "—"}</b></span><span>📦 <b>${fmtN(num(P.packs))}</b> packs</span><span>🏅 <b>${fmtN(num(P.ach))}</b> pts</span><span>⏱ <b>${(num(P.play) / 36e5).toFixed(1)}</b> h</span></div>
+   ${P.rc && snapOk(P.rc) ? `<div class="prare">Rarest pull: ${snapBadge(P.rc, "pr")} <span class="mut">1 in ${fmtOdds(num(P.ro))} cards</span></div>` : ""}
+   ${mine ? "" : `<button id="pFriend" class="${fr ? "on" : ""}">${fr ? "★ Friend (remove)" : "☆ Add friend"}</button>`}</div>`;
+  box.innerHTML = `<button class="imx">✕</button><h3 style="margin:0 0 4px;color:#fbbf24">👤 ${nameHTML(L.u || u, u, P.heat)}</h3>${prof}<h4 style="margin:10px 0 4px;color:#fbbf24">Loadout</h4>
   <div class="pstats">PWR <b>${fmtN(num(st.pwr))}</b> · HP ${fmtN(num(st.hp))} · Strike ${fmtN(num(st.str))} · Block ${fmtN(num(st.blk))} · Crit ${num(st.cr)}% ×${num(st.cm)}${ELEMENTS.includes(st.el) ? " · " + EL_ICON[st.el] + " " + st.el + " set" : ""}</div>
-  <div class="pgrid"><div>${ESL.map(slot).join("")}</div><div>${ESR.map(slot).join("")}</div></div>${Array.isArray(L.show) && L.show.filter(snapOk).length ? `<h4 style="margin:10px 0 4px;color:#fbbf24">⭐ Display Case</h4><div class="pshow">${L.show.slice(0, 9).map((sn, j) => snapOk(sn) ? `<button class="pshc" data-psh="${j}">${cardHTML(CARDS[sn.i], sn.v, 0, 1, snapRoll(sn))}</button>` : "").join("")}</div>` : ""}<p style="color:var(--mut);font-size:12px;margin:6px 0 0">Read-only. Click a slot to see the full card.</p>`;
+  <div class="pgrid"><div>${ESL.map(slot).join("")}</div><div>${ESR.map(slot).join("")}</div></div>${Array.isArray(L.show) && L.show.filter(snapOk).length ? `<h4 style="margin:10px 0 4px;color:#fbbf24">⭐ Display Case</h4><div class="pshow">${L.show.slice(0, 9).map((sn, j) => snapOk(sn) ? `<button class="pshc" data-psh="${j}">${cardHTML(CARDS[sn.i], sn.v, sn.sn || 0, 1, snapRoll(sn))}</button>` : "").join("")}</div>` : ""}<p style="color:var(--mut);font-size:12px;margin:6px 0 0">Read-only. Click a slot to see the full card.</p>`;
   box.querySelector(".imx").onclick = () => o.remove();
   box.querySelectorAll("[data-ps]").forEach(b => b.onclick = () => snapModal(L.slots[b.dataset.ps]));
   box.querySelectorAll("[data-psh]").forEach(b => b.onclick = () => snapModal(L.show[+b.dataset.psh]));
+  const pr = box.querySelector("[data-cs='pr']"); if (pr) pr.onclick = () => snapModal(P.rc);
+  const pf = box.querySelector("#pFriend"); if (pf) pf.onclick = () => { toggleFriend(u); inspectPlayer(u); };
 }
 function dispName() { return String(sv.dname || APR_USER || "guest").slice(0, 20); }
 // the highest Wyrmspire floor you have ever reached
 function topFloor() { return (sv.spire && sv.spire.peak) || 0; }
 // your level for prices: the higher of your best Spire floor (as a monster level) and your Frontier tier
 function playerLevel() { return Math.max(1, Math.round(floorLvl(topFloor())), (sv.fr && sv.fr.tier) || 1); }
+
+// ---- friends: followed players show first on leaderboards and in Who's online ----
+function friends() { if (!Array.isArray(sv.friends)) sv.friends = []; return sv.friends; }
+function isFriend(u) { return friends().includes(pKey(u)); }
+function toggleFriend(u) { const k = pKey(u), F = friends(), j = F.indexOf(k); if (j >= 0) { F.splice(j, 1); notify("Removed from friends."); } else { if (F.length >= 100) return notify("You can follow up to 100 friends."); F.push(k); notify("★ Added to friends."); } save(); }
+
+// ---- Heat flair and the weekly fire emblem ----
+// Names glow hotter at Heat 5, 10, 25 and 50. Whoever holds the highest Heat this week (then the highest floor,
+// then whoever got there first) wears the 🔥 emblem next to their name everywhere.
+function heatTier(h) { h = +h || 0; return h >= 50 ? 4 : h >= 25 ? 3 : h >= 10 ? 2 : h >= 5 ? 1 : 0; }
+var EMB = { w: -1, k: "", u: "", at: 0 };
+function nameHTML(name, key, heat) {
+  const t = heatTier(heat), em = key && EMB.k && pKey(key) === EMB.k ? `<span class="hemb" title="Highest Heat in the Wyrmspire this week">🔥</span>` : "";
+  return `${em}<span class="hn${t}"${t ? ` title="Heat ${+heat}"` : ""}>${esc(String(name || "?").slice(0, 24))}</span>`;
+}
+async function embRefresh(force) {
+  if (!cloudOn() || (!force && Date.now() - EMB.at < 300000)) return; EMB.at = Date.now();
+  const w = weekNo(), lead = async wk => { const d = await cloudReq(`spire/${wk}/top`); const rows = d && typeof d === "object" ? Object.entries(d).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string") : [];
+    rows.sort((a, b) => (b.h | 0) - (a.h | 0) || (b.f | 0) - (a.f | 0) || (a.at || 0) - (b.at || 0)); return rows[0] && ((rows[0].h | 0) > 0 || (rows[0].f | 0) > 0) ? rows[0] : null; };
+  try {
+    const now = await lead(w); EMB.w = w; EMB.k = now ? now.k : ""; EMB.u = now ? now.u : "";
+    // last week's holder keeps a title and a tally (checked once per week by each player for themselves)
+    const S = achStats(); if (APR_USER && APR_USER !== "guest" && S.embWk !== w - 1) { const prev = await lead(w - 1); S.embWk = w - 1; if (prev && prev.k === pKey(APR_USER)) { S.emblems = (S.emblems || 0) + 1; addTitle("Hottest in the Spire"); notify("🔥 You held the highest Heat in the Wyrmspire last week!"); save(); } }
+  } catch (e) {}
+}
+setInterval(() => { if (__ready) embRefresh(); }, 60000);
 
 // ===================== Floating chat with card links =====================
 function chSaveUI() { try { localStorage.setItem("apr_chatui", JSON.stringify({ room: CH.room, min: CH.min, dim: CH.dim, x: CH.x, y: CH.y })); } catch (e) {} }
@@ -3737,10 +3912,11 @@ function snapModal(s) {
   o.innerHTML = `<div class="imbox"><button class="imx">✕</button><div class="imcard">${cardHTML(c, s.v, s.sn, 0, r)}</div><div class="iminfo"><h3 style="color:${TC[c.tier]}">${esc(c.name)}</h3><div>${TIERS[c.tier]} ${c.category} · Level ${r.lv} · ${s.v === "base" ? "Standard print" : s.v.split("+").map(x => VNAME[x] || x).join(" + ")}${s.sn ? " #" + s.sn + "/100" : ""}</div><div style="margin:6px 0">${gradeBadge(r, s.v, "inl")} <b>${rgText(r)}</b></div><div style="font-size:11px;color:#9aa4b2;font-family:var(--mono)">PROPERTIES</div>${afxLines(r, 1)}<p style="color:var(--mut);font-size:12px">Linked in chat: a snapshot of the card when it was shared.</p></div></div>`;
   o.querySelector(".imx").onclick = () => o.remove(); o.onclick = e => { if (e.target === o) o.remove(); }; document.body.appendChild(o);
 }
-function chMe() { return { u: (typeof dispName === "function" ? dispName() : APR_USER) || "guest", k: pKey(APR_USER), f: topFloor(), a: (sv.asc && sv.asc.n) || 0 }; }
+function chMe() { return { u: (typeof dispName === "function" ? dispName() : APR_USER) || "guest", k: pKey(APR_USER), f: topFloor(), a: (sv.asc && sv.asc.n) || 0, h: (sv.spire && sv.spire.heatMax) || 0 }; }
 async function chPost(m, card, kind) {
   if (!APR_USER) return notify("Log in to chat.");
   const now = Date.now(); if (kind !== "ann" && kind !== "god" && now - CH.last < 1500) return notify("Slow down a little."); CH.last = now;
+  if (!kind || kind === "msg") gameEvent("chatSent", {});
   const msg = Object.assign(chMe(), { t: now, m: String(m || "").slice(0, 240), ty: kind || "msg" }); if (Array.isArray(card)) msg.cs = card.slice(0, 10); else if (card) msg.c = card;
   if (cloudOn()) { try { const tk = typeof ltdToken === "function" ? await ltdToken() : ""; const r = await fetch(tk ? `${cloudUrl()}/chat/${chRoom()}.json?auth=${encodeURIComponent(tk)}` : chUrl(), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(msg) }); if (!r.ok) throw new Error(r.status); if (!CH.es) chPull(); return; } catch (e) { CH.status = "offline: the database refused the chat message"; } }
   chLocal(msg);
@@ -3751,7 +3927,7 @@ function chAdd(list) {
   if (!added) return; CH.msgs.sort((a, b) => (a.t || 0) - (b.t || 0)); CH.msgs = CH.msgs.slice(-80); chDraw();
 }
 function chObj(obj) { return Object.keys(obj || {}).map(k => Object.assign({}, obj[k], { _id: k })); }
-async function chPull() { if (!cloudOn()) return; try { const r = await fetch(chUrl('orderBy="$key"&limitToLast=60')); if (!r.ok) { CH.status = r.status === 401 || r.status === 403 ? "offline: the database does not allow /chat yet" : "offline"; chDraw(); return; } CH.status = ""; chAdd(chObj(await r.json())); } catch (e) { CH.status = "offline"; chDraw(); } }
+async function chPull() { if (!cloudOn()) return; try { const r = await fetch(chUrl('orderBy="$key"&limitToLast=60')); if (!r.ok) { CH.status = r.status === 401 || r.status === 403 ? "offline: the database does not allow /chat yet" : "offline"; chDraw(); return; } CH.status = ""; (d => { chAdd(chObj(d)); chMergeReacts(d); })(await r.json()); } catch (e) { CH.status = "offline"; chDraw(); } }
 function chConnect() {
   try { if (CH.es) CH.es.close(); } catch (e) {} CH.es = null; clearInterval(CH.poll); CH.msgs = []; CH.seen = new Set();
   try { if (!CH.bc && window.BroadcastChannel) { CH.bc = new BroadcastChannel("apr_chat"); CH.bc.onmessage = e => chAdd([e.data]); } } catch (e) {}
@@ -3760,7 +3936,8 @@ function chConnect() {
   try {
     if (window.EventSource) {
       const es = new EventSource(chUrl('orderBy="$key"&limitToLast=60')); CH.es = es;
-      const onData = ev => { try { const d = JSON.parse(ev.data); if (!d) return; if (d.data === null && d.path && d.path.length > 1 && !d.path.slice(1).includes("/")) { const k = d.path.slice(1); CH.msgs = CH.msgs.filter(x => x._id !== k); chDraw(); return; } if (d.path === "/") chAdd(chObj(d.data)); else { const k = d.path.replace(/^\//, "").split("/")[0]; if (d.data && typeof d.data === "object" && !d.path.slice(1).includes("/")) chAdd([Object.assign({}, d.data, { _id: k })]); } } catch (e) {} };
+      const onData = ev => { try { const d = JSON.parse(ev.data); if (!d) return; if (d.data === null && d.path && d.path.length > 1 && !d.path.slice(1).includes("/")) { const k = d.path.slice(1); CH.msgs = CH.msgs.filter(x => x._id !== k); chDraw(); return; } const rm = /^\/([^/]+)\/r(?:\/([^/]+))?$/.exec(d.path || ""); if (rm) { chReactSet(rm[1], rm[2], d.data); return; }
+        if (d.path === "/") { chAdd(chObj(d.data)); chMergeReacts(d.data); } else { const k = d.path.replace(/^\//, "").split("/")[0]; if (d.data && typeof d.data === "object" && !d.path.slice(1).includes("/")) chAdd([Object.assign({}, d.data, { _id: k })]); } } catch (e) {} };
       es.addEventListener("put", onData); es.addEventListener("patch", onData);
       es.onerror = () => { try { es.close(); } catch (e) {} CH.es = null; clearInterval(CH.poll); CH.poll = setInterval(chPull, 5000); };
     } else CH.poll = setInterval(chPull, 5000);
@@ -3769,7 +3946,7 @@ function chConnect() {
 function chLineCore(m, j) {
   const t = new Date(m.t || 0), hh = String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0"), card = (m.c && snapOk(m.c) ? snapBadge(m.c, j) : "") + (Array.isArray(m.cs) ? `<div class="chcs">${m.cs.slice(0, 10).map((s, k) => snapOk(s) ? snapBadge(s, j + "." + k) : "").join("")}</div>` : "");
   const pk = m.k && m.k !== "msg" && m.k !== "ann" ? m.k : ""; if (m.ty === "ann" || m.k === "ann") return `<div class="chm ann"><span class="cht">${hh}</span> 📣 ${esc(m.m || "")} ${card}</div>`;
-  return `<div class="chm ${(pk || m.u) === pKey(APR_USER) || m.u === APR_USER ? "me" : ""} ${m.ty === "god" ? "god" : ""}"><span class="cht">${hh}</span> <b class="chu" data-pu="${esc(String(pk || m.u || "?").slice(0, 40))}" title="Inspect loadout">${esc(String(m.u || "?").slice(0, 20))}</b><span class="chb">F${m.f | 0}${m.a ? " 🌀" + (m.a | 0) : ""}</span>: ${esc(m.m || "")} ${card}</div>`;
+  return `<div class="chm ${(pk || m.u) === pKey(APR_USER) || m.u === APR_USER ? "me" : ""} ${m.ty === "god" ? "god" : ""}"><span class="cht">${hh}</span> <b class="chu" data-pu="${esc(String(pk || m.u || "?").slice(0, 40))}" title="View profile">${nameHTML(m.u, pk || m.u, m.h)}</b><span class="chb">F${m.f | 0}${m.a ? " 🌀" + (m.a | 0) : ""}</span>: ${esc(m.m || "")} ${card}</div>`;
 }
 function chDrawCore() {
   let w = document.getElementById("chatw"); if (!APR_USER || !__ready) { if (w) w.remove(); return; }
@@ -3802,13 +3979,21 @@ function snapRoll(s) { const r = snapRollCore(s); if (s.ls && s.ls.n > 0 && s.ls
 function saveMute() { try { localStorage.setItem("apr_mute", JSON.stringify([...MUTE])); } catch (e) {} }
 function chLine(m, j) {
   const pk = m.k && m.k !== "msg" && m.k !== "ann" ? m.k : String(m.u || ""); if (pk && MUTE.has(pk)) return "";
+  if (pk && m.ty !== "ann" && (admMuted(pk) || admBanned(pk))) return "";
   const h = chLineCore(m, j), mine = pk === pKey(APR_USER); if (m.ty === "ann" || m.k === "ann") return CH.admin && m._id && m._id[0] !== "l" ? h.replace(/<\/div>$/, `<button class="chx" data-cdel="${esc(m._id)}" title="Delete message">🗑</button></div>`) : h;
   const extra = (mine ? "" : `<button class="chx" data-cmute="${esc(pk)}" title="Mute ${esc(String(m.u || ""))}">🔇</button>`) + (CH.admin && m._id && m._id[0] !== "l" ? `<button class="chx" data-cdel="${esc(m._id)}" title="Delete message">🗑</button>` : "");
-  return h.replace(/<\/div>$/, extra + "</div>");
+  const pin = CH.admin && m._id && m._id[0] !== "l" ? `<button class="chx" data-cpin="${esc(m._id)}" title="Pin to the top of chat">📌</button>` : "";
+  return h.replace(/<\/div>$/, extra + pin + chReactHTML(m) + "</div>");
 }
 function chDraw() {
   chDrawCore(); const w = document.getElementById("chatw"); if (!w) return;
   w.querySelectorAll("[data-cmute]").forEach(b => b.onclick = () => { MUTE.add(b.dataset.cmute); saveMute(); notify("Muted. Unmute in Account & Guide."); chDraw(); });
+  const L = w.querySelector(".chl"); if (L && !w.querySelector(".chpinbar") && CHP.m && CHP.room === chRoom()) L.insertAdjacentHTML("beforebegin", chPinBar());
+  const up = w.querySelector("#chUnpin"); if (up) up.onclick = () => chUnpin();
+  if (CHP.room !== chRoom()) chPinPull(true);
+  w.querySelectorAll("[data-cre]").forEach(b => b.onclick = () => chReact(b.dataset.cre, b.dataset.e));
+  w.querySelectorAll("[data-cra]").forEach(b => b.onclick = e => { e.stopPropagation(); document.querySelectorAll(".chpick").forEach(x => x.remove()); const p = document.createElement("span"); p.className = "chpick"; p.innerHTML = CH_REACT.map(x => `<button data-e="${x}">${x}</button>`).join(""); b.after(p); p.querySelectorAll("button").forEach(x => x.onclick = ev => { ev.stopPropagation(); p.remove(); chReact(b.dataset.cra, x.dataset.e); }); });
+  w.querySelectorAll("[data-cpin]").forEach(b => b.onclick = () => chPin(b.dataset.cpin));
   w.querySelectorAll("[data-cdel]").forEach(b => b.onclick = async () => { if (b.dataset.ok !== "1") { b.dataset.ok = "1"; b.textContent = "Delete?"; return; }
     const tok = await ltdToken(), id = b.dataset.cdel; const r = await ltdDb(`chat/${chRoom()}/${id}`, "DELETE", undefined, tok); if (r.ok) { CH.msgs = CH.msgs.filter(x => x._id !== id); chDraw(); } else notify("Couldn't delete that message."); });
   if (CH.admin === undefined) { CH.admin = false; (async () => { const tok = await ltdToken(), uid = ltdUid(); if (!tok || !uid) return; const r = await ltdDb(`_admins/${uid}`, "GET", undefined, tok); if (r.ok && r.body === true) { CH.admin = true; chDrawCore(); chDraw(); } })(); }
@@ -3832,16 +4017,16 @@ function presWhere() {
 }
 async function presBeat() {
   if (!cloudOn() || !APR_USER || APR_USER === "guest" || document.hidden) return;
-  try { await cloudReq(`presence/${pKey(APR_USER)}`, "PUT", { u: String(dispName()).slice(0, 24), t: Date.now(), w: presWhere(), f: topFloor() | 0, a: (sv.asc && sv.asc.n) | 0 }); } catch (e) {}
+  try { await cloudReq(`presence/${pKey(APR_USER)}`, "PUT", { u: String(dispName()).slice(0, 24), t: Date.now(), w: presWhere(), f: topFloor() | 0, a: (sv.asc && sv.asc.n) | 0, h: (sv.spire && sv.spire.heatMax) | 0 }); } catch (e) {}
 }
 async function presPull() {
   if (!cloudOn()) return []; const d = await cloudReq("presence"), now = Date.now();
-  ONL.rows = d && typeof d === "object" ? Object.entries(d).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string" && now - (+r.t || 0) < PRES.fresh).sort((a, b) => (b.t || 0) - (a.t || 0)) : [];
+  ONL.rows = d && typeof d === "object" ? Object.entries(d).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string" && now - (+r.t || 0) < PRES.fresh).sort((a, b) => (isFriend(b.k) ? 1 : 0) - (isFriend(a.k) ? 1 : 0) || (b.t || 0) - (a.t || 0)) : [];
   ONL.at = now; document.querySelectorAll("#chOnl, .chon").forEach(p => p.textContent = `🟢 ${ONL.rows.length}`); return ONL.rows;
 }
 function openOnline() {
   const m = modal35("🟢 Who's online");
-  const draw = rows => { m.body.innerHTML = rows.length ? `<p class="mut">${rows.length} player${rows.length === 1 ? "" : "s"} active in the last few minutes.</p><table class="spbt"><tr><th>Player</th><th>Doing</th></tr>${rows.map(r => `<tr class="${r.k === pKey(APR_USER) ? "me" : ""}"><td><button class="lbu" data-pu="${esc(r.k)}">${esc(String(r.u).slice(0, 24))}</button></td><td class="mut">${esc(String(r.w || "").slice(0, 60))}</td></tr>`).join("")}</table>` : `<p class="mut">${cloudOn() ? "Nobody else is online right now." : "Connect to the cloud to see who's online."}</p>`;
+  const draw = rows => { m.body.innerHTML = rows.length ? `<p class="mut">${rows.length} player${rows.length === 1 ? "" : "s"} active in the last few minutes.</p><table class="spbt"><tr><th>Player</th><th>Doing</th></tr>${rows.map(r => `<tr class="${r.k === pKey(APR_USER) ? "me" : ""}"><td>${isFriend(r.k) ? `<span class="frs">★</span> ` : ""}<button class="lbu" data-pu="${esc(r.k)}">${nameHTML(r.u, r.k, r.h)}</button></td><td class="mut">${esc(String(r.w || "").slice(0, 60))}</td></tr>`).join("")}</table>` : `<p class="mut">${cloudOn() ? "Nobody else is online right now." : "Connect to the cloud to see who's online."}</p>`;
     m.body.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => { try { m.close(); inspectPlayer(b.dataset.pu); } catch (e) {} }); };
   draw(ONL.rows); presPull().then(draw);
 }
@@ -3850,6 +4035,41 @@ function presStart() {
   ONL.timer = setInterval(() => { presBeat(); presPull(); }, PRES.beat);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { presBeat(); presPull(); } });
 }
+
+// ---- reactions: one emoji per player per message, stored at chat/<room>/<id>/r/<player> ----
+const CH_REACT = ["🔥", "😂", "😮", "👏", "💀"];
+function chMergeReacts(d) { if (!d || typeof d !== "object") return; let ch = false; CH.msgs.forEach(m => { const x = d[m._id]; if (x && typeof x === "object") { const r = x.r && typeof x.r === "object" ? x.r : {}; if (JSON.stringify(r) !== JSON.stringify(m.r || {})) { m.r = r; ch = true; } } }); if (ch) chDraw(); }
+function chReactSet(id, who, val) {
+  const m = CH.msgs.find(x => x._id === id); if (!m) return;
+  if (!who) m.r = val && typeof val === "object" ? val : {}; else { m.r = m.r || {}; if (val && CH_REACT.includes(val)) m.r[who] = val; else delete m.r[who]; }
+  chDraw();
+}
+function chReactHTML(m) {
+  if (!m._id || m._id[0] === "l" || !cloudOn()) return ""; const r = m.r && typeof m.r === "object" ? m.r : {}, me = pKey(APR_USER), cnt = {};
+  Object.values(r).forEach(e => { if (CH_REACT.includes(e)) cnt[e] = (cnt[e] || 0) + 1; });
+  const chips = CH_REACT.filter(e => cnt[e]).map(e => `<button class="chre ${r[me] === e ? "on" : ""}" data-cre="${esc(m._id)}" data-e="${e}">${e} ${cnt[e]}</button>`).join("");
+  return `<span class="chrs">${chips}<button class="chre add" data-cra="${esc(m._id)}" title="React">☺+</button></span>`;
+}
+async function chReact(id, e) {
+  if (!APR_USER || APR_USER === "guest") return notify("Log in to react."); const m = CH.msgs.find(x => x._id === id); if (!m) return;
+  const me = pKey(APR_USER), cur = (m.r || {})[me], tok = await ltdToken(); if (!tok) { ownWarn(); return notify("Sign in to react."); }
+  const off = cur === e, r = await ltdDb(`chat/${chRoom()}/${id}/r/${me}`, off ? "DELETE" : "PUT", off ? undefined : e, tok);
+  if (r.ok) chReactSet(id, me, off ? null : e); else notify("Couldn't react to that message.");
+}
+// ---- the pinned message: one per room at chatpin/<room>, set by admins ----
+var CHP = { room: "", m: null, at: 0 };
+async function chPinPull(force) {
+  if (!cloudOn() || (!force && CHP.room === chRoom() && Date.now() - CHP.at < 60000)) return; CHP.room = chRoom(); CHP.at = Date.now();
+  const d = await cloudReq(`chatpin/${chRoom()}`); const before = JSON.stringify(CHP.m); CHP.m = d && typeof d === "object" && typeof d.m === "string" ? d : null; if (JSON.stringify(CHP.m) !== before) chDraw();
+}
+async function chPin(id) {
+  const m = CH.msgs.find(x => x._id === id), tok = await ltdToken(); if (!m || !tok) return;
+  const val = { m: String(m.m || "").slice(0, 240), u: String(m.u || "").slice(0, 24), t: Date.now() }, r = await ltdDb(`chatpin/${chRoom()}`, "PUT", val, tok);
+  if (r.ok) { CHP.m = val; notify("Pinned."); chDraw(); } else notify("Couldn't pin (admins only).");
+}
+async function chUnpin() { const tok = await ltdToken(), r = await ltdDb(`chatpin/${chRoom()}`, "DELETE", undefined, tok); if (r.ok) { CHP.m = null; chDraw(); } }
+function chPinBar() { return CHP.m && CHP.room === chRoom() ? `<div class="chpinbar">📌 <b>${esc(CHP.m.u)}:</b> ${esc(CHP.m.m)}${CH.admin ? ` <button class="chx" id="chUnpin" title="Unpin">✕</button>` : ""}</div>` : ""; }
+setInterval(() => { if (__ready && APR_USER && !CH.min) chPinPull(); }, 30000);
 
 // ===================== Online sign-in (Firebase Auth, free plan) =====================
 // Each game account has a Firebase login so the database rules can check who is writing.
@@ -4595,7 +4815,7 @@ function genPack(kind) {
   try { if (god) chPost(`${APR_USER} opened a GOD PACK!`, null, "ann"); out.forEach(o => { if (o.c.tier === 4 && gradeOf(o.roll, o.v).g === "S+") chPost(`${APR_USER} pulled an S+ Mythic: ${o.c.name}!`, cardSnap(instByU(o.roll.u)), "ann"); }); } catch (e) {}
   if (!god) autoSalvagePack(out);
   gameEvent("packOpened", { out }); if (god) gameEvent("godPack", { out });
-  checkAchievements(); if (!G28.batch) save();
+  if (!G28.batch) { checkAchievements(); save(); }
   return out;
 }
 function pityText() {
@@ -5499,7 +5719,7 @@ function openSpireBoards(start) {
     if (rows === null) { L.textContent = "Leaderboards need the cloud connection."; return; }
     if (!rows.length) { L.textContent = kind === "full" ? "Nobody has climbed all 150 floors this week yet." : "No climbs here yet this week. Be the first."; return; }
     const me = myKey(), heat = r => r.h ? `<span class="spheat">🔥${r.h | 0}</span> ` : "", val = r => heat(r) + (kind === "top" ? `Floor ${r.f | 0}` : kind === "full" ? `${fmtN(r.s)} turns` : `${r.t | 0} turns`);
-    L.className = ""; L.innerHTML = `<table class="spbt"><tr><th>#</th><th>Player</th><th>${kind === "top" ? "Highest floor" : "Fewest turns"}</th>${kind === "top" ? "<th>Reached</th>" : ""}</tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === me ? "me" : ""}"><td>${i + 1}</td><td>${esc(String(r.u).slice(0, 24))}</td><td><b>${val(r)}</b></td>${kind === "top" ? `<td class="mut">${r.at ? new Date(r.at).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""}</td>` : ""}</tr>`).join("")}</table>`;
+    L.className = ""; L.innerHTML = `<table class="spbt"><tr><th>#</th><th>Player</th><th>${kind === "top" ? "Highest floor" : "Fewest turns"}</th>${kind === "top" ? "<th>Reached</th>" : ""}</tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === me ? "me" : ""}"><td>${i + 1}</td><td>${nameHTML(r.u, r.k, r.h)}</td><td><b>${val(r)}</b></td>${kind === "top" ? `<td class="mut">${r.at ? new Date(r.at).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""}</td>` : ""}</tr>`).join("")}</table>`;
   };
   draw();
 }
@@ -5683,6 +5903,125 @@ function showHunts() {
   $("#hnGo").onclick = () => huntGo();
   $("#hnLb").onclick = async () => { const m = modal35("🏆 This week's dragon hunters"); m.body.innerHTML = `<p class="mut">Highest rank of ${esc(W.n)} slain this week.</p><div id="hnB">Loading…</div>`; const rows = await huntBoard(), el = m.body.querySelector("#hnB"); if (!el) return; el.innerHTML = rows === null ? "Leaderboards need the cloud connection." : rows.length ? `<table class="spbt"><tr><th>#</th><th>Player</th><th>Rank</th></tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === myKey() ? "me" : ""}"><td>${i + 1}</td><td>${esc(String(r.u).slice(0, 24))}</td><td><b>${r.r | 0}</b></td></tr>`).join("")}</table>` : "Nobody has slain this week's Wyrm yet."; };
   main.querySelectorAll("[data-ho]").forEach(b => b.onclick = () => { const x = HOARD.find(o => o.k === b.dataset.ho); if (!x || H.scales < x.cost || (x.once && H.bought[x.k])) return; H.scales -= x.cost; if (x.once) H.bought[x.k] = 1; const n = x.give(); save(); updateHeader(); notify(typeof n === "string" && n ? `From the Hoard: ${n}` : `From the Hoard: ${x.n}`); showHunts(); });
+}
+
+// ===================== THE RAID WYRM =====================
+// Once a week a Raid Wyrm settles on the Spire with an absurd amount of HP. Everyone who has beaten Vharzyx gets
+// three attacks a day; every point of damage from every player chips at one shared health pool. As the pool
+// drops past 10%, 25%, 50%, 75% and 100%, everyone who hit it can claim that milestone's reward.
+const RAID = { hp: 1e11, attacks: 3, turns: 20 };   // 100 billion: a strong Spire player deals about 450 million a day
+const RAID_TIERS = [
+  [0.10, "8 🐲 Dragon Scales", s => { huntState().scales += 8; }],
+  [0.25, "2 Collector Boosters", s => { s.cpacks = (s.cpacks || 0) + 2; }],
+  [0.50, "30 🟣 Prisms", s => { s.shards += 30; }],
+  [0.75, "60 🪨 Spirestone and 4 Booster Packs", s => { s.deep = (s.deep || 0) + 60; s.packs += 4; }],
+  [1.00, "The Raid Chest: 50 🐲, 6 Booster Packs, 60 🟣 and the title \"Raidbreaker\"", s => { huntState().scales += 50; s.packs += 6; s.shards += 60; addTitle("Raidbreaker"); s.raid.wins = (s.raid.wins || 0) + 1; }]
+];
+const RAID_NAMES = ["Ashmaw, the Sky-Eater", "Glaciarch Thrennos", "Vyrrax Stormcrown", "Mother of Blight", "Old Night, the Wyrm Unending"];
+function raidName(w = weekNo()) { return RAID_NAMES[((w % RAID_NAMES.length) + RAID_NAMES.length) % RAID_NAMES.length]; }
+function raidState() {
+  if (!sv.raid || typeof sv.raid !== "object") sv.raid = {}; const R = sv.raid, w = weekNo();
+  R.wins = R.wins || 0; if (R.w !== w) { R.w = w; R.d = 0; R.a = 0; R.day = ""; R.claimed = []; }
+  if (R.day !== dayKey()) { R.day = dayKey(); R.a = 0; } return R;
+}
+function raidBoss() {
+  const W = huntWyrm(), en = huntBoss(Math.max(1, ((sv.hunt && sv.hunt.top) || 1) - 1));
+  en.hp = 1e18; en.name = en.m.name = raidName(); en.m.mech = [...new Set([...W.mech, "rally"])]; return en;
+}
+var RAX = { total: 0, rows: [], at: 0 };
+async function raidRefresh() {
+  if (!cloudOn()) return; const d = await cloudReq(`raid/${weekNo()}`), dm = (d && d.dmg) || {};
+  RAX = { rows: Object.entries(dm).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string"), at: Date.now() };
+  RAX.total = RAX.rows.reduce((a, r) => a + (+r.d || 0), 0);
+}
+function raidPct() { const R = raidState(); return Math.min(1, Math.max(RAX.total, R.d) / RAID.hp); }
+async function raidAttack() {
+  const R = raidState(); if (!huntOpen()) return notify("Beat Vharzyx on floor 150 to join the raid.");
+  if (R.a >= RAID.attacks) return notify("No raid attacks left today."); const ts = getStats(); if (!ts.count) return notify("Equip some cards first.");
+  const r = fight(ts, raidBoss(), { turns: RAID.turns }), dmg = Object.values(r.dealt).reduce((a, b) => a + b, 0);
+  R.a++; R.d += dmg; save(); gameEvent("raidAttack", { dmg }); sfx(4);
+  if (cloudOn()) { await cloudReq(`raid/${R.w}/dmg/${myKey()}`, "PUT", { u: dispName(), d: Math.round(R.d), a: R.a, day: R.day, h: (sv.spire && sv.spire.heatMax) || 0, t: Date.now() }); await raidRefresh(); }
+  return { dmg, turns: r.turns, died: r.pHP <= 0 };
+}
+function showRaid() {
+  const R = raidState(), open = huntOpen(), pct = raidPct(), W = huntWyrm();
+  main.innerHTML = `<div class="tw rd" id="rdRoot"><div class="panel-box twhead"><h2 class="twt">☄️ The Raid Wyrm <span class="twfam">Everyone fights one dragon. It has ${fmtN(RAID.hp)} HP.</span></h2>
+   <div class="rdrow"><pre class="boss hnart" style="--wc:#ef4444">${spireArt(FLIGHTS.length - 1, 1)}</pre><div class="hninfo">
+    <h3 style="color:#f87171">${esc(raidName())}</h3><p class="mut">This week's raid. It fights with the twists of ${esc(W.n)} and Rallies every turn. Each attack lasts ${RAID.turns} turns and counts every point of damage you deal. You get ${RAID.attacks} attacks a day.</p>
+    <div class="hpw big"><div class="hpf foe" style="width:${100 - 100 * pct}%"></div></div>
+    <div class="hpt">${fmtN(Math.max(0, RAID.hp - Math.max(RAX.total, R.d)))} HP left · ${(pct * 100).toFixed(pct < 0.01 ? 3 : 1)}% destroyed · ${RAX.rows.length} raider${RAX.rows.length === 1 ? "" : "s"} · resets in ${fmtCountdown(nextMonday() - Date.now())}</div>
+    <p>Your damage this week: <b>${fmtN(R.d)}</b> · attacks left today: <b>${Math.max(0, RAID.attacks - R.a)}</b></p>
+    <div class="bar"><button id="rdGo" class="cta" ${open && R.a < RAID.attacks ? "" : "disabled"}>☄️ Attack the Raid Wyrm</button><button id="rdR">↻ Refresh</button></div><div id="rdLog">${open ? "" : `<p class="bad">Beat Vharzyx on floor 150 of the Wyrmspire to join the raid.</p>`}</div></div></div></div>
+   <div class="twcols"><div class="panel-box"><h3>Raid milestones</h3><p class="mut">Claimable by everyone who dealt damage this week.</p><div class="wbt">${RAID_TIERS.map(([p, t], i) => { const ok = pct >= p, got = R.claimed.includes(i); return `<div class="${ok ? "ok" : ""}"><b>${Math.round(p * 100)}%</b> ${esc(t)} ${got ? "✔ claimed" : ok && R.d > 0 ? `<button data-rdc="${i}" class="cta">Claim</button>` : ""}</div>`; }).join("")}</div></div>
+    <div class="panel-box"><h3>Top raiders</h3>${RAX.rows.length ? `<table class="spbt"><tr><th>#</th><th>Player</th><th>Damage</th></tr>${RAX.rows.slice().sort((a, b) => (+b.d || 0) - (+a.d || 0)).slice(0, 25).map((r, i) => `<tr class="${r.k === myKey() ? "me" : ""}"><td>${i + 1}</td><td>${nameHTML(r.u, r.k, r.h)}</td><td><b>${fmtN(+r.d || 0)}</b></td></tr>`).join("")}</table>` : `<p class="mut">${cloudOn() ? "No raiders yet this week." : "The raid needs the cloud connection to add up everyone's damage."}</p>`}</div></div></div>`;
+  const $ = s => main.querySelector(s);
+  $("#rdGo").onclick = async () => { $("#rdGo").disabled = true; const r = await raidAttack(); if (r) notify(`☄️ You dealt ${fmtN(r.dmg)} damage to the Raid Wyrm in ${r.turns} turns.`); showRaid(); };
+  $("#rdR").onclick = async () => { await raidRefresh(); showRaid(); };
+  main.querySelectorAll("[data-rdc]").forEach(b => b.onclick = () => { const i = +b.dataset.rdc; if (R.claimed.includes(i) || raidPct() < RAID_TIERS[i][0] || !R.d) return; R.claimed.push(i); RAID_TIERS[i][2](sv); save(); updateHeader(); notify(`Raid reward: ${RAID_TIERS[i][1]}`); showRaid(); });
+  if (cloudOn() && Date.now() - RAX.at > 30000) raidRefresh().then(() => { if (document.getElementById("rdRoot")) showRaid(); });
+}
+
+// ===================== CLUBS =====================
+// Small groups (up to 20) with a tag shown next to members' names, a shared weekly goal and their own chat room.
+// The weekly goal: the club's combined Wyrmspire floors this week reach 75 per member; then every member can
+// claim the club chest once. Clubs live at /clubs/<tag> in the database.
+const CLUB = { max: 20, perMember: 75, chest: { packs: 3, prisms: 15, stone: 20 } };
+var CLX = { list: null, at: 0, week: null, busy: false };
+function clubMine() { if (!sv.club || typeof sv.club !== "object") sv.club = {}; return sv.club; }
+async function clubLoad(force) {
+  if (!cloudOn()) { CLX.list = []; return; } if (!force && CLX.list && Date.now() - CLX.at < 30000) return;
+  const [d, wk] = await Promise.all([cloudReq("clubs"), cloudReq(`spire/${weekNo()}/top`)]);
+  CLX.list = d && typeof d === "object" ? Object.entries(d).map(([id, c]) => Object.assign({ id }, c)).filter(c => c && typeof c.n === "string" && c.members && typeof c.members === "object") : [];
+  CLX.week = wk && typeof wk === "object" ? wk : {}; CLX.at = Date.now();
+  // keep your own membership in step with the database (kicked, or the club was disbanded)
+  const M = clubMine(); if (M.id) { const c = CLX.list.find(x => x.id === M.id); if (!c || !c.members[myKey()]) { sv.club = {}; save(); notify("You're no longer in that club."); } }
+}
+function clubFloors(c) { return Object.keys(c.members || {}).reduce((a, k) => a + ((CLX.week && CLX.week[k] && +CLX.week[k].f) || 0), 0); }
+function clubGoal(c) { return CLUB.perMember * Math.max(1, Object.keys(c.members || {}).length); }
+async function clubCreate(name, tag) {
+  name = String(name || "").replace(/[<>]/g, "").trim().slice(0, 24); tag = String(tag || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4);
+  if (name.length < 3) return "Name: at least 3 characters."; if (tag.length < 2) return "Tag: 2 to 4 letters or numbers.";
+  await clubLoad(true); if (CLX.list.some(c => c.id === tag.toLowerCase())) return "That tag is taken.";
+  const k = myKey(), at = Date.now(), r = await cloudReq(`clubs/${tag.toLowerCase()}`, "PUT", { n: name, tag, owner: k, at, members: { [k]: { u: dispName(), at } } });
+  if (!r && !cloudOk()) return "Couldn't create the club (are you signed in?).";
+  sv.club = { id: tag.toLowerCase(), tag, n: name }; save(); try { lbQueue(); } catch (e) {} await clubLoad(true); return true;
+}
+async function clubJoin(c) {
+  if (Object.keys(c.members || {}).length >= CLUB.max) return notify("That club is full.");
+  const r = await cloudReq(`clubs/${c.id}/members/${myKey()}`, "PUT", { u: dispName(), at: Date.now() });
+  if (!r && !cloudOk()) return notify("Couldn't join (are you signed in?).");
+  sv.club = { id: c.id, tag: c.tag, n: c.n }; save(); try { lbQueue(); } catch (e) {} notify(`Joined ⟦${c.tag}⟧ ${c.n}.`); await clubLoad(true); showClubs();
+}
+async function clubLeave() {
+  const M = clubMine(), c = (CLX.list || []).find(x => x.id === M.id); if (!c) { sv.club = {}; save(); return showClubs(); }
+  const k = myKey(), others = Object.entries(c.members).filter(([x]) => x !== k).sort((a, b) => (a[1].at || 0) - (b[1].at || 0));
+  if (c.owner === k) { if (others.length) await cloudReq(`clubs/${c.id}/owner`, "PUT", others[0][0]); else { await cloudReq(`clubs/${c.id}`, "DELETE"); sv.club = {}; save(); notify("Club disbanded."); await clubLoad(true); return showClubs(); } }
+  await cloudReq(`clubs/${c.id}/members/${k}`, "DELETE"); sv.club = {}; save(); try { lbQueue(); } catch (e) {} notify("You left the club."); await clubLoad(true); showClubs();
+}
+async function clubKick(c, k) { if (c.owner !== myKey() || k === myKey()) return; await cloudReq(`clubs/${c.id}/members/${k}`, "DELETE"); await clubLoad(true); showClubs(); }
+async function showClubs() {
+  main.innerHTML = `<div class="tw cl" id="clRoot"><div class="panel-box"><h2 class="twt">🛡️ Clubs <span class="twfam">Team up: a tag next to your name, a weekly goal, a chest and your own chat room.</span></h2><p class="mut" id="clMsg">${cloudOn() ? "Loading…" : "Clubs need the cloud connection."}</p></div><div id="clBody"></div></div>`;
+  if (!cloudOn()) return; await clubLoad(); const B = document.getElementById("clBody"); if (!B) return; document.getElementById("clMsg").textContent = "";
+  const M = clubMine(), mine = M.id && CLX.list.find(c => c.id === M.id), wk = weekNo(), rank = CLX.list.slice().sort((a, b) => clubFloors(b) - clubFloors(a));
+  const board = `<div class="panel-box"><h3>Clubs this week</h3>${rank.length ? `<table class="spbt"><tr><th>#</th><th>Club</th><th>Members</th><th>Floors this week</th><th></th></tr>${rank.map((c, i) => { const n = Object.keys(c.members).length; return `<tr class="${mine && c.id === mine.id ? "me" : ""}"><td>${i + 1}</td><td><b class="ptag">⟦${esc(String(c.tag).slice(0, 4))}⟧</b> ${esc(c.n)}</td><td>${n}/${CLUB.max}</td><td><b>${fmtN(clubFloors(c))}</b> <span class="mut">/ ${fmtN(clubGoal(c))}</span></td><td>${!mine && n < CLUB.max ? `<button data-cj="${esc(c.id)}">Join</button>` : ""}</td></tr>`; }).join("")}</table>` : `<p class="mut">No clubs yet. Start the first one.</p>`}</div>`;
+  if (!mine) {
+    B.innerHTML = `<div class="panel-box"><h3>Start a club</h3><p class="mut">Pick a name and a 2–4 letter tag. You can have up to ${CLUB.max} members.</p><input id="clN" maxlength="24" placeholder="Club name"> <input id="clT" maxlength="4" placeholder="TAG" size="5"> <button id="clC" class="cta">Create</button> <span id="clE" class="bad"></span></div>${board}`;
+    B.querySelector("#clC").onclick = async () => { const r = await clubCreate(B.querySelector("#clN").value, B.querySelector("#clT").value); if (r === true) { notify("Club created!"); showClubs(); } else B.querySelector("#clE").textContent = r; };
+  } else {
+    const mem = Object.entries(mine.members).map(([k, m]) => ({ k, u: m.u, at: m.at, f: (CLX.week[k] && +CLX.week[k].f) || 0, h: (CLX.week[k] && +CLX.week[k].h) || 0 })).sort((a, b) => b.f - a.f);
+    const got = clubFloors(mine), goal = clubGoal(mine), done = got >= goal, claimed = M.wk === wk, own = mine.owner === myKey();
+    B.innerHTML = `<div class="panel-box"><h3><span class="ptag">⟦${esc(mine.tag)}⟧</span> ${esc(mine.n)} <span class="mut">· ${mem.length}/${CLUB.max} members${own ? " · you lead this club" : ""}</span></h3>
+     <h4>Weekly goal: ${fmtN(goal)} Wyrmspire floors together</h4><div class="hpw big"><div class="hpf you" style="width:${Math.min(100, 100 * got / goal)}%"></div></div><div class="hpt">${fmtN(got)} / ${fmtN(goal)} floors · resets in ${fmtCountdown(nextMonday() - Date.now())}</div>
+     <p>Club chest: <b>${CLUB.chest.packs} 📦 · ${CLUB.chest.prisms} 🟣 · ${CLUB.chest.stone} 🪨</b> for every member when the goal is met. ${claimed ? "✔ claimed this week" : done ? `<button id="clChest" class="cta">Claim the club chest</button>` : ""}</p>
+     <table class="spbt"><tr><th>Member</th><th>Floors this week</th><th></th></tr>${mem.map(m => `<tr class="${m.k === myKey() ? "me" : ""}"><td><button class="lbu" data-pu="${esc(m.k)}">${nameHTML(m.u, m.k, m.h)}</button>${m.k === mine.owner ? " 👑" : ""}</td><td>${fmtN(m.f)}</td><td>${own && m.k !== myKey() ? `<button data-ck="${esc(m.k)}" class="danger">Remove</button>` : ""}</td></tr>`).join("")}</table>
+     <div class="bar"><button id="clChat">💬 Club chat room</button><button id="clLeave">${own && mem.length === 1 ? "Disband the club" : "Leave the club"}</button></div></div>${board}`;
+    const ch = B.querySelector("#clChest"); if (ch) ch.onclick = () => { if (clubMine().wk === wk || clubFloors(mine) < clubGoal(mine)) return; clubMine().wk = wk; sv.packs += CLUB.chest.packs; sv.shards += CLUB.chest.prisms; sv.deep = (sv.deep || 0) + CLUB.chest.stone; save(); updateHeader(); notify("Club chest claimed!"); showClubs(); };
+    B.querySelector("#clChat").onclick = () => { CH.room = "club-" + mine.id; CH.min = false; chSaveUI(); chConnect(); notify(`Chat switched to #club-${mine.id}. Use # in the chat window to go back to #global.`); };
+    B.querySelector("#clLeave").onclick = e => { const b = e.target; if (b.dataset.ok !== "1") { b.dataset.ok = "1"; b.textContent = "Click again to confirm"; return; } clubLeave(); };
+    B.querySelectorAll("[data-ck]").forEach(b => b.onclick = () => clubKick(mine, b.dataset.ck));
+    B.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => inspectPlayer(b.dataset.pu));
+  }
+  B.querySelectorAll("[data-cj]").forEach(b => b.onclick = () => { const c = CLX.list.find(x => x.id === b.dataset.cj); if (c) clubJoin(c); });
 }
 
 // ===================== THE FRONTIER: endless background farming =====================
@@ -6188,6 +6527,126 @@ function wkBoardHTML() { return boardHTML(WKB.w === weekNo() ? WKB.rows : [], r 
 function seasonSleeves() { (sv.owned || []).forEach(o => { const m = /^sl:season(\d+)$/.exec(o); if (m && !SLEEVES.some(x => x[0] === "season" + m[1])) SLEEVES.push(["season" + m[1], "Season " + m[1], 0]); }); }
 function wkBestText(W) { return `Your best this week: <b>${W.best}/10 stages</b>${W.best ? ` in ${W.turns} turns` : ""} · runs: ${W.tries}. Each stage pays Raw Glyphs (150 × stage) the first time you clear it each week; clearing all ten earns the title "Weekly Champion".`; }
 
+// ===================== ACHIEVEMENTS =====================
+// Each achievement has ranks (targets) and points per rank. Hidden ones show as "???" until earned.
+// Progress is read from what the game already tracks, plus a few counters kept here.
+const ACH_PTS = [5, 10, 20, 40, 80];
+function achStats() { sv.stats = sv.stats || {}; return sv.stats; }
+onEvt("packOpened", d => { const S = achStats(), o = d.out || []; if (o.kind === "collector") S.cpOpened = (S.cpOpened || 0) + 1; if (o.god) S.godPacks = (S.godPacks || 0) + 1; });
+onEvt("frKill", d => { const S = achStats(); S.frTop = Math.max(S.frTop || 0, d.T || 0); });
+onEvt("spireClear", d => { const S = achStats(); if (d.turns <= 12) S.fastFlights = (S.fastFlights || 0) + 1; if (d.n === FLIGHTS.length - 1) S.summits = (S.summits || 0) + 1; });
+onEvt("brew", () => { const S = achStats(); S.brews = (S.brews || 0) + 1; });
+onEvt("chatSent", () => { const S = achStats(); S.chats = (S.chats || 0) + 1; });
+function achOwnUnique() { return CARDS.filter(c => !c.forb && own(c.id).length > 0).length; }
+function achMaxEtch() { return (sv.cards || []).reduce((a, c) => Math.max(a, c.et ? c.et.r || 0 : 0), 0); }
+const ACH = [
+  // packs
+  { id: "packs", g: "Packs", n: "Pack Rat", d: "Open Booster Packs", v: () => achStats().packsOpened || 0, t: [10, 100, 1000, 10000] },
+  { id: "cpacks", g: "Packs", n: "Collector's Habit", d: "Open Collector Boosters", v: () => achStats().cpOpened || 0, t: [10, 100, 1000] },
+  { id: "god", g: "Packs", n: "Divine Intervention", d: "Open a God Pack", v: () => achStats().godPacks || 0, t: [1, 5], hidden: true },
+  { id: "myth", g: "Packs", n: "Mythmaker", d: "Pull Mythics", v: () => achStats().mythics || 0, t: [1, 25, 250] },
+  // collection
+  { id: "cards", g: "Collection", n: "Curator", d: "Collect unique cards", v: achOwnUnique, t: [50, 125, 175, () => CARDS.filter(c => !c.forb).length] },
+  { id: "splus", g: "Collection", n: "Flawless", d: "Own cards graded S+", v: () => (sv.cards || []).filter(c => gradeOf(c.r, c.v).g === "S+").length, t: [1, 10, 50] },
+  { id: "serial1", g: "Collection", n: "One of a Kind", d: "Own Serialized cards", v: () => Object.values(sv.ser || {}).flat().length, t: [1, 10] },
+  { id: "rare", g: "Collection", n: "Against the Odds", d: "Pull a card rarer than 1 in N", v: () => (sv.rare && sv.rare.o) || 0, t: [1e5, 1e7, 1e9, 1e12], fmt: n => "1 in " + fmtOdds(n) },
+  { id: "dbl", g: "Collection", n: "Double Take", d: "Own a card with two finishes or two misprints", v: () => (sv.cards || []).filter(c => vFin(c.v).length > 1 || vMis(c.v).length > 1).length, t: [1], hidden: true },
+  { id: "quad", g: "Collection", n: "The Impossible Card", d: "Own a card with two finishes and two misprints", v: () => (sv.cards || []).filter(c => vFin(c.v).length > 1 && vMis(c.v).length > 1).length, t: [1], hidden: true, pts: [500] },
+  // the Wyrmspire
+  { id: "tower", g: "Wyrmspire", n: "Climber", d: "Reach a Wyrmspire floor", v: () => topFloor(), t: [10, 50, 100, 150] },
+  { id: "heat", g: "Wyrmspire", n: "Feel the Heat", d: "Unlock Heat levels", v: () => (sv.spire && sv.spire.heatMax) || 0, t: [1, 5, 10, 25, 50] },
+  { id: "fast", g: "Wyrmspire", n: "Speedrunner", d: "Clear flights in 12 turns or fewer", v: () => achStats().fastFlights || 0, t: [1, 25, 250] },
+  { id: "summit", g: "Wyrmspire", n: "Wyrmslayer", d: "Beat Vharzyx on floor 150", v: () => achStats().summits || 0, t: [1, 10, 100] },
+  // adventure
+  { id: "frk", g: "Adventure", n: "Frontier Veteran", d: "Defeat Frontier enemies", v: () => (sv.fr && sv.fr.k) || 0, t: [1000, 10000, 100000, 1000000] },
+  { id: "frc", g: "Adventure", n: "Champion Hunter", d: "Defeat Frontier champions", v: () => (sv.fr && sv.fr.c) || 0, t: [10, 100, 1000] },
+  { id: "frt", g: "Adventure", n: "Far Frontier", d: "Fight on a Frontier tier", v: () => achStats().frTop || 0, t: [25, 50, 100, 200] },
+  { id: "hunt", g: "Adventure", n: "Dragon Hunter", d: "Slay hunted dragons", v: () => (sv.hunt && sv.hunt.kills) || 0, t: [1, 10, 100, 500] },
+  { id: "huntr", g: "Adventure", n: "Apex Predator", d: "Slay a hunted dragon at rank N", v: () => Math.max(0, ((sv.hunt && sv.hunt.top) || 1) - 1), t: [10, 25, 50] },
+  { id: "asc", g: "Adventure", n: "Ascendant", d: "Reach an Ascension tier", v: () => (sv.asc && sv.asc.n) || 0, t: [1, 5, 10, 25, 50] },
+  { id: "raid", g: "Adventure", n: "Raider", d: "Help bring down a Raid Wyrm", v: () => (sv.raid && sv.raid.wins) || 0, t: [1, 5, 25] },
+  // forge and web
+  { id: "etch", g: "Forge & Web", n: "Deep Carver", d: "Etch a card to rank N", v: achMaxEtch, t: [4, 8, 12] },
+  { id: "imbue", g: "Forge & Web", n: "Tinkerer", d: "Imbue or refine cards", v: () => (achStats().tempers || 0) + (achStats().refines || 0), t: [10, 100, 1000] },
+  { id: "brew", g: "Forge & Web", n: "Alchemist", d: "Brew potions", v: () => achStats().brews || 0, t: [10, 100] },
+  { id: "web", g: "Forge & Web", n: "Weaver", d: "Take every node in the Skill Web", v: () => (webFull() ? 1 : 0) + (webState().rb || 0), t: [1] },
+  { id: "mastery", g: "Forge & Web", n: "Grand Master", d: "Master every Skill Web region to rank 5", v: () => WEB_REGIONS.every(G => ((webState().m || {})[G.k] || 0) >= WEB_MASTERY.max) ? 1 : 0, t: [1] },
+  { id: "rebirth", g: "Forge & Web", n: "Reborn", d: "Rebirth the Skill Web", v: () => webState().rb || 0, t: [1, 5, 10] },
+  // social and seasons
+  { id: "friends", g: "Social", n: "Popular", d: "Follow friends", v: () => friends().length, t: [1, 10] },
+  { id: "club", g: "Social", n: "Joiner", d: "Join a club", v: () => sv.club && sv.club.id ? 1 : 0, t: [1] },
+  { id: "chat", g: "Social", n: "Chatterbox", d: "Send chat messages", v: () => achStats().chats || 0, t: [1, 100, 1000] },
+  { id: "season", g: "Social", n: "Seasoned", d: "Earn season points in one season", v: () => seasonState().pts || 0, t: [1000, 6000, 10000] },
+  { id: "hotemblem", g: "Social", n: "Hottest in the Spire", d: "Hold the weekly fire emblem: the highest Heat of the week", v: () => achStats().emblems || 0, t: [1, 5, 25], hidden: true }
+];
+function achTarget(a, i) { const x = a.t[i]; return typeof x === "function" ? x() : x; }
+function achPts(a, i) { return (a.pts || ACH_PTS)[i] ?? ACH_PTS[Math.min(i, ACH_PTS.length - 1)]; }
+function achRank(a) { let v = 0; try { v = a.v() || 0; } catch (e) {} let r = 0; while (r < a.t.length && v >= achTarget(a, r)) r++; return { v, r }; }
+function achState() { if (!sv.achv || typeof sv.achv !== "object") sv.achv = {}; return sv.achv; }   // achievement id -> ranks already announced
+function achPoints() { return ACH.reduce((s, a) => { const r = achRank(a).r; for (let i = 0; i < r; i++) s += achPts(a, i); return s; }, 0); }
+function checkAchievements() {
+  const A = achState(); let ch = false;
+  ACH.forEach(a => { const { r } = achRank(a), was = A[a.id] || 0; if (r > was) { A[a.id] = r; ch = true; if (__ready) notify(`🏅 ${a.n}${a.t.length > 1 ? " " + "★".repeat(r) : ""}: ${a.d} ${a.fmt ? a.fmt(achTarget(a, r - 1)) : fmtN(achTarget(a, r - 1))} (+${achPts(a, r - 1)} pts)`); } });
+  if (ch) { try { lbQueue(); } catch (e) {} }
+}
+// compatibility with the old awards list in Account & Guide
+function getAchievementsList() { return ACH.map(a => ({ id: a.id, t: a.n, desc: a.d, check: () => achRank(a).r > 0 })); }
+setInterval(() => { if (__ready && APR_USER) checkAchievements(); }, 20000);
+
+function showAchievements() {
+  const pts = achPoints(), groups = [...new Set(ACH.map(a => a.g))], total = ACH.reduce((s, a) => s + a.t.reduce((x, _, i) => x + achPts(a, i), 0), 0);
+  main.innerHTML = `<div class="achw"><div class="panel-box"><h2 class="twt">🏅 Achievements <span class="twfam">${fmtN(pts)} of ${fmtN(total)} points · ${ACH.filter(a => achRank(a).r > 0).length} of ${ACH.length} started</span></h2>
+   <p class="mut">Each achievement has ranks; every rank adds points. Hidden achievements show as ??? until you earn them. Your points appear on the Achievement Points leaderboard.</p></div>
+   ${groups.map(g => `<div class="panel-box"><h3>${esc(g)}</h3><div class="achg">${ACH.filter(a => a.g === g).map(a => { const { v, r } = achRank(a), done = r >= a.t.length, hide = a.hidden && !r, next = done ? achTarget(a, a.t.length - 1) : achTarget(a, r), f = a.fmt || fmtN;
+     return `<div class="ach ${r ? "got" : ""} ${done ? "done" : ""}"><div class="achh"><b>${hide ? "???" : esc(a.n)}</b><span class="achr">${a.t.map((_, i) => `<i class="${i < r ? "on" : ""}">★</i>`).join("")}</span></div>
+      <div class="mut">${hide ? "A hidden achievement" : `${esc(a.d)}${done ? "" : `: ${f(next)}`}`}</div>
+      ${hide ? "" : `<div class="hpw"><div class="hpf you" style="width:${Math.min(100, 100 * (a.fmt ? Math.log10(Math.max(1, v)) / Math.log10(Math.max(10, next)) : v / Math.max(1, next)))}%"></div></div><span class="mut achv">${done ? "complete" : `${f(Math.min(v, next))} / ${f(next)} · +${achPts(a, r)} pts`}</span>`}</div>`; }).join("")}</div></div>`).join("")}</div>`;
+}
+
+// ===================== CURRENCIES: what each one is, where it comes from and what it buys =====================
+// Opened by clicking any currency in the status bar, from the Guide, or from ⚡ Shortcuts.
+const CURRENCY_INFO = [
+  { k: "gold", i: "🪙", n: "Gold", have: () => sv.c,
+    get: ["The Frontier: every kill (more on higher tiers and with Gold bonuses)", "The Wyrmspire: every new floor each week (more with Heat)", "Frontier bounty chests and Dragon Hunts", "Selling to the NPC market"],
+    use: ["Booster Packs and Collector Boosters", "Tribute Ascension tributes"] },
+  { k: "gly", i: "░▒▓", n: "Raw Glyphs", have: () => sv.dust,
+    get: ["Salvaging cards (by hand or with Auto-Salvage)", "Daily goals", "Weekly Challenge stages and Frontier bounty chests", "Season rewards"],
+    use: ["Levelling cards up", "The Forge: Imbuing, Tempering, the Alchemy Lab", "Etching (with Spirestone)"] },
+  { k: "pri", i: "🟣", n: "Prisms", have: () => sv.shards,
+    get: ["Beating each Wyrmspire boss for the first time ever", "Unlocking a new Heat level", "Tribute Ascension", "Frontier champions (1 each) and high-tier bounty chests", "Weekly goals, seasons, the Raid Wyrm and the Dragon Hunt Hoard"],
+    use: ["The Skill Web: nodes, region Mastery, Starlight and Rebirth", "Recarving an Etching"] },
+  { k: "deep", i: "🪨", n: "Spirestone", have: () => sv.deep || 0,
+    get: ["Wyrmspire bosses (once a week per Heat level; more with Heat)", "Frontier elites, champions and bounty chests", "Dragon Hunts and the Hoard", "Season rewards"],
+    use: ["Etching: permanent upgrades to a card's attributes"] },
+  { k: "scale", i: "🐲", n: "Dragon Scales", have: () => (sv.hunt && sv.hunt.scales) || 0,
+    get: ["Winning Dragon Hunts (after you've beaten Vharzyx on floor 150)", "Raid Wyrm milestone rewards"],
+    use: ["The Hoard: Mythics graded S+, Legendaries, boosters, Prisms, Spirestone and the Wyrmhide sleeve"] },
+  { k: "pack", i: "📦", n: "Booster Packs", have: () => sv.packs,
+    get: ["Buying them with Gold", "A free pack every 30 minutes (up to 3 waiting)", "Wyrmspire bosses, Ascension, goals, seasons and high-tier bounty chests"],
+    use: ["Opening them: 14 cards each"] },
+  { k: "cpack", i: "✨", n: "Collector Boosters", have: () => sv.cpacks || 0,
+    get: ["Buying them with Gold (3× a Booster Pack)", "Season rewards, the Raid Wyrm and the Dragon Hunt Hoard"],
+    use: ["Opening them: 12 cards, better finishes, misprints and Legendary or Mythic odds"] },
+  { k: "mats", i: "🦴", n: "Monster drops", have: () => { try { return matCount("_c") + matCount("_r"); } catch (e) { return 0; } },
+    get: ["Common drops: Frontier kills and Wyrmspire floors", "Rare drops: Wyrmspire bosses and Frontier elites"],
+    use: ["Tribute Ascension", "Re-rolls and some Forge recipes"] },
+  { k: "season", i: "🏅", n: "Season points", have: () => { try { return seasonState().pts; } catch (e) { return 0; } },
+    get: ["Season quests and objectives", "Daily and weekly goals", "Weekly Challenge stages, World Boss attacks, new best floors and Ascensions"],
+    use: ["The season reward track (see 🎯 Goals)"] }
+];
+function openCurrencies(focus) {
+  const M = modal35("💰 Currencies", "m35-cur");
+  M.body.innerHTML = `<p class="mut">Everything you can earn, where it comes from and what it's for. Click any currency in the bar at the top to open this.</p><div class="curg">${CURRENCY_INFO.map(c => `<div class="curc ${c.k === focus ? "on" : ""}" id="cur-${c.k}"><div class="curh"><span class="curi">${c.i}</span><b>${esc(c.n)}</b><span class="curn">${fmtN(c.have())}</span></div><div class="curl"><span>Earn</span><ul>${c.get.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div><div class="curl"><span>Spend</span><ul>${c.use.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></div>`).join("")}</div>`;
+  if (focus) setTimeout(() => { const e = M.body.querySelector("#cur-" + focus); if (e) e.scrollIntoView({ block: "center" }); }, 30);
+}
+// click a currency in the status bar to learn about it
+document.addEventListener("click", e => {
+  const sb = e.target.closest && e.target.closest("#statusbar"); if (!sb) return;
+  const el = e.target.closest(".cy, .sbi"); if (!el) return; const t = el.textContent || "";
+  const k = /🪙/.test(t) ? "gold" : /░▒▓/.test(t) ? "gly" : /🟣/.test(t) ? "pri" : /🪨/.test(t) ? "deep" : /📦/.test(t) ? "pack" : null;
+  if (k) openCurrencies(k);
+});
+
 // ===================== SHORTCUTS: a command menu (Ctrl+K or /) and pinned quick buttons =====================
 // Every screen and the common actions in one searchable list. Star an action to pin it to the bar under the tabs.
 function scActions() {
@@ -6205,6 +6664,7 @@ function scActions() {
   add("spmax", "Wyrmspire", "Switch to my highest Heat", () => { go("ADVENTURE", sub("ADVENTURE", "The Wyrmspire")); setTimeout(() => spireSetHeat(spireState().heatMax), 300); }, () => (spireState().heatMax || 0) > 0 && spireState().heat < spireState().heatMax, "heat");
   add("hunt", "Dragon Hunts", "Hunt this week's dragon", () => { go("ADVENTURE", sub("ADVENTURE", "Dragon Hunts")); setTimeout(() => huntGo(), 300); }, () => huntOpen() && huntState().used < HUNT.perDay, "wyrm");
   add("trial", "Ascension", "Face the Ascension trial", () => { go("ADVENTURE", sub("ADVENTURE", "Tribute Ascension")); setTimeout(() => ascTrial(), 300); }, () => !ascTrialOk(), "ascend");
+  add("cur", "Menus", "Currencies: where each comes from", () => openCurrencies(), () => true, "gold glyphs prisms spirestone scales money");
   add("goals", "Menus", "Goals & Season", () => openGoals(), () => true, "daily weekly quests");
   add("lb", "Menus", "Spire leaderboards", () => openSpireBoards(), () => true, "rank");
   add("online", "Menus", "Who's online", () => openOnline(), () => cloudOn(), "players");
@@ -6246,6 +6706,26 @@ document.addEventListener("keydown", e => {
   if (e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector(".m35")) { e.preventDefault(); openShortcuts(); }
 });
 
+// ===================== VERSION CHECK =====================
+// Every few minutes (and when you come back to the tab) the game quietly fetches its own page and compares the
+// build id in it with the one it's running. If a newer build is live, a banner offers a reload (your save is kept).
+const VER = { every: 300000, at: 0, newer: "" };
+async function verCheck(force) {
+  if (!/^https?:/.test(location.protocol) || VER.newer || (!force && Date.now() - VER.at < VER.every)) return; VER.at = Date.now();
+  try {
+    const r = await fetch(location.pathname + "?v=" + Date.now(), { cache: "no-store" }); if (!r.ok) return;
+    const m = /<meta name="arit-build" content="(\d+)"/.exec(await r.text()); if (m && m[1] > BUILD_ID) { VER.newer = m[1]; verBanner(); }
+  } catch (e) {}
+}
+function verBanner() {
+  if (document.getElementById("verbar")) return; const b = document.createElement("div"); b.id = "verbar";
+  b.innerHTML = `✨ A new version of the game is live. <button id="verGo" class="cta">Reload now</button> <button id="verLater">Later</button>`; document.body.appendChild(b);
+  b.querySelector("#verGo").onclick = () => { try { save(); } catch (e) {} setTimeout(() => location.reload(), 300); };
+  b.querySelector("#verLater").onclick = () => { b.remove(); setTimeout(verBanner, 30 * 60000); };
+}
+setInterval(() => verCheck(), 60000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) verCheck(); });
+
 // ===================== Boot =====================
 convertCards();
 pruneSave(); seasonSleeves();
@@ -6256,13 +6736,13 @@ applyLook(); applyUI(); applyFrame();
 __ready = true;
 if (!APR_USER) showTitle();
 else {
-  spireState(); ascState(); huntSleeves(); try { presStart(); } catch (e) {} frState(); frOffline(); drawNav(); drawStatus(); hubGo("PACKS", 0); pullGifts(); drawFrChip();
+  spireState(); ascState(); huntSleeves(); setTimeout(() => verCheck(true), 20000); try { presStart(); } catch (e) {} try { embRefresh(true); } catch (e) {} frState(); frOffline(); drawNav(); drawStatus(); hubGo("PACKS", 0); pullGifts(); drawFrChip();
   if (sv.webRefund) { setTimeout(() => notify(`The Skill Web was rebuilt: your old nodes were refunded as ${sv.webRefund} 🟣 Prisms.`), 2500); delete sv.webRefund; save(); }
   (async () => { const c = await cloudReq("config"); if (c) cloudCfg = c; betaGate(); })(); betaGate();
   if (sv.oldSave) { setTimeout(() => notify(`Your save was from an older version (v${sv.oldSave}), so a fresh one started. A copy of the old save is kept on this device.`), 1500); delete sv.oldSave; save(); }
   if ((sv.seenV || 0) < SAVE_VER) { showPatchNotes(); sv.seenV = SAVE_VER; save(); }
 }
-function betaGate() { const g = cfg(); if (g.betaOnly && !(g.testers || []).includes(APR_USER) && !(g.admins || []).includes(APR_USER)) showGate("This build is limited to approved testers. Ask the developer to add your username."); }
+function betaGate() { const g = cfg(); if (APR_USER && APR_USER !== "guest" && g.ban && g.ban[pKey(APR_USER)]) return showGate("This account has been banned. Contact the developer if you think this is a mistake."); if (g.betaOnly && !(g.testers || []).includes(APR_USER) && !(g.admins || []).includes(APR_USER)) showGate("This build is limited to approved testers. Ask the developer to add your username."); }
 </script>
 </body>
 </html>
