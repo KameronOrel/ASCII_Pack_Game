@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="arit-build" content="20261113070603">
+<meta name="arit-build" content="20261113071649">
 <meta charset="utf-8">
 <title>ASCII RIP IT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1284,19 +1284,22 @@ body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px
 .sci{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:6px;cursor:pointer}.sci:hover,.sci.on{background:rgba(217,164,65,.15)}
 .scpin{padding:0 6px;border:0;background:none;color:var(--mut);font-size:16px}.scpin.on{color:#fbbf24}.scf{font-size:11px;margin-top:8px}
 .scpb{font-size:12px;border-color:#7c6aa8}
-/* pack shelf: one pack per type above the table */
+/* pack shelf, MTGA style: packs standing in a row, the chosen one bigger and lit, its name above */
 .rsright{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}.rsright>.rstable{flex:1}
-.rsshelf{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--bd);border-radius:12px;background:linear-gradient(#1a1430,#0d0a16)}
-.rspk{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:118px;margin:0;padding:8px 6px 6px;border-radius:10px;border:1px solid #2a2340;background:rgba(255,255,255,.02);font-size:11px;transition:transform .2s,box-shadow .2s,border-color .2s}
-.rspk:hover{transform:translateY(-4px);border-color:#7c6aa8}
-.rspk.on{border-color:#fbbf24;box-shadow:0 0 0 1px #fbbf24,0 0 22px rgba(251,191,36,.35);transform:translateY(-6px)}
-.rspk.pick{transform:translateY(-14px) scale(1.12);box-shadow:0 0 30px rgba(251,191,36,.7)}
-.rspka{position:relative;width:46px;height:62px}
-.rspka i{position:absolute;left:0;top:0;width:44px;height:60px;border-radius:4px;border:1px solid #fbbf24;background:linear-gradient(115deg,#2b1a5e,#6b3fd0 30%,#f0cf7a 46%,#8a5bff 62%,#2b1a5e);box-shadow:0 4px 9px #000b}
-.rspka i:nth-child(1){transform:translateX(-7px) rotate(-8deg)}.rspka i:nth-child(3){transform:translateX(7px) rotate(8deg)}.rspka i:nth-child(2){z-index:2}
-.rspk.collector .rspka i{border-color:#fff3b0;background:linear-gradient(115deg,#3b2a07,#b45309 28%,#fff3b0 46%,#f59e0b 62%,#3b2a07)}
-.rspk b{font-size:11px;letter-spacing:.5px;white-space:nowrap}.rspkn{color:#fbbf24;font:600 12px var(--mono)}
-.rspk:not(.on) .rspka{filter:saturate(.6) brightness(.8)}
+.rsshelf{position:relative;padding:6px 10px 2px;border-radius:12px;background:radial-gradient(ellipse at 50% 120%,rgba(120,90,200,.28),transparent 65%)}
+.rsshelft{text-align:center;font:800 26px/1.1 var(--sans);letter-spacing:2px;text-transform:uppercase;background:linear-gradient(180deg,#fff7d1,#fbbf24 55%,#b45309);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 6px rgba(0,0,0,.8));margin-bottom:4px}
+.rsshelfrow{display:flex;gap:18px;justify-content:center;align-items:flex-end;flex-wrap:wrap;min-height:150px}
+.rspk{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0;padding:0;border:0;background:none;cursor:pointer;transition:transform .25s cubic-bezier(.2,.9,.3,1.3),filter .25s}
+.rspkart{position:relative;display:flex;flex-direction:column;width:76px;height:112px;border-radius:3px;overflow:hidden;background:linear-gradient(115deg,#2b1a5e,#6b3fd0 30%,#f0cf7a 46%,#8a5bff 62%,#2b1a5e);box-shadow:0 10px 18px -4px #000d,0 0 0 1px rgba(255,255,255,.18) inset;transition:box-shadow .25s}
+.rspk.collector .rspkart{background:linear-gradient(115deg,#3b2a07,#b45309 28%,#fff3b0 46%,#f59e0b 62%,#3b2a07)}
+.rspkart .cr{display:block;height:9px;flex:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 1px,rgba(0,0,0,.25) 1px 3px)}
+.rspkl{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin:6px;border:1px solid rgba(255,255,255,.45);border-radius:3px;text-align:center}
+.rspkl b{font:800 10px/1.1 var(--mono);color:#fff;text-shadow:0 1px 3px #000}.rspkl em{font:700 7px var(--mono);font-style:normal;color:#fff8;letter-spacing:1px}
+.rspkn{font:700 13px var(--mono);color:#e8e8f2;text-shadow:0 1px 3px #000}
+.rspk:not(.on){filter:brightness(.62) saturate(.75)}.rspk:not(.on):hover{filter:none;transform:translateY(-6px)}
+.rspk.on{transform:scale(1.28) translateY(-6px);z-index:2}.rspk.on .rspkart{box-shadow:0 14px 26px -6px #000,0 0 22px rgba(251,191,36,.55),0 0 0 1px #fff3b0 inset}.rspk.on .rspkn{color:#fbbf24}
+.rspk.pick{transform:scale(1.45) translateY(-22px)}
+@media (max-width:720px){.rsshelfrow{min-height:120px;gap:12px}.rspkart{width:56px;height:84px}.rsshelft{font-size:18px}}
 #pk.zoomin{animation:pkzoom .55s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes pkzoom{0%{transform:translateX(-50%) translateY(-160px) scale(.3);opacity:.2}100%{transform:translateX(-50%) translateY(0) scale(1.12);opacity:1}}
 .rs.spread .rsshelf{display:none}
@@ -1344,6 +1347,10 @@ body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px
 .curh{display:flex;align-items:center;gap:8px;margin-bottom:4px}.curi{font-size:18px}.curn{margin-left:auto;font:600 13px var(--mono);color:#fbbf24}
 .curl{display:grid;grid-template-columns:44px 1fr;gap:4px}.curl>span{font:600 10px var(--mono);color:var(--mut);text-transform:uppercase;padding-top:3px}.curl ul{margin:0 0 4px;padding-left:16px}
 #statusbar .cy,#statusbar .sbi{cursor:pointer}
+.rspk,.rspk:hover,.rspk:focus,.rspk.on{background:none!important;box-shadow:none!important;border:0!important;outline:none}
+.rsshelfrow{padding-top:14px}
+.webbr{margin:6px 0;text-align:left}.webbr summary{cursor:pointer;color:#fbbf24;font-weight:600}.webbri{font-size:12px;margin:4px 0;color:#c9c4d8;line-height:1.4}.webrd{font-size:12px}
+.webside{max-height:calc(100vh - 220px);overflow:auto}
 
 </style>
 </head>
@@ -1354,7 +1361,7 @@ body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px
 <div id="toast"></div>
 
 <script>
-const BUILD_ID = "20261113070603";
+const BUILD_ID = "20261113071649";
 // ===================== Game events =====================
 // Systems that react to play (goals, challenges, seasons) listen here instead of patching other functions.
 const EVT = {};
@@ -2436,7 +2443,10 @@ PATCH_NOTES.unshift({ v: 58, t: "v58: Pack shelf, achievements, clubs, the Raid 
   "Chat: react to messages with emoji, and admins can pin a message to the top of chat",
   "Admin dashboard: player counts, player lookup (save details and download), gifts, announcements, bans and chat mutes",
   "Currencies: click any currency in the top bar (or see the Guide) for where it comes from and what it buys",
-  "When a new version of the game goes live, a banner offers to reload"] });
+  "When a new version of the game goes live, a banner offers to reload",
+  "The pack shelf now looks like a card-game pack shelf: packs standing in a row, the chosen one bigger and lit, with its name above",
+  "Frontier loot quality is now 100% on your highest tier, 5% less for each tier below it, and +10% for every Ascension tier on top",
+  "The Skill Web explains each branch (side panel, node details and the Mastery window)"] });
 
 // ===================== Small helpers =====================
 function notify(text) {
@@ -3205,7 +3215,7 @@ function showPacksCore(chain) {
     <div class="rstoggles"><button id="rsFast" class="${sv.fastRip ? "on" : ""}">⚡ Fast: ${sv.fastRip ? "ON" : "OFF"}</button><button id="rsSkip" class="${sv.skipAll ? "on" : ""}">⏭ Skip: ${sv.skipAll ? "ON" : "OFF"}</button><button id="rsSnd">${sv.mute ? "Sound: off" : "Sound: on"}</button><button id="rsMus">${sv.music ? "Music: on" : "Music: off"}</button></div>
     <div class="rsmeta pity">${flash}${(P => `Guaranteed: a Legendary within <b>${P.leg}</b> packs, a Mythic within <b>${P.my}</b>, an S+ within <b>${P.sp}</b> Rare+ cards`)(pityText())}</div>
     <div class="rstoggles"><button id="rsOdds">📊 Odds</button><button id="rsLF">🔦 Loot Filter</button></div></aside>
-  <section class="rsright"><div class="rsshelf" id="rsShelf">${Object.keys(PKIND).map(k => `<button class="rspk ${k} ${k === packKind ? "on" : ""}" data-kind="${k}" title="${esc(PKIND[k].n)}: ${(PACK_INFO[k] || PACK_INFO.standard).cards} cards, 🪙 ${PKIND[k].price().toLocaleString()} each"><span class="rspka"><i></i><i></i><i></i></span><b>${esc(PKIND[k].n)}</b><span class="rspkn">×${fmtN(PKIND[k].get())}</span></button>`).join("")}</div>
+  <section class="rsright"><div class="rsshelf" id="rsShelf"><div class="rsshelft">${esc(PKIND[packKind].n)}</div><div class="rsshelfrow">${Object.keys(PKIND).map(k => `<button class="rspk ${k} ${k === packKind ? "on" : ""}" data-kind="${k}" title="${esc(PKIND[k].n)}: ${(PACK_INFO[k] || PACK_INFO.standard).cards} cards, 🪙 ${PKIND[k].price().toLocaleString()} each"><span class="rspkart"><i class="cr"></i><span class="rspkl"><b>ASCII<br>RIP IT</b><em>${esc(PKIND[k].n.split(" ")[0].toUpperCase())}</em></span><i class="cr b"></i></span><span class="rspkn">${fmtN(PKIND[k].get())}</span></button>`).join("")}</div></div>
   <section class="rstable ${have < 1 ? "empty" : ""}" id="stage"><div class="rshint">${chain === true ? "" : have > 0 ? "▼ CLICK OR SWIPE ACROSS THE TOP TO TEAR · SPACE ▼" : "NO PACKS LEFT · BUY SOME ON THE LEFT"}</div>${sparks}<div class="rsped"></div><div class="rspshadow"></div>${dskin(packHTML(packKind === "collector"))}</section></section></div><div class="rsdock" id="rsdock"></div></div>`;
   const root = main.querySelector("#rsroot"), table = root.querySelector("#stage"), pk = table.querySelector("#pk"), $ = s => root.querySelector(s);
   stageFX(table); pk.classList.add("arrive"); pk.onclick = null;
@@ -4493,20 +4503,20 @@ function ani(el, kf, o) { try { return el.animate ? el.animate(kf, o) : null; } 
 // threads (small) 1, knots (named) 3, crowns (region capstones) 8. A node can be taken when it touches
 // something you already have; the Heart is always yours. Refunds are free.
 const WEB_REGIONS = [
-  { k: "fury", n: "Fury", hue: 4, ang: -96, arc: 22, size: 92, pool: [["dmg", 2], ["critd", 3]], adj: ["Red", "Savage", "Howling", "Iron", "Reckless", "Brutal", "Feral"], noun: ["Rage", "Onslaught", "Fang", "Edge", "Frenzy", "Rampage"], crown: [["Berserker's Oath", { dmg: 40, hp: -15 }]] },
-  { k: "prec", n: "Precision", hue: 42, ang: -68, arc: 16, size: 70, pool: [["crit", 0.6], ["critd", 4]], adj: ["Keen", "Steady", "Hawk", "Clear", "Patient", "Exact"], noun: ["Eye", "Aim", "Focus", "Mark", "Measure"], crown: [["Perfect Form", { crit: 10, critd: 60 }]] },
-  { k: "pyre", n: "Pyre", hue: 16, ang: -40, arc: 20, size: 84, pool: [["pyre", 3], ["dot", 3]], adj: ["Ashen", "Kindled", "Smoldering", "Cinder", "Blazing", "Ember"], noun: ["Pyre", "Brand", "Flare", "Furnace", "Kindling"], crown: [["Pyreheart", { burnp: 60, pyre: 20 }]] },
-  { k: "volt", n: "Voltaic", hue: 54, ang: -14, arc: 16, size: 66, pool: [["voltaic", 3], ["crit", 0.4]], adj: ["Charged", "Arcing", "Crackling", "Ionic", "Static"], noun: ["Coil", "Spark", "Surge", "Bolt", "Dynamo"], crown: [["Storm Engine", { chain: 15, voltaic: 20 }], ["Harmony", { reson: 1 }]] },
-  { k: "fortune", n: "Fortune", hue: 282, ang: 14, arc: 24, size: 104, pool: [["luck", 1], ["foil", 4], ["misp", 4]], adj: ["Lucky", "Gilded", "Wild", "Fated", "Charmed", "Glittering"], noun: ["Draw", "Coin", "Dice", "Omen", "Fortune", "Pull"], crown: [["Fate's Favor", { pity: 10, luck: 5 }], ["Collector's Eye", { foil: 40, misp: 40 }]] },
-  { k: "frontier", n: "Frontier", hue: 30, ang: 44, arc: 20, size: 98, pool: [["gold", 3], ["elite", 2], ["speed", 1.5], ["offline", 0.25], ["mats", 3]], adj: ["Wandering", "Dusty", "Hardened", "Roving", "Weathered", "Restless"], noun: ["March", "Trail", "Camp", "Road", "Outpost", "Patrol"], crown: [["Endless March", { offline: 4, speed: 15 }], ["Bounty Hunter", { elite: 25, gold: 20 }]] },
-  { k: "depths", n: "Spire", hue: 262, ang: 72, arc: 18, size: 86, pool: [["fuel", 1], ["deep", 3], ["lantern", 2], ["prism", 2]], adj: ["Soaring", "Windswept", "Echoing", "Lofty", "High", "Spiral"], noun: ["Stair", "Landing", "Rampart", "Parapet", "Ascent"], crown: [["Summit Banner", { fuel: 12, deep: 20 }]] },
-  { k: "artisan", n: "Artisan", hue: 322, ang: 100, arc: 14, size: 58, pool: [["glyph", 3], ["craft", 1.5], ["brew", 4]], adj: ["Patient", "Careful", "Skilled", "Steady", "Inspired"], noun: ["Hands", "Chisel", "Bench", "Craft", "Kiln"], crown: [["Master Artisan", { craft: 20, glyph: 20 }]] },
-  { k: "beast", n: "Beastmaster", hue: 92, ang: 124, arc: 16, size: 64, pool: [["pet", 5]], adj: ["Loyal", "Wild", "Feral", "Pack", "Untamed"], noun: ["Bond", "Howl", "Claw", "Den", "Pack"], crown: [["Alpha", { pet: 100 }]] },
-  { k: "life", n: "Vitality", hue: 134, ang: 150, arc: 18, size: 78, pool: [["heal", 4], ["regen", 0.1]], adj: ["Green", "Mending", "Living", "Verdant", "Soothing"], noun: ["Spring", "Bloom", "Root", "Salve", "Pulse"], crown: [["Everbloom", { heal: 60, regen: 1 }]] },
-  { k: "venom", n: "Venom", hue: 108, ang: 176, arc: 16, size: 72, pool: [["poison", 3], ["ls", 0.4]], adj: ["Toxic", "Bitter", "Creeping", "Viper", "Blighted"], noun: ["Fang", "Bile", "Sting", "Rot", "Draught"], crown: [["Plague Lord", { poisonp: 50, poison: 20 }]] },
-  { k: "bastion", n: "Bastion", hue: 212, ang: 206, arc: 26, size: 112, pool: [["hp", 3], ["armor", 3]], adj: ["Stone", "Iron", "Steadfast", "Granite", "Towering", "Unyielding"], noun: ["Wall", "Bulwark", "Rampart", "Keep", "Shield", "Bastion"], crown: [["Unbreakable", { hp: 30, armor: 30, dmg: -10 }], ["Last Stand", { hp: 20, res: 6 }]] },
-  { k: "glacial", n: "Glacial", hue: 194, ang: 236, arc: 16, size: 70, pool: [["glacial", 3], ["armor", 3]], adj: ["Rime", "Frozen", "Hoarfrost", "Bitter", "Polar"], noun: ["Shell", "Shard", "Vigil", "Floe", "Winter"], crown: [["Absolute Zero", { chill: 10, glacial: 20 }]] },
-  { k: "evasion", n: "Evasion", hue: 170, ang: 260, arc: 14, size: 60, pool: [["dodge", 0.4], ["res", 0.4]], adj: ["Fleet", "Shadow", "Quiet", "Drifting", "Nimble"], noun: ["Step", "Veil", "Feint", "Shade", "Wind"], crown: [["Phantom Step", { dodge: 10, res: 4 }]] }
+  { k: "fury", d: "Raw strike damage and crit damage. Its crown, Berserker's Oath, trades some HP for a lot more damage.", n: "Fury", hue: 4, ang: -96, arc: 22, size: 92, pool: [["dmg", 2], ["critd", 3]], adj: ["Red", "Savage", "Howling", "Iron", "Reckless", "Brutal", "Feral"], noun: ["Rage", "Onslaught", "Fang", "Edge", "Frenzy", "Rampage"], crown: [["Berserker's Oath", { dmg: 40, hp: -15 }]] },
+  { k: "prec", d: "Crit chance and crit damage. Its crown, Perfect Form, is the biggest crit boost in the web.", n: "Precision", hue: 42, ang: -68, arc: 16, size: 70, pool: [["crit", 0.6], ["critd", 4]], adj: ["Keen", "Steady", "Hawk", "Clear", "Patient", "Exact"], noun: ["Eye", "Aim", "Focus", "Mark", "Measure"], crown: [["Perfect Form", { crit: 10, critd: 60 }]] },
+  { k: "pyre", d: "Pyre (fire) damage and damage over time. Pyreheart makes burns hit much harder.", n: "Pyre", hue: 16, ang: -40, arc: 20, size: 84, pool: [["pyre", 3], ["dot", 3]], adj: ["Ashen", "Kindled", "Smoldering", "Cinder", "Blazing", "Ember"], noun: ["Pyre", "Brand", "Flare", "Furnace", "Kindling"], crown: [["Pyreheart", { burnp: 60, pyre: 20 }]] },
+  { k: "volt", d: "Voltaic (lightning) damage and crit chance. Storm Engine adds chain lightning; Harmony lets element sets need one card fewer.", n: "Voltaic", hue: 54, ang: -14, arc: 16, size: 66, pool: [["voltaic", 3], ["crit", 0.4]], adj: ["Charged", "Arcing", "Crackling", "Ionic", "Static"], noun: ["Coil", "Spark", "Surge", "Bolt", "Dynamo"], crown: [["Storm Engine", { chain: 15, voltaic: 20 }], ["Harmony", { reson: 1 }]] },
+  { k: "fortune", d: "Pack luck: better Rare+ odds, more finishes and misprints, and pack guarantees that arrive sooner. No combat stats.", n: "Fortune", hue: 282, ang: 14, arc: 24, size: 104, pool: [["luck", 1], ["foil", 4], ["misp", 4]], adj: ["Lucky", "Gilded", "Wild", "Fated", "Charmed", "Glittering"], noun: ["Draw", "Coin", "Dice", "Omen", "Fortune", "Pull"], crown: [["Fate's Favor", { pity: 10, luck: 5 }], ["Collector's Eye", { foil: 40, misp: 40 }]] },
+  { k: "frontier", d: "The Frontier: more Gold, more elites, faster fights, longer offline time and more monster drops.", n: "Frontier", hue: 30, ang: 44, arc: 20, size: 98, pool: [["gold", 3], ["elite", 2], ["speed", 1.5], ["offline", 0.25], ["mats", 3]], adj: ["Wandering", "Dusty", "Hardened", "Roving", "Weathered", "Restless"], noun: ["March", "Trail", "Camp", "Road", "Outpost", "Patrol"], crown: [["Endless March", { offline: 4, speed: 15 }], ["Bounty Hunter", { elite: 25, gold: 20 }]] },
+  { k: "depths", d: "The Wyrmspire: more HP back between floors, more Spirestone, Spirestone drops in the Frontier and more Prisms.", n: "Spire", hue: 262, ang: 72, arc: 18, size: 86, pool: [["fuel", 1], ["deep", 3], ["lantern", 2], ["prism", 2]], adj: ["Soaring", "Windswept", "Echoing", "Lofty", "High", "Spiral"], noun: ["Stair", "Landing", "Rampart", "Parapet", "Ascent"], crown: [["Summit Banner", { fuel: 12, deep: 20 }]] },
+  { k: "artisan", d: "Crafting: more Raw Glyphs from salvage, cheaper Imbuing and Etching, and longer potions.", n: "Artisan", hue: 322, ang: 100, arc: 14, size: 58, pool: [["glyph", 3], ["craft", 1.5], ["brew", 4]], adj: ["Patient", "Careful", "Skilled", "Steady", "Inspired"], noun: ["Hands", "Chisel", "Bench", "Craft", "Kiln"], crown: [["Master Artisan", { craft: 20, glyph: 20 }]] },
+  { k: "beast", d: "Your companion (pet) damage. Alpha doubles it.", n: "Beastmaster", hue: 92, ang: 124, arc: 16, size: 64, pool: [["pet", 5]], adj: ["Loyal", "Wild", "Feral", "Pack", "Untamed"], noun: ["Bond", "Howl", "Claw", "Den", "Pack"], crown: [["Alpha", { pet: 100 }]] },
+  { k: "life", d: "Healing and HP regeneration, so you last longer across Spire floors and long fights.", n: "Vitality", hue: 134, ang: 150, arc: 18, size: 78, pool: [["heal", 4], ["regen", 0.1]], adj: ["Green", "Mending", "Living", "Verdant", "Soothing"], noun: ["Spring", "Bloom", "Root", "Salve", "Pulse"], crown: [["Everbloom", { heal: 60, regen: 1 }]] },
+  { k: "venom", d: "Poison damage and life per strike. Plague Lord makes poison hit much harder.", n: "Venom", hue: 108, ang: 176, arc: 16, size: 72, pool: [["poison", 3], ["ls", 0.4]], adj: ["Toxic", "Bitter", "Creeping", "Viper", "Blighted"], noun: ["Fang", "Bile", "Sting", "Rot", "Draught"], crown: [["Plague Lord", { poisonp: 50, poison: 20 }]] },
+  { k: "bastion", d: "Max HP and armor block. Its crowns trade a little damage for a lot of toughness.", n: "Bastion", hue: 212, ang: 206, arc: 26, size: 112, pool: [["hp", 3], ["armor", 3]], adj: ["Stone", "Iron", "Steadfast", "Granite", "Towering", "Unyielding"], noun: ["Wall", "Bulwark", "Rampart", "Keep", "Shield", "Bastion"], crown: [["Unbreakable", { hp: 30, armor: 30, dmg: -10 }], ["Last Stand", { hp: 20, res: 6 }]] },
+  { k: "glacial", d: "Glacial (frost) damage and armor. Absolute Zero makes enemies hit weaker.", n: "Glacial", hue: 194, ang: 236, arc: 16, size: 70, pool: [["glacial", 3], ["armor", 3]], adj: ["Rime", "Frozen", "Hoarfrost", "Bitter", "Polar"], noun: ["Shell", "Shard", "Vigil", "Floe", "Winter"], crown: [["Absolute Zero", { chill: 10, glacial: 20 }]] },
+  { k: "evasion", d: "Dodge and damage reduction, for taking fewer and smaller hits.", n: "Evasion", hue: 170, ang: 260, arc: 14, size: 60, pool: [["dodge", 0.4], ["res", 0.4]], adj: ["Fleet", "Shadow", "Quiet", "Drifting", "Nimble"], noun: ["Step", "Veil", "Feint", "Shade", "Wind"], crown: [["Phantom Step", { dodge: 10, res: 4 }]] }
 ];
 // what each effect key means, and how it reads on a node
 const WEB_FX = {
@@ -4632,7 +4642,7 @@ function openWebMastery() {
     M.body.innerHTML = `<p class="mut">You have <b>🟣 ${fmtN(sv.shards || 0)}</b> Prisms.${rb ? ` Rebirth ${rb}: everything the web gives is <b>+${Math.round(rb * WEB_REBIRTH * 100)}%</b>.` : ""}</p>
     <h3>Region mastery</h3><p class="mut">Take every node in a region to master it. Each rank (up to ${WEB_MASTERY.max}) makes that region's nodes ${Math.round(WEB_MASTERY.per * 100)}% stronger. Mastery is kept through Rebirth and only works while the region is complete.</p>
     <div class="wmg">${WEB_REGIONS.map(G => { const ids = WEB.regions[G.k] || [], have = ids.filter(id => webHas(id)).length, done = have === ids.length, r = (W.m || {})[G.k] || 0, c = WEB_MASTERY.cost(r + 1);
-      return `<div class="wmr ${done ? "done" : ""}"><b style="color:hsl(${G.hue},80%,70%)">${esc(G.n)}</b><span class="mut">${have}/${ids.length} nodes</span><span class="wmst">${[...Array(WEB_MASTERY.max)].map((_, i) => `<i class="${i < r ? "on" : ""}">◆</i>`).join("")}</span>
+      return `<div class="wmr ${done ? "done" : ""}" title="${esc(G.d || "")}"><b style="color:hsl(${G.hue},80%,70%)">${esc(G.n)}</b><span class="mut">${have}/${ids.length} nodes</span><span class="wmst">${[...Array(WEB_MASTERY.max)].map((_, i) => `<i class="${i < r ? "on" : ""}">◆</i>`).join("")}</span>
        ${r >= WEB_MASTERY.max ? `<span class="ok">Mastered</span>` : done ? `<button data-wm="${G.k}" ${(sv.shards || 0) < c ? "disabled" : ""}>Rank ${r + 1}: ${c} 🟣</button>` : `<span class="mut">complete it first</span>`}</div>`; }).join("")}</div>
     <h3>✨ Starlight</h3>${full ? `<p class="mut">Unlimited ranks. The next rank costs <b>${sc} 🟣</b> (each rank costs 2 more). Starlight is kept through Rebirth.</p><div class="wmg">${Object.keys(WEB_STAR).map(k => { const S = WEB_STAR[k], n = (W.st || {})[k] || 0; return `<div class="wmr"><b>${esc(S.n)}</b><span class="mut">rank ${n} · ${esc(WEB_FX[k] ? WEB_FX[k](S.v * n) : "")}</span><button data-ws="${k}" ${(sv.shards || 0) < sc ? "disabled" : ""}>+${f1(S.v)}%: ${sc} 🟣</button></div>`; }).join("")}</div>` : `<p class="mut">Unlocks when you've taken every node in the web (${Object.keys(W.a).length - 1}/${WEB.nodes.length - 1}).</p>`}
     <h3>🌀 Rebirth</h3><p class="mut">With every node taken and every region at Mastery ${WEB_MASTERY.max}, you can rebirth the web: all nodes are cleared (the Prisms in them are not refunded), and from then on everything the web gives is <b>${Math.round(WEB_REBIRTH * 100)}% stronger</b>, stacking with each rebirth. Mastery and Starlight stay. Titles at rebirth 1, 5, 10 and 25.</p>
@@ -4729,11 +4739,13 @@ function showAstrolabe() {
   function info(id) {
     const n = id && WEB.by[id]; WV.path = null;
     if (!n) { side.innerHTML = `<h3>The Skill Web</h3><p class="mut">Drag to move, scroll or use the buttons to zoom. Click a node to see it. Threads cost 1 🟣, named knots 3, crowns 8. You can take any node touching one you already have, or click a far node and take the whole path to it. Refunds are free.</p>
+      <details class="webbr" open><summary>The branches</summary>${WEB_REGIONS.map(G => `<div class="webbri"><b style="color:hsl(${G.hue},80%,70%)">${esc(G.n)}</b> ${esc(G.d || "")}</div>`).join("")}</details>
       <p class="mut">Earn Prisms from Wyrmspire bosses, Frontier champions, Tribute Ascension, goals, the World Boss and season rewards.</p><div class="webzoom"><button data-z="1.25">＋</button><button data-z="0.8">－</button></div>`; bindZoom(); return draw(); }
     const has = webHas(n.id), p = has ? [] : webPathTo(n.id), cost = (p || []).reduce((s, j) => s + webCost(WEB.by[j]), 0); WV.path = p;
     const G = WEB_REGIONS.find(r => r.k === n.reg);
     side.innerHTML = `<h3 style="color:hsl(${G ? G.hue : 45},80%,70%)">${esc(n.name)}</h3><div class="mut">${G ? G.n + " · " : ""}${n.t === "crown" ? "Crown" : n.t === "knot" ? "Knot" : n.t === "heart" ? "Start" : "Thread"} · ${WEB.dist[n.id]} steps from the Heart</div>
       <p>${esc(webEffText(n.eff)) || "Where every path begins."}</p>
+      ${G && G.d ? `<p class="mut webrd"><b>${esc(G.n)} branch:</b> ${esc(G.d)}</p>` : ""}
       ${has ? (n.id === "heart" ? "" : webCanRefund(n.id) ? `<button id="wRef">Refund (+${webCost(n)} 🟣)</button>` : `<p class="mut">Refund the nodes beyond this one first.</p>`)
       : p ? `<p>${p.length > 1 ? `Path of <b>${p.length}</b> nodes` : "Next to your web"}: <b>${cost}</b> 🟣</p><button id="wTake" class="cta" ${(sv.shards || 0) >= cost ? "" : "disabled"}>${p.length > 1 ? "Take the path" : "Take it"}</button>${(sv.shards || 0) < cost ? `<p class="mut">You need ${cost - (sv.shards || 0)} more 🟣.</p>` : ""}` : ""}
       <div class="webzoom"><button data-z="1.25">＋</button><button data-z="0.8">－</button></div>`;
@@ -6043,8 +6055,11 @@ function frEliteP(T) { const F = frState(); return Math.min(FR.eliteCap, (FR.eli
 function frInterval() { return FR.tick / (1 + astral("speed") / 100); }
 function frOfflineCap() { return Math.min(24, FR.offlineH + astral("offline")); }
 // loot quality by how hard the tier is for you
-function frYield(T) { if (FRTS.yT === T && Date.now() - FRTS.yAt < 15000) return FRTS.y; const d = estTier() - T; FRTS.yT = T; FRTS.yAt = Date.now(); return FRTS.y = frYieldOf(d); }
-function frYieldOf(d) { if (d <= 0) return Math.min(1.5, 1 + 0.05 * -d); if (d <= 5) return 1; return Math.max(0.1, 1 - (d - 5) * 0.05); }
+// loot quality: 100% on your highest tier, 5% less for every tier below it (down to 10%), and +10% for every
+// Ascension tier on top, so farming your top tier after a few Ascensions pays a lot
+const FR_YIELD = { perTierBelow: 0.05, min: 0.1, perAsc: 0.1 };
+function frYieldBase(T) { return Math.max(FR_YIELD.min, 1 - FR_YIELD.perTierBelow * Math.max(0, frMaxTier() - T)); }
+function frYield(T) { return frYieldBase(T) * (1 + FR_YIELD.perAsc * ((sv.asc && sv.asc.n) || 0)); }
 // every band of 10 tiers is a zone that favors two card types and one element
 function favorsOf(T) { const band = Math.floor((T - 1) / 10), C = CATEGORIES; return { cats: [C[(band * 2) % C.length], C[(band * 2 + 4) % C.length]], el: ELEMENTS[(band * 3 + 1) % ELEMENTS.length], band }; }
 function favorsText(T) { const v = favorsOf(T); return `${v.cats.join(", ")} · ${EL_ICON[v.el]} ${v.el}`; }
@@ -6158,7 +6173,7 @@ function showFrontier() {
   <div class="panel-box twhead"><h2 class="twt">⚔️ The Frontier <span class="twfam">Endless fighting that keeps going on every screen</span></h2>
    <div class="twnav"><button id="fMinus" ${T <= 1 ? "disabled" : ""}>−</button><select id="fSel">${Array.from({ length: max }, (_, i) => max - i).map(t => `<option value="${t}" ${t === T ? "selected" : ""}>Tier ${t}</option>`).join("")}</select><button id="fPlus" ${T >= max ? "disabled" : ""}>＋</button>
    <button id="fGo" class="cta ${F.on ? "on" : ""}">${F.on ? "⏹ Stop" : "▶ Start fighting"}</button></div>
-   <div class="twstats"><span>Loot quality <b class="${y >= 1 ? "ok" : y >= 0.5 ? "warn" : "bad"}">${Math.round(y * 100)}%</b></span><span>Elite chance <b>${(ep * 100).toFixed(1)}%</b></span><span>Highest tier <b>${max}</b> <span class="mut">(best Spire floor + 5${(sv.spire && sv.spire.heatMax) ? `, +${FR_HEAT_TIERS * sv.spire.heatMax} from Heat ${sv.spire.heatMax}` : ""})</span></span><span>Offline limit <b>${frOfflineCap()} h</b></span></div>
+   <div class="twstats"><span title="100% on your highest tier, 5% less for every tier below it, and +10% for every Ascension tier">Loot quality <b class="${y >= 1 ? "ok" : y >= 0.5 ? "warn" : "bad"}">${Math.round(y * 100)}%</b> <span class="mut">(${T >= max ? "top tier" : `${max - T} below top`}${sv.asc && sv.asc.n ? `, +${sv.asc.n * 10}% Ascension` : ""})</span></span><span>Elite chance <b>${(ep * 100).toFixed(1)}%</b></span><span>Highest tier <b>${max}</b> <span class="mut">(best Spire floor + 5${(sv.spire && sv.spire.heatMax) ? `, +${FR_HEAT_TIERS * sv.spire.heatMax} from Heat ${sv.spire.heatMax}` : ""})</span></span><span>Offline limit <b>${frOfflineCap()} h</b></span></div>
    <div class="twtags"><span class="tchip fav">🎯 Zone favors ${esc(fv)}</span><span class="tchip">Streak ${F.st} <span class="mut">(+${Math.min(50, Math.floor(F.st / 25))}% Gold and elites)</span></span></div>
   </div>
   <div class="twcols3"><div class="panel-box"><h3>This session</h3><pre class="frart" id="frArt"></pre><div id="frLive"></div></div>
