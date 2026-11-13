@@ -1256,6 +1256,23 @@ body[data-sleeve^="season"] .card{box-shadow:0 0 0 2px #c084fc,0 0 12px rgba(192
 .sob{padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px}.sob.done{border-color:#245c3a;background:rgba(34,197,94,.07)}
 .sobh{display:flex;justify-content:space-between;gap:6px}.sobr i{font-style:normal;color:#4b4560}.sobr i.on{color:#fbbf24}
 .strack .got{opacity:.6}
+.spheatbar{margin-top:10px;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px;text-align:left;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.spheatbar.on{border-color:#ea580c;background:linear-gradient(90deg,rgba(234,88,12,.14),rgba(220,38,38,.06))}
+.spheatbar select{padding:4px 8px}.spheatfx{flex-basis:100%;margin:2px 0 0;padding-left:18px;color:#fdba74;font-size:12px}
+.spheatwarn{flex-basis:100%;color:#fde68a}.spheat{color:#fb923c;font-weight:bold}
+/* ===== Dragon Hunts ===== */
+.hnart{font:8px/1.05 var(--mono);margin:0;color:var(--wc,#f9a8d4);text-shadow:0 0 8px color-mix(in srgb,var(--wc,#f9a8d4) 60%,transparent)}
+.hnart.fighting{animation:hnshake .15s linear 6}@keyframes hnshake{0%,100%{transform:translate(0)}25%{transform:translate(-3px,1px)}75%{transform:translate(3px,-1px)}}
+.hnrow{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.hninfo{flex:1;min-width:260px;text-align:left}.hninfo h3{margin:0 0 4px}
+.hnrank{display:flex;gap:8px;align-items:center;margin:8px 0}.hnrank b{min-width:70px;text-align:center}
+.hoard{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.hoi{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px}.hoi.own{opacity:.6}
+body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px #7c2d12,0 0 10px #f9731688}
+.czs.sl-wyrmhide{background:linear-gradient(135deg,#7c2d12,#dc2626,#fb923c)}
+.chm.god{background:linear-gradient(90deg,rgba(251,191,36,.18),rgba(168,85,247,.14));border-left:3px solid #fbbf24;padding-left:6px}
+.chcs{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}.chcs .chcard{font-size:10px}
+.chon{color:#4ade80;font-size:11px;margin-left:4px}#chOnl{font-size:11px;padding:2px 6px;color:#4ade80}
+.rsnote{font-size:11px;color:#9aa4b2}.rstog{font-size:11px;padding:3px 8px}.rstog.on{border-color:#4ade80;color:#86efac}
 
 </style>
 </head>
@@ -1275,7 +1292,7 @@ function gameEvent(k, d) { (EVT[k] || []).forEach(f => { try { f(d || {}); } cat
 // ===================== Save data =====================
 // One shape for the save. Loading fills in anything missing and drops fields no system uses any more.
 // Saves from before v44 (the attribute rework) are not upgraded: they are kept in a backup slot and a fresh save starts.
-const SAVE_VER = 55, OLDEST_SAVE = 44;
+const SAVE_VER = 56, OLDEST_SAVE = 44;
 const SLOT_NAMES = ["helm", "armor", "gloves", "boots", "main", "amulet", "ring1", "ring2", "off", "pet"];
 function freshState() {
   return {
@@ -1284,7 +1301,7 @@ function freshState() {
     p: 0, pl: 0, pm: 0, ps: 0, mile: [], ach: [],                // packs opened, pity counters, milestones, awards
     inv: {}, ser: {}, cards: [], fav: [], showcase: [], hist: {}, census: {},
     equip: Object.fromEntries(SLOT_NAMES.map(s => [s, null])), loadouts: [],
-    dep: {}, spire: {}, fr: {}, deep: 0,
+    dep: {}, spire: {}, hunt: {}, rare: {}, fr: {}, deep: 0,
     asc: { n: 0, on: false, ready: false }, hc: { iron: 0, noheal: 0, half: 0 },
     web: { a: { heart: 1 } }, forge: [], forges: 0,
     mats: {}, runes: {}, crelics: [], crOn: [], potI: {}, potA: {},
@@ -2043,8 +2060,17 @@ PATCH_NOTES.unshift({ v: 33, t: "v33: Three currencies & the new Loadout", n: [
   "The Equipment Loadout is rebuilt: slotted TCG-style slots on both sides, a hero pedestal with a compact gear-stat grid, an Inspector & Upgrade dock, and the ASCII binder with one-click Quick-Salvage Overflow",
   "Fast salvage: hover any card in the Binder, Overflow tray or pack spread and press X (or Shift+Click, or 🗑️) to salvage it, F to favorite. Favorites, equipped, Legendary/Mythic and S+ cards are protected. Mass salvage by rarity AND grade (Preserve Variants & Misprints is on by default), Feed Duplicates to Equipped, and an optional Auto-Salvage toggle on the pack bar"] });
 setInterval(() => { try { if (__ready && APR_USER && document.visibilityState === "visible") sv.playMs = (sv.playMs || 0) + 30000; } catch (e) {} }, 30000);
-var LBS = { timer: null, last: "", rows: null, cat: "floor", err: "" };
-const LBC = [["floor", "Highest Spire floor", r => "Floor " + fmtN(r.floor)], ["power", "Combat Power", r => fmtN(r.power) + " PWR"], ["packs", "Packs Opened", r => fmtN(r.packs) + " packs"], ["asc", "Ascension Tier", r => "🌀 " + (r.asc | 0)], ["coll", "God-Roll Collector", r => fmtN(r.coll) + " pts"], ["play", "Time Played", r => { const h = (r.play || 0) / 36e5; return h >= 1 ? h.toFixed(1) + " h" : Math.round(h * 60) + " min"; }]];
+var LBS = { timer: null, last: "", rows: null, cat: "heat", err: "" };
+// leaderboard categories: [key, name, how the value reads]. Sorting uses lbVal().
+const LBC = [
+  ["heat", "Heat", r => r.heat ? `🔥 Heat ${fmtN(r.heat)}` : `Floor ${fmtN(r.floor)}`],
+  ["power", "Combat Power", r => fmtN(r.power) + " PWR"],
+  ["packs", "Packs Opened", r => fmtN(r.packs) + " packs"],
+  ["rare", "Rarest Card Packed", r => r.ro > 1 ? `1 in ${fmtOdds(r.ro)}` : "none yet"],
+  ["hunt", "Dragon Hunts", r => r.hunt ? `Rank ${fmtN(r.hunt)}` : "not yet"],
+  ["asc", "Ascension Tier", r => "🌀 " + (r.asc | 0)],
+  ["play", "Time Played", r => { const h = (r.play || 0) / 36e5; return h >= 1 ? h.toFixed(1) + " h" : Math.round(h * 60) + " min"; }]
+];
 (function lbBoot() { if (!__ready) return setTimeout(lbBoot, 800); if (APR_USER) setTimeout(lbPush, 3000); })();
 PATCH_NOTES.unshift({ v: 34, t: "v34: Leaderboards", n: [
   "TRADE HUB > Leaderboards ranks every player by Highest Floor, Combat Power, Packs Opened, Ascension Tier, God-Roll Collector score (Mythics, finishes, misprints and S+ cards) and Time Played. Your entry updates automatically as you progress",
@@ -2197,7 +2223,7 @@ PATCH_NOTES.unshift({ v: 44, t: "v44: Imbuing", n: [
 // Saves, leaderboard rows, loadouts and chat messages are written with your Firebase sign-in,
 // and the database rules only accept writes to your own name.
 var OWN = { warned: false, need: false };
-const OWN_PATHS = /^(users|players|loadouts|lb|weekly|season|wb|spire|gifts|config)\//;
+const OWN_PATHS = /^(users|players|loadouts|lb|weekly|season|wb|spire|hunt|presence|gifts|config)\//;
 Object.assign(EL_DESC, {
   Pyre: "3+: +35% Crit Damage and your strikes ignite a Burn each turn (25% of a strike, boosted by Damage over Time). 6+: Burn 40%",
   Glacial: "3+: Chill: enemies hit 20% softer. 6+: 30% softer, and the first enemy hit of every fight is frozen solid",
@@ -2253,7 +2279,7 @@ PATCH_NOTES.unshift({ v: 49, t: "v49: Tour, accessibility, chat tools", n: [
   "Chat keeps your cursor in the message box after you send, so you can keep typing"] });
 HUBS["PACKS"] = [["Pack Opening", 0]];
 HUBS["EQUIPMENT & BINDER"] = [["Loadout", 4], ["Binder", 3]];
-HUBS["ADVENTURE"] = [["The Frontier", showFrontier], ["The Wyrmspire", showSpire], ["Tribute Ascension", showAscension], ["Challenges", showChallenges]];
+HUBS["ADVENTURE"] = [["The Frontier", showFrontier], ["The Wyrmspire", showSpire], ["Dragon Hunts", showHunts], ["Tribute Ascension", showAscension], ["Challenges", showChallenges]];
 HUBS["THE FORGE"] = [["Charm Forge", showRelicForge], ["Alchemy Lab", showAlchemy], ["Imbuing", showReroll], ["Etching", showEtching], ["Century Forge", showForge]];
 HUBS["THE NEXUS"] = [["Skill Web", showAstrolabe]];
 HUBS["SOCIAL"] = [["Leaderboards", showBoards], ["Live Trading", showTradeSoon]];
@@ -2308,6 +2334,18 @@ PATCH_NOTES.unshift({ v: 55, t: "v55: Ascension Trials, bigger Seasons, Auto ×1
   "Seasons: 18 season objectives with three ranks each (packs, pulls, the Frontier, the Spire, the dragon, trials, the Forge and more), and four new season quests every week",
   "The season reward track now runs to 6,000 points with 18 rewards, including Collector Boosters, Spirestone, a Legendary graded S or better, a Mythic graded S+, new titles and a Century Forge charge. After that, every 400 points is a Season Chest",
   "Auto ×10: open packs ten at a time on Auto"] });
+PATCH_NOTES.unshift({ v: 56, t: "v56: Heat and Dragon Hunts", n: [
+  "Heat: beat Vharzyx on floor 150 to unlock Heat 1. Climb the Spire on a Heat level for tougher floors and bigger rewards; every summit clear on your highest Heat unlocks the next one, with no limit",
+  "Each Heat level gives enemies +15% HP and +8% damage (stacking) and adds 25% to rewards. More twists switch on as it rises: less healing, extra elite floors, bosses that Rally, bosses with a second omen and shorter fights",
+  "Spire leaderboards now rank by Heat first, then floor or time. Changing Heat restarts that week's climb",
+  "Dragon Hunts: after beating Vharzyx, hunt him in ADVENTURE. A different Wyrm every week (Emberheart, Rimeclaw, Stormwing or Blightfang), five winning hunts a day, and a new rank unlocked with every win at your highest rank",
+  "Hunts pay Dragon Scales, Spirestone, Gold and a chance at a Legendary or Mythic. Spend scales in the Hoard on Mythics graded S+, Legendaries, boosters, Prisms and the Wyrmhide sleeve",
+  "New season objectives for dragons slain and Heat unlocked",
+  "The Frontier's highest tier now also rises with Heat: +3 tiers for every Heat level you've unlocked",
+  "God Packs no longer wait for a click: the golden booster opens by itself, and the whole pack is posted to chat with every card linked",
+  "Who's online: the 🟢 count on the chat window shows players active in the last few minutes, and clicking it lists them with what they're doing",
+  "Social leaderboards rebuilt: Heat, Combat Power, Packs Opened, Rarest Card Packed (shown as \"1 in N\" odds, with the card), Dragon Hunts, Ascension Tier and Time Played",
+  "Pack screen comparisons now show a new card at the same level as the card you have equipped (stats and Power), so the numbers are comparable. Toggle it off to see the card as it is"] });
 
 // ===================== Small helpers =====================
 function notify(text) {
@@ -3012,12 +3050,19 @@ function rsFit() {
 }
 function rsHideInsp() { clearTimeout(rsInspT); rsPin = false; rsInspI = -1; const p = document.getElementById("rsinsp"); if (p) p.remove(); }
 function rsInspSchedule() { clearTimeout(rsInspT); rsInspT = setTimeout(() => { if (!rsPin) rsHideInsp(); }, 180); }
+// compare a fresh pull with the equipped card at the same level, so the numbers mean something (toggle in the footer)
+var RSC = { eq: true };
+function pwAt(id, v, u, L) { const c = CARDS[id]; if (!c) return 0; const vMult = (v || "base").split("+").reduce((a, part) => a * (PWR_MUL[part] || 1), 1); return Math.round(Math.round(c.basePower * vMult * lvMult(L)) * gradeMulOf(id, v, u)); }
 function rsInspHTML(i) {
   const it = rs.cards[i], c = it.c, k = rsCompare(it), r = it.roll || rollOf(c.id, it.v);
-  const sec = (lab, cc, v, sn, pw, rl) => `<div><div class="rsil">${lab}</div>${cardHTML(cc, v, sn, 0, rl)}<div class="rsir">${rl && rl.p ? `Grade ${gradeBadge(rl, v, "inl")} · ` : ""}PWR <b>${pw}</b> ${baseIcons(cc, v)}<br></div>${afxLines(rl, 1)}</div>`;
-  const dl = k.worn ? `<span class="rsd">Already equipped</span>` : k.curC ? `<span class="rsd ${k.delta > 0 ? "up" : k.delta < 0 ? "dn" : ""}">${k.delta > 0 ? "▲ +" + k.delta : k.delta < 0 ? "▼ " + k.delta : "= same"} PWR vs equipped</span>` : k.slot ? `<span class="rsd up">Empty ${SLOT_NAME(k.slot)} slot ▲</span>` : `<span class="rsd dn">${c.category === "Off Hand" ? "Two-handed weapon equipped" : "Cannot be equipped"}</span>`;
+  const eL = k.curC ? lvOf(k.cur.id, k.cur.v, k.cur.u) : 1, nL = ((r && r.u && instByU(r.u)) || {}).l || 1, can = !!(k.curC && !k.worn && eL > nL), scale = can && RSC.eq;
+  const rS = scale ? Object.assign({}, r, { lv: eL }) : r, pwS = scale ? pwAt(c.id, it.v, r.u, eL) : k.pw, delta = pwS - k.cp;
+  const sec = (lab, cc, v, sn, pw, rl, note) => `<div><div class="rsil">${lab}</div>${cardHTML(cc, v, sn, 0, rl)}<div class="rsir">${rl && rl.p ? `Grade ${gradeBadge(rl, v, "inl")} · ` : ""}PWR <b>${pw}</b> ${baseIcons(cc, v)}${note ? `<br><span class="rsnote">${note}</span>` : ""}<br></div>${afxLines(rl, 1)}</div>`;
+  const dl = k.worn ? `<span class="rsd">Already equipped</span>` : k.curC ? `<span class="rsd ${delta > 0 ? "up" : delta < 0 ? "dn" : ""}">${delta > 0 ? "▲ +" + delta : delta < 0 ? "▼ " + delta : "= same"} PWR vs equipped${scale ? ` (both Lv${eL})` : ""}</span>` : k.slot ? `<span class="rsd up">Empty ${SLOT_NAME(k.slot)} slot ▲</span>` : `<span class="rsd dn">${c.category === "Off Hand" ? "Two-handed weapon equipped" : "Cannot be equipped"}</span>`;
+  const tog = can ? `<button class="rstog ${scale ? "on" : ""}" data-lvcmp title="Show the new card's stats as if it were leveled to Lv${eL}, like the equipped one">${scale ? `✓ Compared at Lv${eL}` : `Compare at Lv${eL}`}</button>` : "";
   const btn = k.worn ? `<button disabled>EQUIPPED ✔</button>` : k.slot ? `<button class="cta" data-eq>[EQUIP NOW]</button>` : "";
-  return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec("PULLED", c, it.v, it.sn, k.pw, r)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot), k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v, k.cur.u)) : ""}</div><div class="rsfoot">${dl}${k.curC && !k.worn ? (() => { const eR = rollOf(k.cur.id, k.cur.v, k.cur.u), gN = gradeOf(r, it.v), gE = eR && eR.p ? gradeOf(eR, k.cur.v) : null; return gE ? `<span class="rsd ${GORD.indexOf(gN.g) > GORD.indexOf(gE.g) ? "up" : GORD.indexOf(gN.g) < GORD.indexOf(gE.g) ? "dn" : ""}">Grade ${gN.g} vs ${gE.g}</span>` : ""; })() : ""}<span style="color:var(--mut)">${rgText(r)}</span>${btn}</div>`;
+  const noteN = scale ? `as if Lv${eL} · it is Lv${nL} now (${k.pw} PWR)` : "", noteE = k.curC && k.cur.u && etchRank(k.cur.u) ? `includes Etching rank ${etchRank(k.cur.u)}` : "";
+  return `<span class="rsx" data-x>✕</span><div class="rsrow">${sec(scale ? `PULLED · shown at Lv${eL}` : "PULLED", c, it.v, it.sn, pwS, rS, noteN)}${k.curC ? sec("EQUIPPED · " + SLOT_NAME(k.slot) + ` · Lv${eL}`, k.curC, k.cur.v, undefined, k.cp, rollOf(k.cur.id, k.cur.v, k.cur.u), noteE) : ""}</div><div class="rsfoot">${dl}${k.curC && !k.worn ? (() => { const eR = rollOf(k.cur.id, k.cur.v, k.cur.u), gN = gradeOf(r, it.v), gE = eR && eR.p ? gradeOf(eR, k.cur.v) : null; return gE ? `<span class="rsd ${GORD.indexOf(gN.g) > GORD.indexOf(gE.g) ? "up" : GORD.indexOf(gN.g) < GORD.indexOf(gE.g) ? "dn" : ""}">Grade ${gN.g} vs ${gE.g}</span>` : ""; })() : ""}${tog}<span style="color:var(--mut)">${rgText(r)}</span>${btn}</div>`;
 }
 function rsInspCore(i, anchor) {
   if (!rs || !rs.cards[i] || rs.down.has(i)) return; clearTimeout(rsInspT);
@@ -3025,6 +3070,7 @@ function rsInspCore(i, anchor) {
   if (!p) { p = document.createElement("div"); p.id = "rsinsp"; document.body.appendChild(p); p.onmouseenter = () => clearTimeout(rsInspT); p.onmouseleave = () => { if (!rsPin) rsInspSchedule(); }; }
   rsInspI = i; p.innerHTML = rsInspHTML(i);
   const eq = p.querySelector("[data-eq]"); if (eq) eq.onclick = () => rsEquip(i);
+  const lc = p.querySelector("[data-lvcmp]"); if (lc) lc.onclick = e => { e.stopPropagation(); RSC.eq = !RSC.eq; rsInspCore(i, anchor); };
   p.querySelector("[data-x]").onclick = () => rsHideInsp();
   const sheet = !rsHoverOK(); p.classList.toggle("sheet", sheet);
   if (sheet) { p.style.left = p.style.top = ""; return; }
@@ -3283,9 +3329,11 @@ function godReveal(table, tok) {
   return new Promise(res => {
     if (!table || !rsAlive(tok)) return res();
     try { playFanfare(4); } catch (e) {} haptic(200);
-    table.insertAdjacentHTML("beforeend", `<div class="godpk" id="godpk"><div class="godin"><div class="godt">✦ GOD PACK ✦</div><div class="godg">${[...Array(10)].map(() => "★").join("")}</div><div class="godh">10 cards · at least 5 Mythics<br>every card graded S or S+<br><b>Click to open</b></div></div></div>`);
+    table.insertAdjacentHTML("beforeend", `<div class="godpk" id="godpk"><div class="godin"><div class="godt">✦ GOD PACK ✦</div><div class="godg">${[...Array(10)].map(() => "★").join("")}</div><div class="godh">10 cards · at least 5 Mythics<br>every card graded S or S+</div></div></div>`);
     const g = table.querySelector("#godpk"); sfx(4);
-    g.onclick = () => { g.classList.add("open"); burst(table, g, 4); rsTierFlash(4); setTimeout(() => { g.remove(); res(); }, 650); };
+    // it opens by itself after a moment (or sooner if you click it)
+    let done = false; const open = () => { if (done) return; done = true; g.classList.add("open"); burst(table, g, 4); rsTierFlash(4); setTimeout(() => { g.remove(); res(); }, 650); };
+    g.onclick = open; setTimeout(() => { if (rsAlive(tok)) open(); else res(); }, sv.autoRip || sv.fastRip ? 1100 : 1800);
   });
 }
 
@@ -3443,7 +3491,7 @@ function drawStatus() {
   const sb = document.getElementById("statusbar"); sb.classList.add("sb36");
   sb.innerHTML = `<span class="sbn">${APR_USER ? esc(typeof dispName === "function" ? dispName() : APR_USER) : ""}${sv.cos.title ? ` <i>[${esc(sv.cos.title)}]</i>` : ""}</span>
   <span title="Gold: earned in the Frontier and the Wyrmspire, spent on Booster Packs">${CUR.gold(sv.c)}</span><span title="Raw Glyphs: earned only by salvaging cards, spent on card levels and THE FORGE">${CUR.gly(sv.dust)}</span><span title="Prisms: earned only from Tribute Ascension, spent in The Nexus">${CUR.pri(sv.shards)}</span>
-  <span class="sbi" title="Booster Packs ready">📦 <b>${sv.packs}</b></span><span class="sbi" title="Wyrmspire floor this week · best ever">🗼 <b>${(sv.spire && sv.spire.w === weekNo() && sv.spire.floor) || 0}</b><span class="mut">/150</span></span><span class="sbi" title="Deepstone (for Etching)">🪨 <b>${fmtN(sv.deep || 0)}</b></span><span class="sbi" title="Power (Combat Rating) = 2 × √(Offense ${fmtN(ts.offense || 0)} × Defense ${fmtN(ts.defense || 0)})${ts.activeElement ? " · " + ts.activeElement + " resonance" : ""}">⚔️ <b>${fmtN(ts.totalPower)}</b>${ts.activeElement ? " " + EL_ICON[ts.activeElement] : ""}</span>${sv.asc.n ? `<span class="sbi" title="Ascension tier: +${Math.round((ascPow() - 1) * 100)}% Power & HP">🌀 <b>${sv.asc.n}</b></span>` : ""}
+  <span class="sbi" title="Booster Packs ready">📦 <b>${sv.packs}</b></span><span class="sbi" title="Wyrmspire floor this week · best ever">🗼 <b>${(sv.spire && sv.spire.w === weekNo() && sv.spire.floor) || 0}</b><span class="mut">/150</span>${sv.spire && sv.spire.heat ? ` <span class="spheat">🔥${sv.spire.heat}</span>` : ""}</span><span class="sbi" title="Deepstone (for Etching)">🪨 <b>${fmtN(sv.deep || 0)}</b></span><span class="sbi" title="Power (Combat Rating) = 2 × √(Offense ${fmtN(ts.offense || 0)} × Defense ${fmtN(ts.defense || 0)})${ts.activeElement ? " · " + ts.activeElement + " resonance" : ""}">⚔️ <b>${fmtN(ts.totalPower)}</b>${ts.activeElement ? " " + EL_ICON[ts.activeElement] : ""}</span>${sv.asc.n ? `<span class="sbi" title="Ascension tier: +${Math.round((ascPow() - 1) * 100)}% Power & HP">🌀 <b>${sv.asc.n}</b></span>` : ""}
   ${typeof potHud === "function" ? potHud() : ""}<span class="sbi" title="${esc(w.n + ": " + w.d)}">${w.i} ${w.n}</span>${an === "sale" ? `<span class="sbi hot">✦ Packs half price</span>` : an ? `<span class="sbi hot">✦ Foil storm</span>` : ""}${OWN.need ? `<button class="sbi sbsync" id="sbSync" title="Online backup is paused on this device">☁ Sign in to sync</button>` : ""}`;
   const sy = document.getElementById("sbSync"); if (sy) sy.onclick = () => syncSignIn();
 }
@@ -3565,10 +3613,27 @@ function showTradeSoon() {
 }
 // Each player's summary lives at /players/<name> and their loadout at /loadouts/<name> in the Firebase database.
 function pKey(u) { return String(u || "").toLowerCase().replace(/[.#$\[\]\/]/g, "_").slice(0, 40); }
+// how rare a pulled card is, as "1 in N": its rarity's pull rate × each finish or misprint × its grade
+const RARE_P = { tier: [0.55, 0.3, 0.12, 0.026, 0.0046], grade: { "S+": 0.03, S: 0.1, A: 0.25 } };
+function rarityOdds(id, v, r) {
+  const c = CARDS[id]; if (!c) return 1; let p = RARE_P.tier[c.tier] || 1;
+  vParts(v).forEach(x => { const f = FINISHES.concat(MISPRINTS).find(q => q[0] === x); if (f) p *= f[1] / 100; });
+  p *= RARE_P.grade[gradeOf(r, v).g] || 1; return 1 / p;
+}
+function fmtOdds(n) { return n >= 1e12 ? (n / 1e12).toFixed(1) + " trillion" : n >= 1e9 ? (n / 1e9).toFixed(1) + " billion" : n >= 1e6 ? (n / 1e6).toFixed(1) + " million" : fmtN(Math.round(n)); }
+// your rarest pull: checked on every pack; an older save starts from its collection
+function rareState() {
+  if (!sv.rare || typeof sv.rare !== "object") sv.rare = {}; const R = sv.rare;
+  if (!R.init) { R.init = 1; (sv.cards || []).forEach(c => { const o = rarityOdds(c.i, c.v, c.r); if (o > (R.o || 0)) { R.o = o; R.s = cardSnap(c); } }); }
+  return R;
+}
+onEvt("packOpened", d => { const R = rareState(); (d.out || []).forEach(it => { const o = rarityOdds(it.c.id, it.v, it.roll); if (o > (R.o || 0)) { R.o = o; R.s = cardSnap(instByU(it.roll && it.roll.u) || { i: it.c.id, v: it.v, l: 1, sn: it.sn, r: it.roll }); R.at = Date.now(); } }); });
 function collectorScore() { let s = 0; (sv.cards || []).forEach(c => { const card = CARDS[c.i]; if (!card) return; if (card.tier === 4) s += 10; s += 3 * vParts(c.v).length; if (gradeOf(c.r, c.v).g === "S+") s += 5; }); return s; }
 function mySummary() {
   const ts = getStats();
-  return { u: dispName(), k: pKey(APR_USER), floor: topFloor(), power: ts.totalPower, packs: (sv.stats && sv.stats.packsOpened) || 0, asc: (sv.asc && sv.asc.n) || 0, coll: collectorScore(), play: sv.playMs || 0, t: Date.now(),
+  const R = rareState(), H = sv.hunt || {};
+  return { u: dispName(), k: pKey(APR_USER), floor: topFloor(), heat: (sv.spire && sv.spire.heatMax) || 0, power: ts.totalPower, packs: (sv.stats && sv.stats.packsOpened) || 0, asc: (sv.asc && sv.asc.n) || 0, coll: collectorScore(), play: sv.playMs || 0, t: Date.now(),
+    hunt: Math.max(0, (H.top || 1) - 1), ro: Math.round(R.o || 0), rc: R.s || null,
     title: (sv.cos && sv.cos.title) || "", el: ts.activeElement || "" };
 }
 function myLoadout() {
@@ -3577,26 +3642,39 @@ function myLoadout() {
 }
 function lbQueue() { if (!cloudOn() || !APR_USER || APR_USER === "guest") return; clearTimeout(LBS.timer); LBS.timer = setTimeout(lbPush, 15000); }
 async function lbPush() {
-  try { const s = mySummary(), key = JSON.stringify([s.floor, s.power, s.packs, s.asc, s.coll, Math.floor(s.play / 6e5), s.title]); if (key === LBS.last) return; LBS.last = key;
+  try { const s = mySummary(), key = JSON.stringify([s.floor, s.heat, s.power, s.packs, s.asc, s.hunt, s.ro, Math.floor(s.play / 6e5), s.title]); if (key === LBS.last) return; LBS.last = key;
     await cloudReq("players/" + pKey(APR_USER), "PUT", s); await cloudReq("loadouts/" + pKey(APR_USER), "PUT", myLoadout()); } catch (e) {}
 }
+// the number a category sorts by
+function lbVal(r, k) { return k === "heat" ? r.heat * 1000 + r.floor : k === "rare" ? r.ro : r[k] || 0; }
 async function showBoards() {
   const draw = () => {
     const C = LBC.find(c => c[0] === LBS.cat) || LBC[0], me = mySummary();
-    let rows = (LBS.rows || []).filter(r => r && typeof r.u === "string").map(r => ({ u: r.u.slice(0, 20), k: pKey(r.k || r.u), floor: num(r.floor), power: num(r.power), packs: num(r.packs), asc: num(r.asc), coll: num(r.coll), play: num(r.play), title: String(r.title || "").slice(0, 30), t: num(r.t) }));
+    let rows = (LBS.rows || []).filter(r => r && typeof r.u === "string").map(r => ({ u: r.u.slice(0, 20), k: pKey(r.k || r.u), floor: num(r.floor), heat: num(r.heat), power: num(r.power), packs: num(r.packs), asc: num(r.asc), hunt: num(r.hunt), ro: num(r.ro), rc: r.rc && snapOk(r.rc) ? r.rc : null, play: num(r.play), title: String(r.title || "").slice(0, 30), t: num(r.t) }));
     if (!rows.some(r => r.k === me.k)) rows.push(me); else rows = rows.map(r => r.k === me.k ? me : r);
-    rows.sort((a, b) => b[C[0]] - a[C[0]] || b.power - a.power); rows = rows.slice(0, 100);
+    rows.sort((a, b) => lbVal(b, C[0]) - lbVal(a, C[0]) || b.power - a.power); rows = rows.slice(0, 100); LBS.view = rows;
+    const extra = r => C[0] === "rare" && r.rc ? snapBadge(r.rc, "lb" + rows.indexOf(r)) : "";
     main.innerHTML = `<div class="bar"><b>🏆 Leaderboards</b> | ${rows.length} player${rows.length === 1 ? "" : "s"} ${LBS.err ? `<span style="color:#f87171">· ${esc(LBS.err)}</span>` : ""}<button id="lbR">↻ Refresh</button></div>
     <div class="bar lbcats">${LBC.map(c => `<button data-lc="${c[0]}" class="${c[0] === LBS.cat ? "on" : ""}">${c[1]}</button>`).join("")}</div>
-    <div class="panel-box"><table class="lbt"><tr><th>#</th><th>Player</th><th>${C[1]}</th><th>Floor</th><th>PWR</th><th>🌀</th></tr>${rows.map((r, i) => `<tr class="${r.k === me.k ? "me" : ""}"><td>${i + 1}</td><td><button class="lbu" data-pu="${esc(r.k)}">${esc(r.u)}</button>${r.title ? ` <i>[${esc(r.title)}]</i>` : ""}</td><td><b>${C[2](r)}</b></td><td>${fmtN(r.floor)}</td><td>${fmtN(r.power)}</td><td>${r.asc | 0}</td></tr>`).join("")}</table>
-    <p style="color:var(--mut);font-size:12px">Click a name to inspect that player's loadout. God-Roll Collector: 10 per Mythic, 3 per finish or misprint, 5 per S+ card. Your entry updates a few seconds after your progress changes.</p></div>`;
+    <div class="panel-box"><table class="lbt"><tr><th>#</th><th>Player</th><th>${C[1]}</th><th>🔥 Heat</th><th>PWR</th><th>🌀</th></tr>${rows.map((r, i) => `<tr class="${r.k === me.k ? "me" : ""}"><td>${i + 1}</td><td><button class="lbu" data-pu="${esc(r.k)}">${esc(r.u)}</button>${r.title ? ` <i>[${esc(r.title)}]</i>` : ""}</td><td><b>${C[2](r)}</b> ${extra(r)}</td><td>${r.heat ? fmtN(r.heat) : "—"}</td><td>${fmtN(r.power)}</td><td>${r.asc | 0}</td></tr>`).join("")}</table>
+    <p style="color:var(--mut);font-size:12px">${LB_NOTE[C[0]] || ""} Click a name to inspect that player's loadout. Your entry updates a few seconds after your progress changes.</p></div>`;
     main.querySelector("#lbR").onclick = () => load();
     main.querySelectorAll("[data-lc]").forEach(b => b.onclick = () => { LBS.cat = b.dataset.lc; draw(); });
     main.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => inspectPlayer(b.dataset.pu));
+    main.querySelectorAll("[data-cs^='lb']").forEach(b => b.onclick = () => { const r = LBS.view[+b.dataset.cs.slice(2)]; if (r && r.rc) snapModal(r.rc); });
   };
   const load = async () => { LBS.err = ""; if (!cloudOn()) { LBS.err = "offline: no database configured"; LBS.rows = []; draw(); return; } lbPush(); const d = await cloudReq("players"); if (d === null) LBS.err = "could not read /players (check the database rules)"; LBS.rows = d && typeof d === "object" ? Object.values(d) : []; if (document.querySelector(".lbt")) draw(); };
   draw(); load();
 }
+const LB_NOTE = {
+  heat: "The highest Heat level unlocked in the Wyrmspire; players without Heat rank by their best floor.",
+  power: "Combat Power right now, with your current equipment.",
+  packs: "Booster Packs and Collector Boosters opened.",
+  rare: "The rarest single card each player has pulled, as the odds of pulling that exact rarity, finish, misprint and grade. Click a card to inspect it.",
+  hunt: "The highest Dragon Hunt rank ever slain.",
+  asc: "Tribute Ascension tier.",
+  play: "Time with the game open."
+};
 // read-only inspection of another player's loadout
 async function inspectPlayer(u) {
   document.querySelectorAll(".ov.pmod").forEach(x => x.remove());
@@ -3638,8 +3716,8 @@ function snapModal(s) {
 function chMe() { return { u: (typeof dispName === "function" ? dispName() : APR_USER) || "guest", k: pKey(APR_USER), f: topFloor(), a: (sv.asc && sv.asc.n) || 0 }; }
 async function chPost(m, card, kind) {
   if (!APR_USER) return notify("Log in to chat.");
-  const now = Date.now(); if (kind !== "ann" && now - CH.last < 1500) return notify("Slow down a little."); CH.last = now;
-  const msg = Object.assign(chMe(), { t: now, m: String(m || "").slice(0, 240), ty: kind || "msg" }); if (card) msg.c = card;
+  const now = Date.now(); if (kind !== "ann" && kind !== "god" && now - CH.last < 1500) return notify("Slow down a little."); CH.last = now;
+  const msg = Object.assign(chMe(), { t: now, m: String(m || "").slice(0, 240), ty: kind || "msg" }); if (Array.isArray(card)) msg.cs = card.slice(0, 10); else if (card) msg.c = card;
   if (cloudOn()) { try { const tk = typeof ltdToken === "function" ? await ltdToken() : ""; const r = await fetch(tk ? `${cloudUrl()}/chat/${chRoom()}.json?auth=${encodeURIComponent(tk)}` : chUrl(), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(msg) }); if (!r.ok) throw new Error(r.status); if (!CH.es) chPull(); return; } catch (e) { CH.status = "offline: the database refused the chat message"; } }
   chLocal(msg);
 }
@@ -3665,27 +3743,28 @@ function chConnect() {
   } catch (e) { CH.poll = setInterval(chPull, 5000); }
 }
 function chLineCore(m, j) {
-  const t = new Date(m.t || 0), hh = String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0"), card = m.c && snapOk(m.c) ? snapBadge(m.c, j) : "";
+  const t = new Date(m.t || 0), hh = String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0"), card = (m.c && snapOk(m.c) ? snapBadge(m.c, j) : "") + (Array.isArray(m.cs) ? `<div class="chcs">${m.cs.slice(0, 10).map((s, k) => snapOk(s) ? snapBadge(s, j + "." + k) : "").join("")}</div>` : "");
   const pk = m.k && m.k !== "msg" && m.k !== "ann" ? m.k : ""; if (m.ty === "ann" || m.k === "ann") return `<div class="chm ann"><span class="cht">${hh}</span> 📣 ${esc(m.m || "")} ${card}</div>`;
-  return `<div class="chm ${(pk || m.u) === pKey(APR_USER) || m.u === APR_USER ? "me" : ""}"><span class="cht">${hh}</span> <b class="chu" data-pu="${esc(String(pk || m.u || "?").slice(0, 40))}" title="Inspect loadout">${esc(String(m.u || "?").slice(0, 20))}</b><span class="chb">F${m.f | 0}${m.a ? " 🌀" + (m.a | 0) : ""}</span>: ${esc(m.m || "")} ${card}</div>`;
+  return `<div class="chm ${(pk || m.u) === pKey(APR_USER) || m.u === APR_USER ? "me" : ""} ${m.ty === "god" ? "god" : ""}"><span class="cht">${hh}</span> <b class="chu" data-pu="${esc(String(pk || m.u || "?").slice(0, 40))}" title="Inspect loadout">${esc(String(m.u || "?").slice(0, 20))}</b><span class="chb">F${m.f | 0}${m.a ? " 🌀" + (m.a | 0) : ""}</span>: ${esc(m.m || "")} ${card}</div>`;
 }
 function chDrawCore() {
   let w = document.getElementById("chatw"); if (!APR_USER || !__ready) { if (w) w.remove(); return; }
   if (!w) { w = document.createElement("div"); w.id = "chatw"; document.body.appendChild(w); chDrag(w); }
   w.classList.toggle("min", CH.min); w.classList.toggle("dim", CH.dim);
   if (CH.x !== undefined && !CH.min) { w.style.left = CH.x + "px"; w.style.top = CH.y + "px"; w.style.right = "auto"; w.style.bottom = "auto"; } else { w.style.left = w.style.top = ""; w.style.right = ""; w.style.bottom = ""; }
-  if (CH.min) { w.innerHTML = `<button class="chpill" id="chOpen">💬 Chat${CH.unread ? ` <b>${CH.unread}</b>` : ""}</button>`; w.querySelector("#chOpen").onclick = () => { CH.min = false; CH.unread = 0; chSaveUI(); chDraw(); }; return; }
+  if (CH.min) { w.innerHTML = `<button class="chpill" id="chOpen">💬 Chat${CH.unread ? ` <b>${CH.unread}</b>` : ""}${cloudOn() ? ` <span class="chon">🟢 ${ONL.rows.length}</span>` : ""}</button>`; w.querySelector("#chOpen").onclick = () => { CH.min = false; CH.unread = 0; chSaveUI(); chDraw(); }; return; }
   const box = w.querySelector(".chl"), atBottom = !box || box.scrollTop + box.clientHeight >= box.scrollHeight - 30, draft = w.querySelector("#chIn") ? w.querySelector("#chIn").value : "", hadFocus = !!(w.querySelector("#chIn") && document.activeElement === w.querySelector("#chIn")) || CH.keepFocus;
-  w.innerHTML = `<div class="chh" id="chDrag"><b>💬 #${esc(chRoom())}</b><span class="chst">${esc(CH.status)}</span><button id="chRoom" title="Change room">#</button><button id="chDim" title="See-through">◐</button><button id="chMin" title="Minimize">–</button></div>
+  w.innerHTML = `<div class="chh" id="chDrag"><b>💬 #${esc(chRoom())}</b><span class="chst">${esc(CH.status)}</span>${cloudOn() ? `<button id="chOnl" title="Who's online">🟢 ${ONL.rows.length}</button>` : ""}<button id="chRoom" title="Change room">#</button><button id="chDim" title="See-through">◐</button><button id="chMin" title="Minimize">–</button></div>
   <div class="chl">${CH.msgs.map(chLine).join("") || `<div class="chm ann">Say hi! Link a card from the Binder, Equipment or pack screen with 💬.</div>`}</div>
   <form class="chf" id="chForm"><input id="chIn" maxlength="240" placeholder="Message #${esc(chRoom())}" autocomplete="off"><button>Send</button></form>`;
   const l = w.querySelector(".chl"); if (atBottom) l.scrollTop = l.scrollHeight; const inp = w.querySelector("#chIn"); inp.value = draft; if (hadFocus) { CH.keepFocus = false; try { inp.focus({ preventScroll: true }); inp.setSelectionRange(draft.length, draft.length); } catch (e) {} }
   w.querySelector("#chForm").onsubmit = e => { e.preventDefault(); const v = inp.value.trim(); if (!v) return; inp.value = ""; CH.keepFocus = true; inp.focus(); chPost(v); };
   w.querySelector("#chMin").onclick = () => { CH.min = true; chSaveUI(); chDraw(); };
+  const on = w.querySelector("#chOnl"); if (on) on.onclick = e => { e.stopPropagation(); openOnline(); };
   w.querySelector("#chDim").onclick = () => { CH.dim = !CH.dim; chSaveUI(); chDraw(); };
   w.querySelector("#chRoom").onclick = () => { const r = prompt("Chat room (letters and numbers):", chRoom()); if (r === null) return; CH.room = r; chSaveUI(); chConnect(); };
   w.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => inspectPlayer(b.dataset.pu));
-  w.querySelectorAll("[data-cs]").forEach(b => b.onclick = () => { const m = CH.msgs[+b.dataset.cs]; if (m && m.c) snapModal(m.c); });
+  w.querySelectorAll("[data-cs]").forEach(b => b.onclick = () => { const [a, k] = String(b.dataset.cs).split("."), m = CH.msgs[+a]; if (!m) return; const s = k !== undefined ? (m.cs || [])[+k] : m.c; if (s) snapModal(s); });
 }
 function chDrag(w) {
   let d = null;
@@ -3709,6 +3788,43 @@ function chDraw() {
   w.querySelectorAll("[data-cdel]").forEach(b => b.onclick = async () => { if (b.dataset.ok !== "1") { b.dataset.ok = "1"; b.textContent = "Delete?"; return; }
     const tok = await ltdToken(), id = b.dataset.cdel; const r = await ltdDb(`chat/${chRoom()}/${id}`, "DELETE", undefined, tok); if (r.ok) { CH.msgs = CH.msgs.filter(x => x._id !== id); chDraw(); } else notify("Couldn't delete that message."); });
   if (CH.admin === undefined) { CH.admin = false; (async () => { const tok = await ltdToken(), uid = ltdUid(); if (!tok || !uid) return; const r = await ltdDb(`_admins/${uid}`, "GET", undefined, tok); if (r.ok && r.body === true) { CH.admin = true; chDrawCore(); chDraw(); } })(); }
+}
+
+// a God Pack is announced in chat with all ten cards linked
+onEvt("godPack", d => {
+  if (!APR_USER || APR_USER === "guest") return; const o = d.out || [];
+  const snaps = o.map(it => it.roll && it.roll.u ? cardSnap(instByU(it.roll.u)) : null).filter(Boolean);
+  const M = o.filter(x => x.c.tier === 4).length, L = o.length - M, sp = o.filter(x => gradeOf(x.roll, x.v).g === "S+").length;
+  setTimeout(() => chPost(`🌟 opened a GOD PACK! ${M} Mythic${M === 1 ? "" : "s"}, ${L} Legendar${L === 1 ? "y" : "ies"}${sp ? `, ${sp} graded S+` : ""}`, snaps, "god"), 400);
+});
+
+// ---- who's online: every player writes a heartbeat once a minute; anyone seen in the last 3 minutes counts ----
+const PRES = { beat: 60000, fresh: 180000 };
+var ONL = { rows: [], at: 0, timer: null };
+function presWhere() {
+  const F = sv.fr || {}, S = sv.spire || {}, hub = (typeof curHub === "string" ? curHub : "") || "";
+  const map = { PACKS: "opening packs", "EQUIPMENT & BINDER": "in the Binder", ADVENTURE: "adventuring", "THE FORGE": "at the Forge", "THE NEXUS": "in the Nexus", SOCIAL: "socializing" };
+  let w = map[hub] || "playing"; if (F.on) w += ` · Frontier T${F.tier}`; if (S.floor) w += ` · Spire F${S.floor}${S.heat ? " 🔥" + S.heat : ""}`; return w.slice(0, 60);
+}
+async function presBeat() {
+  if (!cloudOn() || !APR_USER || APR_USER === "guest" || document.hidden) return;
+  try { await cloudReq(`presence/${pKey(APR_USER)}`, "PUT", { u: String(dispName()).slice(0, 24), t: Date.now(), w: presWhere(), f: topFloor() | 0, a: (sv.asc && sv.asc.n) | 0 }); } catch (e) {}
+}
+async function presPull() {
+  if (!cloudOn()) return []; const d = await cloudReq("presence"), now = Date.now();
+  ONL.rows = d && typeof d === "object" ? Object.entries(d).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string" && now - (+r.t || 0) < PRES.fresh).sort((a, b) => (b.t || 0) - (a.t || 0)) : [];
+  ONL.at = now; document.querySelectorAll("#chOnl, .chon").forEach(p => p.textContent = `🟢 ${ONL.rows.length}`); return ONL.rows;
+}
+function openOnline() {
+  const m = modal35("🟢 Who's online");
+  const draw = rows => { m.body.innerHTML = rows.length ? `<p class="mut">${rows.length} player${rows.length === 1 ? "" : "s"} active in the last few minutes.</p><table class="spbt"><tr><th>Player</th><th>Doing</th><th>Spire</th><th>🌀</th></tr>${rows.map(r => `<tr class="${r.k === pKey(APR_USER) ? "me" : ""}"><td><button class="lbu" data-pu="${esc(r.k)}">${esc(String(r.u).slice(0, 24))}</button></td><td class="mut">${esc(String(r.w || "").slice(0, 60))}</td><td>F${r.f | 0}</td><td>${r.a | 0}</td></tr>`).join("")}</table>` : `<p class="mut">${cloudOn() ? "Nobody else is online right now." : "Connect to the cloud to see who's online."}</p>`;
+    m.body.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => { try { m.close(); inspectPlayer(b.dataset.pu); } catch (e) {} }); };
+  draw(ONL.rows); presPull().then(draw);
+}
+function presStart() {
+  if (ONL.timer) return; presBeat(); presPull();
+  ONL.timer = setInterval(() => { presBeat(); presPull(); }, PRES.beat);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { presBeat(); presPull(); } });
 }
 
 // ===================== Limited Drops (server-verified scarcity) =====================
@@ -4515,7 +4631,7 @@ function genPack(kind) {
   sv.pl = out.some(o => o.c.tier > 2) ? 0 : sv.pl + 1; sv.pm = out.some(o => o.c.tier > 3) ? 0 : sv.pm + 1;
   try { if (god) chPost(`${APR_USER} opened a GOD PACK!`, null, "ann"); out.forEach(o => { if (o.c.tier === 4 && gradeOf(o.roll, o.v).g === "S+") chPost(`${APR_USER} pulled an S+ Mythic: ${o.c.name}!`, cardSnap(instByU(o.roll.u)), "ann"); }); } catch (e) {}
   if (!god) autoSalvagePack(out);
-  gameEvent("packOpened", { out });
+  gameEvent("packOpened", { out }); if (god) gameEvent("godPack", { out });
   checkAchievements(); if (!G28.batch) save();
   return out;
 }
@@ -5201,9 +5317,35 @@ function spireState() {
   S.peak = S.peak || 0; S.ever = S.ever || {}; S.runs = S.runs || 0;
   // an old save: the deepest Depth becomes the matching Spire floor as your all-time best
   if (!S.mig) { S.mig = 1; const old = sv.dep && sv.dep.best; if (old) S.peak = Math.max(S.peak, lvlFloor(old)); sv.dep = {}; }
+  S.heatMax = S.heatMax || 0; S.heat = Math.max(0, Math.min(S.heat || 0, S.heatMax));
   if (S.w !== w) { S.w = w; S.floor = 0; S.best = {}; S.paid = {}; S.tries = 0; }
   S.best = S.best || {}; S.paid = S.paid || {};
   return S;
+}
+
+// ---- Heat: after you beat Vharzyx, climb again with harder rules. Each clear of floor 150 unlocks the next level. ----
+// Every level: enemies +15% HP and +8% damage (compounding) and +25% rewards. More twists switch on as it rises.
+function spireHeat() { return spireState().heat || 0; }
+function heatFx(h) {
+  h = h || 0;
+  return {
+    hp: Math.pow(1.15, h), atk: Math.pow(1.08, h), loot: 1 + 0.25 * h,
+    heal: Math.max(0.03, SPIRE.heal - 0.02 * Math.max(0, h - 1)),          // less breather from Heat 2
+    elites: h >= 6 ? [2, 4, 6, 8] : h >= 3 ? [4, 6, 8] : SPIRE.eliteAt,    // more elite floors from Heat 3 and 6
+    bossRally: h >= 5,                                                     // every boss Rallies from Heat 5
+    bossOmen: h >= 8,                                                      // bosses take a second weekly omen from Heat 8
+    turns: h >= 10 ? 20 : 0                                                // fights end after 20 turns from Heat 10
+  };
+}
+function heatLines(h) {
+  if (!h) return [];
+  const x = heatFx(h), L = [`Enemies have +${Math.round((x.hp - 1) * 100)}% HP and deal +${Math.round((x.atk - 1) * 100)}% damage`, `Rewards +${Math.round((x.loot - 1) * 100)}%`];
+  if (h >= 2) L.push(`${Math.round(x.heal * 100)}% HP back between floors`);
+  if (h >= 3) L.push(`Elites on floors ${x.elites.join(", ")} of every flight`);
+  if (h >= 5) L.push("Every boss Rallies");
+  if (h >= 8) L.push("Every boss takes a second omen");
+  if (h >= 10) L.push("Ordinary floors end after 20 turns");
+  return L;
 }
 function spireOpen() { return Math.min(FLIGHTS.length - 1, Math.floor(spireState().floor / SPIRE.per)); }   // the flight you can climb next
 // each flight past the first gets a weekly omen, the same for everyone that week
@@ -5213,15 +5355,18 @@ function spireOmen(n, w = weekNo()) { return n === 0 ? null : seededPick(w * 791
 function spireFoe(f, rnd) {
   rnd = rnd || Math.random; const n = Math.floor((f - 1) / SPIRE.per), F = FLIGHTS[n], i = (f - 1) % SPIRE.per + 1;
   if (i === SPIRE.per) return spireBoss(n, rnd);
-  const kind = SPIRE.eliteAt.includes(i) ? "elite" : "normal", en = mkEnemy(floorLvl(f), kind, F.fam[rnd() < 0.5 ? 0 : 1], rnd);
+  const H = heatFx(spireHeat()), kind = H.elites.includes(i) ? "elite" : "normal", en = mkEnemy(floorLvl(f), kind, F.fam[rnd() < 0.5 ? 0 : 1], rnd);
   if (kind === "normal") { en.hp = Math.round(en.hp * 1.5); en.name = en.m.name = `${en.fam.minor} pack`; }   // a floor holds a small group
-  const sc = F.sc || 1; en.hp = Math.round(en.hp * sc); en.atk = Math.round(en.atk * sc);
+  const sc = F.sc || 1; en.hp = Math.round(en.hp * sc * H.hp); en.atk = Math.round(en.atk * sc * H.atk);
   en.floor = f; return en;
 }
 function spireBoss(n, rnd) {
   const F = FLIGHTS[n], f = (n + 1) * SPIRE.per, en = mkEnemy(floorLvl(f), "guardian", F.fam[0], rnd || seededRnd(n * 31 + 5));
-  en.hp = Math.round(en.hp * (F.hp || 1) * (F.sc || 1)); en.atk = Math.round(en.atk * (F.atk || 1) * (F.sc || 1));
+  const H = heatFx(spireHeat());
+  en.hp = Math.round(en.hp * (F.hp || 1) * (F.sc || 1) * H.hp); en.atk = Math.round(en.atk * (F.atk || 1) * (F.sc || 1) * H.atk);
   en.name = en.m.name = F.boss; en.m.mech = F.mech.slice(); if (F.mut) en.mut = F.mut;
+  if (H.bossRally && !en.m.mech.includes("rally")) en.m.mech.push("rally");
+  if (H.bossOmen) { const o2 = spireOmen(n + 7); if (o2 && o2.mech && !en.m.mech.includes(o2.mech)) en.m.mech.push(o2.mech); }
   en.floor = f; en.flight = n; return en;
 }
 function spireArt(n, ph) {
@@ -5234,10 +5379,10 @@ function withOmen(en, omen) { if (omen && omen.mech && !en.m.mech.includes(omen.
 function spireClimb(n, ts0, rnd, log) {
   rnd = rnd || Math.random; const omen = spireOmen(n), ts = Object.assign({}, ts0); if (omen && omen.ts) omen.ts(ts);
   const out = { n, turns: 0, floors: [], win: false, omen, maxHP: ts.maxHP }; let hp = ts.maxHP;
-  const heal = SPIRE.heal + astral("fuel") / 100;
+  const H = heatFx(spireHeat()), heal = H.heal + astral("fuel") / 100;
   for (let i = 1; i <= SPIRE.per; i++) {
     const f = n * SPIRE.per + i, boss = i === SPIRE.per, en = withOmen(spireFoe(f, rnd), omen);
-    const cap = omen && omen.turns ? omen.turns * (boss ? 2 : 1) : boss ? SPIRE.bossTurns : SPIRE.foeTurns;
+    let cap = omen && omen.turns ? omen.turns * (boss ? 2 : 1) : boss ? SPIRE.bossTurns : SPIRE.foeTurns; if (H.turns && !boss) cap = Math.min(cap, H.turns);
     const r = fight(ts, en, { rnd, hp, turns: cap, log: boss && log });
     out.turns += r.turns; hp = r.pHP;
     out.floors.push({ f, k: en.kind, n: en.name, t: r.turns, win: r.win, hp: Math.max(0, hp) });
@@ -5250,19 +5395,19 @@ function spireClimb(n, ts0, rnd, log) {
 // your level in the Spire: the top of the highest flight you'd clear at least half the time (this week's omens included)
 var SPL = { k: "", v: 0 };
 function spireLevel(ts) {
-  ts = ts || getStats(); const key = estKey(ts) + "|" + weekNo(); if (SPL.k === key) return SPL.v;
+  ts = ts || getStats(); const key = estKey(ts) + "|" + weekNo() + "|" + spireHeat(); if (SPL.k === key) return SPL.v;
   let n = 0; while (n < FLIGHTS.length && spireWinRate(ts, n, 4) >= 0.5) n++;
   SPL.k = key; SPL.v = n * SPIRE.per; return SPL.v;
 }
 function spireWinRate(ts, n, k = 6) { let w = 0; for (let i = 0; i < k; i++) if (spireClimb(n, ts, seededRnd(n * 7919 + i * 104729 + 3)).win) w++; return w / k; }
 
 // ---- rewards: each floor and each boss pays once a week; a boss pays Prisms the first time ever ----
-function spireFloorGold(f) { return Math.round(floorLvl(f) * 95 * 0.9 * weatherCoin() * (1 + afxTotals().gold / 100) * ascGold()); }
+function spireFloorGold(f) { return Math.round(floorLvl(f) * 95 * 0.9 * weatherCoin() * (1 + afxTotals().gold / 100) * ascGold() * heatFx(spireHeat()).loot); }
 function spireBossLoot(n) {
-  const f = (n + 1) * SPIRE.per, S = spireState(), last = n === FLIGHTS.length - 1;
+  const f = (n + 1) * SPIRE.per, S = spireState(), last = n === FLIGHTS.length - 1, h = spireHeat();
   return {
-    stone: Math.round((6 + floorLvl(f) * 0.8) * (last ? 3 : 1) * (1 + astral("deep") / 100)),
-    packs: last ? 3 : 1,
+    stone: Math.round((6 + floorLvl(f) * 0.8) * (last ? 3 : 1) * (1 + astral("deep") / 100) * heatFx(h).loot),
+    packs: (last ? 3 : 1) + Math.floor(h / 3),
     prisms: S.ever[n] ? 0 : Math.round((last ? 10 : 2 + Math.floor(n / 3)) * (1 + astral("prism") / 100))
   };
 }
@@ -5279,7 +5424,13 @@ function spirePay(r) {
     const fam = FAMS[FLIGHTS[r.n].fam[0]]; addMat(fam.k + "_r", 1); got.mats.push(fam.mat[1]);
     if (r.n === FLIGHTS.length - 1) { sv.cos.titles = sv.cos.titles || []; if (!sv.cos.titles.includes("Wyrmslayer")) { sv.cos.titles.push("Wyrmslayer"); got.title = "Wyrmslayer"; } }
   }
+  // the summit on your highest Heat unlocks the next level, with Prisms and a title at milestones
+  if (r.win && r.n === FLIGHTS.length - 1 && S.heat >= S.heatMax) {
+    const h = S.heatMax + 1; S.heatMax = h; got.heat = h; got.prisms += Math.round((10 + 5 * h) * (1 + astral("prism") / 100));
+    if ([1, 5, 10, 25, 50, 100].includes(h) || h % 100 === 0) { const t = `Heat ${h} Climber`; addTitle(t); got.title = (got.title ? got.title + ", " : "") + t; }
+  }
   sv.c += got.gold; sv.deep = (sv.deep || 0) + got.stone; sv.packs += got.packs; sv.shards += got.prisms;
+  if (got.heat) gameEvent("heatUp", { h: got.heat });
   sv.stats.coinsEarned = (sv.stats.coinsEarned || 0) + got.gold;
   return got;
 }
@@ -5352,17 +5503,19 @@ function spireFull() { const S = spireState(); return S.floor >= SPIRE.floors ? 
 async function spirePost(n) {
   if (!cloudOn() || !APR_USER || APR_USER === "guest") return; const S = spireState(), u = dispName(), at = Date.now();
   try {
-    await cloudReq(`spire/${S.w}/top/${myKey()}`, "PUT", { u, f: S.floor, s: spireFull(), at });
-    if (n >= 0 && S.best[n]) await cloudReq(`spire/${S.w}/f${n}/${myKey()}`, "PUT", { u, t: S.best[n], at });
+    await cloudReq(`spire/${S.w}/top/${myKey()}`, "PUT", { u, f: S.floor, s: spireFull(), h: S.heat || 0, at });
+    if (n >= 0 && S.best[n]) await cloudReq(`spire/${S.w}/f${n}/${myKey()}`, "PUT", { u, t: S.best[n], h: S.heat || 0, at });
   } catch (e) {}
 }
 async function spireBoard(kind) {
   if (!cloudOn()) return null; const w = spireState().w;
   const d = await cloudReq(kind === "top" || kind === "full" ? `spire/${w}/top` : `spire/${w}/${kind}`);
   const rows = d && typeof d === "object" ? Object.entries(d).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string") : [];
-  if (kind === "top") rows.sort((a, b) => (b.f | 0) - (a.f | 0) || (a.at || 0) - (b.at || 0));
-  else if (kind === "full") return rows.filter(r => r.s > 0).sort((a, b) => a.s - b.s || (a.at || 0) - (b.at || 0));
-  else rows.sort((a, b) => (a.t | 0) - (b.t | 0) || (a.at || 0) - (b.at || 0));
+  // higher Heat always ranks first
+  const hh = (a, b) => (b.h | 0) - (a.h | 0);
+  if (kind === "top") rows.sort((a, b) => hh(a, b) || (b.f | 0) - (a.f | 0) || (a.at || 0) - (b.at || 0));
+  else if (kind === "full") return rows.filter(r => r.s > 0).sort((a, b) => hh(a, b) || a.s - b.s || (a.at || 0) - (b.at || 0));
+  else rows.sort((a, b) => hh(a, b) || (a.t | 0) - (b.t | 0) || (a.at || 0) - (b.at || 0));
   return rows;
 }
 function openSpireBoards(start) {
@@ -5374,10 +5527,27 @@ function openSpireBoards(start) {
     const rows = await spireBoard(kind), L = M.body.querySelector("#spbL"); if (!L) return;
     if (rows === null) { L.textContent = "Leaderboards need the cloud connection."; return; }
     if (!rows.length) { L.textContent = kind === "full" ? "Nobody has climbed all 150 floors this week yet." : "No climbs here yet this week. Be the first."; return; }
-    const me = myKey(), val = r => kind === "top" ? `Floor ${r.f | 0}` : kind === "full" ? `${fmtN(r.s)} turns` : `${r.t | 0} turns`;
+    const me = myKey(), heat = r => r.h ? `<span class="spheat">🔥${r.h | 0}</span> ` : "", val = r => heat(r) + (kind === "top" ? `Floor ${r.f | 0}` : kind === "full" ? `${fmtN(r.s)} turns` : `${r.t | 0} turns`);
     L.className = ""; L.innerHTML = `<table class="spbt"><tr><th>#</th><th>Player</th><th>${kind === "top" ? "Floor" : "Time"}</th><th>When</th></tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === me ? "me" : ""}"><td>${i + 1}</td><td>${esc(String(r.u).slice(0, 24))}</td><td><b>${val(r)}</b></td><td class="mut">${r.at ? new Date(r.at).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""}</td></tr>`).join("")}</table>`;
   };
   draw();
+}
+
+// ---- choosing your Heat: changing it restarts this week's climb from floor 1 ----
+var SPH = { pend: -1 };
+function spireSetHeat(h) {
+  const S = spireState(); h = Math.max(0, Math.min(S.heatMax, h | 0)); if (h === S.heat) return;
+  if (S.floor > 0 && SPH.pend !== h) { SPH.pend = h; showSpire(); return; }
+  SPH.pend = -1; S.heat = h; S.floor = 0; S.best = {}; SPV.n = 0; SPV.last = null; save(); try { drawStatus(); } catch (e) {}
+  notify(h ? `Heat ${h}: this week's climb starts again from floor 1.` : "Heat off: this week's climb starts again from floor 1."); showSpire();
+}
+function heatHTML(S) {
+  if (!S.heatMax) return `<div class="spheatbar mut">🔥 <b>Heat</b> unlocks when you beat Vharzyx on floor 150. Every summit clear unlocks the next Heat level, with no limit.</div>`;
+  const opts = [...Array(S.heatMax + 1)].map((_, h) => `<option value="${h}" ${h === S.heat ? "selected" : ""}>${h ? "Heat " + h : "No Heat"}</option>`).join("");
+  return `<div class="spheatbar ${S.heat ? "on" : ""}"><label>🔥 <b>Heat</b> <select id="spHeat">${opts}</select></label>
+   <span class="mut">Unlocked up to Heat ${S.heatMax}. Clear floor 150 on Heat ${S.heatMax} to unlock Heat ${S.heatMax + 1}.</span>
+   ${SPH.pend >= 0 ? `<div class="spheatwarn">Switching to ${SPH.pend ? "Heat " + SPH.pend : "No Heat"} restarts this week's climb from floor 1. <button id="spHeatOk" class="cta">Switch</button> <button id="spHeatNo">Keep Heat ${S.heat}</button></div>` : ""}
+   ${S.heat ? `<ul class="spheatfx">${heatLines(S.heat).map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}</div>`;
 }
 
 // ---- screen ----
@@ -5391,7 +5561,7 @@ function showSpire() {
   const firstWeek = !S.paid["b" + n], floorsLeft = [...Array(SPIRE.per)].filter((_, i) => !S.paid[n * 10 + i + 1]).length;
   main.innerHTML = `<div class="tw sp" id="spRoot">
   <div class="panel-box twhead"><h2 class="twt">🗼 The Wyrmspire <span class="twfam">150 floors, rebuilt every Monday. Climb as high as you can and as fast as you can.</span></h2>
-   <div class="twstats"><span>This week <b>Floor ${S.floor}/150</b></span><span>Best ever <b>Floor ${S.peak || 0}</b></span><span title="The top of the highest flight you'd clear at least half the time, with this week's omens">Your level <b>${E ? "Floor " + E : "below Floor 10"}</b></span><span>Rebuilt in <b>${fmtCountdown(nextMonday() - Date.now())}</b></span><button id="spLb" class="spbtn">🏆 Leaderboards</button></div></div>
+   <div class="twstats"><span>This week <b>Floor ${S.floor}/150${S.heat ? ` · 🔥 Heat ${S.heat}` : ""}</b></span><span>Best ever <b>Floor ${S.peak || 0}</b></span><span title="The top of the highest flight you'd clear at least half the time, with this week's omens">Your level <b>${E ? "Floor " + E : "below Floor 10"}</b></span><span>Rebuilt in <b>${fmtCountdown(nextMonday() - Date.now())}</b></span><button id="spLb" class="spbtn">🏆 Leaderboards</button></div>${heatHTML(S)}</div>
   <div class="spwrap">
    <div class="sptower"><div class="spcap">⛰ Summit</div>${tower}<div class="spbase">Ground floor</div></div>
    <div class="spmain">
@@ -5402,7 +5572,7 @@ function showSpire() {
       <div class="twtags">${[...new Set(F.mech)].map(m => FAM_TRAITS[m] ? `<span class="tchip trait" title="${esc(FAM_TRAITS[m].d + ". Counter: " + FAM_TRAITS[m].tip)}">${esc(FAM_TRAITS[m].n)}</span>` : "").join("")}${F.mut ? `<span class="tchip mut">${esc(mutName(F.mut))}</span>` : ""}${omen ? `<span class="tchip mut" title="${esc(omen.d)}">Omen: ${esc(omen.n)}</span>` : ""}</div>
       <div class="mut spmon">Floors: ${[...new Set(F.fam)].map(i => esc(FAMS[i].minor)).join(" and ")} · elites on floors ${n * 10 + 4} and ${n * 10 + 8}</div></div></div>
      ${omen ? `<div class="spomen"><b>This week's omen, ${esc(omen.n)}:</b> ${esc(omen.d)}.</div>` : ""}
-     <div class="twstats"><span>Win chance <b class="${wr >= 50 ? "ok" : "bad"}">${wr}%</b></span><span>Your best this week <b>${S.best[n] ? S.best[n] + " turns" : "none"}</b></span><span>HP back between floors <b>${Math.round(100 * (SPIRE.heal + astral("fuel") / 100))}%</b></span></div>
+     <div class="twstats"><span>Win chance <b class="${wr >= 50 ? "ok" : "bad"}">${wr}%</b></span><span>Your best this week <b>${S.best[n] ? S.best[n] + " turns" : "none"}</b></span><span>HP back between floors <b>${Math.round(100 * (heatFx(S.heat).heal + astral("fuel") / 100))}%</b></span></div>
      <div class="sploot">${firstWeek ? `First clear this week: <b>+${L.stone} 🪨 Spirestone</b> · <b>+${L.packs} 📦</b>${L.prisms ? ` · <b>+${L.prisms} 🟣</b> (first clear ever)` : ""}${n === FLIGHTS.length - 1 && !(sv.cos.titles || []).includes("Wyrmslayer") ? " · the <b>Wyrmslayer</b> title" : ""}${floorsLeft ? ` · Gold from ${floorsLeft} new floor${floorsLeft > 1 ? "s" : ""}` : ""}` : `Boss loot already claimed this week. Climb again for a faster time on the leaderboard.`}</div>
      <div class="twctl"><button id="spGo" class="cta" ${n > open || SPV.busy ? "disabled" : ""}>▲ Climb floors ${n * 10 + 1}-${n * 10 + 10}</button>${n === open && open < FLIGHTS.length - 1 ? `<button id="spChain" ${SPV.busy ? "disabled" : ""} title="Keep climbing flight after flight until you fall">▲▲ Climb as far as I can</button>` : ""}</div>
     </div>
@@ -5415,6 +5585,9 @@ function showSpire() {
   const $ = s => main.querySelector(s);
   main.querySelectorAll("[data-fl]").forEach(b => b.onclick = () => { SPV.n = +b.dataset.fl; showSpire(); });
   $("#spLb").onclick = () => openSpireBoards();
+  const hs = $("#spHeat"); if (hs) hs.onchange = e => spireSetHeat(+e.target.value);
+  const ho = $("#spHeatOk"); if (ho) ho.onclick = () => spireSetHeat(SPH.pend);
+  const hn = $("#spHeatNo"); if (hn) hn.onclick = () => { SPH.pend = -1; showSpire(); };
   const go = $("#spGo"); if (go) go.onclick = () => { if (n > open) return notify("Clear the flight below first."); spireGo(n); };
   const ch = $("#spChain"); if (ch) ch.onclick = () => spireGo(n, true);
 }
@@ -5422,12 +5595,119 @@ function mutName(m) { return m.startsWith("warded_") ? `${m.slice(7)} Ward` : { 
 function spireReport(L) {
   const r = L.r, F = FLIGHTS[r.n], p = L.pay, b = r.boss;
   const tl = r.floors.map(f => `<span class="dfi ${f.k === "guardian" ? "guard" : f.k} ${f.win ? "" : "lost"}" title="Floor ${f.f}: ${esc(f.n)}, ${f.t} turns, ${fmtN(f.hp)} HP left">${f.k === "guardian" ? "♛" : f.k === "elite" ? "◆" : "•"}</span>`).join("");
-  const loot = [p.gold ? `+${fmtN(p.gold)} Gold` : "", p.stone ? `+${p.stone} 🪨 Spirestone` : "", p.packs ? `+${p.packs} 📦` : "", p.prisms ? `+${p.prisms} 🟣` : "", p.title ? `🏅 Title: ${p.title}` : "", p.mats.length ? esc(p.mats.join(", ")) : ""].filter(Boolean).join(" · ");
+  const loot = [p.gold ? `+${fmtN(p.gold)} Gold` : "", p.stone ? `+${p.stone} 🪨 Spirestone` : "", p.packs ? `+${p.packs} 📦` : "", p.prisms ? `+${p.prisms} 🟣` : "", p.heat ? `🔥 Heat ${p.heat} unlocked` : "", p.title ? `🏅 Title: ${p.title}` : "", p.mats.length ? esc(p.mats.join(", ")) : ""].filter(Boolean).join(" · ");
   return `<div class="panel-box twsum ${r.win ? "won" : "lost"}"><h3>${r.win ? `🏆 ${esc(F.boss)} defeated · ${r.turns} turns${L.pb ? " · personal best" : ""}` : `💀 You fell on floor ${r.reached + 1}`}</h3>
    <div class="dtl">${tl}</div>${loot ? `<div class="twloot">${loot}</div>` : ""}
    ${b ? `<div class="twcols"><div><h4>Boss fight: damage dealt</h4>${sumBars(b.dealt, "dealt")}</div><div><h4>Damage taken</h4>${sumBars(b.taken, "taken")}</div><div><h4>Healing</h4>${sumBars(b.healed, "healed")}</div></div>
    <details><summary>Boss fight log</summary><div class="twlog">${(b.events || []).map(evHTML).join("")}</div></details>` : ""}
    ${L.an ? `<div class="twwhy"><h4>What went wrong</h4>${L.an.map(x => `<p>${x}</p>`).join("")}</div>` : ""}</div>`;
+}
+
+// ===================== DRAGON HUNTS =====================
+// Beat Vharzyx on floor 150 once and the dragon can be hunted. Each week a different Wyrm of the Week takes the
+// Roost, with its own element and twists. Hunts are one fight at full HP; win to unlock the next rank (no limit).
+// Wins pay Dragon Scales, Spirestone, Gold and a chance at a Legendary or Mythic card; scales buy from the Hoard.
+const HUNT = { perDay: 5, hp: 1.2, step: 1.16, astep: 1.07, turns: 40 };
+const WYRMS = [
+  { k: "ember", n: "Vharzyx Emberheart", el: "Pyre", mech: ["burn", "rally"], mut: "warded_Pyre", col: "#fb923c", d: "Fire on every breath, and it grows angrier each turn. Shrugs off Pyre damage." },
+  { k: "rime", n: "Vharzyx Rimeclaw", el: "Glacial", mech: ["chill", "swarm"], mut: "warded_Glacial", col: "#7dd3fc", d: "The cold saps your strikes while it claws twice every third turn. Shrugs off Glacial damage." },
+  { k: "storm", n: "Vharzyx Stormwing", el: "Voltaic", mech: ["null", "swarm"], mut: "warded_Voltaic", col: "#c4b5fd", d: "Lightning nullifies your strikes, and it hits harder. Shrugs off Voltaic damage." },
+  { k: "blight", n: "Vharzyx Blightfang", el: "Poison", mech: ["regen", "entangle"], mut: "vampiric", col: "#86efac", d: "Roots you in place, regrows its wounds and drinks your blood." }
+];
+function huntWyrm(w = weekNo()) { return WYRMS[((w % WYRMS.length) + WYRMS.length) % WYRMS.length]; }
+function huntOpen() { return !!(spireState().ever || {})[FLIGHTS.length - 1]; }
+function huntState() {
+  if (!sv.hunt || typeof sv.hunt !== "object") sv.hunt = {};
+  const H = sv.hunt, dk = dayKey(), w = weekNo();
+  H.top = H.top || 1; H.rank = Math.max(1, Math.min(H.rank || H.top, H.top)); H.kills = H.kills || 0; H.scales = H.scales || 0; H.bought = H.bought || {};
+  if (H.day !== dk) { H.day = dk; H.used = 0; }
+  if (!H.wk || H.wk.w !== w) H.wk = { w, best: 0 };
+  return H;
+}
+function huntBoss(rank, rnd) {
+  const W = huntWyrm(), F = FLIGHTS[FLIGHTS.length - 1], en = mkEnemy(floorLvl(SPIRE.floors), "guardian", F.fam[0], rnd || seededRnd(rank * 313 + 9));
+  en.hp = Math.round(en.hp * (F.hp || 1) * (F.sc || 1) * HUNT.hp * Math.pow(HUNT.step, rank - 1));
+  en.atk = Math.round(en.atk * (F.atk || 1) * (F.sc || 1) * Math.pow(HUNT.astep, rank - 1));
+  en.m.mech = W.mech.slice(); en.mut = W.mut; en.name = en.m.name = W.n; en.rank = rank; return en;
+}
+function huntWin(ts, rank, k = 6) { let w = 0; for (let i = 0; i < k; i++) if (fight(ts, huntBoss(rank, seededRnd(rank * 31 + i)), { rnd: seededRnd(rank * 977 + i * 131), turns: HUNT.turns }).win) w++; return w / k; }
+function huntLoot(rank) {
+  return {
+    scales: 3 + rank, stone: Math.round((10 + 4 * rank) * (1 + astral("deep") / 100)),
+    gold: Math.round(floorLvl(SPIRE.floors) * 95 * 4 * (1 + 0.15 * rank) * weatherCoin() * ascGold()),
+    myth: Math.min(0.3, 0.04 + 0.01 * rank), leg: Math.min(0.6, 0.25 + 0.02 * rank)
+  };
+}
+// the Hoard: what Dragon Scales buy
+const HOARD = [
+  { k: "myth", n: "A Mythic card graded S+", cost: 60, give: () => seasonCard(4, true) },
+  { k: "leg", n: "A Legendary card graded S or better", cost: 20, give: () => seasonCard(3, "S") },
+  { k: "cpk", n: "A Collector Booster", cost: 8, give: () => { sv.cpacks = (sv.cpacks || 0) + 1; } },
+  { k: "pk3", n: "3 Booster Packs", cost: 6, give: () => { sv.packs += 3; } },
+  { k: "stone", n: "30 🪨 Spirestone", cost: 5, give: () => { sv.deep = (sv.deep || 0) + 30; } },
+  { k: "prism", n: "10 🟣 Prisms", cost: 10, give: () => { sv.shards += 10; } },
+  { k: "sleeve", n: "Wyrmhide card sleeve", cost: 40, once: true, give: () => { if (!sv.owned.includes("sl:wyrmhide")) sv.owned.push("sl:wyrmhide"); huntSleeves(); } }
+];
+function huntSleeves() { if ((sv.owned || []).includes("sl:wyrmhide") && !SLEEVES.some(x => x[0] === "wyrmhide")) SLEEVES.push(["wyrmhide", "Wyrmhide", 0]); }
+var HV = { last: null, busy: false };
+async function huntGo() {
+  if (HV.busy) return; const H = huntState(), ts = getStats(), r0 = H.rank;
+  if (!huntOpen()) return notify("Beat Vharzyx on floor 150 of the Wyrmspire first.");
+  if (!ts.count) return notify("Equip some cards first.");
+  if (H.used >= HUNT.perDay) return notify("No hunts left today. New hunts at midnight UTC.");
+  HV.busy = true; const en = huntBoss(r0), r = fight(ts, en, { turns: HUNT.turns, log: true }); let got = null;
+  const box = document.getElementById("hnArt"); if (box) { box.classList.add("fighting"); sfx(3); await sleep(900); box.classList.remove("fighting"); }
+  if (r.win) {
+    H.used++; H.kills++; const L = huntLoot(r0); got = { scales: L.scales, stone: L.stone, gold: L.gold, card: "", up: false, title: "" };
+    H.scales += L.scales; sv.deep = (sv.deep || 0) + L.stone; sv.c += L.gold; sv.stats.coinsEarned = (sv.stats.coinsEarned || 0) + L.gold;
+    const roll = Math.random(); if (roll < L.myth) got.card = "Mythic: " + seasonCard(4, "S"); else if (roll < L.myth + L.leg) got.card = "Legendary: " + seasonCard(3);
+    if (r0 >= H.top) { H.top = r0 + 1; got.up = true; }
+    if (r0 > H.wk.best) { H.wk.best = r0; huntPost(); }
+    [[10, "Dragon Hunter"], [100, "Dragonbane"], [500, "Wyrm Eternal"]].forEach(([n, t]) => { if (H.kills === n) { addTitle(t); got.title = t; } });
+    playFanfare(got.card.startsWith("Mythic") ? 4 : 3); gameEvent("huntWin", { rank: r0 });
+  }
+  HV.last = { r, rank: r0, got, name: en.name }; HV.busy = false;
+  save(); updateHeader(); try { drawStatus(); } catch (e) {}
+  notify(r.win ? `${en.name} (rank ${r0}) slain: +${got.scales} Dragon Scales${got.up ? ` · rank ${H.top} unlocked` : ""}` : `${en.name} drove you off. Losses don't use up a hunt.`);
+  if (document.getElementById("hnRoot")) showHunts();
+}
+async function huntPost() {
+  if (!cloudOn() || !APR_USER || APR_USER === "guest") return; const H = huntState();
+  try { await cloudReq(`hunt/${H.wk.w}/${myKey()}`, "PUT", { u: dispName(), r: H.wk.best, at: Date.now() }); } catch (e) {}
+}
+async function huntBoard() {
+  if (!cloudOn()) return null; const d = await cloudReq(`hunt/${weekNo()}`);
+  return (d && typeof d === "object" ? Object.entries(d).map(([k, r]) => Object.assign({ k }, r)).filter(r => r && typeof r.u === "string") : []).sort((a, b) => (b.r | 0) - (a.r | 0) || (a.at || 0) - (b.at || 0));
+}
+function showHunts() {
+  const H = huntState(), W = huntWyrm();
+  if (!huntOpen()) { main.innerHTML = `<div class="tw hn" id="hnRoot"><div class="panel-box"><h2 class="twt">🐉 Dragon Hunts</h2><pre class="boss hnart" style="--wc:${W.col};opacity:.35">${spireArt(FLIGHTS.length - 1, 0)}</pre><p>Beat <b>Vharzyx, the Spire Wyrm</b> on floor 150 of the Wyrmspire to start hunting dragons.</p><p class="mut">This week's Wyrm is <b style="color:${W.col}">${esc(W.n)}</b>.</p></div></div>`; return; }
+  const ts = getStats(), en = huntBoss(H.rank), wr = Math.round(100 * huntWin(ts, H.rank)), L = huntLoot(H.rank), left = HUNT.perDay - H.used, last = HV.last;
+  const mech = [...new Set(W.mech)].map(m => FAM_TRAITS[m] ? `<span class="tchip trait" title="${esc(FAM_TRAITS[m].d + ". Counter: " + FAM_TRAITS[m].tip)}">${esc(FAM_TRAITS[m].n)}</span>` : "").join("");
+  main.innerHTML = `<div class="tw hn" id="hnRoot">
+  <div class="panel-box twhead"><h2 class="twt">🐉 Dragon Hunts <span class="twfam">A new Wyrm every Monday. Win to unlock the next rank; there is no limit.</span></h2>
+   <div class="twstats"><span>Hunts left today <b>${left}/${HUNT.perDay}</b></span><span>Highest rank unlocked <b>${H.top}</b></span><span>Best this week <b>${H.wk.best ? "Rank " + H.wk.best : "none"}</b></span><span>Dragons slain <b>${fmtN(H.kills)}</b></span><span>Dragon Scales <b>🐲 ${fmtN(H.scales)}</b></span><button id="hnLb" class="spbtn">🏆 This week's hunters</button></div></div>
+  <div class="panel-box hnmain">
+   <div class="hnrow"><pre class="boss hnart" id="hnArt" style="--wc:${W.col}">${spireArt(FLIGHTS.length - 1, 1)}</pre>
+    <div class="hninfo"><h3 style="color:${W.col}">${esc(W.n)} <span class="mut">· Wyrm of the Week</span></h3><p>${esc(W.d)}</p>
+     <div class="twtags">${mech}<span class="tchip mut">${esc(mutName(W.mut))}</span></div>
+     <div class="hnrank"><button id="hnMinus" ${H.rank <= 1 ? "disabled" : ""}>−</button><b>Rank ${H.rank}</b><button id="hnPlus" ${H.rank >= H.top ? "disabled" : ""}>＋</button><button id="hnMax" ${H.rank >= H.top ? "disabled" : ""}>Highest</button></div>
+     <div class="twstats"><span>Win chance <b class="${wr >= 50 ? "ok" : "bad"}">${wr}%</b></span><span>Its HP <b>${fmtN(en.hp)}</b></span></div>
+     <div class="sploot">A win pays <b>🐲 ${L.scales} Dragon Scales</b> · <b>🪨 ${L.stone} Spirestone</b> · <b>${fmtN(L.gold)} Gold</b> · ${Math.round(L.leg * 100)}% Legendary, ${Math.round(L.myth * 100)}% Mythic card${H.rank >= H.top ? ` · unlocks rank ${H.rank + 1}` : ""}</div>
+     <div class="twctl"><button id="hnGo" class="cta" ${left < 1 || HV.busy ? "disabled" : ""}>🐉 Hunt ${esc(W.n.split(" ")[1])} (rank ${H.rank})</button></div>
+     <div class="mut" style="font-size:12px">Only wins use up a hunt. Hunts refresh at midnight UTC.</div></div></div>
+   ${last ? `<div class="twsum ${last.r.win ? "won" : "lost"}"><h3>${last.r.win ? `🏆 Rank ${last.rank} slain in ${last.r.turns} turns` : `💀 Driven off with ${Math.round(100 * (1 - last.r.bHP / last.r.maxB))}% of its HP gone`}</h3>
+    ${last.got ? `<div class="twloot">+${last.got.scales} 🐲 · +${last.got.stone} 🪨 · +${fmtN(last.got.gold)} Gold${last.got.card ? ` · ${esc(last.got.card)}` : ""}${last.got.up ? ` · rank ${last.rank + 1} unlocked` : ""}${last.got.title ? ` · 🏅 ${esc(last.got.title)}` : ""}</div>` : ""}
+    <div class="twcols"><div><h4>Damage dealt</h4>${sumBars(last.r.dealt, "dealt")}</div><div><h4>Damage taken</h4>${sumBars(last.r.taken, "taken")}</div><div><h4>Healing</h4>${sumBars(last.r.healed, "healed")}</div></div>
+    <details><summary>Fight log</summary><div class="twlog">${(last.r.events || []).map(evHTML).join("")}</div></details></div>` : ""}
+  </div>
+  <div class="panel-box"><h3>🐲 The Hoard <span class="mut">· you have ${fmtN(H.scales)} Dragon Scales</span></h3><div class="hoard">${HOARD.map(x => { const own = x.once && H.bought[x.k]; return `<div class="hoi ${own ? "own" : ""}"><span>${esc(x.n)}</span><button data-ho="${x.k}" ${own || H.scales < x.cost ? "disabled" : ""}>${own ? "Owned" : `🐲 ${x.cost}`}</button></div>`; }).join("")}</div>
+   <p class="mut">Titles: Dragon Hunter at 10 dragons slain, Dragonbane at 100, Wyrm Eternal at 500.</p></div></div>`;
+  const $ = s => main.querySelector(s), setR = r => { H.rank = Math.max(1, Math.min(H.top, r)); showHunts(); };
+  $("#hnMinus").onclick = () => setR(H.rank - 1); $("#hnPlus").onclick = () => setR(H.rank + 1); $("#hnMax").onclick = () => setR(H.top);
+  $("#hnGo").onclick = () => huntGo();
+  $("#hnLb").onclick = async () => { const m = modal35("🏆 This week's dragon hunters"); m.body.innerHTML = `<p class="mut">Highest rank of ${esc(W.n)} slain this week.</p><div id="hnB">Loading…</div>`; const rows = await huntBoard(), el = m.body.querySelector("#hnB"); if (!el) return; el.innerHTML = rows === null ? "Leaderboards need the cloud connection." : rows.length ? `<table class="spbt"><tr><th>#</th><th>Player</th><th>Rank</th></tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === myKey() ? "me" : ""}"><td>${i + 1}</td><td>${esc(String(r.u).slice(0, 24))}</td><td><b>${r.r | 0}</b></td></tr>`).join("")}</table>` : "Nobody has slain this week's Wyrm yet."; };
+  main.querySelectorAll("[data-ho]").forEach(b => b.onclick = () => { const x = HOARD.find(o => o.k === b.dataset.ho); if (!x || H.scales < x.cost || (x.once && H.bought[x.k])) return; H.scales -= x.cost; if (x.once) H.bought[x.k] = 1; const n = x.give(); save(); updateHeader(); notify(typeof n === "string" && n ? `From the Hoard: ${n}` : `From the Hoard: ${x.n}`); showHunts(); });
 }
 
 // ===================== THE FRONTIER: endless background farming =====================
@@ -5442,7 +5722,9 @@ function frState() {
   F.s = F.s || { k: 0, e: 0, c: 0, d: 0, g: 0, t0: Date.now(), drops: [] }; F.b = Array.isArray(F.b) ? F.b : []; F.last = F.last || Date.now(); F.dead = F.dead || 0;
   if (!F.b.length) frBounties(); return F;
 }
-function frMaxTier() { return Math.max(5, Math.round(floorLvl(topFloor())) + 5); }
+// the highest tier: your best Spire floor (as a monster level) + 5, and 3 more for every Heat level you've unlocked, with no limit
+const FR_HEAT_TIERS = 3;
+function frMaxTier() { const S = sv.spire || {}; return Math.max(5, Math.round(floorLvl(topFloor())) + 5 + FR_HEAT_TIERS * (S.heatMax || 0)); }
 function frEliteP(T) { const F = frState(); return Math.min(FR.eliteCap, (FR.eliteBase + FR.eliteLvl * T) * (1 + astral("elite") / 100) * (1 + Math.min(0.5, 0.01 * Math.floor(F.st / 25)))); }
 function frInterval() { return FR.tick / (1 + astral("speed") / 100); }
 function frOfflineCap() { return Math.min(24, FR.offlineH + astral("offline")); }
@@ -5541,7 +5823,7 @@ function showFrontier() {
   <div class="panel-box twhead"><h2 class="twt">⚔️ The Frontier <span class="twfam">Endless fighting that keeps going on every screen</span></h2>
    <div class="twnav"><button id="fMinus" ${T <= 1 ? "disabled" : ""}>−</button><select id="fSel">${Array.from({ length: max }, (_, i) => max - i).map(t => `<option value="${t}" ${t === T ? "selected" : ""}>Tier ${t}</option>`).join("")}</select><button id="fPlus" ${T >= max ? "disabled" : ""}>＋</button>
    <button id="fGo" class="cta ${F.on ? "on" : ""}">${F.on ? "⏹ Stop" : "▶ Start fighting"}</button></div>
-   <div class="twstats"><span>Loot quality <b class="${y >= 1 ? "ok" : y >= 0.5 ? "warn" : "bad"}">${Math.round(y * 100)}%</b></span><span>Elite chance <b>${(ep * 100).toFixed(1)}%</b></span><span>Highest tier <b>${max}</b> <span class="mut">(deepest Depth + 5)</span></span><span>Offline limit <b>${frOfflineCap()} h</b></span></div>
+   <div class="twstats"><span>Loot quality <b class="${y >= 1 ? "ok" : y >= 0.5 ? "warn" : "bad"}">${Math.round(y * 100)}%</b></span><span>Elite chance <b>${(ep * 100).toFixed(1)}%</b></span><span>Highest tier <b>${max}</b> <span class="mut">(best Spire floor + 5${(sv.spire && sv.spire.heatMax) ? `, +${FR_HEAT_TIERS * sv.spire.heatMax} from Heat ${sv.spire.heatMax}` : ""})</span></span><span>Offline limit <b>${frOfflineCap()} h</b></span></div>
    <div class="twtags"><span class="tchip fav">🎯 Zone favors ${esc(fv)}</span><span class="tchip">Streak ${F.st} <span class="mut">(+${Math.min(50, Math.floor(F.st / 25))}% Gold and elites)</span></span></div>
   </div>
   <div class="twcols3"><div class="panel-box"><h3>This session</h3><pre class="frart" id="frArt"></pre><div id="frLive"></div></div>
@@ -5779,6 +6061,8 @@ const SEASON_OBJ = [
   { k: "wb", n: "Attack the World Boss", t: [5, 15, 30] },
   { k: "wstage", n: "Clear Weekly Challenge stages", t: [10, 40, 80] },
   { k: "goals", n: "Claim daily goals", t: [15, 60, 150] },
+  { k: "hunt", n: "Slay hunted dragons", t: [5, 25, 75] },
+  { k: "heat", n: "Unlock a Heat level", t: [1, 3, 6], max: true },
   { k: "god", n: "Open a God Pack", t: [1], pts: [250] }
 ];
 // each week of a season brings four season quests (the same for everyone) worth 60 points each, and 100 more for all four
@@ -5816,6 +6100,8 @@ onEvt("temper", () => seasonCount("forge"));
 onEvt("etch", () => seasonCount("forge"));
 onEvt("brew", () => seasonCount("brew"));
 onEvt("wbAttack", () => seasonCount("wb"));
+onEvt("huntWin", () => seasonCount("hunt"));
+onEvt("heatUp", d => seasonCount("heat", d.h, true));
 function addTitle(t) { if (!sv.cos.titles.includes(t)) sv.cos.titles.push(t); }
 function seasonState() { const n = seasonNo(); if (!sv.season || sv.season.n !== n) sv.season = { n, pts: 0, claimed: [] }; return sv.season; }
 function seasonAdd(p) { const S = seasonState(); S.pts += p; seasonQueue(); }
@@ -5915,7 +6201,7 @@ applyLook(); applyUI(); applyFrame();
 __ready = true;
 if (!APR_USER) showTitle();
 else {
-  spireState(); ascState(); frState(); frOffline(); drawNav(); drawStatus(); hubGo("PACKS", 0); pullGifts(); drawFrChip();
+  spireState(); ascState(); huntSleeves(); try { presStart(); } catch (e) {} frState(); frOffline(); drawNav(); drawStatus(); hubGo("PACKS", 0); pullGifts(); drawFrChip();
   if (sv.webRefund) { setTimeout(() => notify(`The Skill Web was rebuilt: your old nodes were refunded as ${sv.webRefund} 🟣 Prisms.`), 2500); delete sv.webRefund; save(); }
   (async () => { const c = await cloudReq("config"); if (c) cloudCfg = c; betaGate(); })(); betaGate();
   if (sv.oldSave) { setTimeout(() => notify(`Your save was from an older version (v${sv.oldSave}), so a fresh one started. A copy of the old save is kept on this device.`), 1500); delete sv.oldSave; save(); }
