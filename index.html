@@ -1273,6 +1273,16 @@ body[data-sleeve=wyrmhide] .card{border-color:#dc2626;box-shadow:inset 0 0 0 2px
 .chcs{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}.chcs .chcard{font-size:10px}
 .chon{color:#4ade80;font-size:11px;margin-left:4px}#chOnl{font-size:11px;padding:2px 6px;color:#4ade80}
 .rsnote{font-size:11px;color:#9aa4b2}.rstog{font-size:11px;padding:3px 8px}.rstog.on{border-color:#4ade80;color:#86efac}
+/* Skill Web mastery */
+.wmg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px;margin-bottom:10px}
+.wmr{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;justify-content:space-between;padding:6px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px}
+.wmr.done{border-color:#7c6aa8}.wmst i{font-style:normal;color:#4b4560}.wmst i.on{color:#c084fc}.wmr button{font-size:12px;padding:4px 8px}
+/* Shortcuts */
+.m35-sc .m35box{max-width:560px}#scQ{width:100%;box-sizing:border-box;font-size:15px;padding:10px}
+.scl{max-height:min(60vh,520px);overflow:auto;margin-top:8px;text-align:left}.scg{font:600 11px var(--mono);color:var(--mut);letter-spacing:1px;margin:8px 4px 2px;text-transform:uppercase}
+.sci{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:6px;cursor:pointer}.sci:hover,.sci.on{background:rgba(217,164,65,.15)}
+.scpin{padding:0 6px;border:0;background:none;color:var(--mut);font-size:16px}.scpin.on{color:#fbbf24}.scf{font-size:11px;margin-top:8px}
+.scpb{font-size:12px;border-color:#7c6aa8}
 
 </style>
 </head>
@@ -1292,7 +1302,7 @@ function gameEvent(k, d) { (EVT[k] || []).forEach(f => { try { f(d || {}); } cat
 // ===================== Save data =====================
 // One shape for the save. Loading fills in anything missing and drops fields no system uses any more.
 // Saves from before v44 (the attribute rework) are not upgraded: they are kept in a backup slot and a fresh save starts.
-const SAVE_VER = 56, OLDEST_SAVE = 44;
+const SAVE_VER = 57, OLDEST_SAVE = 44;
 const SLOT_NAMES = ["helm", "armor", "gloves", "boots", "main", "amulet", "ring1", "ring2", "off", "pet"];
 function freshState() {
   return {
@@ -1309,7 +1319,7 @@ function freshState() {
     sleeve: "none", mat: "none", owned: ["sl:none", "mt:none"], bframe: "",
     coll: {}, ltd: { got: [] }, goals: {}, wk: {}, wb: {}, season: {}, lf: { rules: [], on: true }, salv: null,
     stats: { packsOpened: 0, cardsPulled: 0, coinsEarned: 0, depthBest: 0 },
-    music: false, mute: 0, fastRip: false, skipAll: false, autoRip: false, autoN: 1, autoSalv: false, fightSpeed: 3, anim: 1, tint: 0, cart: "", carts: [], stems: { bass: 1, lead: 1, arp: 1, drums: 0 },
+    music: false, mute: 0, fastRip: false, skipAll: false, autoRip: false, autoN: 1, pins: [], autoSalv: false, fightSpeed: 3, anim: 1, tint: 0, cart: "", carts: [], stems: { bass: 1, lead: 1, arp: 1, drums: 0 },
     tourDone: 0, playMs: 0, dname: ""
   };
 }
@@ -2346,6 +2356,12 @@ PATCH_NOTES.unshift({ v: 56, t: "v56: Heat and Dragon Hunts", n: [
   "Who's online: the 🟢 count on the chat window shows players active in the last few minutes, and clicking it lists them with what they're doing",
   "Social leaderboards rebuilt: Heat, Combat Power, Packs Opened, Rarest Card Packed (shown as \"1 in N\" odds, with the card), Dragon Hunts, Ascension Tier and Time Played",
   "Pack screen comparisons now show a new card at the same level as the card you have equipped (stats and Power), so the numbers are comparable. Toggle it off to see the card as it is"] });
+PATCH_NOTES.unshift({ v: 57, t: "v57: Skill Web mastery, Starlight, Rebirth, Shortcuts and Auto Heat", n: [
+  "Region mastery: take every node in a Skill Web region, then master it up to rank 5. Each rank makes that region's nodes 10% stronger",
+  "Starlight: once the whole web is taken, Prisms buy unlimited ranks of a stat you choose (damage, HP, Gold, Spirestone, luck and more)",
+  "Rebirth: with every node taken and every region at Mastery 5, clear the web for +10% to everything it gives, forever (stacks). Mastery and Starlight stay",
+  "⚡ Shortcuts (Ctrl+K or /): every screen and common action in one searchable menu. Star an action to pin it as a button under the tabs",
+  "Wyrmspire: ⏫ Max Heat switches to your highest Heat in one click, and 🔁 Auto Heat moves you onto each new Heat level as soon as you unlock it"] });
 
 // ===================== Small helpers =====================
 function notify(text) {
@@ -3480,7 +3496,8 @@ function drawNav() {
   if (!ub) { ub = document.createElement("nav"); ub.id = "utilbar"; ub.className = "bar"; sb.after(ub); }
   hb.innerHTML = Object.keys(HUBS).map((h, i) => `<button data-h="${ea(h)}" class="${h === curHub ? "on" : ""}"><span class="tb-num">${i + 1}</span>[ ${ea(h)} ]</button>`).join("");
   sb.innerHTML = !HUBS[curHub] || HUBS[curHub].length < 2 || (NOSUB && NOSUB.has(curHub)) ? "" : HUBS[curHub].map((x, i) => `<button data-s="${i}" class="${i === curSub ? "on" : ""}">${ea(x[0])}</button>`).join("");
-  ub.innerHTML = `<button id="goalBtn">🎯 Goals</button><button data-u="0">⚙️ Account & Guide</button><span id="saveDot"></span>`; drawGoalBtn(); drawSaveDot();
+  ub.innerHTML = `<button id="scBtn" title="Shortcuts (Ctrl+K or /)">⚡ Shortcuts</button><button id="goalBtn">🎯 Goals</button><button data-u="0">⚙️ Account & Guide</button><span id="saveDot"></span>`; drawGoalBtn(); drawSaveDot(); try { drawPins(); } catch (e) {}
+  ub.querySelector("#scBtn").onclick = () => openShortcuts();
   hb.querySelectorAll("button").forEach(b => b.onclick = () => hubGo(b.dataset.h, 0));
   sb.querySelectorAll("button").forEach(b => b.onclick = () => hubGo(curHub, +b.dataset.s));
   ub.querySelector("[data-u]").onclick = () => openAccountGuide(); ub.querySelector("#goalBtn").onclick = () => openGoals();
@@ -4460,7 +4477,63 @@ function webCost(n) { return WEB_COST[n.t] ?? 1; }
 function webSpent() { return Object.keys(webState().a).reduce((s, id) => s + (WEB.by[id] ? webCost(WEB.by[id]) : 0), 0); }
 function webOpen(n) { return !webHas(n.id) && n.adj.some(j => webHas(j)); }
 var WEBFX = null;
-function recalcAstral() { const o = {}; Object.keys(webState().a).forEach(id => { const n = WEB.by[id]; if (!n) return; Object.keys(n.eff).forEach(k => o[k] = +((o[k] || 0) + n.eff[k]).toFixed(4)); }); WEBFX = o; sv.astral = o; }
+// ---- after the web: region mastery, Starlight ranks and rebirth ----
+// Mastery: a completed region can be mastered up to rank 5; each rank makes that region's nodes 10% stronger.
+// Starlight: once every node is taken, Prisms buy unlimited ranks of a stat you choose, each a little dearer.
+// Rebirth: with every node taken and every region at Mastery 5, clear the nodes for +10% to everything the web gives,
+// forever. Mastery and Starlight are kept.
+const WEB_MASTERY = { max: 5, per: 0.1, cost: r => 15 * r };
+const WEB_STAR = {
+  dmg: { n: "Strike damage", v: 1 }, hp: { n: "Max HP", v: 1 }, armor: { n: "Armor block", v: 1 }, critd: { n: "Crit damage", v: 2 },
+  heal: { n: "Healing", v: 2 }, pet: { n: "Companion damage", v: 2 }, gold: { n: "Gold", v: 2 }, deep: { n: "Spirestone from Spire bosses", v: 2 },
+  glyph: { n: "Raw Glyphs from salvage", v: 2 }, luck: { n: "Rare+ pack luck", v: 0.5 }, prism: { n: "Prisms", v: 1 }
+};
+const WEB_REBIRTH = 0.1;
+function webStarCost() { const W = webState(); return 15 + 2 * Object.values(W.st || {}).reduce((a, b) => a + b, 0); }
+function webRegionDone(k) { return (WEB.regions[k] || []).every(id => webHas(id)); }
+function webFull() { return WEB.nodes.every(n => webHas(n.id)); }
+function webCanRebirth() { const W = webState(); return webFull() && WEB_REGIONS.every(G => ((W.m || {})[G.k] || 0) >= WEB_MASTERY.max); }
+function recalcAstral() {
+  const W = webState(), o = {}, M = W.m || {}, rb = 1 + WEB_REBIRTH * (W.rb || 0), done = {};
+  WEB_REGIONS.forEach(G => { done[G.k] = webRegionDone(G.k); });
+  Object.keys(W.a).forEach(id => { const n = WEB.by[id]; if (!n) return; const mm = done[n.reg] ? 1 + WEB_MASTERY.per * (M[n.reg] || 0) : 1; Object.keys(n.eff).forEach(k => { const v = n.eff[k]; o[k] = +((o[k] || 0) + (v > 0 ? v * mm * rb : v)).toFixed(4); }); });
+  Object.keys(W.st || {}).forEach(k => { if (WEB_STAR[k]) o[k] = +((o[k] || 0) + WEB_STAR[k].v * W.st[k]).toFixed(4); });
+  WEBFX = o; sv.astral = o;
+}
+function webMaster(k) {
+  const W = webState(); W.m = W.m || {}; const r = W.m[k] || 0, c = WEB_MASTERY.cost(r + 1);
+  if (!webRegionDone(k) || r >= WEB_MASTERY.max || (sv.shards || 0) < c) return false;
+  sv.shards -= c; W.m[k] = r + 1; recalcAstral(); EST.k = ""; save(); updateHeader(); gameEvent("webMastery", { k, r: r + 1 }); return true;
+}
+function webStar(k) {
+  const W = webState(), c = webStarCost(); if (!webFull() || !WEB_STAR[k] || (sv.shards || 0) < c) return false;
+  W.st = W.st || {}; sv.shards -= c; W.st[k] = (W.st[k] || 0) + 1; recalcAstral(); EST.k = ""; save(); updateHeader(); return true;
+}
+function webRebirth() {
+  if (!webCanRebirth()) return false; const W = webState();
+  W.rb = (W.rb || 0) + 1; W.a = { heart: 1 }; recalcAstral(); EST.k = "";
+  [1, 5, 10, 25].forEach(n => { if (W.rb === n) addTitle(`Reborn ${n === 1 ? "" : "×" + n}`.trim()); });
+  save(); updateHeader(); gameEvent("webRebirth", { n: W.rb }); try { chPost(`${APR_USER} reborn their Skill Web (rebirth ${W.rb})!`, null, "ann"); } catch (e) {}
+  return true;
+}
+function openWebMastery() {
+  const M = modal35("✦ Mastery, Starlight & Rebirth");
+  const draw = () => {
+    const W = webState(), full = webFull(), sc = webStarCost(), rb = W.rb || 0;
+    M.body.innerHTML = `<p class="mut">You have <b>🟣 ${fmtN(sv.shards || 0)}</b> Prisms.${rb ? ` Rebirth ${rb}: everything the web gives is <b>+${Math.round(rb * WEB_REBIRTH * 100)}%</b>.` : ""}</p>
+    <h3>Region mastery</h3><p class="mut">Take every node in a region to master it. Each rank (up to ${WEB_MASTERY.max}) makes that region's nodes ${Math.round(WEB_MASTERY.per * 100)}% stronger. Mastery is kept through Rebirth and only works while the region is complete.</p>
+    <div class="wmg">${WEB_REGIONS.map(G => { const ids = WEB.regions[G.k] || [], have = ids.filter(id => webHas(id)).length, done = have === ids.length, r = (W.m || {})[G.k] || 0, c = WEB_MASTERY.cost(r + 1);
+      return `<div class="wmr ${done ? "done" : ""}"><b style="color:hsl(${G.hue},80%,70%)">${esc(G.n)}</b><span class="mut">${have}/${ids.length} nodes</span><span class="wmst">${[...Array(WEB_MASTERY.max)].map((_, i) => `<i class="${i < r ? "on" : ""}">◆</i>`).join("")}</span>
+       ${r >= WEB_MASTERY.max ? `<span class="ok">Mastered</span>` : done ? `<button data-wm="${G.k}" ${(sv.shards || 0) < c ? "disabled" : ""}>Rank ${r + 1}: ${c} 🟣</button>` : `<span class="mut">complete it first</span>`}</div>`; }).join("")}</div>
+    <h3>✨ Starlight</h3>${full ? `<p class="mut">Unlimited ranks. The next rank costs <b>${sc} 🟣</b> (each rank costs 2 more). Starlight is kept through Rebirth.</p><div class="wmg">${Object.keys(WEB_STAR).map(k => { const S = WEB_STAR[k], n = (W.st || {})[k] || 0; return `<div class="wmr"><b>${esc(S.n)}</b><span class="mut">rank ${n} · ${esc(WEB_FX[k] ? WEB_FX[k](S.v * n) : "")}</span><button data-ws="${k}" ${(sv.shards || 0) < sc ? "disabled" : ""}>+${f1(S.v)}%: ${sc} 🟣</button></div>`; }).join("")}</div>` : `<p class="mut">Unlocks when you've taken every node in the web (${Object.keys(W.a).length - 1}/${WEB.nodes.length - 1}).</p>`}
+    <h3>🌀 Rebirth</h3><p class="mut">With every node taken and every region at Mastery ${WEB_MASTERY.max}, you can rebirth the web: all nodes are cleared (the Prisms in them are not refunded), and from then on everything the web gives is <b>${Math.round(WEB_REBIRTH * 100)}% stronger</b>, stacking with each rebirth. Mastery and Starlight stay. Titles at rebirth 1, 5, 10 and 25.</p>
+    ${webCanRebirth() ? `<button id="wRb" class="cta">${WV.rbArm ? "Click again to rebirth the web" : `Rebirth the web (→ +${Math.round((rb + 1) * WEB_REBIRTH * 100)}%)`}</button>` : `<p class="mut">Not yet: ${full ? "" : "take every node, "}${WEB_REGIONS.filter(G => ((W.m || {})[G.k] || 0) < WEB_MASTERY.max).length} region${WEB_REGIONS.filter(G => ((W.m || {})[G.k] || 0) < WEB_MASTERY.max).length === 1 ? "" : "s"} still below Mastery ${WEB_MASTERY.max}.</p>`}`;
+    M.body.querySelectorAll("[data-wm]").forEach(b => b.onclick = () => { if (webMaster(b.dataset.wm)) notify("Mastery rank up!"); draw(); });
+    M.body.querySelectorAll("[data-ws]").forEach(b => b.onclick = () => { if (webStar(b.dataset.ws)) notify("Starlight rank up!"); draw(); });
+    const rbb = M.body.querySelector("#wRb"); if (rbb) rbb.onclick = () => { if (!WV.rbArm) { WV.rbArm = true; draw(); setTimeout(() => { WV.rbArm = false; }, 4000); return; } WV.rbArm = false; if (webRebirth()) { notify(`The web is reborn! Rebirth ${webState().rb}.`); M.close(); if (document.getElementById("webC")) showAstrolabe(); } };
+  };
+  draw();
+}
 function astral(k) { if (!WEBFX) recalcAstral(); return WEBFX[k] || 0; }
 function webTake(ids) {
   const W = webState(); let spent = 0;
@@ -4514,7 +4587,7 @@ function showAstrolabe() {
      <span>🟣 <b>${fmtN(sv.shards || 0)}</b> Prisms</span><span class="mut">${own} / ${totN} nodes · ${fmtN(webSpent())} spent</span>
      <span class="webq">Quick allocate <select id="wN">${[1, 5, 10, 25, 50, 100].map(v => `<option ${v === WV.n ? "selected" : ""}>${v}</option>`).join("")}<option value="9999" ${WV.n === 9999 ? "selected" : ""}>All</option></select> Prisms
        <select id="wReg"><option value="">nearest the Heart</option>${WEB_REGIONS.map(r => `<option value="${r.k}" ${WV.reg === r.k ? "selected" : ""}>into ${r.n}</option>`).join("")}</select><button id="wGo" class="cta">Allocate</button></span>
-     <input id="wQ" placeholder="🔍 find (e.g. crit, Gold, Pyreheart)" value="${esc(WV.q)}"><button id="wFit">⤢ Fit</button><button id="wReset">${WV.resetArm ? "Click again to refund all" : "↺ Reset"}</button>
+     <input id="wQ" placeholder="🔍 find (e.g. crit, Gold, Pyreheart)" value="${esc(WV.q)}"><button id="wFit">⤢ Fit</button><button id="wMast" class="${webFull() || WEB_REGIONS.some(G => webRegionDone(G.k)) ? "cta" : ""}">✦ Mastery${webState().rb ? ` · Rebirth ${webState().rb}` : ""}</button><button id="wReset">${WV.resetArm ? "Click again to refund all" : "↺ Reset"}</button>
    </div>
    <div class="webmain"><canvas id="webC"></canvas><div class="webside panel-box" id="webSide"></div></div>
    <details class="panel-box webtot"><summary>Everything your web gives you</summary><div id="webTot"></div></details></div>`;
@@ -4572,6 +4645,7 @@ function showAstrolabe() {
   $("#wN").onchange = e => { WV.n = +e.target.value; }; $("#wReg").onchange = e => { WV.reg = e.target.value; };
   $("#wGo").onclick = () => { const got = webQuick(WV.n, WV.reg); notify(got.length ? `Allocated ${got.length} node${got.length > 1 ? "s" : ""}.` : (sv.shards || 0) < 1 ? "No Prisms to spend." : "Nothing left to take there."); WV.path = null; tot(); bar(); info(WV.sel); };
   $("#wQ").oninput = e => { WV.q = e.target.value; draw(); };
+  $("#wMast").onclick = () => openWebMastery();
   $("#wFit").onclick = () => { WV.x = 0; WV.y = 0; WV.z = Math.min(C.clientWidth, C.clientHeight) / 2700; draw(); };
   $("#wReset").onclick = () => { if (!WV.resetArm) { WV.resetArm = true; $("#wReset").textContent = "Click again to refund all"; setTimeout(() => { WV.resetArm = false; const b = $("#wReset"); if (b) b.textContent = "↺ Reset"; }, 3000); return; } WV.resetArm = false; const b = webReset(); notify(`Web reset: +${fmtN(b)} 🟣 refunded.`); showAstrolabe(); };
   tot(); info(WV.sel); requestAnimationFrame(size); window.addEventListener("resize", size, { once: true });
@@ -5318,7 +5392,7 @@ function spireState() {
   // an old save: the deepest Depth becomes the matching Spire floor as your all-time best
   if (!S.mig) { S.mig = 1; const old = sv.dep && sv.dep.best; if (old) S.peak = Math.max(S.peak, lvlFloor(old)); sv.dep = {}; }
   S.heatMax = S.heatMax || 0; S.heat = Math.max(0, Math.min(S.heat || 0, S.heatMax));
-  if (S.w !== w) { S.w = w; S.floor = 0; S.best = {}; S.paid = {}; S.tries = 0; }
+  if (S.w !== w) { S.w = w; S.floor = 0; S.best = {}; S.paid = {}; S.tries = 0; if (S.autoHeat) S.heat = S.heatMax || 0; }
   S.best = S.best || {}; S.paid = S.paid || {};
   return S;
 }
@@ -5458,9 +5532,11 @@ async function spireGo(n, chain) {
   if (S.floor > was || pb) spirePost(pb ? n : -1);
   SPV.busy = false;
   if (r.win && n < FLIGHTS.length - 1) SPV.n = n + 1;
+  // Auto Heat: a summit clear that unlocks a new Heat level moves you straight onto it, from floor 1
+  const heatUp = !!(r.win && pay.heat && S.autoHeat); if (heatUp) { S.heat = S.heatMax; S.floor = 0; S.best = {}; SPV.n = 0; save(); try { drawStatus(); } catch (e) {} }
   if (document.getElementById("spRoot")) showSpire();
-  notify(r.win ? `${FLIGHTS[n].boss} defeated in ${r.turns} turns${pb ? " (personal best)" : ""}!` : `You fell on floor ${r.reached + 1}.`);
-  if (r.win && SPV.chain && n < FLIGHTS.length - 1 && document.getElementById("spRoot")) { await sleep(700); if (SPV.chain && !SPV.busy) spireGo(n + 1, true); }
+  notify(r.win ? `${FLIGHTS[n].boss} defeated in ${r.turns} turns${pb ? " (personal best)" : ""}!${heatUp ? ` Auto Heat: now climbing Heat ${S.heat} from floor 1.` : ""}` : `You fell on floor ${r.reached + 1}.`);
+  if (r.win && SPV.chain && document.getElementById("spRoot") && (n < FLIGHTS.length - 1 || heatUp)) { await sleep(heatUp ? 1500 : 700); if (SPV.chain && !SPV.busy) spireGo(heatUp ? 0 : n + 1, true); }
 }
 // the climb, floor by floor
 async function spireAnimate(r) {
@@ -5545,6 +5621,8 @@ function heatHTML(S) {
   if (!S.heatMax) return `<div class="spheatbar mut">🔥 <b>Heat</b> unlocks when you beat Vharzyx on floor 150. Every summit clear unlocks the next Heat level, with no limit.</div>`;
   const opts = [...Array(S.heatMax + 1)].map((_, h) => `<option value="${h}" ${h === S.heat ? "selected" : ""}>${h ? "Heat " + h : "No Heat"}</option>`).join("");
   return `<div class="spheatbar ${S.heat ? "on" : ""}"><label>🔥 <b>Heat</b> <select id="spHeat">${opts}</select></label>
+   <button id="spHeatMax" ${S.heat === S.heatMax ? "disabled" : ""} title="Switch to your highest unlocked Heat">⏫ Max Heat (${S.heatMax})</button>
+   <button id="spAutoHeat" class="dk-tog ${S.autoHeat ? "on" : ""}" title="When you clear floor 150 on your highest Heat, move straight onto the new Heat level and start again from floor 1 (with 'Climb as far as I can', keep climbing). Each Monday also starts on your highest Heat.">🔁 Auto Heat <b>${S.autoHeat ? "ON" : "OFF"}</b></button>
    <span class="mut">Unlocked up to Heat ${S.heatMax}. Clear floor 150 on Heat ${S.heatMax} to unlock Heat ${S.heatMax + 1}.</span>
    ${SPH.pend >= 0 ? `<div class="spheatwarn">Switching to ${SPH.pend ? "Heat " + SPH.pend : "No Heat"} restarts this week's climb from floor 1. <button id="spHeatOk" class="cta">Switch</button> <button id="spHeatNo">Keep Heat ${S.heat}</button></div>` : ""}
    ${S.heat ? `<ul class="spheatfx">${heatLines(S.heat).map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}</div>`;
@@ -5574,7 +5652,7 @@ function showSpire() {
      ${omen ? `<div class="spomen"><b>This week's omen, ${esc(omen.n)}:</b> ${esc(omen.d)}.</div>` : ""}
      <div class="twstats"><span>Win chance <b class="${wr >= 50 ? "ok" : "bad"}">${wr}%</b></span><span>Your best this week <b>${S.best[n] ? S.best[n] + " turns" : "none"}</b></span><span>HP back between floors <b>${Math.round(100 * (heatFx(S.heat).heal + astral("fuel") / 100))}%</b></span></div>
      <div class="sploot">${firstWeek ? `First clear this week: <b>+${L.stone} 🪨 Spirestone</b> · <b>+${L.packs} 📦</b>${L.prisms ? ` · <b>+${L.prisms} 🟣</b> (first clear ever)` : ""}${n === FLIGHTS.length - 1 && !(sv.cos.titles || []).includes("Wyrmslayer") ? " · the <b>Wyrmslayer</b> title" : ""}${floorsLeft ? ` · Gold from ${floorsLeft} new floor${floorsLeft > 1 ? "s" : ""}` : ""}` : `Boss loot already claimed this week. Climb again for a faster time on the leaderboard.`}</div>
-     <div class="twctl"><button id="spGo" class="cta" ${n > open || SPV.busy ? "disabled" : ""}>▲ Climb floors ${n * 10 + 1}-${n * 10 + 10}</button>${n === open && open < FLIGHTS.length - 1 ? `<button id="spChain" ${SPV.busy ? "disabled" : ""} title="Keep climbing flight after flight until you fall">▲▲ Climb as far as I can</button>` : ""}</div>
+     <div class="twctl"><button id="spGo" class="cta" ${n > open || SPV.busy ? "disabled" : ""}>▲ Climb floors ${n * 10 + 1}-${n * 10 + 10}</button>${n === open && (open < FLIGHTS.length - 1 || (S.autoHeat && S.heat >= S.heatMax)) ? `<button id="spChain" ${SPV.busy ? "disabled" : ""} title="Keep climbing flight after flight until you fall">▲▲ Climb as far as I can</button>` : ""}</div>
     </div>
     <div id="spClimb"></div>
     <div id="spRes">${last ? spireReport(last) : ""}</div>
@@ -5587,6 +5665,8 @@ function showSpire() {
   $("#spLb").onclick = () => openSpireBoards();
   const hs = $("#spHeat"); if (hs) hs.onchange = e => spireSetHeat(+e.target.value);
   const ho = $("#spHeatOk"); if (ho) ho.onclick = () => spireSetHeat(SPH.pend);
+  const hm = $("#spHeatMax"); if (hm) hm.onclick = () => spireSetHeat(S.heatMax);
+  const ha = $("#spAutoHeat"); if (ha) ha.onclick = () => { S.autoHeat = !S.autoHeat; save(); notify(S.autoHeat ? "Auto Heat on: new Heat levels start right after you unlock them." : "Auto Heat off."); showSpire(); };
   const hn = $("#spHeatNo"); if (hn) hn.onclick = () => { SPH.pend = -1; showSpire(); };
   const go = $("#spGo"); if (go) go.onclick = () => { if (n > open) return notify("Clear the flight below first."); spireGo(n); };
   const ch = $("#spChain"); if (ch) ch.onclick = () => spireGo(n, true);
@@ -6190,6 +6270,64 @@ function wkBoardHTML() { return boardHTML(WKB.w === weekNo() ? WKB.rows : [], r 
 // season sleeves only appear in Cosmetics once earned
 function seasonSleeves() { (sv.owned || []).forEach(o => { const m = /^sl:season(\d+)$/.exec(o); if (m && !SLEEVES.some(x => x[0] === "season" + m[1])) SLEEVES.push(["season" + m[1], "Season " + m[1], 0]); }); }
 function wkBestText(W) { return `Your best this week: <b>${W.best}/10 stages</b>${W.best ? ` in ${W.turns} turns` : ""} · runs: ${W.tries}. Each stage pays Raw Glyphs (150 × stage) the first time you clear it each week; clearing all ten earns the title "Weekly Champion".`; }
+
+// ===================== SHORTCUTS: a command menu (Ctrl+K or /) and pinned quick buttons =====================
+// Every screen and the common actions in one searchable list. Star an action to pin it to the bar under the tabs.
+function scActions() {
+  const A = [], add = (id, g, n, run, ok = () => true, k = "") => A.push({ id, g, n, run, ok, k });
+  Object.keys(HUBS).forEach(h => HUBS[h].forEach(([n], i) => add(`go:${h}:${i}`, "Go to", HUBS[h].length > 1 ? `${n} (${h.toLowerCase()})` : n, () => hubGo(h, i))));
+  const go = (h, i) => hubGo(h, i), sub = (h, name) => Math.max(0, HUBS[h].findIndex(x => x[0] === name));
+  add("pk1", "Packs", "Rip a pack", () => { go("PACKS", 0); setTimeout(() => { if (!busy) rsTear(); }, 250); }, () => sv.packs > 0, "open");
+  add("pk10", "Packs", "Open 10 packs at once", () => { go("PACKS", 0); setTimeout(() => openMany(10), 250); }, () => sv.packs > 1, "bulk many");
+  add("auto10", "Packs", "Start Auto ×10", () => { go("PACKS", 0); sv.autoRip = true; sv.autoN = 10; save(); setTimeout(() => { rsDockUpdate(); rsAutoStep(); }, 250); }, () => sv.packs > 0, "auto");
+  add("buymax", "Packs", "Buy as many packs as I can afford", () => { const K = PKIND[packKind] || PKIND.standard, n = Math.floor(sv.c / K.price()); if (n < 1) return notify("Not enough Gold for a pack."); sv.c -= n * K.price(); K.add(n); save(); updateHeader(); notify(`Bought ${n} ${K.n}${n > 1 ? "s" : ""}.`); if (curHub === "PACKS") showPacks(); }, () => true, "shop gold");
+  add("salvcfg", "Packs", "Auto-Salvage settings", () => openSalvSettings(), () => true, "loot filter");
+  add("frgo", "Frontier", "Start or stop the Frontier", () => { const F = frState(); F.on = !F.on; F.last = Date.now(); F.dead = 0; if (F.on) F.s = { k: 0, e: 0, c: 0, d: 0, g: 0, t0: Date.now(), drops: [] }; save(); drawFrChip(); notify(F.on ? `Frontier: fighting on tier ${F.tier}.` : "Frontier stopped."); if (document.getElementById("fGo")) showFrontier(); }, () => true, "farm idle");
+  add("frmax", "Frontier", "Frontier: move to my best tier", () => { const F = frState(), T = Math.min(frMaxTier(), Math.max(1, estTier())); F.tier = T; save(); drawFrChip(); notify(`Frontier tier set to ${T}.`); if (document.getElementById("fGo")) showFrontier(); }, () => true, "farm tier");
+  add("spchain", "Wyrmspire", "Climb the Wyrmspire as far as I can", () => { go("ADVENTURE", sub("ADVENTURE", "The Wyrmspire")); setTimeout(() => spireGo(spireOpen(), true), 300); }, () => !SPV.busy, "spire tower");
+  add("spmax", "Wyrmspire", "Switch to my highest Heat", () => { go("ADVENTURE", sub("ADVENTURE", "The Wyrmspire")); setTimeout(() => spireSetHeat(spireState().heatMax), 300); }, () => (spireState().heatMax || 0) > 0 && spireState().heat < spireState().heatMax, "heat");
+  add("hunt", "Dragon Hunts", "Hunt this week's dragon", () => { go("ADVENTURE", sub("ADVENTURE", "Dragon Hunts")); setTimeout(() => huntGo(), 300); }, () => huntOpen() && huntState().used < HUNT.perDay, "wyrm");
+  add("trial", "Ascension", "Face the Ascension trial", () => { go("ADVENTURE", sub("ADVENTURE", "Tribute Ascension")); setTimeout(() => ascTrial(), 300); }, () => !ascTrialOk(), "ascend");
+  add("goals", "Menus", "Goals & Season", () => openGoals(), () => true, "daily weekly quests");
+  add("lb", "Menus", "Spire leaderboards", () => openSpireBoards(), () => true, "rank");
+  add("online", "Menus", "Who's online", () => openOnline(), () => cloudOn(), "players");
+  add("mast", "Menus", "Skill Web: Mastery, Starlight & Rebirth", () => openWebMastery(), () => true, "prisms");
+  add("webq", "Menus", "Skill Web: spend all Prisms near the Heart", () => { const got = webQuick(9999, ""); notify(got.length ? `Allocated ${got.length} node${got.length > 1 ? "s" : ""}.` : "Nothing to spend."); if (document.getElementById("webC")) showAstrolabe(); }, () => (sv.shards || 0) > 0, "allocate");
+  add("cos", "Menus", "Cosmetics", () => openCosmetics(), () => true, "sleeve playmat title");
+  add("acct", "Menus", "Account & Guide", () => openAccountGuide(), () => true, "help settings");
+  add("notes", "Menus", "Patch notes", () => showPatchNotes(), () => true, "changes update");
+  return A;
+}
+var SCV = { q: "", sel: 0 };
+function scPins() { if (!Array.isArray(sv.pins)) sv.pins = []; return sv.pins; }
+function scRun(a) { document.querySelectorAll(".m35.m35-sc").forEach(x => x.remove()); try { a.run(); } catch (e) { console.error(e); } }
+function openShortcuts() {
+  if (document.querySelector(".m35-sc")) return; const M = modal35("⚡ Shortcuts", "m35-sc"); SCV.q = ""; SCV.sel = 0;
+  M.body.innerHTML = `<input id="scQ" placeholder="Type to search: packs, spire, hunt, binder…" autocomplete="off"><div id="scL" class="scl"></div><p class="mut scf">↑↓ to move · Enter to run · ☆ pins an action to the bar under the tabs · open this menu any time with <b>Ctrl+K</b> or <b>/</b></p>`;
+  const inp = M.body.querySelector("#scQ"), L = M.body.querySelector("#scL");
+  const list = () => { const q = SCV.q.trim().toLowerCase(); return scActions().filter(a => a.ok()).filter(a => !q || (a.n + " " + a.g + " " + a.k).toLowerCase().includes(q)); };
+  const draw = () => {
+    const xs = list(), pins = scPins(); SCV.sel = Math.max(0, Math.min(SCV.sel, xs.length - 1)); let g = "";
+    L.innerHTML = xs.length ? xs.map((a, i) => { const h = a.g !== g ? `<div class="scg">${esc(a.g)}</div>` : ""; g = a.g; return h + `<div class="sci ${i === SCV.sel ? "on" : ""}" data-i="${i}"><span>${esc(a.n)}</span><button class="scpin ${pins.includes(a.id) ? "on" : ""}" data-pin="${esc(a.id)}" title="Pin to the bar">${pins.includes(a.id) ? "★" : "☆"}</button></div>`; }).join("") : `<p class="mut">Nothing matches.</p>`;
+    L.querySelectorAll("[data-i]").forEach(el => el.onclick = e => { if (e.target.closest("[data-pin]")) return; scRun(xs[+el.dataset.i]); });
+    L.querySelectorAll("[data-pin]").forEach(b => b.onclick = e => { e.stopPropagation(); const P = scPins(), id = b.dataset.pin, j = P.indexOf(id); if (j >= 0) P.splice(j, 1); else { if (P.length >= 6) P.shift(); P.push(id); } save(); drawPins(); draw(); inp.focus(); });
+    const on = L.querySelector(".sci.on"); if (on) on.scrollIntoView({ block: "nearest" });
+  };
+  inp.oninput = () => { SCV.q = inp.value; SCV.sel = 0; draw(); };
+  inp.onkeydown = e => { const xs = list(); if (e.key === "ArrowDown") { e.preventDefault(); SCV.sel = Math.min(xs.length - 1, SCV.sel + 1); draw(); } else if (e.key === "ArrowUp") { e.preventDefault(); SCV.sel = Math.max(0, SCV.sel - 1); draw(); } else if (e.key === "Enter") { e.preventDefault(); if (xs[SCV.sel]) scRun(xs[SCV.sel]); } };
+  draw(); setTimeout(() => inp.focus(), 30);
+}
+// pinned shortcuts sit in the bar under the tabs
+function drawPins() {
+  const ub = document.getElementById("utilbar"); if (!ub) return; ub.querySelectorAll(".scpb").forEach(x => x.remove());
+  const all = scActions(), at = ub.querySelector("#saveDot");
+  scPins().forEach(id => { const a = all.find(x => x.id === id); if (!a) return; const b = document.createElement("button"); b.className = "scpb"; b.textContent = "★ " + a.n; b.title = a.g; b.disabled = !a.ok(); b.onclick = () => scRun(a); ub.insertBefore(b, at); });
+}
+document.addEventListener("keydown", e => {
+  if (!APR_USER || !__ready) return; const t = e.target, typing = t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName);
+  if ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) { e.preventDefault(); openShortcuts(); return; }
+  if (e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector(".m35")) { e.preventDefault(); openShortcuts(); }
+});
 
 // ===================== Boot =====================
 convertCards();
