@@ -2076,7 +2076,7 @@ const LBC = [
   ["heat", "Heat", r => r.heat ? `🔥 Heat ${fmtN(r.heat)}` : `Floor ${fmtN(r.floor)}`],
   ["power", "Combat Power", r => fmtN(r.power) + " PWR"],
   ["packs", "Packs Opened", r => fmtN(r.packs) + " packs"],
-  ["rare", "Rarest Card Packed", r => r.ro > 1 ? `1 in ${fmtOdds(r.ro)}` : "none yet"],
+  ["rare", "Rarest Card Packed", r => r.ro > 1 ? `1 in ${fmtOdds(r.ro)} cards <span class="mut">· ~${fmtOdds(Math.max(1, r.ro / 14))} packs</span>` : "none yet"],
   ["hunt", "Dragon Hunts", r => r.hunt ? `Rank ${fmtN(r.hunt)}` : "not yet"],
   ["asc", "Ascension Tier", r => "🌀 " + (r.asc | 0)],
   ["play", "Time Played", r => { const h = (r.play || 0) / 36e5; return h >= 1 ? h.toFixed(1) + " h" : Math.round(h * 60) + " min"; }]
@@ -2152,20 +2152,16 @@ PATCH_NOTES[0].n.push("Equipment: in the Slot Inspector, click any card in the l
 PATCH_NOTES.unshift({ v: 42.1, t: "v42.1: Cheaper re-rolls", n: [
   "Re-Roll Bench: each property on a card now has its own price. Re-rolling one property never raises the cost of the others",
   "Re-rolls are cheaper: the first re-roll of a property costs about 40% less Raw Glyphs and half the monster drops, and each further re-roll of that same property costs about 40% more (was 55%)"] });
-var LTD = { id: "td1", pub: null, raw: null, busy: false, at: 0, rec: false, def: { name: "Godslayer Test Drop", card: "Godslayer, the Last Edge", packs: 100, of: 5, perUser: 10, opened: 0 } };
 // Each game account gets a Firebase login "<username>@ascii-rip-it.invalid" with the game password,
 // so the database rules can check who is writing. Nothing here needs the paid plan.
 const LTD_MAIL = "@ascii-rip-it.invalid";
 // Firebase needs 6+ characters; game passwords can be 4
 var LTA = { tok: "", exp: 0, uid: "", ref: null };
 document.addEventListener("click", async e => {
-  const c = e.target.closest && e.target.closest("#ltdCopy, #ltdStart, #ltdSign"); if (!c) return;
-  if (c.id === "ltdSign") { document.querySelectorAll(".m35").forEach(x => x.remove()); return ltdAskPw("", () => openAccountGuide()); }
-  if (c.id === "ltdCopy") { try { await navigator.clipboard.writeText(ltdUid()); notify("Drop ID copied"); } catch (er) {} return; }
-  const m = document.getElementById("ltdAdm"); if (c.dataset.ok !== "1") { c.dataset.ok = "1"; c.textContent = "Click again to replace the current drop"; return; }
-  if (m) m.textContent = "Dealing…"; const r = await ltdStartDrop(); if (m) m.textContent = r === true ? "New drop started!" : r; c.dataset.ok = ""; c.textContent = "Start a new Limited Drop";
+  const c = e.target.closest && e.target.closest("#authCopy, #authSign"); if (!c) return;
+  if (c.id === "authSign") { document.querySelectorAll(".m35").forEach(x => x.remove()); return ltdAskPw("", () => openAccountGuide()); }
+  try { await navigator.clipboard.writeText(ltdUid()); notify("Account ID copied"); } catch (er) {}
 });
-setInterval(() => { if (document.getElementById("ltdbar") && !document.hidden) ltdRefresh(); }, 5000);
 PATCH_NOTES.unshift({ v: 40, t: "v40: Limited Drops", n: [
   "PACKS: Limited Drops. Only 100 Limited packs exist for everyone, and 5 of them hold a serialized Godslayer, the Last Edge (#1/5 to #5/5). The counter and the list of who pulled each serial update live",
   "A Limited pack costs 5 Tower floors' worth of Gold and opens like a Collector pack (better rarity, finish and misprint odds). Each player can open up to 10",
@@ -2261,7 +2257,6 @@ PATCH_NOTES.unshift({ v: 42, t: "v42: A new Power", n: [
   "Fixed: equipping a Card Sleeve no longer adds +10% Power (cosmetics are cosmetic only)",
   "Power numbers look different from before; the leaderboard updates as players sync"] });
 const LOAD_N = 5;
-setInterval(() => { const el = document.getElementById("ltdCd"); if (!el) return; const w = ltdOpensIn(); if (w <= 0) { LTD.at = 0; ltdRefresh(true); } else el.textContent = fmtCountdown(w); }, 1000);
 PATCH_NOTES.unshift({ v: 48, t: "v48: Auto-climb, collections, scheduled drops", n: [
   "Tower: 🧗 Auto-climb pushes floor after floor; after a loss it farms your highest cleared floor until you stop it",
   "Binder: 🏆 Collection rewards. Own every card of a binder page (🟣5), a whole rarity (🟣25 to 🟣400 + a title) or a whole element (🟣120 + a title). Titles show next to your name",
@@ -2272,7 +2267,7 @@ const TOUR = [
   ["ADVENTURE", "⚔️ Adventure", "The Frontier fights endlessly in the background for Gold, cards and Spirestone. The Wyrmspire is 150 floors rebuilt every Monday: climb it ten floors at a time, beat each flight's boss and race the leaderboards to the dragon at the top."],
   ["THE FORGE", "⚒ The Forge", "Brew timed potions in the Alchemy Lab, use Imbuing to swap one property for an attribute you choose, and Etching to deepen your cards with Spirestone."],
   ["THE NEXUS", "✶ The Nexus", "Spend Prisms on the 1,100-node Skill Web: click a node to take the path to it, or use Quick allocate."],
-  ["SOCIAL", "💬 Social", "Leaderboards, player loadouts and Limited Drops. Chat lives in the bubble at the bottom right."]
+  ["SOCIAL", "💬 Social", "Leaderboards and player loadouts. Chat lives in the bubble at the bottom right."]
 ];
 (function tourBoot() { if (typeof __ready === "undefined" || !__ready || !APR_USER) return setTimeout(tourBoot, 800); if (!sv.tourDone && !(sv.stats && sv.stats.packsOpened) && !(sv.cards || []).length) setTimeout(() => startTour(0), 1200); })();
 var A11Y = (() => { try { return Object.assign({ motion: false, size: 100, contrast: false }, JSON.parse(localStorage.getItem("apr_a11y") || "{}")); } catch (e) { return { motion: false, size: 100, contrast: false }; } })();
@@ -2354,14 +2349,18 @@ PATCH_NOTES.unshift({ v: 56, t: "v56: Heat and Dragon Hunts", n: [
   "The Frontier's highest tier now also rises with Heat: +3 tiers for every Heat level you've unlocked",
   "God Packs no longer wait for a click: the golden booster opens by itself, and the whole pack is posted to chat with every card linked",
   "Who's online: the 🟢 count on the chat window shows players active in the last few minutes, and clicking it lists them with what they're doing",
-  "Social leaderboards rebuilt: Heat, Combat Power, Packs Opened, Rarest Card Packed (shown as \"1 in N\" odds, with the card), Dragon Hunts, Ascension Tier and Time Played",
+  "Social leaderboards rebuilt: Heat, Combat Power, Packs Opened, Rarest Card Packed (shown as \"1 in N\" odds and about how many packs that takes, with the card), Dragon Hunts, Ascension Tier and Time Played",
   "Pack screen comparisons now show a new card at the same level as the card you have equipped (stats and Power), so the numbers are comparable. Toggle it off to see the card as it is"] });
 PATCH_NOTES.unshift({ v: 57, t: "v57: Skill Web mastery, Starlight, Rebirth, Shortcuts and Auto Heat", n: [
   "Region mastery: take every node in a Skill Web region, then master it up to rank 5. Each rank makes that region's nodes 10% stronger",
   "Starlight: once the whole web is taken, Prisms buy unlimited ranks of a stat you choose (damage, HP, Gold, Spirestone, luck and more)",
   "Rebirth: with every node taken and every region at Mastery 5, clear the web for +10% to everything it gives, forever (stacks). Mastery and Starlight stay",
   "⚡ Shortcuts (Ctrl+K or /): every screen and common action in one searchable menu. Star an action to pin it as a button under the tabs",
-  "Wyrmspire: ⏫ Max Heat switches to your highest Heat in one click, and 🔁 Auto Heat moves you onto each new Heat level as soon as you unlock it"] });
+  "Wyrmspire: ⏫ Max Heat switches to your highest Heat in one click, and 🔁 Auto Heat moves you onto each new Heat level as soon as you unlock it",
+  "Fix: Spire floors and bosses now pay again when you climb them on a higher Heat in the same week (going back down to a lower Heat doesn't pay twice)",
+  "Frontier bounties now scale with tier: they're rolled for the tier you're on (kills count on that tier or higher), ask for more kills and elites as tiers rise, add a champion bounty from tier 20 and a kill-streak bounty from tier 40, and the chest pays more: Booster Packs from tier 15, Prisms from tier 25 and a card with better Legendary and Mythic odds from tier 10. Move tiers and you can re-roll them for your new tier",
+  "Limited Drops are retired. Cards you already pulled from them keep their drop number. Account & Guide now has an Online sign-in section showing whether you're signed in on this device",
+  "Double finishes and misprints: a finished card has a 0.4% chance of a second finish and a misprinted card a 0.4% chance of a second misprint, for the rarest cards in the game (about 1 in 10,000 cards gets a double finish, and a card with two finishes has a 25% chance at a second misprint: two finishes and two misprints together is about 1 in 13 million cards). Auto-Salvage never takes them"] });
 
 // ===================== Small helpers =====================
 function notify(text) {
@@ -2466,9 +2465,15 @@ function convertCards() {
 }
 function vGroup(v) { v = String(v || "base"); return v.includes("serialized") ? "serial" : /miscut|rotated|negative|double|inverted|crimped/.test(v) ? "misprint" : /shiny|gold|black|glitched|ghost|bw|white|trimmed/.test(v) ? "finish" : "base"; }
 function rollV0(t) { return pickW(FINISHES, (1 + 0.15 * t) * (1 + astral("foil") / 100) * (1 + afx().luck / 100) * foilBoost) || "base"; }
+// extremely rare stacks: a card with a finish has a small chance of a second, different finish, and a misprinted
+// card a small chance of a second misprint (e.g. Serialized + Ghost, or Negative Ink + Double-Struck)
+const DOUBLE_V = { fin: 0.004, mis: 0.004, misAfter2: 0.25 };   // a card that already has two finishes gets a 25% chance at a second misprint
+function pickAny(list, not) { const L = list.filter(x => x[0] !== not), tot = L.reduce((a, x) => a + x[1], 0); let r = Math.random() * tot; for (const [k, w] of L) { r -= w; if (r < 0) return k; } return L[L.length - 1][0]; }
 function rollV(t) {
-  const f = rollV0(t), m = pickW(MISPRINTS, (1 + 0.15 * t) * mispBoost);
-  return normalizeVariant([f !== "base" ? f : "", m || ""].filter(Boolean).join("+") || "base");
+  const f = rollV0(t), m = pickW(MISPRINTS, (1 + 0.15 * t) * mispBoost), parts = [f !== "base" ? f : "", m || ""];
+  if (f !== "base" && Math.random() < DOUBLE_V.fin * foilBoost) parts.push(pickAny(FINISHES, f));
+  if (m && Math.random() < (parts.length > 2 ? DOUBLE_V.misAfter2 : DOUBLE_V.mis * mispBoost)) parts.push(pickAny(MISPRINTS, m));
+  return normalizeVariant(parts.filter(Boolean).join("+") || "base");
 }
 function vParts(v) { return (v || "base").split("+").filter(x => x && x !== "base"); }
 function cardHTMLCore(c, v = "base", sn, sm, r) {
@@ -2490,8 +2495,8 @@ function cardHTMLCore(c, v = "base", sn, sm, r) {
 // serial stamp on the card face (works for your cards and for snapshots other players see)
 function cardHTML(c, v, sn, sm, r) {
   const h = cardHTMLCore(c, v, sn, sm, r); if (!r || !r.ls || !r.ls.n) return h;
-  const P = ltdP(), s = ltdSer(P, r.ls.n), ok = s && r.ls.o && s.u === r.ls.o && (!r.ls.pk || s.pack === r.ls.pk);
-  const i = h.indexOf(">"); return h.slice(0, i).replace('class="card ', 'class="card ltdc ') + `><span class="lsn ${ok ? "ok" : ""}" title="Serialized ${r.ls.n} of ${r.ls.of}${ok ? " · verified: pulled by " + esc(s.u) + " from pack #" + s.pack : LTD.pub ? " · not found in the drop registry" : ""}">#${r.ls.n}/${r.ls.of}${ok ? " ✔" : ""}</span>` + h.slice(i + 1);
+  // cards from the old Limited Drops keep their drop number
+  const i = h.indexOf(">"); return h.slice(0, i).replace('class="card ', 'class="card ltdc ') + `><span class="lsn" title="Limited Drop: ${r.ls.n} of ${r.ls.of}">#${r.ls.n}/${r.ls.of}</span>` + h.slice(i + 1);
 }
 
 // ===================== Card attributes and grades =====================
@@ -3337,7 +3342,7 @@ function tick() {
   save();
 }
 // mount on the PACKS screen and keep the counter live while it is open
-function showPacks(chain) { showPacksCore(chain); const root = document.getElementById("rsroot"); if (root && !document.getElementById("ltdbar")) { root.insertAdjacentHTML("beforebegin", ltdBarHTML()); const n = document.getElementById("ltdGo"); if (n) n.onclick = ltdRip; } ltdRefresh(); }
+function showPacks(chain) { showPacksCore(chain); }
 
 var RSB = { n: 20 };
 // a God Pack: a golden booster appears and waits for you, even on Auto
@@ -3414,7 +3419,7 @@ function accTab(B, redo, M) {
     <textarea id="aImp" rows="3" placeholder="Paste an exported save here"></textarea><button id="aImpGo">Import save (replaces this one)</button></section>
   <section><h3>Multiplayer room</h3><p class="mut">Chat room and database used for chat, leaderboards and cloud saves.</p>Chat room <input id="aRoom" maxlength="24" value="${esc(chRoom())}"><br>Database URL <input id="aUrl" size="44" value="${esc(cloudUrl())}" placeholder="https://your-db.firebaseio.com"><br>Database key <input id="aKey" type="password" value="${esc(localStorage.getItem("apr_cloud_key") || "")}" placeholder="optional"><br><button id="aNet">Save room settings</button></section>
   <section>${typeof a11yHTML === "function" ? a11yHTML() : ""}</section>
-  <section>${typeof ltdAdminHTML === "function" ? ltdAdminHTML() : ""}</section>
+  <section><h3>Online sign-in</h3>${APR_USER && APR_USER !== "guest" ? (ltdSess() ? `<p>☁ Signed in on this device. Your account ID: <code>${esc(ltdUid())}</code> <button id="authCopy">Copy</button></p><p class="mut">The account ID is what goes in the database's _admins list to make someone a chat moderator.</p>` : `<p class="mut">Not signed in on this device, so online backup, chat and leaderboards are paused.</p><button id="authSign" class="cta">☁ Sign in</button>`) : `<p class="mut">Log in to an account to sign in online.</p>`}</section>
   <section><h3>Hard reset</h3><p class="mut">Deletes this account's progress on this device and in the cloud. Type <b>RESET</b> to confirm.</p><input id="aRst" placeholder="RESET"> <button id="aRstGo" class="danger">Hard reset</button> <button id="aOut">Log out</button></section></div><div id="aMsg" class="mut"></div>`;
   const $ = s => B.querySelector(s), say = m => $("#aMsg").textContent = m;
   let code = ""; try { code = btoa(unescape(encodeURIComponent(JSON.stringify(sv)))); } catch (e) { code = JSON.stringify(sv); } $("#aExp").value = code;
@@ -3631,17 +3636,19 @@ function showTradeSoon() {
 // Each player's summary lives at /players/<name> and their loadout at /loadouts/<name> in the Firebase database.
 function pKey(u) { return String(u || "").toLowerCase().replace(/[.#$\[\]\/]/g, "_").slice(0, 40); }
 // how rare a pulled card is, as "1 in N": its rarity's pull rate × each finish or misprint × its grade
-const RARE_P = { tier: [0.55, 0.3, 0.12, 0.026, 0.0046], grade: { "S+": 0.03, S: 0.1, A: 0.25 } };
+// grade rates measured from real rolls: S+ about 1.2%, S about 5%, A about 11.5%
+const RARE_P = { tier: [0.55, 0.3, 0.12, 0.026, 0.0046], grade: { "S+": 0.012, S: 0.05, A: 0.115 } };
 function rarityOdds(id, v, r) {
   const c = CARDS[id]; if (!c) return 1; let p = RARE_P.tier[c.tier] || 1;
   vParts(v).forEach(x => { const f = FINISHES.concat(MISPRINTS).find(q => q[0] === x); if (f) p *= f[1] / 100; });
+  if (vFin(v).length > 1) p *= DOUBLE_V.fin; if (vMis(v).length > 1) p *= vFin(v).length > 1 ? DOUBLE_V.misAfter2 : DOUBLE_V.mis;
   p *= RARE_P.grade[gradeOf(r, v).g] || 1; return 1 / p;
 }
-function fmtOdds(n) { return n >= 1e12 ? (n / 1e12).toFixed(1) + " trillion" : n >= 1e9 ? (n / 1e9).toFixed(1) + " billion" : n >= 1e6 ? (n / 1e6).toFixed(1) + " million" : fmtN(Math.round(n)); }
+function fmtOdds(n) { const big = [[1e21, "sextillion"], [1e18, "quintillion"], [1e15, "quadrillion"]].find(([d]) => n >= d); if (big) return (n / big[0]).toFixed(1) + " " + big[1]; return n >= 1e12 ? (n / 1e12).toFixed(1) + " trillion" : n >= 1e9 ? (n / 1e9).toFixed(1) + " billion" : n >= 1e6 ? (n / 1e6).toFixed(1) + " million" : fmtN(Math.round(n)); }
 // your rarest pull: checked on every pack; an older save starts from its collection
 function rareState() {
   if (!sv.rare || typeof sv.rare !== "object") sv.rare = {}; const R = sv.rare;
-  if (!R.init) { R.init = 1; (sv.cards || []).forEach(c => { const o = rarityOdds(c.i, c.v, c.r); if (o > (R.o || 0)) { R.o = o; R.s = cardSnap(c); } }); }
+  if (R.init !== 2) { R.init = 2; R.o = 0; (sv.cards || []).forEach(c => { const o = rarityOdds(c.i, c.v, c.r); if (o > (R.o || 0)) { R.o = o; R.s = cardSnap(c); } }); }
   return R;
 }
 onEvt("packOpened", d => { const R = rareState(); (d.out || []).forEach(it => { const o = rarityOdds(it.c.id, it.v, it.roll); if (o > (R.o || 0)) { R.o = o; R.s = cardSnap(instByU(it.roll && it.roll.u) || { i: it.c.id, v: it.v, l: 1, sn: it.sn, r: it.roll }); R.at = Date.now(); } }); });
@@ -3673,7 +3680,7 @@ async function showBoards() {
     const extra = r => C[0] === "rare" && r.rc ? snapBadge(r.rc, "lb" + rows.indexOf(r)) : "";
     main.innerHTML = `<div class="bar"><b>🏆 Leaderboards</b> | ${rows.length} player${rows.length === 1 ? "" : "s"} ${LBS.err ? `<span style="color:#f87171">· ${esc(LBS.err)}</span>` : ""}<button id="lbR">↻ Refresh</button></div>
     <div class="bar lbcats">${LBC.map(c => `<button data-lc="${c[0]}" class="${c[0] === LBS.cat ? "on" : ""}">${c[1]}</button>`).join("")}</div>
-    <div class="panel-box"><table class="lbt"><tr><th>#</th><th>Player</th><th>${C[1]}</th><th>🔥 Heat</th><th>PWR</th><th>🌀</th></tr>${rows.map((r, i) => `<tr class="${r.k === me.k ? "me" : ""}"><td>${i + 1}</td><td><button class="lbu" data-pu="${esc(r.k)}">${esc(r.u)}</button>${r.title ? ` <i>[${esc(r.title)}]</i>` : ""}</td><td><b>${C[2](r)}</b> ${extra(r)}</td><td>${r.heat ? fmtN(r.heat) : "—"}</td><td>${fmtN(r.power)}</td><td>${r.asc | 0}</td></tr>`).join("")}</table>
+    <div class="panel-box"><table class="lbt"><tr><th>#</th><th>Player</th><th>${C[1]}</th>${C[0] === "rare" ? "<th>Card</th>" : ""}</tr>${rows.map((r, i) => `<tr class="${r.k === me.k ? "me" : ""}"><td>${i + 1}</td><td><button class="lbu" data-pu="${esc(r.k)}">${esc(r.u)}</button>${r.title ? ` <i>[${esc(r.title)}]</i>` : ""}</td><td><b>${C[2](r)}</b></td>${C[0] === "rare" ? `<td>${extra(r)}</td>` : ""}</tr>`).join("")}</table>
     <p style="color:var(--mut);font-size:12px">${LB_NOTE[C[0]] || ""} Click a name to inspect that player's loadout. Your entry updates a few seconds after your progress changes.</p></div>`;
     main.querySelector("#lbR").onclick = () => load();
     main.querySelectorAll("[data-lc]").forEach(b => b.onclick = () => { LBS.cat = b.dataset.lc; draw(); });
@@ -3687,7 +3694,7 @@ const LB_NOTE = {
   heat: "The highest Heat level unlocked in the Wyrmspire; players without Heat rank by their best floor.",
   power: "Combat Power right now, with your current equipment.",
   packs: "Booster Packs and Collector Boosters opened.",
-  rare: "The rarest single card each player has pulled, as the odds of pulling that exact rarity, finish, misprint and grade. Click a card to inspect it.",
+  rare: "The rarest single card each player has pulled, as the odds of pulling that exact rarity, finish, misprint and grade, and roughly how many 14-card Booster Packs that takes on average. Click a card to inspect it.",
   hunt: "The highest Dragon Hunt rank ever slain.",
   asc: "Tribute Ascension tier.",
   play: "Time with the game open."
@@ -3834,7 +3841,7 @@ async function presPull() {
 }
 function openOnline() {
   const m = modal35("🟢 Who's online");
-  const draw = rows => { m.body.innerHTML = rows.length ? `<p class="mut">${rows.length} player${rows.length === 1 ? "" : "s"} active in the last few minutes.</p><table class="spbt"><tr><th>Player</th><th>Doing</th><th>Spire</th><th>🌀</th></tr>${rows.map(r => `<tr class="${r.k === pKey(APR_USER) ? "me" : ""}"><td><button class="lbu" data-pu="${esc(r.k)}">${esc(String(r.u).slice(0, 24))}</button></td><td class="mut">${esc(String(r.w || "").slice(0, 60))}</td><td>F${r.f | 0}</td><td>${r.a | 0}</td></tr>`).join("")}</table>` : `<p class="mut">${cloudOn() ? "Nobody else is online right now." : "Connect to the cloud to see who's online."}</p>`;
+  const draw = rows => { m.body.innerHTML = rows.length ? `<p class="mut">${rows.length} player${rows.length === 1 ? "" : "s"} active in the last few minutes.</p><table class="spbt"><tr><th>Player</th><th>Doing</th></tr>${rows.map(r => `<tr class="${r.k === pKey(APR_USER) ? "me" : ""}"><td><button class="lbu" data-pu="${esc(r.k)}">${esc(String(r.u).slice(0, 24))}</button></td><td class="mut">${esc(String(r.w || "").slice(0, 60))}</td></tr>`).join("")}</table>` : `<p class="mut">${cloudOn() ? "Nobody else is online right now." : "Connect to the cloud to see who's online."}</p>`;
     m.body.querySelectorAll("[data-pu]").forEach(b => b.onclick = () => { try { m.close(); inspectPlayer(b.dataset.pu); } catch (e) {} }); };
   draw(ONL.rows); presPull().then(draw);
 }
@@ -3844,7 +3851,8 @@ function presStart() {
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { presBeat(); presPull(); } });
 }
 
-// ===================== Limited Drops (server-verified scarcity) =====================
+// ===================== Online sign-in (Firebase Auth, free plan) =====================
+// Each game account has a Firebase login so the database rules can check who is writing.
 function ltdKey() { return cfg().fbApiKey || ""; }
 function ltdIdt() { return cfg().idtBase || "https://identitytoolkit.googleapis.com/v1"; }
 function ltdSt() { return cfg().stBase || "https://securetoken.googleapis.com/v1"; }
@@ -3892,133 +3900,14 @@ async function ltdDb(path, method, body, tok) {
   try { const r = await fetch(`${cloudUrl()}/${path}.json${tok ? "?auth=" + encodeURIComponent(tok) : ""}`, { method: method || "GET", headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }); let j = null; try { j = await r.json(); } catch (e) {} return { ok: r.ok, status: r.status, body: j }; }
   catch (e) { return { ok: false, status: 0, body: null }; }
 }
-// turn the raw drop node into what the banner shows
-function ltdShapeCore(d) {
-  if (!d || !d.meta) return null; const m = d.meta, byName = {};
-  const users = d.users || {}, packs = d.packs || {}; Object.keys(packs).forEach(n => { const p = packs[n]; if (p && p.u && p.name) byName[p.name] = users[p.u] || 0; });
-  const ser = {}; const S = d.serials || {}; Object.keys(S).forEach(k => { const x = S[k]; if (x) ser[k] = { u: x.name, pack: x.pack, v: x.v }; });
-  return { name: m.name, card: m.card, packs: m.packs, of: m.of, perUser: m.perUser, started: m.started || 0, opened: d.count || 0, users: byName, serials: ser };
-}
-function ltdPrice() { const f = Math.max(10, playerLevel()), n = (sv.asc && sv.asc.n) || 0; return Math.round(5 * f * 95 * (1 + 0.08 * n)); }
-function ltdP() { return Object.assign({}, LTD.def, LTD.pub || {}); }
-function ltdSer(P, n) { return P.serials ? P.serials[n] || P.serials[String(n)] : null; }
-async function ltdRefresh(force) {
-  if (!cloudOn() || (!force && Date.now() - LTD.at < 4000)) return; LTD.at = Date.now();
-  const r = await ltdDb(`limited/${LTD.id}`); if (r.ok) { LTD.raw = r.body; LTD.pub = ltdShape(r.body); LTD.fetched = true; } ltdPaint();
-  if (!LTD.rec && APR_USER && APR_USER !== "guest" && ltdTok() && LTD.raw) { LTD.rec = true; ltdRecover(); }
-}
-// packs you claimed that never reached this save (closed tab, lost connection, another device)
-async function ltdRecover() {
-  const d = LTD.raw, uid = ltdUid(); if (!d || !d.packs || !uid) return;
-  sv.ltd = sv.ltd || { got: [] }; const st = ltdP().started || 0, got = new Set(sv.ltd.got || []);
-  const mine = Object.keys(d.packs).filter(n => d.packs[n] && d.packs[n].u === uid && !got.has(st + ":" + n)).map(Number).sort((a, b) => a - b);
-  if (!mine.length) return; const tok = await ltdToken(); if (!tok) return;
-  for (const n of mine) { const h = await ltdReveal(n, tok); await ltdDeliver(Object.assign({ pack: n, started: st, of: ltdP().of, card: ltdP().card, drop: LTD.id }, h), true, true); }
-  notify(`Recovered ${mine.length} Limited pack${mine.length > 1 ? "s" : ""} you had already opened.`);
-}
-// read the hidden slot for a pack you own; if it holds a serial, record it in the public registry
-async function ltdReveal(n, tok) {
-  const h = await ltdDb(`_hid/${LTD.id}/${n}`, "GET", undefined, tok), x = h.ok && h.body;
-  if (!x || !x.s) return { serial: 0 };
-  const S = (LTD.raw && LTD.raw.serials) || {};
-  if (!S[x.s]) await ltdDb(`limited/${LTD.id}/serials/${x.s}`, "PUT", { u: ltdUid(), name: APR_USER, pack: n, v: x.v || "base", t: { ".sv": "timestamp" } }, tok);
-  return { serial: x.s, v: x.v || "base", p: x.p || [] };
-}
-function ltdBarHTMLCore() {
-  if (!ltdKey() || !LTD.pub) return `<div id="ltdbar" hidden></div>`;
-  const P = ltdP(), left = Math.max(0, P.packs - P.opened), mine = (P.users && P.users[APR_USER]) || 0, price = ltdPrice(), guest = !APR_USER || APR_USER === "guest";
-  const chips = [...Array(P.of)].map((_, i) => { const s = ltdSer(P, i + 1); return s ? `<span class="lsc got" title="Pulled by ${esc(s.u)} from pack #${s.pack}${s.v && s.v !== "base" ? " · " + esc(s.v) : ""}">#${i + 1} ✔ ${esc(s.u)}</span>` : `<span class="lsc">#${i + 1} ???</span>`; }).join("");
-  const why = guest ? "Log in to join" : !cloudOn() || !ltdKey() ? "Drop not set up yet" : !LTD.pub ? "No drop running" : left < 1 ? "SOLD OUT" : mine >= P.perUser ? `You opened your ${P.perUser}` : sv.c < price ? "Not enough Gold" : "";
-  return `<div class="ltdbar" id="ltdbar"><pre class="ltdlogo">╔═╗ LIMITED\n╚═╝  DROP</pre>
-  <div class="ltdmid"><div class="ltdt"><b>${esc(P.name)}</b> · ${fmtN(P.packs)} packs worldwide · ${P.of} serialized <span class="ltdcard">${esc(P.card)}</span> (#1-#${P.of})</div>
-  <div class="ltdprog"><i style="width:${(left / P.packs * 100).toFixed(1)}%"></i><span>${fmtN(left)} / ${fmtN(P.packs)} packs left</span></div><div class="ltdchips">${chips}</div></div>
-  <div class="ltdbuy"><button class="cta" id="ltdGo" ${why || LTD.busy ? "disabled" : ""}>${LTD.busy ? "Opening…" : why || `⚡ Rip Limited Pack`}</button><small>🪙 ${fmtN(price)} (5 floors of Gold) · you: ${mine}/${P.perUser}</small></div></div>`;
-}
-function ltdPaint() { const b = document.getElementById("ltdbar"); if (!b) return; b.outerHTML = ltdBarHTML(); const n = document.getElementById("ltdGo"); if (n) n.onclick = ltdRip; }
+// the password box for signing in on this device
 function ltdAskPw(msg, then, title) {
-  const m = modal35(title || "⚡ Join the Limited Drop"); m.body.innerHTML = `<p>${msg || "Limited packs are opened by the game server, so it needs to know it's really you."} Enter your password for <b>${esc(APR_USER)}</b> once on this device.</p><input id="lpw" type="password" placeholder="password" autocomplete="current-password" style="width:100%"><div class="imact"><button class="cta" id="lpo">Sign in</button></div><p class="mut" id="lpm"></p>`;
+  const m = modal35(title || "☁ Sign in"); m.body.innerHTML = `<p>${msg || "Sign in so your progress backs up online and you can use chat and the leaderboards."} Enter your password for <b>${esc(APR_USER)}</b> once on this device.</p><input id="lpw" type="password" placeholder="password" autocomplete="current-password" style="width:100%"><div class="imact"><button class="cta" id="lpo">Sign in</button></div><p class="mut" id="lpm"></p>`;
   const go = async () => { const pw = m.body.querySelector("#lpw").value; if (!pw) return; m.body.querySelector("#lpm").textContent = "Checking…"; const r = await ltdLogin(APR_USER, pw);
-    if (r === true) { m.close(); notify("Signed in to the Limited Drop."); (then || ltdRip)(); } else m.body.querySelector("#lpm").textContent = { wrong_password: "That password doesn't match this account's online sign-in. Use the password you first created the account with.", too_many_attempts: "Too many tries. Wait 15 minutes.", network: "Can't reach Firebase.", no_key: "The drop isn't set up yet (missing Firebase Web API key).", operation_not_allowed: "Email/Password sign-in is not enabled in Firebase Authentication yet." }[r] || "Sign-in failed: " + r; };
+    if (r === true) { m.close(); notify("Signed in."); if (then) then(); } else m.body.querySelector("#lpm").textContent = { wrong_password: "That password doesn't match this account's online sign-in. Use the password you first created the account with.", too_many_attempts: "Too many tries. Wait 15 minutes.", network: "Can't reach Firebase.", no_key: "Online sign-in isn't set up yet (missing Firebase Web API key).", operation_not_allowed: "Email/Password sign-in is not enabled in Firebase Authentication yet." }[r] || "Sign-in failed: " + r; };
   m.body.querySelector("#lpo").onclick = go; m.body.querySelector("#lpw").onkeydown = e => { if (e.key === "Enter") go(); }; setTimeout(() => { const i = m.body.querySelector("#lpw"); if (i) i.focus(); }, 50);
 }
-async function ltdRip() {
-  if (LTD.busy || busy) return; if (!APR_USER || APR_USER === "guest") return notify("Log in to join the Limited Drop.");
-  const price = ltdPrice(); if (sv.c < price) return notify(`A Limited pack costs ${fmtN(price)} Gold.`);
-  if (!ltdTok()) return ltdAskPw();
-  if (rs && rs.down && rs.down.size) await rsRevealAll();
-  LTD.busy = true; ltdPaint(); let res = null;
-  try { res = await ltdClaim(); } finally { LTD.busy = false; }
-  if (res.err === "sign_in") { try { localStorage.removeItem("apr_lsess_" + APR_USER); } catch (e) {} ltdPaint(); return ltdAskPw("Your drop sign-in expired."); }
-  if (res.err) { notify({ sold_out: "Sold out! All packs in this drop have been opened.", limit: `You've opened your ${ltdP().perUser} Limited packs.`, network: "Can't reach Firebase. Try again.", none: "No Limited Drop is running right now.", not_open: "This drop hasn't opened yet. Watch the countdown!", busy: "Lots of people are ripping right now. Try again!" }[res.err] || "The drop said no: " + res.err); ltdRefresh(true); return; }
-  await ltdDeliver(res, true); ltdRefresh(true);
-}
-async function ltdClaimCore() {
-  const tok = await ltdToken(); if (!tok) return { err: "sign_in" }; const uid = ltdUid();
-  for (let a = 0; a < 6; a++) {
-    const r = await ltdDb(`limited/${LTD.id}`); if (!r.ok) return { err: "network" }; const d = r.body; if (!d || !d.meta) return { err: "none" };
-    LTD.raw = d; LTD.pub = ltdShape(d); const n = (d.count || 0) + 1, mine = (d.users && d.users[uid]) || 0;
-    if (n > d.meta.packs) return { err: "sold_out" }; if (mine >= d.meta.perUser) return { err: "limit" };
-    const w = await ltdDb(`limited/${LTD.id}`, "PATCH", { count: n, ["packs/" + n]: { u: uid, name: APR_USER, t: { ".sv": "timestamp" } }, ["users/" + uid]: mine + 1 }, tok);
-    if (w.ok) { const h = await ltdReveal(n, tok); return Object.assign({ pack: n, packs: d.meta.packs, started: d.meta.started || 0, of: d.meta.of, card: d.meta.card, drop: LTD.id }, h); }
-    if (w.status === 401 && /expired|invalid/i.test(JSON.stringify(w.body || ""))) { LTA.exp = 0; return { err: "sign_in" }; }
-    if (w.status === 0) return { err: "network" };
-    await sleep(150 + Math.random() * 450); // someone else took that pack number; try the next one
-  }
-  return { err: "busy" };
-}
-function ltdDeal(packs, of, perUser) {
-  const nums = [...Array(packs)].map((_, i) => i + 1).sort(() => Math.random() - 0.5).slice(0, of), sers = [...Array(of)].map((_, i) => i + 1).sort(() => Math.random() - 0.5), hid = {};
-  const pw = (L) => { const t = L.reduce((a, x) => a + x[1], 0); let r = Math.random() * t; for (const [k, w] of L) if ((r -= w) <= 0) return k; return L[0][0]; };
-  nums.forEach((n, i) => { const parts = []; if (Math.random() < 0.6) parts.push(pw([["shiny", 0.8], ["gold", 0.25], ["black", 0.25], ["glitched", 0.12], ["ghost", 0.08]])); if (Math.random() < 0.4) parts.push(pw([["miscut", 0.2], ["rotated", 0.1], ["negative", 0.1], ["double", 0.08], ["inverted", 0.02]]));
-    const gc = CARDS.find(x => x && x.name === LTD.def.card && !x.forb); hid[n] = { s: sers[i], v: parts.length ? normalizeVariant(parts.join("+")) : "base", p: gc ? afxRoll(gc) : [] }; });
-  return hid;
-}
-async function ltdStartDropCore() {
-  const tok = await ltdToken(); if (!tok) return "Sign in to the drop first (button above).";
-  const D = LTD.def, hid = ltdDeal(D.packs, D.of, D.perUser);
-  const a = await ltdDb(`_hid/${LTD.id}`, "PUT", hid, tok); if (!a.ok) return a.status === 401 ? "Permission denied: add your drop ID under _admins in the database first." : "Couldn't write the drop (" + a.status + ").";
-  const b = await ltdDb(`limited/${LTD.id}`, "PUT", { meta: { name: D.name, card: D.card, packs: D.packs, of: D.of, perUser: D.perUser, started: { ".sv": "timestamp" } }, count: 0 }, tok);
-  if (!b.ok) return "Couldn't start the drop (" + b.status + ").";
-  LTD.rec = false; ltdRefresh(true); return true;
-}
-function ltdAdminHTMLCore() { const uid = ltdUid(); return `<h3>⚡ Limited Drop</h3><p>Your drop ID: <code id="ltdUidC">${uid ? esc(uid) : "(not signed in to the drop yet)"}</code> ${uid ? `<button id="ltdCopy">Copy</button>` : `<button id="ltdSign">Sign in to the drop</button>`}</p><p class="mut">Drop admins can deal a fresh ${LTD.def.packs}-pack drop with ${LTD.def.of} serialized ${esc(LTD.def.card)}. This replaces the current drop. Players keep the cards they pulled, but the old serials lose their ✔.</p><div class="imact"><button id="ltdStart">Start a new Limited Drop</button></div><p id="ltdAdm" class="mut"></p>`; }
-function ltdSerialItem(b) {
-  const c = CARDS.find(x => x && x.name === b.card && !x.forb); if (!c) return null;
-  const v = (b.v && b.v !== "base" ? normalizeVariant(String(b.v)) : "base") || "base", key = c.id + "|" + v, isNew = !sv.inv[key];
-  sv.inv[key] = (sv.inv[key] || 0) + 1; const rg = rollGain(c, v, key, isNew);
-  if (Array.isArray(b.p) && b.p.length) rg.roll.p = b.p.filter(x => x && AFX[x.k]).map(x => Object.assign({ k: x.k, t: Math.max(0, Math.min(1, +x.t || 0)), s: x.s ? 1 : 0 }, x.m ? { m: 1 } : {}, x.k === "ele" && ELS4.includes(x.e) ? { e: x.e } : {}));
-  rg.roll.ls = { d: b.drop || LTD.id, n: b.serial, of: b.of || ltdP().of, pk: b.pack, o: APR_USER };
-  const inst = instByU(rg.roll.u); if (inst) { inst.r = rg.roll; inst.f = 1; }
-  return { c, v, sn: undefined, isNew, roll: rg.roll, up: rg.up, ltd: 1 };
-}
-async function ltdDeliver(b, charge, quiet) {
-  sv.ltd = sv.ltd || { got: [] }; const gk = (b.started || ltdP().started || 0) + ":" + b.pack; if ((sv.ltd.got || []).includes(gk)) return; sv.ltd.got.push(gk);
-  if (charge) sv.c = Math.max(0, sv.c - ltdPrice());
-  const cards = genPack("standard"); let ser = null;
-  if (b.serial) { ser = ltdSerialItem(b); if (ser) cards.push(ser); }
-  sv.stats.limited = (sv.stats.limited || 0) + 1; save(); updateHeader(); try { drawStatus(); } catch (e) {}
-  if (ser) { const inst = instByU(ser.roll.u); try { chPost(`${APR_USER} pulled SERIALIZED ${ser.c.name} #${b.serial}/${b.of} from Limited pack #${b.pack}!`, cardSnap(inst), "ann"); } catch (e) {} }
-  if (quiet) return;
-  if (curHub !== "PACKS") hubGo("PACKS", 0);
-  showPacks(true); const fl = document.createElement("div"); fl.className = "ltdflash" + (ser ? " hit" : ""); fl.innerHTML = `<b>LIMITED PACK #${b.pack} / ${b.packs || ltdP().packs}</b>${ser ? `<span>a serialized card is inside…</span>` : ""}`; document.body.appendChild(fl); setTimeout(() => fl.remove(), 1700);
-  await sleep(700); busy = true; rsSpread(cards, {});
-  if (ser) setTimeout(() => { notify(`★ SERIALIZED ${ser.c.name} #${b.serial}/${b.of}${ser.v !== "base" ? " (" + ser.v + ")" : ""}! It has been favorited for you.`); try { playFanfare(4); } catch (e) {} }, 1200);
-}
-function ltdShape(d) { const s = ltdShapeCore(d); if (s && d && d.meta) s.startsAt = +d.meta.startsAt || 0; return s; }
-function ltdOpensIn() { const P = LTD.pub; return P && P.startsAt ? P.startsAt - Date.now() : 0; }
 function fmtCountdown(ms) { const s = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + "h " : "") + String(m).padStart(h ? 2 : 1, "0") + "m " + String(x).padStart(2, "0") + "s"; }
-function ltdBarHTML() {
-  let h = ltdBarHTMLCore(); const w = ltdOpensIn(); if (w <= 0 || !LTD.pub) return h;
-  return h.replace(/<button class="cta" id="ltdGo"[^>]*>[\s\S]*?<\/button>/, `<button class="cta" id="ltdGo" disabled>Opens in <span id="ltdCd">${fmtCountdown(w)}</span></button>`);
-}
-async function ltdClaim() { await ltdRefresh(true); if (ltdOpensIn() > 0) return { err: "not_open" }; return ltdClaimCore(); }
-async function ltdStartDrop() {
-  const inp = document.getElementById("ltdAt"), at = inp && inp.value ? new Date(inp.value).getTime() : 0;
-  const r = await ltdStartDropCore(); if (r !== true) return r;
-  if (at > Date.now()) { const tok = await ltdToken(); await ltdDb(`limited/${LTD.id}/meta/startsAt`, "PUT", at, tok); LTD.at = 0; ltdRefresh(true); }
-  return true;
-}
-function ltdAdminHTML() { return ltdAdminHTMLCore().replace('<div class="imact"><button id="ltdStart">', '<p><label>Opens at (optional) <input type="datetime-local" id="ltdAt"></label> <span class="mut">Leave empty to open right away. Everyone sees a countdown until then.</span></p><div class="imact"><button id="ltdStart">'); }
 
 // ===================== Tower curve, monsters, weather and anomalies =====================
 function mutOf(f) { return f % 5 === 0 ? bossMut(f) : (sv.asc && sv.asc.on ? ["vampiric", "volatile", "ethereal"][(f * 5 + sv.asc.n) % 3] : MUTS[(f * 7 + 3) % 5]); }
@@ -4720,6 +4609,7 @@ function oddsHTML() {
   return `<div class="odds"><h4>Booster Pack (14 cards)${L > 1.001 ? ` <span class="mut">with your +${Math.round((L - 1) * 100)}% luck</span>` : ""}</h4>
   <div><b>Cards 1-6:</b> ${row(S[0])}</div><div><b>Cards 7-8:</b> ${row(S[6])}</div><div><b>Cards 9-10:</b> ${row(S[8])}</div><div><b>Cards 11-14, wildcards:</b> ${row(S[10])}</div>
   <h4>Collector Booster (12 cards, 3× price)</h4><div><b>Cards 1-6</b> (3× finish and misprint chance): ${row(C[0])}</div><div><b>Cards 7-12, wildcards</b> (1.5× finishes): ${row(C[6])}</div>
+  <h4>Double finishes and misprints</h4><div>A card with a finish has a ${(DOUBLE_V.fin * 100).toFixed(1)}% chance of a second, different finish (for example Serialized + Ghost), and a misprinted card a ${(DOUBLE_V.mis * 100).toFixed(1)}% chance of a second misprint (for example Negative Ink + Double-Struck). A card that already has two finishes gets a ${Math.round(DOUBLE_V.misAfter2 * 100)}% chance at that second misprint. Auto-Salvage never takes them.</div>
   <h4>God Pack</h4><div>A 1 in ${Math.round(1 / PACK_INFO.standard.god).toLocaleString()} chance (Collector: 1 in ${Math.round(1 / PACK_INFO.collector.god).toLocaleString()}) that the pack is a God Pack instead: 10 cards, at least 5 Mythics and the rest Legendary or Mythic, every one graded S or S+.</div>
   <h4>Grades and guarantees</h4><div>Grades within each rarity: F 10% · D 20% · C 30% · B 22% · A 12% · S 5% · S+ 1%</div>
   <div>A Legendary within <b>${P.leg}</b> packs · a Mythic within <b>${P.my}</b> packs · an S+ within the next <b>${P.sp}</b> Rare-or-better cards (the last card of a pack is upgraded when a guarantee comes due)</div></div>`;
@@ -4746,6 +4636,7 @@ function autoSalvWouldTake(c, o) {
   const S = salvCfg(), card = CARDS[c.i];
   if (!c || isProt(c) || card.tier > S.tier || gIdx(c) > S.grade) return false;
   if (S.keepVariants && vParts(c.v).length) return false;
+  if (vFin(c.v).length > 1 || vMis(c.v).length > 1) return false;   // double finishes and misprints are never auto-salvaged
   if (S.keepNew && o && o.isNew) return false;
   if (S.keepSets && SET_OF[c.i]) return false;
   if (S.keepPowers && powerOf(card)) return false;
@@ -5392,8 +5283,10 @@ function spireState() {
   // an old save: the deepest Depth becomes the matching Spire floor as your all-time best
   if (!S.mig) { S.mig = 1; const old = sv.dep && sv.dep.best; if (old) S.peak = Math.max(S.peak, lvlFloor(old)); sv.dep = {}; }
   S.heatMax = S.heatMax || 0; S.heat = Math.max(0, Math.min(S.heat || 0, S.heatMax));
-  if (S.w !== w) { S.w = w; S.floor = 0; S.best = {}; S.paid = {}; S.tries = 0; if (S.autoHeat) S.heat = S.heatMax || 0; }
+  if (S.w !== w) { S.w = w; S.floor = 0; S.best = {}; S.paid = {}; S.ph = 1; S.tries = 0; if (S.autoHeat) S.heat = S.heatMax || 0; }
   S.best = S.best || {}; S.paid = S.paid || {};
+  // the paid record holds the Heat each floor and boss last paid at (older saves stored 1, meaning paid with no Heat)
+  Object.keys(S.paid).forEach(k => { if (S.paid[k] === 1 && !S.ph) S.paid[k] = 0; }); S.ph = 1;
   return S;
 }
 
@@ -5475,7 +5368,9 @@ function spireLevel(ts) {
 }
 function spireWinRate(ts, n, k = 6) { let w = 0; for (let i = 0; i < k; i++) if (spireClimb(n, ts, seededRnd(n * 7919 + i * 104729 + 3)).win) w++; return w / k; }
 
-// ---- rewards: each floor and each boss pays once a week; a boss pays Prisms the first time ever ----
+// ---- rewards: each floor and each boss pays once a week per Heat level, climbing upward (a higher Heat pays again,
+// dropping back to a lower one doesn't); a boss pays Prisms the first time ever ----
+function spireUnpaid(k) { const p = spireState().paid[k]; return p === undefined || p < spireHeat(); }
 function spireFloorGold(f) { return Math.round(floorLvl(f) * 95 * 0.9 * weatherCoin() * (1 + afxTotals().gold / 100) * ascGold() * heatFx(spireHeat()).loot); }
 function spireBossLoot(n) {
   const f = (n + 1) * SPIRE.per, S = spireState(), last = n === FLIGHTS.length - 1, h = spireHeat();
@@ -5488,12 +5383,12 @@ function spireBossLoot(n) {
 function spirePay(r) {
   const S = spireState(), got = { gold: 0, stone: 0, packs: 0, prisms: 0, mats: [], title: null };
   r.floors.forEach(x => {
-    if (!x.win || S.paid[x.f]) return; S.paid[x.f] = 1; got.gold += spireFloorGold(x.f);
+    if (!x.win || !spireUnpaid(x.f)) return; S.paid[x.f] = S.heat || 0; got.gold += spireFloorGold(x.f);
     const fam = FAMS[FLIGHTS[r.n].fam[x.f % 2]];
     if (Math.random() < 0.25 * (1 + astral("mats") / 100)) { addMat(fam.k + "_c", 1); got.mats.push(fam.mat[0]); }
   });
-  if (r.win && !S.paid["b" + r.n]) {
-    const L = spireBossLoot(r.n); S.paid["b" + r.n] = 1; S.ever[r.n] = 1;
+  if (r.win && spireUnpaid("b" + r.n)) {
+    const L = spireBossLoot(r.n); S.paid["b" + r.n] = S.heat || 0; S.ever[r.n] = 1;
     Object.assign(got, { stone: L.stone, packs: L.packs, prisms: L.prisms });
     const fam = FAMS[FLIGHTS[r.n].fam[0]]; addMat(fam.k + "_r", 1); got.mats.push(fam.mat[1]);
     if (r.n === FLIGHTS.length - 1) { sv.cos.titles = sv.cos.titles || []; if (!sv.cos.titles.includes("Wyrmslayer")) { sv.cos.titles.push("Wyrmslayer"); got.title = "Wyrmslayer"; } }
@@ -5604,7 +5499,7 @@ function openSpireBoards(start) {
     if (rows === null) { L.textContent = "Leaderboards need the cloud connection."; return; }
     if (!rows.length) { L.textContent = kind === "full" ? "Nobody has climbed all 150 floors this week yet." : "No climbs here yet this week. Be the first."; return; }
     const me = myKey(), heat = r => r.h ? `<span class="spheat">🔥${r.h | 0}</span> ` : "", val = r => heat(r) + (kind === "top" ? `Floor ${r.f | 0}` : kind === "full" ? `${fmtN(r.s)} turns` : `${r.t | 0} turns`);
-    L.className = ""; L.innerHTML = `<table class="spbt"><tr><th>#</th><th>Player</th><th>${kind === "top" ? "Floor" : "Time"}</th><th>When</th></tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === me ? "me" : ""}"><td>${i + 1}</td><td>${esc(String(r.u).slice(0, 24))}</td><td><b>${val(r)}</b></td><td class="mut">${r.at ? new Date(r.at).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""}</td></tr>`).join("")}</table>`;
+    L.className = ""; L.innerHTML = `<table class="spbt"><tr><th>#</th><th>Player</th><th>${kind === "top" ? "Highest floor" : "Fewest turns"}</th>${kind === "top" ? "<th>Reached</th>" : ""}</tr>${rows.slice(0, 50).map((r, i) => `<tr class="${r.k === me ? "me" : ""}"><td>${i + 1}</td><td>${esc(String(r.u).slice(0, 24))}</td><td><b>${val(r)}</b></td>${kind === "top" ? `<td class="mut">${r.at ? new Date(r.at).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""}</td>` : ""}</tr>`).join("")}</table>`;
   };
   draw();
 }
@@ -5636,7 +5531,7 @@ function showSpire() {
   const state = k => (k + 1) * SPIRE.per <= S.floor ? "done" : k === open ? "next" : k < open ? "done" : "locked";
   const tower = FLIGHTS.map((G, k) => k).reverse().map(k => { const G = FLIGHTS[k], st = state(k), om = spireOmen(k);
     return `<button class="spfl ${st} ${k === n ? "sel" : ""} ${k === FLIGHTS.length - 1 ? "top" : ""}" data-fl="${k}" ${st === "locked" ? "" : ""}><span class="spfr">${k * 10 + 1}-${k * 10 + 10}</span><span class="spfnm">${esc(G.n)}</span><span class="spfb">${st === "done" ? `✓ ${S.best[k] ? S.best[k] + " turns" : ""}` : st === "next" ? "▲ climb" : "🔒"}</span>${om ? `<i class="spom" title="Omen: ${esc(om.n)}">✦</i>` : ""}</button>`; }).join("");
-  const firstWeek = !S.paid["b" + n], floorsLeft = [...Array(SPIRE.per)].filter((_, i) => !S.paid[n * 10 + i + 1]).length;
+  const firstWeek = spireUnpaid("b" + n), floorsLeft = [...Array(SPIRE.per)].filter((_, i) => spireUnpaid(n * 10 + i + 1)).length;
   main.innerHTML = `<div class="tw sp" id="spRoot">
   <div class="panel-box twhead"><h2 class="twt">🗼 The Wyrmspire <span class="twfam">150 floors, rebuilt every Monday. Climb as high as you can and as fast as you can.</span></h2>
    <div class="twstats"><span>This week <b>Floor ${S.floor}/150${S.heat ? ` · 🔥 Heat ${S.heat}` : ""}</b></span><span>Best ever <b>Floor ${S.peak || 0}</b></span><span title="The top of the highest flight you'd clear at least half the time, with this week's omens">Your level <b>${E ? "Floor " + E : "below Floor 10"}</b></span><span>Rebuilt in <b>${fmtCountdown(nextMonday() - Date.now())}</b></span><button id="spLb" class="spbtn">🏆 Leaderboards</button></div>${heatHTML(S)}</div>
@@ -5651,7 +5546,7 @@ function showSpire() {
       <div class="mut spmon">Floors: ${[...new Set(F.fam)].map(i => esc(FAMS[i].minor)).join(" and ")} · elites on floors ${n * 10 + 4} and ${n * 10 + 8}</div></div></div>
      ${omen ? `<div class="spomen"><b>This week's omen, ${esc(omen.n)}:</b> ${esc(omen.d)}.</div>` : ""}
      <div class="twstats"><span>Win chance <b class="${wr >= 50 ? "ok" : "bad"}">${wr}%</b></span><span>Your best this week <b>${S.best[n] ? S.best[n] + " turns" : "none"}</b></span><span>HP back between floors <b>${Math.round(100 * (heatFx(S.heat).heal + astral("fuel") / 100))}%</b></span></div>
-     <div class="sploot">${firstWeek ? `First clear this week: <b>+${L.stone} 🪨 Spirestone</b> · <b>+${L.packs} 📦</b>${L.prisms ? ` · <b>+${L.prisms} 🟣</b> (first clear ever)` : ""}${n === FLIGHTS.length - 1 && !(sv.cos.titles || []).includes("Wyrmslayer") ? " · the <b>Wyrmslayer</b> title" : ""}${floorsLeft ? ` · Gold from ${floorsLeft} new floor${floorsLeft > 1 ? "s" : ""}` : ""}` : `Boss loot already claimed this week. Climb again for a faster time on the leaderboard.`}</div>
+     <div class="sploot">${firstWeek ? `First clear this week${S.heat ? ` on Heat ${S.heat}` : ""}: <b>+${L.stone} 🪨 Spirestone</b> · <b>+${L.packs} 📦</b>${L.prisms ? ` · <b>+${L.prisms} 🟣</b> (first clear ever)` : ""}${n === FLIGHTS.length - 1 && !(sv.cos.titles || []).includes("Wyrmslayer") ? " · the <b>Wyrmslayer</b> title" : ""}${floorsLeft ? ` · Gold from ${floorsLeft} new floor${floorsLeft > 1 ? "s" : ""}` : ""}` : `Boss loot already claimed this week${S.heat ? ` on Heat ${S.heat}` : ""}. A higher Heat pays it again. Climb again for a faster time on the leaderboard.`}</div>
      <div class="twctl"><button id="spGo" class="cta" ${n > open || SPV.busy ? "disabled" : ""}>▲ Climb floors ${n * 10 + 1}-${n * 10 + 10}</button>${n === open && (open < FLIGHTS.length - 1 || (S.autoHeat && S.heat >= S.heatMax)) ? `<button id="spChain" ${SPV.busy ? "disabled" : ""} title="Keep climbing flight after flight until you fall">▲▲ Climb as far as I can</button>` : ""}</div>
     </div>
     <div id="spClimb"></div>
@@ -5800,7 +5695,7 @@ function frState() {
   if (!sv.fr || typeof sv.fr !== "object") sv.fr = {};
   const F = sv.fr; F.tier = Math.max(1, F.tier || 1); F.on = !!F.on; F.k = F.k || 0; F.e = F.e || 0; F.c = F.c || 0; F.d = F.d || 0; F.st = F.st || 0; F.best = F.best || 0;
   F.s = F.s || { k: 0, e: 0, c: 0, d: 0, g: 0, t0: Date.now(), drops: [] }; F.b = Array.isArray(F.b) ? F.b : []; F.last = F.last || Date.now(); F.dead = F.dead || 0;
-  if (!F.b.length) frBounties(); return F;
+  if (!F.b.length) frBounties(); if (!F.bt) F.bt = F.tier; return F;
 }
 // the highest tier: your best Spire floor (as a monster level) + 5, and 3 more for every Heat level you've unlocked, with no limit
 const FR_HEAT_TIERS = 3;
@@ -5865,17 +5760,38 @@ setInterval(() => {
 }, 400);
 
 // ---- bounties: three goals per session-set, a chest when all are done ----
-function frBounties() {
-  const F = sv.fr, f1 = FAMS[Math.floor(Math.random() * FAMS.length)], f2 = FAMS[(FAMS.indexOf(f1) + 3) % FAMS.length];
-  F.b = [{ k: "kill", n: 150, h: 0, d: "Defeat 150 enemies" }, { k: "fam", f: f1.k, n: 40, h: 0, d: `Defeat 40 ${f1.n}` }, { k: "elite", n: 8 + Math.floor(F.tier / 20), h: 0, d: "Defeat elites" }];
-  F.b[2].d = `Defeat ${F.b[2].n} elites`;
+// ---- bounties: rolled for the tier you're on; harder and richer on higher tiers ----
+// Kills count on that tier or higher. The chest pays by the bounty's tier, not the tier you happen to be on.
+function frBountyMake(T) {
+  const f1 = FAMS[Math.floor(Math.random() * FAMS.length)], B = [
+    { k: "kill", n: Math.min(600, 100 + 2 * T), h: 0 },
+    { k: "fam", f: f1.k, fn: f1.n, n: Math.min(200, 25 + Math.floor(T / 2)), h: 0 },
+    { k: "elite", n: 6 + Math.floor(T / 8), h: 0 }];
+  if (T >= 20) B.push({ k: "champ", n: 1 + Math.floor(T / 40), h: 0 });
+  if (T >= 40) B.push({ k: "streak", n: Math.min(400, 50 + 2 * T), h: 0 });
+  B.forEach(b => b.d = { kill: `Defeat ${b.n} enemies`, fam: `Defeat ${b.n} ${b.fn}`, elite: `Defeat ${b.n} elites`, champ: `Defeat ${b.n} champion${b.n > 1 ? "s" : ""}`, streak: `Reach a ${b.n}-kill streak` }[b.k]);
+  return B;
 }
-onEvt("frKill", d => { const F = sv.fr; if (!F || !F.b) return; F.b.forEach(b => { if (b.h >= b.n) return; if (b.k === "kill" || (b.k === "fam" && b.f === d.fam) || (b.k === "elite" && d.kind !== "normal")) b.h++; }); });
+function frBounties() { const F = sv.fr; F.bt = Math.max(1, F.tier || 1); F.b = frBountyMake(F.bt); }
+function frChestLoot(T) {
+  return {
+    gold: Math.round(T * 95 * 0.35 * 60 * ascGold()), glyph: Math.round(150 + 6 * T), stone: 3 + Math.floor(T / 8),
+    packs: Math.floor(T / 15), prisms: Math.floor(T / 25),
+    card: T >= 10 ? { leg: Math.min(0.6, T / 100), myth: Math.min(0.25, T / 400) } : null
+  };
+}
+onEvt("frKill", d => { const F = sv.fr; if (!F || !F.b) return; if ((d.T || F.tier) < (F.bt || 1)) return;
+  F.b.forEach(b => { if (b.h >= b.n) return; if (b.k === "kill" || (b.k === "fam" && b.f === d.fam) || (b.k === "elite" && d.kind !== "normal") || (b.k === "champ" && d.kind === "champion")) b.h++; else if (b.k === "streak") b.h = Math.max(b.h, F.st || 0); }); });
+onEvt("frDeath", () => { const F = sv.fr; if (F && F.b) F.b.forEach(b => { if (b.k === "streak" && b.h < b.n) b.h = 0; }); });
 function frChest() {
   const F = frState(); if (!F.b.every(b => b.h >= b.n)) return;
-  const T = F.tier, g = Math.round(T * 95 * 0.35 * 60 * ascGold()), gl = Math.round(150 + 6 * T);
-  const st = 3 + Math.floor(F.tier / 8); sv.c += g; sv.dust += gl; sv.deep = (sv.deep || 0) + st; frBounties(); save(); updateHeader();
-  notify(`Bounty chest: +${fmtN(g)} Gold, +${fmtN(gl)} ░▒▓, +${st} 🪨 Spirestone`); gameEvent("frChest", {});
+  const T = F.bt || F.tier, L = frChestLoot(T), got = [`+${fmtN(L.gold)} Gold`, `+${fmtN(L.glyph)} ░▒▓`, `+${L.stone} 🪨`];
+  sv.c += L.gold; sv.dust += L.glyph; sv.deep = (sv.deep || 0) + L.stone;
+  if (L.packs) { sv.packs += L.packs; got.push(`+${L.packs} 📦`); }
+  if (L.prisms) { sv.shards += L.prisms; got.push(`+${L.prisms} 🟣`); }
+  if (L.card) { const r = Math.random(), t = r < L.card.myth ? 4 : r < L.card.myth + L.card.leg ? 3 : 2, c = dropCard(T, t); got.push(`${TIERS[t]} ${c.name}`); }
+  frBounties(); save(); updateHeader();
+  notify(`Tier ${T} bounty chest: ${got.join(", ")}`); gameEvent("frChest", { T });
 }
 
 // ---- while you were away ----
@@ -5919,7 +5835,8 @@ function frDraw() {
   const live = document.getElementById("frLive"); if (!live) return; const F = frState(), now = Date.now(), min = Math.max(0.1, (now - F.s.t0) / 60000);
   live.innerHTML = `<div class="frg"><div><b>${fmtN(F.s.k)}</b><span>kills</span></div><div><b>${fmtN(F.s.e)}</b><span>elites</span></div><div><b>${fmtN(F.s.c)}</b><span>champions</span></div><div><b>${fmtN(F.s.d)}</b><span>deaths</span></div><div><b>${fmtN(Math.round(F.s.k / min))}</b><span>kills/min</span></div><div><b>${fmtN(Math.round(F.s.g / min * 60))}</b><span>Gold/hour</span></div></div>
    ${F.dead > now ? `<p class="bad">Respawning in ${Math.ceil((F.dead - now) / 1000)}s…</p>` : F.on ? `<p class="ok">Fighting on tier ${F.tier}.</p>` : `<p class="mut">Stopped.</p>`}`;
-  const b = document.getElementById("frB"); if (b) { b.innerHTML = F.b.map(x => `<div class="goal ${x.h >= x.n ? "done" : ""}"><div><b>${esc(x.d)}</b><div class="hpw"><div class="hpf you" style="width:${100 * Math.min(1, x.h / x.n)}%"></div></div><span class="mut">${Math.min(x.h, x.n)}/${x.n}</span></div></div>`).join("") + (F.b.every(x => x.h >= x.n) ? `<button id="frChest" class="cta">🎁 Open the bounty chest</button>` : `<p class="mut">Finish all three for a chest: Gold, Raw Glyphs and a Lantern.</p>`); const c = document.getElementById("frChest"); if (c) c.onclick = () => { frChest(); frDraw(); }; }
+  const b = document.getElementById("frB"); if (b) { b.innerHTML = F.b.map(x => `<div class="goal ${x.h >= x.n ? "done" : ""}"><div><b>${esc(x.d)}</b><div class="hpw"><div class="hpf you" style="width:${100 * Math.min(1, x.h / x.n)}%"></div></div><span class="mut">${Math.min(x.h, x.n)}/${x.n}</span></div></div>`).join("") + (() => { const T = F.bt || F.tier, L = frChestLoot(T), loot = [`${fmtN(L.gold)} Gold`, `${fmtN(L.glyph)} ░▒▓`, `${L.stone} 🪨`, L.packs ? `${L.packs} 📦` : "", L.prisms ? `${L.prisms} 🟣` : "", L.card ? `a card (${Math.round(L.card.leg * 100)}% Legendary, ${Math.round(L.card.myth * 100)}% Mythic)` : ""].filter(Boolean).join(" · ");
+    return `<p class="mut frbt">Tier ${T} bounties: kills count on tier ${T} or higher. Chest: ${loot}.</p>` + (F.b.every(x => x.h >= x.n) ? `<button id="frChest" class="cta">🎁 Open the tier ${T} bounty chest</button>` : "") + (F.tier !== T ? `<button id="frBre">↻ New bounties for tier ${F.tier}${F.b.some(x => x.h) ? " (progress resets)" : ""}</button>` : ""); })(); const rb = document.getElementById("frBre"); if (rb) rb.onclick = () => { frBounties(); save(); try { showFrontier(); } catch (e) {} }; const c = document.getElementById("frChest"); if (c) c.onclick = () => { frChest(); frDraw(); }; }
   const d = document.getElementById("frDrops"); if (d) d.innerHTML = F.s.drops.length ? F.s.drops.map(x => `<div class="frd ${x.k}">${esc(x.d)}</div>`).join("") : `<p class="mut">Nothing yet.</p>`;
   const art = document.getElementById("frArt"); if (art && FRL.en) art.innerHTML = artFor(FRL.en, (Date.now() / 600 | 0) % 2) + `\n<span class="${FRL.en.kind}">${esc(FRL.en.name)}</span>`;
   const fd = document.getElementById("frFeed"); if (fd) fd.innerHTML = FRL.feed.map(e => `<div class="ev ${e.win ? "you" : "foe"} ${e.kind !== "normal" ? "warn" : ""}">${e.win ? "⚔️" : "💀"} ${esc(e.name)}: ${e.win ? `won in ${e.turns} turns, +${fmtN(e.gold)} Gold${e.drops.length ? " · " + esc(e.drops.join(", ")) : ""}` : "you fell"}</div>`).join("") || `<div class="mut">${F.on ? "Waiting for the next fight…" : "Press Start to begin."}</div>`;
