@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="arit-build" content="20261114074321">
+<meta name="arit-build" content="20261114145357">
 <meta charset="utf-8">
 <title>ASCII RIP IT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1558,6 +1558,15 @@ body.lowdpi .pdav pre.hero.hfine{filter:blur(.3px) brightness(1.3)}
 .pdgrid{grid-template-columns:minmax(0,1fr) 212px minmax(0,1fr)!important}
 .pdav pre.hero.hfine{font-size:3.4px!important}
 @media (max-width:640px){.pdgrid{grid-template-columns:1fr 1fr!important}}
+.rscs.soon .rscn{white-space:nowrap}.rscn{white-space:nowrap}
+.rs.nofx .rscs,.rs.nofx .rscar{transition:none!important}
+.rs.tight .rsscene .rshint{display:none}
+/* soft fade where the pack row runs off the scene's edges */
+.rscar{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+/* short screens: title row compacts so the packs get the room */
+.rs.tight .rsct{top:8px}.rs.tight .rsctn{font-size:24px}.rs.tight .rscts{display:none}
+.rs.tight .venight{top:10px;left:auto;right:12px;transform:none;padding:4px 10px;font-size:10px}
+@media (max-width:720px){.rs.tight .venight{top:44px;left:50%;right:auto;transform:translateX(-50%)}}
 
 </style>
 </head>
@@ -1568,7 +1577,7 @@ body.lowdpi .pdav pre.hero.hfine{filter:blur(.3px) brightness(1.3)}
 <div id="toast"></div>
 
 <script>
-const BUILD_ID = "20261114074321";
+const BUILD_ID = "20261114145357";
 // ===================== Game events =====================
 // Systems that react to play (goals, challenges, seasons) listen here instead of patching other functions.
 const EVT = {};
@@ -2654,9 +2663,10 @@ PATCH_NOTES.unshift({ v: 59, t: "v59: The Velvet Eclipse, Eclipse Night and a th
   "Pulling a Mythic gets its own moment: the card fills the screen with a line of its lore",
   "Lore unseals as you play: Mythic stories when you pull the card, Wyrmspire flights when you reach them, with a progress bar",
   "Collection rewards are split by set, with new Velvet Eclipse rarity and house goals, and completing a whole set earns a title, Prisms and a special card back (Alpha Archivist, Eclipse Archivist)",
-  "The binder has a set filter once Velvet Eclipse is out, and Velvet cards are numbered VE001-VE200",
+  "The binder has a set filter once Velvet Eclipse is out, and Velvet cards are numbered #401-#600, right after the Alpha Set's #001-#400",
   "Your hero on the Equipment page is now a detailed knight seated on a throne, hands on the sword, tinted by your element set",
-  "🌙 Reduce motion (⚙ Settings, or your device setting) calms every animation; low-resolution screens get a softer pack art that sharpens on hover"] });
+  "🌙 Reduce motion (⚙ Settings, or your device setting) calms every animation; low-resolution screens get a softer pack art that sharpens on hover",
+  "The pack screen is better balanced on every screen size: the chosen pack sits dead centre, the row is centred in the space under the title, packs grow on big screens and the title compacts on short ones"] });
 PATCH_NOTES.unshift({ v: 58, t: "v58: Pack carousel, achievements, clubs, the Raid Wyrm and more", n: [
   "Packs: every pack type sits on its own shelf above the table; pick one and it zooms onto the table. Collector Boosters now say 12 cards",
   "Hover a revealed card for a quick summary (grade, Power, attributes, how it compares); click for the full comparison",
@@ -2743,7 +2753,9 @@ function newPoolCard(i) {
 }
 function poolOf(t, s) { return POOL[t + "_" + s] || (POOL[t + "_" + s] = CARDS.filter(c => c && !c.forb && c.tier === t && setOf(c) === s)); }
 function setOf(c) { return c.set || 1; }
-function cardNo(c) { return c.set === 2 ? "VE" + String(c.id - 999).padStart(3, "0") : "#" + String(c.id + 1).padStart(3, "0"); }
+// collector numbers run on across sets: Alpha #001-#400, Velvet Eclipse #401-#600, and so on (Century Forge cards are numbered F1, F2...)
+function cardNum(id) { return id >= 1000 ? id - 1000 + 401 : id + 1; }
+function cardNo(c) { return c.forb ? "#F" + (c.id - 399) : "#" + String(cardNum(c.id)).padStart(3, "0"); }
 function normEl(e, name) { return ELEMENTS.includes(e) ? e : ({ Fire: "Pyre", Frost: "Glacial", Holy: "Voltaic", Nature: "Poison", Shadow: "Poison" })[e] || ELEMENTS[nameHash(name || "") % 4]; }
 function elByName(c) {
   let n = String(c.name || "").toLowerCase(); PREFIXES.forEach(p => { if (n.indexOf(p.toLowerCase() + " ") === 0) n = n.slice(p.length + 1); });
@@ -2755,7 +2767,7 @@ function oldBase(c) {
   if (!c || c.category === "Land") return [];
   const hh = nameHash(c.name), a = BASE.indexOf(c.element) >= 0 ? BASE.indexOf(c.element) : hh % 4, e = [BASE[a]];
   if (c.el2 && BASE.indexOf(c.el2) >= 0 && c.el2 !== BASE[a]) e.push(c.el2);
-  if (c.tier === 4 && e.length < 2) e.push(BASE[(a + 1 + ((hh >> 3) % 3)) % 4]);
+  if (c.tier === 4 && e.length < 2) { let b = BASE[(a + 1 + Math.abs((hh >> 3) % 3)) % 4]; if (b === e[0]) b = BASE[(a + 1) % 4]; e.push(b); }
   return e;
 }
 function rkey(id, v) { return id + "|" + (v || "base"); }
@@ -5711,7 +5723,7 @@ function dispSort(k) {
   return { pwr: P, new: (a, b) => b.t - a.t, grade: (a, b) => gradeScore(b.r, b.v) - gradeScore(a.r, a.v) || P(a, b), lvl: (a, b) => b.l - a.l || P(a, b), eq: (a, b) => (isEquippedU(b.u) ? 1 : 0) - (isEquippedU(a.u) ? 1 : 0) || (b.f ? 1 : 0) - (a.f ? 1 : 0) || P(a, b) }[k] || P;
 }
 function dexGroups() { const g = new Map(); (sv.cards || []).forEach(c => { if (!CARDS[c.i]) return; let a = g.get(c.i); if (!a) g.set(c.i, a = []); a.push(c); }); return g; }
-function dexNo(i) { return i >= 1000 ? "VE" + String(i - 999).padStart(3, "0") : "#" + String(i + 1).padStart(3, "0"); }
+function dexNo(i) { return CARDS[i] && CARDS[i].forb ? "#F" + (i - 399) : "#" + String(cardNum(i)).padStart(3, "0"); }
 function dexCell(i, copies) {
   const card = CARDS[i];
   if (!copies.length) return `<div class="bslot dexmiss" data-dex="${i}" style="--tc:${TC[card.tier]}"><div class="dxm"><b>${dexNo(i)}</b><pre>  .---.\n  | ? |\n  '---'</pre><span>${esc(card.name)}</span><small>${TIERS[card.tier]} · not collected</small></div></div>`;
@@ -5741,7 +5753,7 @@ function wbBinder() {
   const rows = [];
   for (let i = 0; i < CARDS.length; i++) { const card = CARDS[i]; if (!card) continue; if (!setVisible(card)) continue; if (bf.set && bf.set !== "all" && setOf(card) !== +bf.set) continue;
     if (bf.tier !== "all" && card.tier !== +bf.tier) continue; if (bf.cat !== "all" && card.category !== bf.cat) continue; if (bf.el !== "all" && !baseOf(card, "base").includes(bf.el)) continue;
-    if (q && !(qn ? i + 1 === qn : card.name.toLowerCase().includes(q))) continue;
+    if (q && !(qn ? cardNum(i) === qn : card.name.toLowerCase().includes(q))) continue;
     const copies = (G.get(i) || []).filter(copyOk).sort(srt);
     if (bf.own === "own" && !copies.length) continue; if (bf.own === "miss" && (G.get(i) || []).length) continue; if (copyF && !copies.length) continue;
     rows.push([i, copies]); }
@@ -6085,12 +6097,24 @@ function rsSceneFit() {
   const root = document.getElementById("rsroot"), st = document.getElementById("stage"); if (!root || !st || !root.classList.contains("mtga")) return;
   const setK = k => { RSCAR.k = k; root.style.setProperty("--k", k.toFixed(3)); root.style.setProperty("--ps", rsPkScale()); root.classList.toggle("small", k < 0.6); };
   if (root.classList.contains("spread") && !root.classList.contains("chain")) { setK(RSCAR.k || 1); return; }
-  const apply = H => { H = Math.max(300, Math.round(H)); st.style.minHeight = "0"; st.style.flex = "none"; st.style.height = H + "px"; setK(Math.max(0.4, Math.min(1, (H - 154) / 438))); };
+  const apply = H => { H = Math.max(300, Math.round(H)); st.style.minHeight = "0"; st.style.flex = "none"; st.style.height = H + "px"; root.classList.toggle("tight", H < 600); const sr = st.getBoundingClientRect(), hd = [st.querySelector(".venight"), st.querySelector(".rscts"), st.querySelector(".rsctn")].filter(e => e && e.offsetParent).map(e => e.getBoundingClientRect().bottom - sr.top).reduce((a, b) => Math.max(a, b), 0) + 10;
+    setK(Math.max(0.4, Math.min(1.7, (H - hd - 80) / 442, (st.clientWidth || 900) / 900))); };
   const bar = document.getElementById("rsbar"), dock = document.getElementById("rsdock"), y = scrollY;
   const top = st.getBoundingClientRect().top + y;
   apply(innerHeight - top - (bar ? bar.offsetHeight + 12 : 0) - (dock ? dock.offsetHeight : 0) - 14);
   // whatever still spills over (margins, footers) comes off the scene too
   const over = document.documentElement.scrollHeight - innerHeight; if (over > 0) apply(st.offsetHeight - over);
+  rsPlaceRow();
+}
+// sit the pack row in the middle of the space under the title, and keep the chosen pack centred (sizes change with no animation)
+function rsPlaceRow() {
+  const root = document.getElementById("rsroot"), st = document.getElementById("stage"), car = document.getElementById("rsCar"); if (!root || !st || !car || root.classList.contains("spread")) return;
+  root.classList.add("nofx"); const k = RSCAR.k || 1, sr = st.getBoundingClientRect();
+  const hd = [st.querySelector(".venight"), st.querySelector(".rscts"), st.querySelector(".rsctn")].filter(Boolean).map(e => e.getBoundingClientRect().bottom - sr.top).reduce((a, b) => Math.max(a, b), 0) + 12;
+  const need = 70 + 52 * k + 1.12 * k * 330 + 20 * k, extra = st.clientHeight - hd - need;
+  car.style.bottom = Math.max(0, Math.round(extra / 2)) + "px";
+  const el = car.querySelector(".rscs.on"); if (el) car.scrollLeft = el.offsetLeft + el.offsetWidth / 2 - car.clientWidth / 2;
+  requestAnimationFrame(() => root.classList.remove("nofx"));
 }
 // animation speed: normal opening is ~40% quicker than it used to be; Fast/Auto quicker still
 function rsSpdF(fast) { return sv.fastRip || sv.autoRip ? fast : 0.6; }
@@ -6226,7 +6250,7 @@ function showPacksCore(chain) {
     <div class="rsct"><div class="rsctn">${esc(K.set || K.n)}</div><div class="rscts">${esc(K.pn || "")} · ${info.cards} cards${sv.packs < 5 ? ` · free pack in ${Math.max(1, Math.ceil((sv.t + 24e4 - Date.now()) / 6e4))} min` : ""} · <a href="#" id="rsOddsL">odds & pity</a></div></div>
     ${PSOON.length && chain !== true ? `<button class="venight" id="veNight">🌘 Eclipse Night · Velvet Eclipse in ${veCountdown()} · spoilers</button>` : ""}<div class="rshint">${chain === true ? "" : have > 0 ? "CLICK THE PACK OR SWIPE ACROSS ITS TOP TO TEAR · SPACE" : "NO PACKS OF THIS TYPE · GET MORE IN THE 🛒 STORE"}</div>
     <button class="rscar-arr l" id="rsCarL" aria-label="Previous pack type">‹</button><button class="rscar-arr r" id="rsCarR" aria-label="Next pack type">›</button>
-    <div class="rscar" id="rsCar">${kinds.map(slot).join("")}${PSOON.map((x, i) => `<div class="rscs soon" data-soon="${x.k}" style="--bob:-${((kinds.length + i) * 0.9 % 3.4).toFixed(2)}s" title="${esc(x.n)}: coming soon"><div class="rscpk">${dskin(packArtHTML(x.k, false))}</div><div class="rscsh"></div><div class="rscn">LIVE IN ${veCountdown()}</div></div>`).join("")}</div></section></div>
+    <div class="rscar" id="rsCar">${kinds.map(slot).join("")}${PSOON.map((x, i) => `<div class="rscs soon" data-soon="${x.k}" style="--bob:-${((kinds.length + i) * 0.9 % 3.4).toFixed(2)}s" title="${esc(x.n)}: coming soon"><div class="rscpk">${dskin(packArtHTML(x.k, false))}</div><div class="rscsh"></div><div class="rscn">🌘 ${veCountdown()}</div></div>`).join("")}</div></section></div>
   <div class="rsdock" id="rsdock"></div></div>`;
   const root = main.querySelector("#rsroot"), table = root.querySelector("#stage"), pk = table.querySelector("#pk"), car = root.querySelector("#rsCar"), $ = s => root.querySelector(s);
   stageFX(table); pk.classList.add("arrive"); pk.onclick = null; rsDockUpdate(); rsSceneFit();
