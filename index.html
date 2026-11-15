@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="arit-build" content="20261115044434">
+<meta name="arit-build" content="20261115060242">
 <meta charset="utf-8">
 <title>ASCII RIP IT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1585,7 +1585,7 @@ body.rm .rsdock button.cta::after,body.rm .spfl.next::after,body.rm .gbadge.gsp:
 <div id="toast"></div>
 
 <script>
-const BUILD_ID = "20261115044434";
+const BUILD_ID = "20261115060242";
 // ===================== Game events =====================
 // Systems that react to play (goals, challenges, seasons) listen here instead of patching other functions.
 const EVT = {};
@@ -2531,7 +2531,7 @@ Object.assign(EL_DESC, {
   Poison: "3+: Poison stacks every turn (8% of a strike, growing each turn) and +5% Life per Strike. 6+: 12% stacks and +10% Life per Strike"
 });
 Object.assign(MUTD, {
-  mirror: ["🪞 Mirror Hide", "Critical strikes reflect 25% of their damage back at you"],
+  mirror: ["🪞 Mirror Hide", "Critical strikes reflect 25% of their damage back at you (at most 10% of your Max HP per crit; the killing blow is never reflected)"],
   armored: ["🛡 Armored Shell", "Strikes deal 40% less; Burn, Poison, Thorns, chain lightning and your pet hit at full strength"],
   warded_Pyre: ["🔥 Pyre Ward", "Suppresses a Pyre set bonus: no Burn, no extra crit damage, -15% strike damage"],
   warded_Glacial: ["❄️ Glacial Ward", "Suppresses a Glacial set bonus: no Chill, -15% strike damage"],
@@ -2676,7 +2676,11 @@ PATCH_NOTES.unshift({ v: 62.1, t: "v62.1: Smoother animations and crisper art on
   "🔤 The card-art font is now built into the game. It used to download when the game started, and if that was slow or blocked, Windows swapped in Consolas, which is missing many of the block characters, so the art came out crooked. Now every computer draws the art with the same font, with no download.",
   "🌙 New Animations setting in ⚙ Pack settings: Full, Reduced or Match device. When Windows' Animation effects setting is off (many laptops ship that way), the game used to tone down pack tears, card flips, shimmer and the Mythic cinematic without saying so. Now it tells you once and lets you turn full animations back on.",
   "⚡ Big performance pass for laptops: the pack-table starfield, rain, shiny-card rainbow, foil glare and the glowing buttons and S+ badges are now drawn on the graphics chip instead of being repainted every frame. On a slow laptop the pack screen went from about 7 to 30+ frames per second, and opening packs is noticeably smoother.",
-  "✨ Card art is centred by layout instead of by a transform, so it stays sharp at Windows display scaling of 100% and 125%."
+  "✨ Card art is centred by layout instead of by a transform, so it stays sharp at Windows display scaling of 100% and 125%.",
+  "🗼 Wyrmspire, Floor 140: the Eclipse Seraph lost Mirror (crits reflected back at you). Mirror punished crits, the one thing that cuts through its Null Field, so no build had an answer. It now bursts like a dying star when it falls (Volatile) and has a bit more HP and attack, so it is still a step up from Floor 130's boss, just not a wall (about 4.9× the floor before it, down from 5.8×).",
+  "🪞 Mirror Hide fixed: the killing blow is never reflected, and a crit reflects at most 10% of your Max HP. It used to bounce a quarter of the damage back, up to the boss's remaining HP, so the harder you hit, the surer your killing crit took you down with it. That's why a hero with 100× the Recommended Power could show a 0% win chance. Affects the Floor 100 boss, the Crit Fest weekly twist and every other boss with Mirror Hide.",
+  "🗼 Floors 141-149 now get harder one floor at a time instead of dropping back to Floor 139's level, so the climb to Vharzyx builds up. The jump from Floor 149 to the Wyrm went from 8× to about 5×.",
+  "🗼 Recommended Power now counts each enemy's abilities (Rally, Null Field, Mirror, extra affixes and so on), measured with the fight simulator. Boss floors used to show far too little: Floor 140 by about a third and Floor 150 by about 40%."
 ] });
 PATCH_NOTES.unshift({ v: 62, t: "v62: Local Edition: the whole game runs on your device", n: [
   "💾 ASCII RIP IT is now 100% single-player and local: no accounts, no logins, no servers. Your progress is saved in this browser, and the game opens straight into your save. On first start it gathered every save this browser had (one per old account, plus guest and legacy saves) and put the best three into your save slots, so nothing is lost",
@@ -8929,7 +8933,6 @@ function fight(ts0, en, opt = {}) {
     if (RX === "blight" && turn % 2 === 1 && dmg > 0) { dmg *= 2; note += " ❄️☠️ Blightfrost shatters!"; }
     if (VP === "aria") dmg *= 1 + Math.min(0.3, 0.02 * turn);
     dmg = Math.round(dmg); if (isCrit && dmg > 0) { crits++; if (PW.u_halo) { const h = heal("Eclipse Halo", maxHP * 0.04); if (h) note += ` ☀ Halo +${fmtN(h)} HP`; } }
-    if (mut === "mirror" && isCrit && dmg > 0 && !PW.u_halo) { const mr = Math.round(Math.min(dmg, Math.max(0, bHP)) * 0.25); pHP -= mr; add(taken, "Mirror Hide", mr); note += ` 🪞 ${mr} reflected back at you!`; }
     // raid parts
     let toCore = dmg;
     if (en.raid && dmg > 0) {
@@ -8939,6 +8942,10 @@ function fight(ts0, en, opt = {}) {
       else if (shHP > 0 && RX !== "therm") toCore = Math.round(dmg * 0.6);
     }
     if (toCore) hitBoss(isCrit ? "Crits" : "Strikes", toCore);
+    // Mirror Hide (v62.1): reflects a quarter of a crit, capped at 10% of YOUR Max HP per crit, and never the blow that kills it.
+    // It used to reflect a quarter of the damage up to the boss's remaining HP, so the bigger your hits, the surer the
+    // killing crit killed you too (one crit could bounce back a quarter of the boss's whole HP).
+    if (mut === "mirror" && isCrit && dmg > 0 && bHP > 0 && !PW.u_halo) { const mr = Math.round(Math.min(dmg * 0.25, maxHP * 0.1)); pHP -= mr; add(taken, "Mirror Hide", mr); note += ` 🪞 ${fmtN(mr)} reflected back at you!`; }
     // Velvet Eclipse Mythic pets
     if (VP && dmg > 0 && bHP > 0) {
       if (VP === "yuzuki" && isCrit && ++tails >= 9) { tails = 0; const x = hitBoss("Foxfire", ts.strikeDmg * 3); E("you", `  🦊 Nine tails blaze: Foxfire for ${fmtN(x)}!`, "crit"); }
@@ -9165,6 +9172,7 @@ function lvlFloor(L) { return Math.max(1, Math.min(SPIRE.floors, Math.floor((L -
 
 // sc: evens out the difficulty curve so each flight is about 1.5× harder than the one before (measured, not guessed).
 // fam: the two monster families on the flight's floors. mech/mut: the boss's own twist.
+// ramp [start, step]: the last flight's floors grow harder one by one (start × floor 1, + step per floor) so the climb to the Wyrm builds up
 const FLIGHTS = [
   { sc: 0.75, n: "The Goblin Gate", fam: [0, 0], boss: "Gutrot the Gatekeeper", mech: ["rally"], d: "A goblin war-camp squats at the foot of the Spire. Their chief collects a toll in teeth." },
   { sc: 0.89, n: "The Ossuary Stair", fam: [1, 1], boss: "Marrowmaw, the Bone Choir", mech: ["regen"], mut: "vampiric", d: "Steps built from the bones of failed climbers. Something down here still sings." },
@@ -9179,8 +9187,8 @@ const FLIGHTS = [
   { sc: 1.11, n: "The Storm Ramparts", fam: [5, 7], boss: "Thunderhowl the Roc", mech: ["chill", "null"], mut: "warded_Voltaic", atk: 1.1, d: "Open battlements in a lightning storm. The great Roc rides the thunder." },
   { sc: 1.5, n: "The Cinder Cathedral", fam: [4, 1], boss: "Archbishop Ashveil", mech: ["burn", "regen"], mut: "vampiric", d: "A burned-out cathedral where the faithful still kneel in the ashes." },
   { sc: 1.14, n: "The Thornspire Crown", fam: [6, 2], boss: "The Briar Colossus", mech: ["entangle", "swarm"], hp: 1.15, d: "The Spire's outer crown, wrapped in thorns as thick as towers." },
-  { sc: 0.99, n: "The Eclipse Vault", fam: [7, 3], boss: "The Eclipse Seraph", mech: ["null", "plating"], mut: "mirror", atk: 1.1, d: "A sealed vault under a black sun. The Seraph turns your own crits back on you." },
-  { sc: 0.97, n: "The Wyrm's Roost", fam: [4, 5], boss: "Vharzyx, the Spire Wyrm", mech: ["burn", "chill", "rally"], mut: "armored", hp: 1.35, atk: 1.15, d: "The summit. Fire on one wing, frost on the other, and a dragon that grows angrier with every breath." }
+  { sc: 0.99, n: "The Eclipse Vault", fam: [7, 3], boss: "The Eclipse Seraph", mech: ["null", "plating"], mut: "volatile", hp: 1.5, atk: 1.25, d: "A sealed vault under a black sun. The Seraph fades your blows into the void (crits still land), and bursts like a dying star when it falls." },   // v62.1: was Mirror, which punished crits, the very thing that beats its Null Field
+  { sc: 0.97, ramp: [1.1, 0.06], n: "The Wyrm's Roost", fam: [4, 5], boss: "Vharzyx, the Spire Wyrm", mech: ["burn", "chill", "rally"], mut: "armored", hp: 1.35, atk: 1.15, d: "The summit. Fire on one wing, frost on the other, and a dragon that grows angrier with every breath." }
 ];
 // every boss has its own art; {e} marks the eyes
 const SPIRE_ART = [
@@ -9250,7 +9258,7 @@ function spireFoe(f, rnd) {
   if (i === SPIRE.per) return spireBoss(n, rnd);
   const H = heatFx(spireHeat()), kind = H.elites.includes(i) ? "elite" : "normal", en = mkEnemy(floorLvl(f), kind, F.fam[rnd() < 0.5 ? 0 : 1], rnd);
   if (kind === "normal") { en.hp = Math.round(en.hp * 1.5); en.name = en.m.name = `${en.fam.minor} pack`; }   // a floor holds a small group
-  const sc = F.sc || 1; en.hp = Math.round(en.hp * sc * H.hp); en.atk = Math.round(en.atk * sc * H.atk);
+  const sc = (F.sc || 1) * (F.ramp ? F.ramp[0] + F.ramp[1] * (i - 1) : 1); en.hp = Math.round(en.hp * sc * H.hp); en.atk = Math.round(en.atk * sc * H.atk);
   en.floor = f; return en;
 }
 function spireBoss(n, rnd) {
@@ -9301,7 +9309,20 @@ function spireWinRate(ts, n, k = 6) { let w = 0; for (let i = 0; i < k; i++) if 
 // (calibrated with the fight simulator). Green at 2.5× or more, gold from 0.85×, red below.
 const SP_REC_K = 1.1;   // calibrated: at 1.0× your odds against the boss are about even
 var SPREC = {};
-function spireRec(f) { const k = f + "|" + spireHeat(); if (SPREC[k]) return SPREC[k]; const en = spireFoe(f, seededRnd(f * 97 + 13)); return SPREC[k] = Math.max(1, Math.round(SP_REC_K * 2 * Math.sqrt(Math.max(1, en.hp) * Math.max(1, en.atk)))); }
+// v62.1: abilities count too. Each multiplier is how much harder that one ability makes a fight (measured with the
+// fight simulator: Power needed with it / without it). A floor's first family ability is already in SP_REC_K; the rest
+// stack with a softening power, because stacked abilities overlap. Checked against simulated wins on Floors 100-150.
+const REC_MECH = { rally: 1.21, regen: 1.05, swarm: 1.10, plating: 1.03, burn: 1.085, chill: 1.15, entangle: 1.23, null: 1.14 };
+const REC_AFF = { enraged: 1.13, armored: 1.105, regenerating: 1.03 };
+const REC_MUT = { vampiric: 1.01, volatile: 1, ethereal: 1.21, mirror: 1.13, armored: 1.18 };
+function recMul(en) {
+  let m = 1; const M = en.m || {};
+  (M.mech || []).slice(1).forEach(k => m *= REC_MECH[k] || 1);
+  (M.aff || []).forEach(k => m *= REC_AFF[k] || 1);
+  if (en.mut && !/^warded_/.test(en.mut)) m *= REC_MUT[en.mut] || 1;   // a ward only matters if you run that element
+  return Math.pow(m, 0.75);
+}
+function spireRec(f) { const k = f + "|" + spireHeat(); if (SPREC[k]) return SPREC[k]; const en = spireFoe(f, seededRnd(f * 97 + 13)); return SPREC[k] = Math.max(1, Math.round(SP_REC_K * 2 * Math.sqrt(Math.max(1, en.hp) * Math.max(1, en.atk)) * recMul(en))); }
 function recCls(p, rec) { return p >= 2.5 * rec ? "rcg" : p >= 0.85 * rec ? "rcy" : "rcr"; }
 function recHTML(f, p) { const rec = spireRec(f); return `<span class="rec ${recCls(p, rec)}" title="Recommended Power at Heat ${spireHeat()} / your Power">Rec. ⚔ ${fmtN(rec)} · You ⚔ ${fmtN(p)}</span>`; }
 // a flight can be blitzed when you're 2.5× its boss, or already beat it on a higher Heat
