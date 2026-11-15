@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="arit-build" content="20261115060242">
+<meta name="arit-build" content="20261115061831">
 <meta charset="utf-8">
 <title>ASCII RIP IT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1575,6 +1575,9 @@ button.blitz{background:linear-gradient(90deg,#854d0e,#a16207);border-color:#fbb
 #bkBtn.due{--gs:0 0 16px rgba(34,211,238,.7);--gd:2s}
 @keyframes glf{from{opacity:0}to{opacity:1}}
 body.rm .rsdock button.cta::after,body.rm .spfl.next::after,body.rm .gbadge.gsp::after,body.rm .venight::after,body.rm .symb::after,body.rm #bkBtn.due::after{animation:none;opacity:.5}
+#saveWarn{position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:100000;max-width:min(860px,94vw);padding:10px 14px;border-radius:10px;background:#3b0d0d;border:2px solid #f87171;color:#fee2e2;font:13px/1.5 var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.6)}
+#saveWarn button{margin:4px 4px 0 0;padding:4px 10px}
+#saveDot.bad{color:#f87171;font-weight:700}
 
 </style>
 </head>
@@ -1585,7 +1588,25 @@ body.rm .rsdock button.cta::after,body.rm .spfl.next::after,body.rm .gbadge.gsp:
 <div id="toast"></div>
 
 <script>
-const BUILD_ID = "20261115060242";
+const BUILD_ID = "20261115061831";
+// ===================== Save storage: compression so big collections fit in the browser =====================
+// Browsers give a site about 5 MB of localStorage. A late-game save with thousands of cards can pass 2.5 MB of JSON,
+// and the game needs room for it twice while slots and backups change hands, so large saves are stored compressed
+// (lz-string, usually 6-15x smaller). Small saves stay plain JSON so they read and write instantly.
+// lz-string 1.5.0, Copyright (c) 2013 pieroxy, MIT License (https://github.com/pieroxy/lz-string); module-loader lines removed
+var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",n="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$",e={};function t(r,o){if(!e[r]){e[r]={};for(var n=0;n<r.length;n++)e[r][r.charAt(n)]=n}return e[r][o]}var i={compressToBase64:function(r){if(null==r)return"";var n=i._compress(r,6,function(r){return o.charAt(r)});switch(n.length%4){default:case 0:return n;case 1:return n+"===";case 2:return n+"==";case 3:return n+"="}},decompressFromBase64:function(r){return null==r?"":""==r?null:i._decompress(r.length,32,function(n){return t(o,r.charAt(n))})},compressToUTF16:function(o){return null==o?"":i._compress(o,15,function(o){return r(o+32)})+" "},decompressFromUTF16:function(r){return null==r?"":""==r?null:i._decompress(r.length,16384,function(o){return r.charCodeAt(o)-32})},compressToUint8Array:function(r){for(var o=i.compress(r),n=new Uint8Array(2*o.length),e=0,t=o.length;e<t;e++){var s=o.charCodeAt(e);n[2*e]=s>>>8,n[2*e+1]=s%256}return n},decompressFromUint8Array:function(o){if(null==o)return i.decompress(o);for(var n=new Array(o.length/2),e=0,t=n.length;e<t;e++)n[e]=256*o[2*e]+o[2*e+1];var s=[];return n.forEach(function(o){s.push(r(o))}),i.decompress(s.join(""))},compressToEncodedURIComponent:function(r){return null==r?"":i._compress(r,6,function(r){return n.charAt(r)})},decompressFromEncodedURIComponent:function(r){return null==r?"":""==r?null:(r=r.replace(/ /g,"+"),i._decompress(r.length,32,function(o){return t(n,r.charAt(o))}))},compress:function(o){return i._compress(o,16,function(o){return r(o)})},_compress:function(r,o,n){if(null==r)return"";var e,t,i,s={},u={},a="",p="",c="",l=2,f=3,h=2,d=[],m=0,v=0;for(i=0;i<r.length;i+=1)if(a=r.charAt(i),Object.prototype.hasOwnProperty.call(s,a)||(s[a]=f++,u[a]=!0),p=c+a,Object.prototype.hasOwnProperty.call(s,p))c=p;else{if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++),s[p]=f++,c=String(a)}if(""!==c){if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++)}for(t=2,e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;for(;;){if(m<<=1,v==o-1){d.push(n(m));break}v++}return d.join("")},decompress:function(r){return null==r?"":""==r?null:i._decompress(r.length,32768,function(o){return r.charCodeAt(o)})},_decompress:function(o,n,e){var t,i,s,u,a,p,c,l=[],f=4,h=4,d=3,m="",v=[],g={val:e(0),position:n,index:1};for(t=0;t<3;t+=1)l[t]=t;for(s=0,a=Math.pow(2,2),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 2:return""}for(l[3]=c,i=c,v.push(c);;){if(g.index>o)return"";for(s=0,a=Math.pow(2,d),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(c=s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 2:return v.join("")}if(0==f&&(f=Math.pow(2,d),d++),l[c])m=l[c];else{if(c!==h)return null;m=i+i.charAt(0)}v.push(m),l[h++]=i+m.charAt(0),i=m,0==--f&&(f=Math.pow(2,d),d++)}}};return i}();
+
+const LS_Z = "Z1", LS_ZMIN = 200000;   // compress values longer than this many characters
+// write a save (object or JSON text); throws if the browser refuses (storage full)
+function lsPut(k, v) { const s = typeof v === "string" ? v : JSON.stringify(v); localStorage.setItem(k, s.length > LS_ZMIN ? LS_Z + LZString.compressToUTF16(s) : s); }
+// read a save written either way (plain JSON from older versions, or compressed); null if missing or unreadable
+function lsText(k) { let r = null; try { r = localStorage.getItem(k); } catch (e) { return null; } if (!r) return null; if (r.slice(0, 2) === LS_Z) { try { return LZString.decompressFromUTF16(r.slice(2)); } catch (e) { return null; } } return r; }
+function lsGet(k) { const t = lsText(k); if (!t) return null; try { return JSON.parse(t); } catch (e) { return null; } }
+// how much of the browser's storage this site uses, in characters (about 5 million is the usual limit)
+function lsUsed() { let n = 0; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); n += k.length + (localStorage.getItem(k) || "").length; } } catch (e) {} return n; }
+// shrink old uncompressed saves in place (they stay as backups, just smaller)
+function lsShrinkOld() { const out = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (/^(apr_acct_|apr_slot_|asciiPacks_v10$|apr_save$)/.test(k)) out.push(k); } } catch (e) {} out.forEach(k => { try { const r = localStorage.getItem(k); if (r && r.length > LS_ZMIN && r.slice(0, 2) !== LS_Z) localStorage.setItem(k, LS_Z + LZString.compressToUTF16(r)); } catch (e) {} }); }
+
 // ===================== Game events =====================
 // Systems that react to play (goals, challenges, seasons) listen here instead of patching other functions.
 const EVT = {};
@@ -1645,7 +1666,7 @@ function sanitizeSave(m) {
 }
 // returns the save for this account, or a fresh one
 function loadSave(key) {
-  let raw = null; try { raw = key ? localStorage.getItem(key) : null; } catch (e) {}
+  const raw = key ? lsText(key) : null;   // plain or compressed
   if (!raw) return freshState();
   try {
     const m = JSON.parse(raw);
@@ -1659,14 +1680,37 @@ function loadSave(key) {
 
 // ---- autosave: a timed save, a save when the tab is hidden or closed, and a "Saved" indicator ----
 var lastSaveAt = 0;
-function saveNow() { try { save(); lastSaveAt = Date.now(); drawSaveDot(); } catch (e) {} }
+// saving: save() is called after almost every action, so it only marks the game as changed and writes a moment later;
+// saveNow() writes at once (closing the tab, switching slots, backups). If the browser refuses (storage full), the game
+// says so loudly instead of showing "Saved".
+var SAVE_ERR = "", saveTimer = 0, lastWriteMs = 0;
+function saveNow() { clearTimeout(saveTimer); saveTimer = 0; const ok = writeSave(); if (ok) lastSaveAt = Date.now(); drawSaveDot(); return ok; }
+function writeSave() {
+  if (!SAVE_KEY || !__ready) return false;
+  try { instSync(); } catch (e) {}
+  sv.v = SAVE_VER; sv.ts = Date.now(); let txt; try { txt = JSON.stringify(sv); } catch (e) { SAVE_ERR = "couldn't pack the save"; return false; }
+  const t0 = performance.now();
+  try { lsPut(SAVE_KEY, txt); SAVE_ERR = ""; lastWriteMs = performance.now() - t0; return true; } catch (e) {
+    lsShrinkOld(); try { lsPut(SAVE_KEY, txt); SAVE_ERR = ""; return true; } catch (e2) {}
+    SAVE_ERR = "full"; saveWarn(); return false;
+  }
+}
+function saveWarn() {
+  if (document.getElementById("saveWarn")) return;
+  const d = document.createElement("div"); d.id = "saveWarn";
+  d.innerHTML = `<b>⚠ Your progress is NOT being saved.</b> This browser's storage for the game is full (${(lsUsed() / 1e6).toFixed(1)} of about 5 million characters used). <button id="swDl">⬇ Download a backup now</button> <button id="swAcc">Open Save slots</button> <button id="swX">✕</button>`;
+  document.body.appendChild(d);
+  d.querySelector("#swDl").onclick = () => downloadSave(); d.querySelector("#swAcc").onclick = () => openAccountGuide(0); d.querySelector("#swX").onclick = () => d.remove();
+}
 function drawSaveDot() {
   const el = document.getElementById("saveDot"); if (!el) return;
+  if (SAVE_ERR) { el.textContent = "⚠ Not saved"; el.classList.add("bad"); el.title = "The browser refused to save (storage full). Download a backup from Account & Guide."; return; }
+  el.classList.remove("bad");
   const s = Math.round((Date.now() - (lastSaveAt || Date.now())) / 1000);
   el.textContent = s < 5 ? "✓ Saved" : `✓ Saved ${s < 60 ? s + "s" : Math.round(s / 60) + "m"} ago`;
   el.title = "Your progress saves automatically on this device. Use 💾 Backup Save to keep a copy.";
 }
-setInterval(() => { if (__ready && APR_USER) saveNow(); }, 30000);
+setInterval(() => { if (__ready && APR_USER) save(); }, 60000);   // a regular save for time played; changes save themselves
 setInterval(drawSaveDot, 5000);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && __ready && APR_USER) { saveNow(); } });
 window.addEventListener("pagehide", () => { if (__ready && APR_USER) saveNow(); });
@@ -2673,6 +2717,8 @@ PATCH_NOTES.unshift({ v: 59, t: "v59: The Velvet Eclipse, Eclipse Night and a th
   "🌙 Reduce motion (⚙ Settings, or your device setting) calms every animation; low-resolution screens get a softer pack art that sharpens on hover",
   "The pack screen is better balanced on every screen size: the chosen pack sits dead centre, the row is centred in the space under the title, packs grow on big screens and the title compacts on short ones"] });
 PATCH_NOTES.unshift({ v: 62.1, t: "v62.1: Smoother animations and crisper art on Windows", n: [
+  "💾 Saving fixed for big collections. Browsers give the game about 5 MB, and the v62 update copied your save into Slot 1 while keeping the original as a backup. A big save (thousands of cards) didn't fit twice, so the copy failed and the game quietly started an empty hero, and imports failed the same way. Large saves are now stored compressed (usually 6-15× smaller), old backups are compressed in place, and anyone whose save didn't move gets it back in Slot 1 automatically (an empty hero started by mistake moves to another slot).",
+  "💾 If the browser ever refuses a save, you now get a red warning with a one-click backup download, and the status bar shows “⚠ Not saved” instead of “✓ Saved”. Big saves write a moment after you play (and always when you close the tab, switch slots or back up), so they don't stutter the game.",
   "🔤 The card-art font is now built into the game. It used to download when the game started, and if that was slow or blocked, Windows swapped in Consolas, which is missing many of the block characters, so the art came out crooked. Now every computer draws the art with the same font, with no download.",
   "🌙 New Animations setting in ⚙ Pack settings: Full, Reduced or Match device. When Windows' Animation effects setting is off (many laptops ship that way), the game used to tone down pack tears, card flips, shimmer and the Mythic cinematic without saying so. Now it tells you once and lets you turn full animations back on.",
   "⚡ Big performance pass for laptops: the pack-table starfield, rain, shiny-card rainbow, foil glare and the glowing buttons and S+ badges are now drawn on the graphics chip instead of being repainted every frame. On a slow laptop the pack screen went from about 7 to 30+ frames per second, and opening packs is noticeably smoother.",
@@ -6843,7 +6889,9 @@ function autoStopHTML() { const S = autoStops(); return `<h4>⏸ Auto-Rip stops<
 function autoStopBind(root) { root.querySelectorAll("[data-as]").forEach(b => b.onchange = () => { autoStops()[b.dataset.as] = b.checked; save(); }); }
 
 // ===================== Navigation, header, modals, cosmetics, account window, tour and accessibility =====================
-function save() { if (!SAVE_KEY) return; try { instSync(); sv.v = SAVE_VER; sv.ts = Date.now(); localStorage.setItem(SAVE_KEY, JSON.stringify(sv)); } catch (e) {} }
+// writes a moment after a change (see saveNow in save.js). Big collections take a while to compress, so the wait grows with
+// how long the last write took (about 1/40 of the time is spent saving) and the write waits for an idle moment.
+function save() { if (!SAVE_KEY || saveTimer) return; const run = () => { try { (window.requestIdleCallback || (f => f()))(() => saveNow(), { timeout: 3000 }); } catch (e) { saveNow(); } }; saveTimer = setTimeout(run, Math.max(2500, Math.min(30000, (lastWriteMs || 0) * 40))); }
 function rg() { return Math.max(1, Math.min(10, Math.round((5.5 + Math.random() * 5.5) * 2) / 2)); }
 function applyLook() { document.body.dataset.sleeve = sv.sleeve || "none"; document.body.dataset.mat = sv.mat || "none"; }
 function applyUI() { document.body.dataset.ui = sv.cos.theme; }
@@ -7015,31 +7063,41 @@ function drawStatus() {
 function slotKey(n) { return "apr_slot_" + n; }
 function localSlots() { return 3; }
 function saveScore(m) { if (!m || typeof m !== "object") return -1; const st = m.stats || {}; return (Array.isArray(m.cards) ? m.cards.length : 0) + 2 * (st.packsOpened || m.p || 0) + 5 * ((m.spire && m.spire.peak) || 0) + 50 * ((m.asc && m.asc.n) || 0) + Object.keys(m.inv || {}).length; }
-// first start of the Local Edition: gather every save this browser ever had (one per old account, plus the guest and legacy saves),
-// best first, into the three slots. The old keys are left alone as a backup.
+// first start of the Local Edition: gather every save this browser ever had (one per old account, plus the guest and legacy saves,
+// plus whatever is already in the slots), best first, into the three slots. The old keys stay as compressed backups.
+// v62.1: the first version copied saves uncompressed next to the originals; a big save (2.5 MB+) didn't fit twice, the copy
+// failed and the game quietly started a new hero. Those players never got marked as moved, so this runs again for them.
 function localBoot() {
   let active = 1; try { active = Math.min(localSlots(), Math.max(1, +localStorage.getItem("apr_active_slot") || 1)); } catch (e) { return 1; }
   try {
-    if (localStorage.getItem("apr_local_migrated")) return active;
-    const found = [];
-    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i), m = /^apr_acct_([^_]+(?:_[^_]+)*)$/.exec(k || "");
-      if (!k || !(m || k === "asciiPacks_v10" || k === "apr_save") || /_(pre\d*|offline)$/.test(k)) continue;
-      try { const d = JSON.parse(localStorage.getItem(k)); const name = m ? m[1] : "Hero"; if (d && typeof d === "object") found.push({ k, d, name, sc: saveScore(d) }); } catch (e) {} }
+    if (localStorage.getItem("apr_local_migrated")) { if (!localStorage.getItem("apr_lz1")) { lsShrinkOld(); localStorage.setItem("apr_lz1", "1"); } return active; }
+    lsShrinkOld();   // make room first
+    const found = [], seen = {};
+    const keys = []; for (let i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
+    keys.forEach(k => {
+      const m = /^apr_acct_([^_]+(?:_[^_]+)*)$/.exec(k || ""), slot = /^apr_slot_[1-3]$/.test(k || "");
+      if (!k || !(m || slot || k === "asciiPacks_v10" || k === "apr_save") || /_(pre\d*|offline)$/.test(k)) return;
+      const d = lsGet(k); if (!d || typeof d !== "object" || !d.inv) return;
+      const fp = (d.cards || []).length + "|" + ((d.stats && d.stats.packsOpened) || 0) + "|" + (d.c || 0);   // the same hero found twice counts once
+      if (seen[fp]) return; seen[fp] = 1;
+      found.push({ k, d, name: m ? m[1] : slot ? (d.dname || "Hero") : "Hero", sc: saveScore(d) });
+    });
     found.sort((a, b) => b.sc - a.sc);
-    found.slice(0, localSlots()).forEach((f, i) => { if (!f.d.dname && f.name !== "guest") f.d.dname = f.name; localStorage.setItem(slotKey(i + 1), JSON.stringify(f.d)); });
+    const keep = found.slice(0, localSlots()), staged = keep.map(f => { if (!f.d.dname && f.name !== "guest") f.d.dname = f.name; return JSON.stringify(f.d); });
+    staged.forEach((t, i) => lsPut(slotKey(i + 1), t));
     if (found.length > localSlots()) localStorage.setItem("apr_local_extra", JSON.stringify(found.slice(localSlots()).map(f => f.k)));
-    localStorage.setItem("apr_local_migrated", String(Date.now())); localStorage.setItem("apr_active_slot", "1"); active = 1;
-  } catch (e) {}
+    localStorage.setItem("apr_local_migrated", String(Date.now())); localStorage.setItem("apr_lz1", "1"); localStorage.setItem("apr_active_slot", "1"); active = 1;
+  } catch (e) { try { console.error("save setup failed", e); } catch (e2) {} }
   return active;
 }
-function slotInfo(n) { try { const d = JSON.parse(localStorage.getItem(slotKey(n)) || "null"); if (!d) return null; return { name: d.dname || "Hero", cards: (d.cards || []).length, packs: (d.stats && d.stats.packsOpened) || 0, floor: (d.spire && d.spire.peak) || 0, ts: d.ts || 0 }; } catch (e) { return null; } }
+function slotInfo(n) { try { const d = lsGet(slotKey(n)); if (!d) return null; return { name: d.dname || "Hero", cards: (d.cards || []).length, packs: (d.stats && d.stats.packsOpened) || 0, floor: (d.spire && d.spire.peak) || 0, ts: d.ts || 0 }; } catch (e) { return null; } }
 function switchSlot(n) { saveNow(); try { localStorage.setItem("apr_active_slot", String(n)); } catch (e) {} setTimeout(() => location.reload(), 150); }
 function clearSlot(n) { if (n === APR_SLOT) return notify("Switch to another slot before clearing this one."); try { localStorage.removeItem(slotKey(n)); } catch (e) {} }
 // ---- backups ----
 function saveCode() { try { return btoa(unescape(encodeURIComponent(JSON.stringify(sv)))); } catch (e) { return JSON.stringify(sv); } }
 function downloadSave() { saveNow(); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(sv)], { type: "application/json" })); a.download = `ascii-rip-it-${(sv.dname || "hero").replace(/\W+/g, "_")}-slot${APR_SLOT}-${new Date().toISOString().slice(0, 10)}.json`; a.click(); sv.lastBackup = Date.now(); save(); try { drawStatus(); } catch (e) {} }
 function parseSave(t) { let d = null; t = String(t || "").trim(); try { d = JSON.parse(t); } catch (e) { try { d = JSON.parse(decodeURIComponent(escape(atob(t)))); } catch (e2) {} } return d && typeof d === "object" && d.inv && typeof d.inv === "object" ? d : null; }
-function importSave(d, slot) { if (!d) return false; try { localStorage.setItem(slotKey(slot || APR_SLOT), JSON.stringify(d)); } catch (e) { return false; } if ((slot || APR_SLOT) === APR_SLOT) { __ready = false; setTimeout(() => location.reload(), 150); } return true; }
+function importSave(d, slot) { if (!d) return false; try { lsPut(slotKey(slot || APR_SLOT), d); } catch (e) { lsShrinkOld(); try { lsPut(slotKey(slot || APR_SLOT), d); } catch (e2) { return false; } } if ((slot || APR_SLOT) === APR_SLOT) { __ready = false; setTimeout(() => location.reload(), 150); } return true; }
 function backupDue() { return Date.now() - (sv.lastBackup || 0) > 3 * 864e5; }
 // ---- the census of what you've pulled (it used to be shared; now it's just yours) ----
 function ckey(o) { return o.c.id + "_" + o.v.replace(/\+/g, "-"); }
